@@ -1625,7 +1625,7 @@
     {
       "name": "GraphQL Mesh",
       "description": "JSON Schema for GraphQL Mesh config file",
-      "url": "https://unpkg.com/@graphql-mesh/types/config-schema.json",
+      "url": "https://unpkg.com/@graphql-mesh/types/esm/config-schema.json",
       "fileMatch": [
         ".meshrc.yml",
         ".meshrc.yaml",
@@ -3845,6 +3845,17 @@
       "url": "https://taskfile.dev/schema.json"
     },
     {
+      "name": "Hammerkit",
+      "description": "JSON Schema for hammerkit files.",
+      "fileMatch": [
+        ".hammerkit.yaml",
+        ".hammerkit.yml",
+        "*.hammerkit.yaml",
+        "*.hammerkit.yml"
+      ],
+      "url": "https://json.schemastore.org/hammerkit.json"
+    },
+    {
       "name": "Containerlab",
       "description": "JSON Schema for Containerlab topology definition files.",
       "fileMatch": ["*-clab.yaml", "*-clab.yml", "*.clab.yaml", "*.clab.yml"],
@@ -3996,7 +4007,12 @@
     {
       "name": "Woodpecker pipeline config",
       "description": "YAML schema for configuring Woodpecker CI",
-      "fileMatch": ["**/.woodpecker/**.yml", "**/.woodpecker.yml"],
+      "fileMatch": [
+        "**/.woodpecker/**.yml",
+        "**/.woodpecker.yml",
+        "**/.woodpecker/**.yaml",
+        "**/.woodpecker.yaml"
+      ],
       "url": "https://raw.githubusercontent.com/woodpecker-ci/woodpecker/master/pipeline/schema/schema.json"
     },
     {

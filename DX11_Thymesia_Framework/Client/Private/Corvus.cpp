@@ -1,36 +1,21 @@
 #include "stdafx.h"
 #include "Corvus.h"
-#include "Client_Components.h"
+#include "Shader.h"
+#include "Status_Player.h"
+#include "GameManager.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PlayerSkillHeader.h"
 #include "Camera_Target.h"
+#include "PlayerSkill_System.h"
+#include "BoneNode.h"
+#include "MeshContainer.h"
+#include "UIManager.h"
+#include "PhysXCharacterController.h"
+#include "Inventory.h"
+#include "UI_Landing.h"
 #include "Corvus_DefaultSaber.h"
 #include "Corvus_DefaultDagger.h"
-#include "PhysXCollider.h"
-#include "Light_Prop.h"
-#include "Status_Player.h"
-#include "PhysXController.h"
-
-#include "Inventory.h"
-#include "Talent_Effects.h"
-#include "PlayerSkill_System.h"
-#include "Skill_Axe.h"
-#include "Skill_VargSword.h"
-#include "StolenSkill.h"
-
-
-
-#include "UI_BloodOverlay.h"
-#include "UI_PauseMenu.h"
-#include "UIManager.h"
-#include "UI_Landing.h"
-#include "UI_AppearEventVarg.h"
-#include "Monster.h"
-#include "PlayerSkillHeader.h"
-#include "Talent_Effects.h"
-#include "UI_Landing.h"
-#include "BoneNode.h"
-
-
+#include "Collider.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -45,11 +30,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
-
 
 	json LoadedJson;
 	string strCorvusComponentPath = m_szClientComponentPath + "Corvus.json";
@@ -71,6 +54,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
+	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixIdentity());
 	m_TransformationMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
 
 
@@ -81,13 +65,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
-
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
-	this->Ready_Weapon();
-	this->Ready_States();
+	Ready_Weapon();
+	Ready_States();
 	Ready_Skills();
-
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
@@ -102,10 +84,10 @@ HRESULT CCorvus::Initialize(void* pArg)
 		"Corvus_PassiveFeather",
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER)
 	});
+#endif // _CORVUS_EFFECT_
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
-#endif // _CORVUS_EFFECT_
 	LIGHTDESC LightDesc;
 
 	LightDesc.eActorType = LIGHTDESC::TYPE_SPOTLIGHT;
@@ -132,7 +114,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 #ifdef _USE_THREAD_
 	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
-	
 
 	return S_OK;
 }
@@ -147,10 +128,7 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
-
 	Test_BindSkill();
-
-
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -188,7 +166,6 @@ void CCorvus::Tick(_float fTimeDelta)
 	
 	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
-
 }
 
 void CCorvus::Thread_PreLateTick(_float fTimeDelta)
@@ -199,7 +176,6 @@ void CCorvus::Thread_PreLateTick(_float fTimeDelta)
 void CCorvus::LateTick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
-
 	__super::LateTick(fTimeDelta);
 }
 
@@ -210,9 +186,8 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
 	_matrix		BoneMatrix;
-	_matrix		InverseMatrix;
-	_vector		vGravity;
-
+	// _matrix		InverseMatrix;
+	// _vector		vGravity;
 
 	//BoneMatrix = //m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_OffsetMatrix() * 
 	//	m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
@@ -247,22 +222,13 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 		m_pTransformCom.lock()->Get_WorldMatrix(),
 		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 
-
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
-
 }
-
 
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-
-
-	
-	//GAMEINSTANCE->Enqueue_Job(bind(&CModel::Update_NvCloth, m_pModelCom.lock(), pDeferredContext));
 }	
-
-
 
 HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 {
@@ -274,8 +240,6 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		//if (i == m_iContainerIndex)
 		//	continue;
 #endif // _DEBUG
-
-		
 
 		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
@@ -358,21 +322,148 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
+void CCorvus::Free()
+{
+}
+
+void CCorvus::SetUp_ShaderResource()
+{
+	__super::SetUp_ShaderResource();
+}
+
+void CCorvus::OnEnable(void* pArg)
+{
+	__super::OnEnable(pArg);
+}
+
+void CCorvus::OnDisable()
+{
+	__super::OnDisable();
+}
+
+void CCorvus::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
+	{
+		Change_State<CCorvusState_CheckPointEnd>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
+	{
+		Change_State<CCorvusState_Joker_Execution>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
+	{
+		Change_State<CCorvusState_Die>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
+	{
+		Change_State<CCorvusState_Execution_Start>();
+	}
+
+	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_ClawPlunderAttack>();
+	}
+
+	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+}
+
+void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
+
+	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
+	{
+	case Client::COLLISION_LAYER::LADDER_UP:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERUP;
+		m_bLadderCheck = true;
+		break;
+	case Client::COLLISION_LAYER::LADDER_DOWN:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
+		m_bLadderCheck = true;
+		break;
+	case Client::COLLISION_LAYER::ELEVATOR:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ELEVATOR;
+		break;
+	case Client::COLLISION_LAYER::DOOR:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::DOOR;
+		break;
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
+		break;
+	case Client::COLLISION_LAYER::ITEM:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ITEM;
+		break;
+	}
+}
+
+void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
+}
+
+void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
+
+	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
+	{
+	case Client::COLLISION_LAYER::LADDER_UP:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERUP;
+		m_bLadderCheck = false;
+		break;
+	case Client::COLLISION_LAYER::LADDER_DOWN:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
+		m_bLadderCheck = false;
+		break;
+	case Client::COLLISION_LAYER::ELEVATOR:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ELEVATOR;
+		break;
+	case Client::COLLISION_LAYER::DOOR:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::DOOR;
+		break;
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
+		break;
+	case Client::COLLISION_LAYER::ITEM:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
+		break;
+	}
+}
+
 void CCorvus::OnStealMonsterSkill(MONSTERTYPE eMonstertype)
 {
 	__super::OnStealMonsterSkill(eMonstertype);
 
 	m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
-
 }
 
+void CCorvus::Update_KeyInput(_float fTimeDelta)
+{
+	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
+	{
+		m_pSkillSystem.lock()->SwapSkillMaintoSub();
+	}
+}
 
 void CCorvus::Debug_KeyInput(_float fTimeDelta)
 {
 	PxControllerFilters Filters;
 
-	// TODO : test jump key R
-	
 	if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
 		return;
 
@@ -436,7 +527,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		OnStealMonsterSkill(MONSTERTYPE::AXEMAN);
 	}
-#ifdef _DEBUG
+
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	//{
 	//	++m_iContainerIndex;
@@ -444,16 +535,22 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	//		m_iContainerIndex = 0;
 	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
 	//}
-#endif // _DEBUG
 }
 
-void CCorvus::Update_KeyInput(_float fTimeDelta)
+void CCorvus::Move_RootMotion_Internal()
 {
-	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
-	{
-		m_pSkillSystem.lock()->SwapSkillMaintoSub();
-	}
-	
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation") * XMLoadFloat3(&m_vMoveScale);
+	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+
+	PxControllerFilters Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, GAMEINSTANCE->Get_DeltaTime(), Filters, nullptr, m_pTransformCom);
+}
+
+void CCorvus::Test_BindSkill()
+{
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 }
 
 void CCorvus::Ready_Weapon()
@@ -506,6 +603,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectRightup);
 	ADD_STATE_MACRO(CCorvusState_PS_Axe);
 	ADD_STATE_MACRO(CCorvusState_PS_CaneSword);
+	ADD_STATE_MACRO(CCorvusState_PS_CaneSword_Start);
 	ADD_STATE_MACRO(CCorvusState_PS_Knife);
 	ADD_STATE_MACRO(CCorvusState_PS_Scythe);
 	ADD_STATE_MACRO(CCorvusState_PS_Scythe_Upgrade);
@@ -597,166 +695,17 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
 
-
 	//스킬 추가입니다.
 	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
-
 }
 
-void CCorvus::SetUp_ShaderResource()
-{
-	__super::SetUp_ShaderResource();
-}
-
-void CCorvus::Move_RootMotion_Internal()
-{
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation") * XMLoadFloat3(&m_vMoveScale);
-	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-
-	PxControllerFilters Filters;
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, GAMEINSTANCE->Get_DeltaTime(), Filters, nullptr, m_pTransformCom);
-}
-
-void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
-{
-
-	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
-
-
-	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
-	{
-	case Client::COLLISION_LAYER::LADDER_UP:
-		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERUP;
-		m_bLadderCheck = true;
-		break;
-	case Client::COLLISION_LAYER::LADDER_DOWN:
-		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
-		m_bLadderCheck = true;
-		break;
-	case Client::COLLISION_LAYER::ELEVATOR:
-		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ELEVATOR;
-		break;
-	case Client::COLLISION_LAYER::DOOR:
-		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::DOOR;
-		break;
-	case Client::COLLISION_LAYER::CHECKPOINT:
-		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
-		break;
-	case Client::COLLISION_LAYER::ITEM:
-		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ITEM;
-		break;
-	}
-
-}
-
-void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
-{
-	__super::OnCollisionStay(pMyCollider, pOtherCollider);
-}
-
-void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
-{
-	__super::OnCollisionExit(pMyCollider,pOtherCollider);
-
-	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
-	{
-	case Client::COLLISION_LAYER::LADDER_UP:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERUP;
-		m_bLadderCheck = false;
-		break;
-	case Client::COLLISION_LAYER::LADDER_DOWN:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
-		m_bLadderCheck = false;
-		break;
-	case Client::COLLISION_LAYER::ELEVATOR:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ELEVATOR;
-		break;
-	case Client::COLLISION_LAYER::DOOR:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::DOOR;
-		break;
-	case Client::COLLISION_LAYER::CHECKPOINT:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
-		break;
-	case Client::COLLISION_LAYER::ITEM:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
-		break;
-	}
-
-	
-	
-}
-
-void CCorvus::OnBattleEnd()
-{
-}
- 
-void CCorvus::OnEnable(void* pArg)
-{
-	__super::OnEnable(pArg);
-}
-
-void CCorvus::OnDisable()
-{
-	__super::OnDisable();
-}
-
-
-void CCorvus::OnEventMessage(_uint iArg)
-{
-	__super::OnEventMessage(iArg);
-
-	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
-	{
-		Change_State<CCorvusState_CheckPointEnd>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Joker_Execution>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
-	{
-		Change_State<CCorvusState_Die>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Execution_Start>();
-	}
-
-	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_ClawPlunderAttack>();
-	}
-
-	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-}
-
-void CCorvus::Free()
+void CCorvus::WriteTalentFromJson(json& Out_Json)
 {
 
 }
 
-void CCorvus::SetUp_Requirement()
+void CCorvus::LoadTalentFromJson(const json& In_Json)
 {
-
-}
-
-void CCorvus::Test_BindSkill()
-{
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 }
 
 void CCorvus::Save_ClientComponentData()
@@ -769,13 +718,3 @@ void CCorvus::Save_ClientComponentData()
 
 	CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
 }
-
-void CCorvus::WriteTalentFromJson(json& Out_Json)
-{
-
-}
-
-void CCorvus::LoadTalentFromJson(const json& In_Json)
-{
-}
-

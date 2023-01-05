@@ -16,16 +16,18 @@ void CCorvusState_PS_Hammer_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 60:
+		TurnOn_Effect("Corvus_PW_EyeGlow");
+		return;
 	case 71:
-	{
 		GAMEINSTANCE->Set_MotionBlur(0.15f);
-	}
-	return;
+		return;
 	case 127:
-	{
 		GAMEINSTANCE->Set_MotionBlur(0.15f);
-	}
-	return;
+		return;
+	case 178:
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
+		return;
 	case 239:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
@@ -35,6 +37,9 @@ void CCorvusState_PS_Hammer_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 	}
 	return;
+	case 292:
+		TurnOff_Effect("Corvus_PW_EyeGlow");
+		return;
 	}
 }
 

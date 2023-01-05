@@ -199,6 +199,8 @@
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h" />
     <ClInclude Include="..\Public\Effect_AttackArea.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\BossBat\Bat.h" />
@@ -441,9 +443,6 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv1.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv2.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
-    <ClInclude Include="..\Public\CState_AVoid.h" />
-    <ClInclude Include="..\Public\CustomFont.h" />
-    <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
     <ClInclude Include="..\Public\DeveloperConsole_Manager.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
@@ -819,6 +818,8 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword_Start.cpp" />
     <ClCompile Include="..\Private\Effect_AttackArea.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\BossBat\Bat.cpp" />
@@ -1057,8 +1058,6 @@
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Urd_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Varg_Execution.cpp" />
-    <ClCompile Include="..\Private\CustomFont.cpp" />
-    <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\DeveloperConsole_Manager.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingComponent.cpp" />

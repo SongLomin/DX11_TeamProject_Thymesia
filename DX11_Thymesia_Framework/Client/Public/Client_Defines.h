@@ -37,7 +37,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-//#define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
@@ -123,19 +123,9 @@
 // #define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
-#define _ANIMATION_TOOL_WEAPON_
+#undef _ANIMATION_TOOL_WEAPON_
 #undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
-
-#pragma region Boss Mobs
-#undef _BOSS_VARG_
-#undef _BOSS_URD_
-#pragma endregion // Boss Mobs
-
-#pragma region Normal Mobs
-#undef _STAGE_1_MONSTER_
-#undef _STAGE_2_MONSTER_
-#pragma endregion // Normal Mobs
 
 #pragma region Effects
 #undef _DAGGER_TRAIL_

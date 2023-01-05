@@ -34,6 +34,12 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 	}
 	return;
+	case 172:
+		TurnOff_Effect("Corvus_PW_VargSword_Weapon");
+		return;
+	case 184:
+		TurnOff_Effect("Corvus_PW_EyeGlow");
+		return;
 	}
 }
 
@@ -68,7 +74,9 @@ void CCorvusState_PS_VargSword::LateTick(_float fTimeDelta)
 
 void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTime)
 {
-	__super::OnStateStart(In_fAnimationBlendTime);
+	CPlayerStateBase::OnStateStart(In_fAnimationBlendTime);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 3);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);

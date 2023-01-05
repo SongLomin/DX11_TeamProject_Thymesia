@@ -22,7 +22,7 @@ float  g_fDissolveGradiationDistance;
 // For. Directional Dissolve
 float3 g_vDissolveStartPos;
 float3 g_vDissolveDir;
-float4 g_vShaderFlag;
+float4 g_vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 
 float4 g_vRimLightColor;
 
@@ -296,7 +296,7 @@ PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
 	if (g_bGlow)
 		Out.vExtractGlow = g_vGlowColor;
 
-	Out.vShaderFlag = vector(0.f, 0.f, 0.f, 0.f);
+	Out.vShaderFlag = g_vShaderFlag;
 
 	return Out;
 }
@@ -339,7 +339,7 @@ PS_OUT PS_DEFAULT(PS_IN In)
 	if (g_bGlow)
 		Out.vExtractGlow = g_vGlowColor;
 
-	Out.vShaderFlag = vector(0.f, 0.f, 0.f, 0.f);
+	Out.vShaderFlag = g_vShaderFlag;
 
 	return Out;
 }
@@ -408,7 +408,7 @@ PS_OUT PS_EXTRACTBRIGHT(PS_IN In)
 	}
 
 
-	Out.vShaderFlag = vector(0.f, 0.f, 0.f, 0.f);
+	Out.vShaderFlag = g_vShaderFlag;
 
 	return Out;
 }
