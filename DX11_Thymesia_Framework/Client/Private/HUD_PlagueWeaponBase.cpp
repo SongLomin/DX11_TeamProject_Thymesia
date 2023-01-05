@@ -11,6 +11,9 @@
 #include "Player.h"
 #include "PlayerSkill_System.h"
 #include "Skill_Base.h"
+#include "UI_Utils.h"
+
+
 
 GAMECLASS_C(CHUD_PlagueWeaponBase);
 CLONE_C(CHUD_PlagueWeaponBase, CGameObject);
@@ -145,30 +148,7 @@ void CHUD_PlagueWeaponBase::Init_UI()
 
 void CHUD_PlagueWeaponBase::Init_Icon(SKILL_NAME eSkillName)
 {
-    switch (eSkillName)
-    {
-    case Client::SKILL_NAME::SKILL_VARGSWORD:
-        m_pIcon.lock()->Set_Texture("SkillIcon_VargSword");
-        break;
-    case Client::SKILL_NAME::SKILL_AXE:
-        m_pIcon.lock()->Set_Texture("SkillIcon_Axe");
-        break;
-    case Client::SKILL_NAME::SKILL_KNIFE:
-        m_pIcon.lock()->Set_Texture("SkillIcon_Knife");
-        break;
-    case Client::SKILL_NAME::SKILL_HAMMER:
-        m_pIcon.lock()->Set_Texture("SkillIcon_Hammer");
-        break;
-    case Client::SKILL_NAME::SKILL_SCYTHE:
-        m_pIcon.lock()->Set_Texture("SkillIcon_Scythe");
-        break;
-    case Client::SKILL_NAME::SKILL_END:
-        m_pIcon.lock()->Set_Texture("None");
-        break;
-    default:
-        m_pIcon.lock()->Set_Texture("None");
-        break;
-    }
+    CUI_Utils::Set_SkillIcon(m_pIcon, eSkillName);
 }
 
 void CHUD_PlagueWeaponBase::OnEnable(void* pArg)

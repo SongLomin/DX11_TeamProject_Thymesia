@@ -1784,6 +1784,19 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SKillIcon.h" />
+    <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start</Filter>
     </ClInclude>
@@ -3735,6 +3748,19 @@
     <ClCompile Include="..\Private\BossMonster.cpp">
       <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillView.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Page.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_SKillIcon.cpp" />
+    <ClCompile Include="..\Private\UI_UnlockEventUI.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />

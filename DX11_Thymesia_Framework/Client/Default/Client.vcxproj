@@ -579,8 +579,13 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SKillIcon.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
@@ -599,6 +604,7 @@
     <ClInclude Include="..\Public\UI_Scroll.h" />
     <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
+    <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
     <ClInclude Include="..\Public\UI_Utils.h" />
     <ClInclude Include="..\Public\UrdWeapon.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
@@ -1167,8 +1173,13 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillView.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_SKillIcon.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Page.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
     <ClCompile Include="..\Private\UI_Inventory.cpp" />
@@ -1204,6 +1215,7 @@
     <ClCompile Include="..\Private\UI_Scroll.cpp" />
     <ClCompile Include="..\Private\UI_ShuffleIcon.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
+    <ClCompile Include="..\Private\UI_UnlockEventUI.cpp" />
     <ClCompile Include="..\Private\UI_Utils.cpp" />
     <ClCompile Include="..\Private\UrdWeapon.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
