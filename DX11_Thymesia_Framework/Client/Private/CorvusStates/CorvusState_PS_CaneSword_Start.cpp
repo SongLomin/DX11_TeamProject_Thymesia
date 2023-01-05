@@ -56,7 +56,6 @@ void CCorvusState_PS_CaneSword_Start::OnStateStart(const _float& In_fAnimationBl
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	Set_WeaponRender(false);
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow_Special", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_CaneSword_Start::Call_NextKeyFrame, this, placeholders::_1);
@@ -67,6 +66,9 @@ void CCorvusState_PS_CaneSword_Start::OnStateStart(const _float& In_fAnimationBl
 void CCorvusState_PS_CaneSword_Start::OnStateEnd()
 {
 	CPlayerStateBase::OnStateEnd();
+
+	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow_Special", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
+	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
 
 	GET_SINGLE(CGameManager)->Activate_Zoom(3.f, 2.f, EASING_TYPE::QUINT_IN);
 

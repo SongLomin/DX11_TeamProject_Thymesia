@@ -36,6 +36,9 @@ void CCorvusState_PS_CaneSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
 	}
 		return;
+	case 174:
+		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow_Special"));
+		return;
 	case 191:
 		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_CaneSword_SP02_Weapon"));
 		return;
@@ -77,8 +80,6 @@ void CCorvusState_PS_CaneSword::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
-
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_CaneSword::Call_NextKeyFrame, this, placeholders::_1);
 
@@ -87,12 +88,7 @@ void CCorvusState_PS_CaneSword::OnStateStart(const _float& In_fAnimationBlendTim
 
 void CCorvusState_PS_CaneSword::OnStateEnd()
 {
-	CPlayerStateBase::OnStateEnd();
-
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow_Special"));
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_CaneSword_SP02_Weapon"));
-
-	Set_WeaponRender(true);
+	__super::OnStateEnd();
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_CaneSword::Call_NextKeyFrame, this, placeholders::_1);

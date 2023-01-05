@@ -106,203 +106,197 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-		PxControllerCollisionFlags Flags(Get_OwnerCharacter().lock()->Get_LastCollisionFlags());
+	PxControllerCollisionFlags Flags(Get_OwnerCharacter().lock()->Get_LastCollisionFlags());
 
-		if(m_bLockOn)
+	if (m_bLockOn)
+	{
+		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
 		{
-			if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+
+		else if (Check_RequirementAVoidState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
+			return true;
+		}
+
+		else  if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_RunB>();
+			return true;
+		}
+
+		else  if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_RunL>();
+			return true;
+		}
+
+		else  if (KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_RunR>();
+			return true;
+		}
+
+		else if (Check_RequirementAttackState())
+		{
+			weak_ptr<CGameObject> pTargetObject;
+
+			if (Check_RequirementExcuteState(pTargetObject))
 			{
-			   Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
-			   return true;
+				_vector vTargetPos(pTargetObject.lock()->Get_Transform()->Get_Position());
+				m_pTransformCom.lock()->LookAt2D(vTargetPos);
+				Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+				Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
 			}
+			else
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			return true;
+		}
 
-			else if (Check_RequirementAVoidState())
+		else if (Check_RequirementParryState())
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
+		}
+
+		else if (Check_RequirementClawAttackHoldState())
+		{
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+			return true;
+		}
+
+		else if (Check_RequirementHealingState())
+		{
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+			return true;
+		}
+
+	}
+	else
+	{
+		if (!m_bLadderLock)
+		{
+			if (!m_bFirstFoot)
 			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
-				return true;
-			}
-
-			else  if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
-			{
-				Get_OwnerPlayer()->Change_State<CCorvusState_RunB>();
-				return true;
-			}
-
-			else  if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
-			{
-				Get_OwnerPlayer()->Change_State<CCorvusState_RunL>();
-				return true;
-			}
-
-			else  if (KEY_INPUT(KEY::D, KEY_STATE::HOLD))
-			{
-				Get_OwnerPlayer()->Change_State<CCorvusState_RunR>();
-				return true;
-			}
-
-			else if (Check_RequirementAttackState())
-			{
-				weak_ptr<CGameObject> pTargetObject;
-
-				if (Check_RequirementExcuteState(pTargetObject))
+				if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
 				{
-					_vector vTargetPos(pTargetObject.lock()->Get_Transform()->Get_Position());
-					m_pTransformCom.lock()->LookAt2D(vTargetPos);
-					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
-					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+					Rotation_InputToLookDir();
+					Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
+					return true;
 				}
-				else
-					Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
-				return true;
 			}
-
-			else if (Check_RequirementParryState())
-			{
-				Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-				return true;
-			}
-
-			else if (Check_RequirementClawAttackHoldState())
-			{
-
-				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
-				return true;
-			}
-
-			else if (Check_RequirementHealingState())
-			{
-
-				Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
-				return true;
-			}
+			else
+				m_bFirstFoot = false;
 
 		}
-		else
+
+		if (Check_RequirementRunState())
 		{
-			if (!m_bLadderLock)
-			{
-				if (!m_bFirstFoot)
-				{
-					if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
-					{
-						Rotation_InputToLookDir();
-						Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
-						return true;
-					}
-				}
-				else
-					m_bFirstFoot = false;
-
-			}
-
-			if (Check_RequirementRunState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
-				return true;
-			}
-
-			if (Check_RequirementJoggingState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
-				return true;
-			}
-
-
-			if (Check_RequirementSprintState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_Sprint>();
-				return true;
-			}
-
-			if (Check_RequirementAVoidState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
-				return true;
-			}
-
-			if (Check_RequirementAttackState())
-			{
-				weak_ptr<CGameObject> pTargetObject;
-				if (Check_RequirementExcuteState(pTargetObject))
-				{
-					_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
-					m_pTransformCom.lock()->LookAt2D(vTargetPos);
-					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
-					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
-				}
-				else
-				{
-					if (!Rotation_InputToLookDir())
-						Rotation_TargetToLookDir();
-
-					Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
-
-				}
-				return true;
-			}
-
-			if (Check_RequirementParryState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-				return true;
-			}
-
-			if (Check_RequirementClawAttackHoldState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
-				return true;
-			}
-
-			if (Check_RequirementHealingState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
-				return true;
-			}
-
-			if (Check_RequirementFadderAttackState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
-				return true;
-			}
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
 		}
+
+		if (Check_RequirementJoggingState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
+			return true;
+		}
+
+
+		if (Check_RequirementSprintState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Sprint>();
+			return true;
+		}
+
+		if (Check_RequirementAVoidState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			return true;
+		}
+
+		if (Check_RequirementAttackState())
+		{
+			weak_ptr<CGameObject> pTargetObject;
+			if (Check_RequirementExcuteState(pTargetObject))
+			{
+				_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+				m_pTransformCom.lock()->LookAt2D(vTargetPos);
+				Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+				Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+			}
+			else
+			{
+				if (!Rotation_InputToLookDir())
+					Rotation_TargetToLookDir();
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+			}
+			return true;
+		}
+
+		if (Check_RequirementParryState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
+		}
+
+		if (Check_RequirementClawAttackHoldState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+			return true;
+		}
+
+		if (Check_RequirementHealingState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+			return true;
+		}
+
+		if (Check_RequirementFeatherAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
+			return true;
+		}
+	}
 
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
 		Rotation_InputToLookDir();
-		// m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
-		
+
 		switch (m_iSkillType)
 		{
 		case 0:
-		{
 			m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
-		}
 			break;
 		case 1:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword_Start>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer_Upgrade>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_VargSwordStart>();
 			break;
 		case 3:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer_Upgrade>();
 			break;
 		case 4:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe_Upgrade>();
 			break;
 		case 5:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_R_R>();
-			break;
-		case 6:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
 			break;
 		}
@@ -317,6 +311,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	}
 
 
+	// TODO : for testing skills
 	if (KEY_INPUT(KEY::NUM9, KEY_STATE::TAP))
 	{
 		if (9 == m_iSkillType)
@@ -325,6 +320,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			m_iSkillType++;
 	}
 
+	// TODO : for testing skills
 	if (KEY_INPUT(KEY::NUM8, KEY_STATE::TAP))
 	{
 		if (0 == m_iSkillType)

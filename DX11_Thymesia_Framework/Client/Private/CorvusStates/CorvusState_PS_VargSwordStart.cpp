@@ -18,6 +18,13 @@ void CCorvusState_PS_VargSwordStart::Call_AnimationEnd()
 
 void CCorvusState_PS_VargSwordStart::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
+	switch (In_KeyIndex)
+	{
+	case 37:
+		GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_VargSword_Weapon", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_VargSword_Weapon", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
+		TurnOn_EyeGlow();
+		return;
+	}
 }
 
 HRESULT CCorvusState_PS_VargSwordStart::Initialize_Prototype()
@@ -51,7 +58,10 @@ void CCorvusState_PS_VargSwordStart::LateTick(_float fTimeDelta)
 
 void CCorvusState_PS_VargSwordStart::OnStateStart(const _float& In_fAnimationBlendTime)
 {
-	__super::OnStateStart(In_fAnimationBlendTime);
+	CPlayerStateBase::OnStateStart(In_fAnimationBlendTime);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	Set_WeaponRender(false);
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_VargSwordStart::Call_NextKeyFrame, this, placeholders::_1);
@@ -62,7 +72,7 @@ void CCorvusState_PS_VargSwordStart::OnStateStart(const _float& In_fAnimationBle
 
 void CCorvusState_PS_VargSwordStart::OnStateEnd()
 {
-	__super::OnStateEnd();
+	CPlayerStateBase::OnStateEnd();
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_VargSwordStart::Call_NextKeyFrame, this, placeholders::_1);
