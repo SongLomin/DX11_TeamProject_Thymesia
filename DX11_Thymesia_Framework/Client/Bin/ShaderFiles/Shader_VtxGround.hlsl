@@ -240,8 +240,8 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     float2 uv       = input[0].vTexUV    * fW + input[1].vTexUV*fU+ input[2].vTexUV*fV;
     float3 normal   = input[0].vNormal   * location.r + input[1].vNormal   * location.g + input[2].vNormal   * location.b;
     float3 tangent  = input[0].vTangent  * location.r + input[1].vTangent  * location.g + input[2].vTangent  * location.b;
-    
-    float fDisplacement = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv*0.9f + g_vUVNoise * 0.005f, 0).r)*0.4f;
+       
+    float fDisplacement = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.35f;
        
     localPos.y += fDisplacement;
     
@@ -427,7 +427,7 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
  
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.8f, 0.f, 0.01f, 1.f);
+    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
       
     Out.vDiffuse.a = 1.f;
     Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
