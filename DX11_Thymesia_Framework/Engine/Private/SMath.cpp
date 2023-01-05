@@ -645,9 +645,26 @@ const _bool ENGINE_DLL Engine::SMath::Is_Equal(const XMFLOAT4 Left, const XMFLOA
 	return ((fXDiff < DBL_EPSILON) && (fYDiff < DBL_EPSILON) && (fZDiff < DBL_EPSILON) && (fWDiff < DBL_EPSILON)) ? true : false;
 }
 
+const _bool ENGINE_DLL Engine::SMath::Is_InRange(const XMFLOAT3 Left, const XMFLOAT3 Right, const _float fRange)
+{
+	XMVECTOR vLeft(XMLoadFloat3(&Left));
+	XMVECTOR vRight(XMLoadFloat3(&Right));
+	XMVECTOR vDistance(vLeft - vRight);
+
+	_float fDistance(XMVectorGetX(XMVector3Length(vDistance)));
+
+	return fDistance < fRange ? true : false;
+}
+
 const _bool ENGINE_DLL Engine::SMath::Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange)
 {
-	return false;
+	XMVECTOR vLeft(XMLoadFloat4(&Left));
+	XMVECTOR vRight(XMLoadFloat4(&Right));
+	XMVECTOR vDistance(vLeft - vRight);
+
+	_float fDistance(XMVectorGetX(XMVector3Length(vDistance)));
+
+	return fDistance < fRange ? true : false;
 }
 
 

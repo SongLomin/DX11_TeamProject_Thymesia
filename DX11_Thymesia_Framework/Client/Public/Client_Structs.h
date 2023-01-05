@@ -171,6 +171,7 @@ namespace Client
 		_int		iFollowTransformType;
 
 		_float3		vGoalPosition;
+		_float		fGoalRange;
 
 		_int		iShaderPassIndex;
 

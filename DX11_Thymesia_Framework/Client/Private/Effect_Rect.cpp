@@ -320,7 +320,14 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion // Particle Options
 
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
+	{
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction) || Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			Out_Json["Goal_Range"] = m_tEffectParticleDesc.fGoalRange;
+		}
+
 		CJson_Utility::Write_Float3(Out_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
+	}
 
 	Out_Json["ShaderPassIndex"] = m_tEffectParticleDesc.iShaderPassIndex;
 
@@ -589,15 +596,18 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma endregion // Particle Options
 
-#pragma region Attraction
-
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
 	{
-		if (In_Json.find("Goal_Position") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
-	}
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction) || Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			m_tEffectParticleDesc.fGoalRange = In_Json["Goal_Range"];
+		}
 
-#pragma endregion // Attraction
+		if (In_Json.find("Goal_Position") != In_Json.end())
+		{
+			CJson_Utility::Load_Float3(In_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
+		}
+	}
 
 	if (In_Json.find("ShaderPassIndex") != In_Json.end())
 		m_tEffectParticleDesc.iShaderPassIndex = In_Json["ShaderPassIndex"];
@@ -1249,12 +1259,14 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 	{
 		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction))
 		{
-			if (SMath::Is_Equal(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition))
+			if (SMath::Is_InRange(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition, m_tEffectParticleDesc.fGoalRange))
+			{
 				return;
+			}
 		}
 		else if (Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
 		{
-			if (SMath::Is_Equal(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition))
+			if (SMath::Is_InRange(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition, m_tEffectParticleDesc.fGoalRange))
 			{
 				m_tParticleDescs[i].vCurrentScale = { 0.f, 0.f };
 			}
@@ -2276,6 +2288,22 @@ void CEffect_Rect::Tool_Attraction()
 		ImGui::Text("At Goal...");
 		Tool_ToggleOption("Stop", "##Stop_At_GoalAttraction", EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction);
 		Tool_ToggleOption("Kill", "##Kill_At_GoalAttraction", EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction);
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction))
+		{
+			TurnOff_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction);
+		}
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			TurnOff_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction);
+		}
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction) || Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			ImGui::Text("Goal Range"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat("##Goal_Range", &m_tEffectParticleDesc.fGoalRange, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::Text("Goal Position"); ImGui::SetNextItemWidth(300.f);
 		ImGui::DragFloat3("##Goal_Position", &m_tEffectParticleDesc.vGoalPosition.x, 0.01f, 0.f, 0.f, "%.5f");

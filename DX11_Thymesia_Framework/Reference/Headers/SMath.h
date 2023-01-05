@@ -85,6 +85,7 @@ namespace Engine
 		const _bool		ENGINE_DLL Is_Equal(const XMFLOAT2 Left, const XMFLOAT2 Right);
 		const _bool		ENGINE_DLL Is_Equal(const XMFLOAT3 Left, const XMFLOAT3 Right);
 		const _bool		ENGINE_DLL Is_Equal(const XMFLOAT4 Left, const XMFLOAT4 Right);
-		const _bool		ENGINE_DLL Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange);
+		const _bool		ENGINE_DLL Is_InRange(const XMFLOAT3 Left, const XMFLOAT3 Right, const _float fRange = DBL_EPSILON);
+		const _bool		ENGINE_DLL Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange = DBL_EPSILON);
 	}
 }
