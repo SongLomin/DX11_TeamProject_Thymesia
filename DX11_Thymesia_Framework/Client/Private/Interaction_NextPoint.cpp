@@ -53,14 +53,14 @@ HRESULT CInteraction_NextPoint::Start()
     ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
 
-    XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 0.5f, 0.f, 0.f));
+    XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 1.5f, 0.f, 0.f));
 	m_tLightDesc.vDiffuse   = { 0.f, 1.f, 0.486f, 0.3f };
 	m_tLightDesc.vAmbient   = { 1.f, 1.f,    1.f, 0.f };
 	m_tLightDesc.vSpecular  = { 0.f, 1.f, 0.486f, 0.6f };
 	m_tLightDesc.vLightFlag = { 1.f, 1.f,    1.f, 1.f };
-    m_tLightDesc.fIntensity = 1.f;
+    m_tLightDesc.fIntensity = 5.f;
 	m_tLightDesc.fRange     = 1.f;
-    m_tLightDesc.bEnable     = (LEVEL::LEVEL_EDIT == m_CreatedLevel);
+    m_tLightDesc.bEnable    = (LEVEL::LEVEL_EDIT == m_CreatedLevel);
 
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
@@ -173,6 +173,8 @@ void CInteraction_NextPoint::OnEventMessage(_uint iArg)
 
             ImGui::InputInt("Tex", &m_iTexPass);
             ImGui::InputFloat2("Speed", &m_vAddSpeed.x);
+
+            ImGui::Separator();
         }
         break;
 

@@ -1,12 +1,13 @@
 
 #include "Client_Shader_Defines.hpp"
 
-matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-float4 g_vShaderFlag;
+matrix	    g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+float4      g_vShaderFlag;
 texture2D	g_DiffuseTexture;
 texture2D	g_NormalTexture;
-texture2D g_DissolveTexture;
+texture2D   g_DissolveTexture;
 texture2D   g_SpecularTexture;
+texture2D   g_NoiseTexture;
 
 float g_fFar = 300.f;
 //directional dissolve
@@ -24,6 +25,7 @@ float4 g_vRimLightColor;
 float4  g_vCamDir;
 float   g_fAhlpa;
 float   g_fGlowScale;
+float2  g_vAddUVPos;
 
 struct		tagBoneMatrix
 {
@@ -368,11 +370,55 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
     return Out;
 }
-
 float IsIn_Range(float fMin, float fMax, float fValue)
 {
     return (fMin <= fValue) && (fMax >= fValue);
 }
+
+PS_OUT PS_MAIN_AISEMY_MOVEUV(PS_IN_NORMAL In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    float vTexNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV + g_vAddUVPos).r;
+
+    if (0.1f >= vTexNoise)
+        discard;
+
+    Out.vDiffuse   = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vDiffuse  *= 1.f - vTexNoise;
+    Out.vDiffuse.a = 1.f;
+
+    clip(Out.vDiffuse.a - 0.1f);
+       
+    float fDiff = vTexNoise-0.1f;
+    float fValue = IsIn_Range(0.0f, 0.015f, fDiff);
+    Out.vShaderFlag =  fValue* vector(0.f,0.f,1.f,0.f);
+
+    Out.vExtractBloom = /*Out.vDiffuse*/lerp(vector(0.f,0.5f,0.3f,1.f),Out.vDiffuse, fDiff/0.015f) * fValue;
+      
+    /* 0 ~ 1 */
+    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+    /* -1 ~ 1 */
+    vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
+
+    vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+    Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
+    Out.vORM = 0;
+
+    Out.vDiffuse.a = 1.f;
+
+    Out.vRimLight = (vector)0;
+
+    return Out;
+}
+
+
 
 PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
 {
@@ -632,5 +678,19 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
+    }
+
+    pass Pass10_Aisemy_MoveUV
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader    = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader      = NULL;
+        DomainShader    = NULL;
+        GeometryShader  = NULL;
+        PixelShader     = compile ps_5_0 PS_MAIN_AISEMY_MOVEUV();
+
     }
 }

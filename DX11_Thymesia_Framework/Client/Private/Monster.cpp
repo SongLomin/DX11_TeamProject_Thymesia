@@ -282,6 +282,8 @@ void CMonster::OnEventMessage(_uint iArg)
     if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
     {
         ImGui::InputInt("SectionIndex", &m_tLinkStateDesc.iSectionIndex);
+    
+            
     }
 
     if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
