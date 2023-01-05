@@ -29,6 +29,9 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
+	_bool        m_bSkullComboAttackOnOff = false;
+
+private:
 	void Call_AnimationEnd();
 protected:
 	virtual void OnDestroy() override;

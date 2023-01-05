@@ -90,6 +90,13 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_bSkullComboAttackOnOff = true;
+		break;
+	}
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -225,10 +232,21 @@ _bool CNorMonState_HeavyAttack1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	// ¶¥->Âî¸£±â
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		m_bAttackLookAtLimit = false;
+
+		if (m_bSkullComboAttackOnOff)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+			m_bSkullComboAttackOnOff = false;
+			return true;
+		}
 	}
+
+
 
 	return false;
 }
@@ -238,9 +256,6 @@ void CNorMonState_HeavyAttack1::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
-
-	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

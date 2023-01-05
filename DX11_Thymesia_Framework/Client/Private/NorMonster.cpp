@@ -199,7 +199,7 @@ void CNorMonster::Init_Desc()
 		m_pModelCom.lock()->Init_Model("Skullman", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
-		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "upperarm_r");
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
