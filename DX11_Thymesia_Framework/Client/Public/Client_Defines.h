@@ -30,13 +30,13 @@
 
 #pragma region Map
 //#define _BRIGHT_LIGHT_
-//#define _GENERATE_PROP_COLLIDER_ true
+#define _GENERATE_PROP_COLLIDER_ true
 //#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
 #define _MAP_TOOL_
-#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 

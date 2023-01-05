@@ -333,12 +333,18 @@ void CMonster::OnDestroy()
     __super::OnDestroy();
 
     for (auto& elem : m_pWeapons)
-        elem.lock()->Set_Dead();
+    {
+        if (elem.lock())
+            elem.lock()->Set_Dead();
+    }
 
+	m_pWeapons.clear();
     for (auto& elem : m_pActorDecor)
-        elem.lock()->Set_Dead();
+    {
+		if (elem.lock())
+			elem.lock()->Set_Dead();
+    }
 
-    m_pWeapons.clear();
     m_pActorDecor.clear();
 }
 

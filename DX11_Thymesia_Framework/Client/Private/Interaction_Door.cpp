@@ -44,9 +44,9 @@ HRESULT CInteraction_Door::Initialize(void* pArg)
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
     m_eInteractionType = INTERACTION_DOOR;
 
-#ifdef _USE_THREAD_
-    Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
-#endif // _USE_THREAD_
+//#ifdef _USE_THREAD_
+//    Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+//#endif // _USE_THREAD_
 
 
     return S_OK;
@@ -69,13 +69,13 @@ void CInteraction_Door::Tick(_float fTimeDelta)
 void CInteraction_Door::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 void CInteraction_Door::Thread_PreBeforeRender(_float fTimeDelta)
 {
     __super::Thread_PreBeforeRender(fTimeDelta);
-
-    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CInteraction_Door::Render(ID3D11DeviceContext* pDeviceContext)

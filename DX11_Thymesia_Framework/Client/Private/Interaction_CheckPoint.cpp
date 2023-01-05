@@ -33,7 +33,7 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
     m_pAnimModelCom = Add_Component<CModel>();
     m_pAnimShader   = Add_Component<CShader>();
     m_pTextureCom   = Add_Component<CTexture>();
-    m_pWeapon       = GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel);
+    // m_pWeapon       = GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel);
     
     m_pShaderCom.lock()->Set_ShaderInfo
     (
@@ -50,10 +50,10 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
     );
 
     m_pModelCom.lock()->Init_Model("P_ArchiveChair01", "");
-    m_pAnimModelCom.lock()->Init_Model("Aisemy_SavePoint", "");
+    m_pAnimModelCom.lock()->Init_Model("Corvus", "");
     m_pTextureCom.lock()->Use_Texture("UVMask");
-    m_pWeapon.lock()->Init_Model("P_OilLamp01", TIMESCALE_LAYER::NONE);
-    m_pWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l_end");
+    // m_pWeapon.lock()->Init_Model("P_OilLamp01", TIMESCALE_LAYER::NONE);
+    // m_pWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l_end");
 
 
 #ifdef _USE_THREAD_
