@@ -23,7 +23,7 @@
       <Filter>01. Elements\03. Component</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameInstance.h">
-      <Filter>01. Elements\00.GameInstance</Filter>
+      <Filter>01. Elements\00. GameInstance</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level.h">
       <Filter>01. Elements\01. Level</Filter>
@@ -272,6 +272,15 @@
     <ClInclude Include="..\Public\NvCloth_Structs.h">
       <Filter>03. Struct</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NIS_Config.h">
+      <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NIS_Shader.h">
+      <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DXUtilities.h">
+      <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -281,7 +290,7 @@
       <Filter>01. Elements\03. Component</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameInstance.cpp">
-      <Filter>01. Elements\00.GameInstance</Filter>
+      <Filter>01. Elements\00. GameInstance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameObject.cpp">
       <Filter>01. Elements\02. GameObject</Filter>
@@ -523,6 +532,9 @@
     <ClCompile Include="..\Private\CustomPxProfilerCallback.cpp">
       <Filter>98. Managers\16. NvClothManager\04. PxProfilerCallback</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\NIS_Shader.cpp">
+      <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -572,9 +584,6 @@
     </Filter>
     <Filter Include="01. Elements">
       <UniqueIdentifier>{34a96eb0-a846-4dd1-acd6-b4cce4e5d9b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Elements\00.GameInstance">
-      <UniqueIdentifier>{8d7e5b3d-8919-4d60-a4b7-3335f295e1d7}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Elements\01. Level">
       <UniqueIdentifier>{e05d78b8-380b-4dc8-a71d-3723ca9cb762}</UniqueIdentifier>
@@ -798,6 +807,15 @@
     <Filter Include="03. Struct">
       <UniqueIdentifier>{e15a183b-41ec-4f75-a296-aeff1ae313a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Thirdparty">
+      <UniqueIdentifier>{b78ce4e8-2669-4749-be20-94b6e04f540f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Thirdparty\00. NvidiaImageScaling">
+      <UniqueIdentifier>{fba789a3-101c-4a5a-8f48-93b795cbbbb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\00. GameInstance">
+      <UniqueIdentifier>{8d7e5b3d-8919-4d60-a4b7-3335f295e1d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />
@@ -810,6 +828,9 @@
       <Filter>02. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_OutLine.hlsl">
+      <Filter>02. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\NIS_Main.hlsl">
       <Filter>02. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

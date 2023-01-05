@@ -64,8 +64,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
-	//CModel::NVCLOTH_MODEL_DESC NvClothDesc;
-	//Preset::NvClothMesh::CorvusSetting(NvClothDesc);
+	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
+	Preset::NvClothMesh::CorvusSetting(NvClothDesc);
 
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, &NvClothDesc);
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
@@ -230,13 +230,13 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 
 	//Bip001-Ponytail1
 
-	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_OffsetMatrix() *
+	/*BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_OffsetMatrix() *
 		m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_CombinedMatrix() *
 		XMLoadFloat4x4(&m_TransformationMatrix);
 
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
 	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);*/
 
 	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
 
@@ -244,7 +244,7 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
 
 	m_pModelCom.lock()->Get_MeshContainer(2).lock()->Update_NvClothVertices(pDeferredContext,
-		BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
+		m_pTransformCom.lock()->Get_WorldMatrix(),
 		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 
 

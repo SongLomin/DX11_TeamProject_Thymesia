@@ -48,6 +48,7 @@ private:
 
 public: /* For Shader */
 	HRESULT Load_Shader(const _tchar* sKey, const _tchar* sShaderFilePath);
+	HRESULT Load_EngineShader(const _tchar* sKey, const _tchar* sShaderFilePath, const D3D_SHADER_MACRO* In_Defines);
 	HRESULT ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage);
 	ID3DX11Effect* Get_ShaderEffect(const _tchar* sKey);
 	void	Update_ChangedShaderFile(list<pair<_bool, string>>& Out_CompileMessage);

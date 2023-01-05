@@ -118,7 +118,7 @@ void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)
 
 	if (In_bEnable)
 	{
-		ImGui::GetIO().ClearInputCharacters();
+		//ImGui::GetIO().ClearInputCharacters();
 	}
 
 	for (auto& elem : m_arrWindows)
