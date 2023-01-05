@@ -98,6 +98,20 @@ struct PatchTess
 {
     float edgeTess[3] : SV_TessFactor;
     float insideTess  : SV_InsideTessFactor;
+    
+    // Geometry cubic generated control points
+    float3 f3B210 : POSITION3;
+    float3 f3B120 : POSITION4;
+    float3 f3B021 : POSITION5;
+    float3 f3B012 : POSITION6;
+    float3 f3B102 : POSITION7;
+    float3 f3B201 : POSITION8;
+    float3 f3B111 : CENTER;
+
+	// Normal quadratic generated control points
+    float3 f3N110 : NORMAL3;
+    float3 f3N011 : NORMAL4;
+    float3 f3N101 : NORMAL5;
 };
 
 struct HS_OUT
@@ -111,14 +125,46 @@ struct HS_OUT
 // Constant HS
 PatchTess ConstantHS(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int patchID : SV_PrimitiveID)
 {
-    PatchTess output = (PatchTess) 0.f;
-       
-	output.edgeTess[0] = 15;
-	output.edgeTess[1] = 15;
-	output.edgeTess[2] = 15;
-    output.insideTess = 1;
+    PatchTess pt = (PatchTess) 0.f;
+            
+	pt.edgeTess[0] = 4;
+	pt.edgeTess[1] = 4;
+	pt.edgeTess[2] = 4;
+    pt.insideTess = 4;
     
-    return output;
+    // Assign Positions
+    float3 f3B003 = input[0].vPosition;
+    float3 f3B030 = input[1].vPosition;
+    float3 f3B300 = input[2].vPosition;
+	// And Normals
+    float3 f3N002 =input[0].vNormal;
+    float3 f3N020 =input[1].vNormal;
+    float3 f3N200 = input[2].vNormal;
+
+	// Compute the cubic geometry control points
+	// Edge control points
+    pt.f3B210 = ((2.0f * f3B003) + f3B030 - (dot((f3B030 - f3B003), f3N002) * f3N002)) / 3.0f;
+    pt.f3B120 = ((2.0f * f3B030) + f3B003 - (dot((f3B003 - f3B030), f3N020) * f3N020)) / 3.0f;
+    pt.f3B021 = ((2.0f * f3B030) + f3B300 - (dot((f3B300 - f3B030), f3N020) * f3N020)) / 3.0f;
+    pt.f3B012 = ((2.0f * f3B300) + f3B030 - (dot((f3B030 - f3B300), f3N200) * f3N200)) / 3.0f;
+    pt.f3B102 = ((2.0f * f3B300) + f3B003 - (dot((f3B003 - f3B300), f3N200) * f3N200)) / 3.0f;
+    pt.f3B201 = ((2.0f * f3B003) + f3B300 - (dot((f3B300 - f3B003), f3N002) * f3N002)) / 3.0f;
+
+	// Center control point
+    float3 f3E = (pt.f3B210 + pt.f3B120 + pt.f3B021 + pt.f3B012 + pt.f3B102 + pt.f3B201) / 6.0f;
+    float3 f3V = (f3B003 + f3B030 + f3B300) / 3.0f;
+    pt.f3B111 = f3E + ((f3E - f3V) / 2.0f);
+
+	// Compute the quadratic normal control points, and rotate into world space
+    float fV12 = 2.0f * dot(f3B030 - f3B003, f3N002 + f3N020) / dot(f3B030 - f3B003, f3B030 - f3B003);
+    pt.f3N110 = normalize(f3N002 + f3N020 - fV12 * (f3B030 - f3B003));
+    float fV23 = 2.0f * dot(f3B300 - f3B030, f3N020 + f3N200) / dot(f3B300 - f3B030, f3B300 - f3B030);
+    pt.f3N011 = normalize(f3N020 + f3N200 - fV23 * (f3B300 - f3B030));
+    float fV31 = 2.0f * dot(f3B003 - f3B300, f3N200 + f3N002) / dot(f3B003 - f3B300, f3B003 - f3B300);
+    pt.f3N101 = normalize(f3N200 + f3N002 - fV31 * (f3B003 - f3B300));
+
+    return pt;
+    
 }
 
 // Control Point HS
@@ -159,17 +205,50 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
 {
     DS_OUT output = (DS_OUT) 0.f;
 
-    float3 localPos = input[0].vPosition * location.r + input[1].vPosition * location.g + input[2].vPosition * location.b;
-    float2 uv       = input[0].vTexUV    * location.r + input[1].vTexUV    * location.g + input[2].vTexUV    * location.b;
+    // The barycentric coordinates
+    float fU = location.x;
+    float fV = location.y;
+    float fW = location.z;
+
+	// Precompute squares and squares * 3 
+    float fUU = fU * fU;
+    float fVV = fV * fV;
+    float fWW = fW * fW;
+    float fUU3 = fUU * 3.0f;
+    float fVV3 = fVV * 3.0f;
+    float fWW3 = fWW * 3.0f;
+	
+    float3 localPos = input[0].vPosition.xyz * fWW * fW +
+		input[1].vPosition.xyz * fUU * fU +
+		input[2].vPosition.xyz * fVV * fV +
+		patch.f3B210 * fWW3 * fU +
+		patch.f3B120 * fW * fUU3 +
+		patch.f3B201 * fWW3 * fV +
+		patch.f3B021 * fUU3 * fV +
+		patch.f3B102 * fW * fVV3 +
+		patch.f3B012 * fU * fVV3 +
+		patch.f3B111 * 6.0f * fW * fU * fV;
+
+	// Compute normal from quadratic control points and barycentric coords
+    float3 n = input[0].vNormal.xyz * fWW +
+		input[1].vNormal.xyz * fUU +
+		input[2].vNormal.xyz * fVV +
+		patch.f3N110 * fW * fU +
+		patch.f3N011 * fU * fV +
+		patch.f3N101 * fW * fV;
+    
+    float2 uv       = input[0].vTexUV    * fW + input[1].vTexUV*fU+ input[2].vTexUV*fV;
     float3 normal   = input[0].vNormal   * location.r + input[1].vNormal   * location.g + input[2].vNormal   * location.b;
     float3 tangent  = input[0].vTangent  * location.r + input[1].vTangent  * location.g + input[2].vTangent  * location.b;
-    
-    vector vDisplacement = ( /*1.f - */g_DisplacementTexture.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.005f, 0)) * 0.15f;
+       
+    float fDisplacement = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.35f;
+       
+    localPos.y += fDisplacement;
     
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
-    output.vPosition = mul(float4(localPos + vDisplacement.xyz, 1.f), matWVP);
+    output.vPosition = mul(float4(localPos, 1.f), matWVP);
     output.vTexUV    = uv;
     output.vNormal   = normalize(mul(vector(normal, 0.f), g_WorldMatrix));
     output.vWorldPos = mul(vector(localPos, 1.f), g_WorldMatrix);
@@ -338,20 +417,17 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
-
-    vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
- 
       //물쉐이더 테스트 용
-    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV*10.f + g_vUVNoise * 0.005f) * 2.f - 1.f;
-   // vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 30.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
+    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV*8.f + g_vUVNoise * 0.005f) * 2.f - 1.f;
+    float2 vNoise = g_vUVNoise.yx;
+    vPixelNorm += (g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 4.f + vNoise * 0.01f) * 2.f - 1.f) * 0.3f;
       
     vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
     
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
  
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.8f, 0.f, 0.01f, 1.f);
+    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
       
     Out.vDiffuse.a = 1.f;
     Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
