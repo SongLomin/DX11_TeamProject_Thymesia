@@ -131,7 +131,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CUrd>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CBat>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CBigHandMan>();
-#endif
 
 
 #ifdef _LOAD_CAPTURED_RESOURCE_

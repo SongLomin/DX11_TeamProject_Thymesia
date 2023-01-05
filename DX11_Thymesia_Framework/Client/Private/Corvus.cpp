@@ -322,10 +322,6 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
-void CCorvus::Free()
-{
-}
-
 void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
@@ -711,103 +707,6 @@ void CCorvus::WriteTalentFromJson(json& Out_Json)
 
 }
 
-void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
-{
-	__super::OnCollisionStay(pMyCollider, pOtherCollider);
-}
-
-void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
-{
-	__super::OnCollisionExit(pMyCollider,pOtherCollider);
-
-	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
-	{
-	case Client::COLLISION_LAYER::LADDER_UP:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERUP;
-		m_bLadderCheck = false;
-		break;
-	case Client::COLLISION_LAYER::LADDER_DOWN:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
-		m_bLadderCheck = false;
-		break;
-	case Client::COLLISION_LAYER::ELEVATOR:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ELEVATOR;
-		break;
-	case Client::COLLISION_LAYER::DOOR:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::DOOR;
-		break;
-	case Client::COLLISION_LAYER::CHECKPOINT:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
-		break;
-	case Client::COLLISION_LAYER::ITEM:
-		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
-		break;
-	}
-
-	
-	
-}
-
-void CCorvus::OnBattleEnd()
-{
-}
- 
-void CCorvus::OnEnable(void* pArg)
-{
-	__super::OnEnable(pArg);
-}
-
-void CCorvus::OnDisable()
-{
-	__super::OnDisable();
-}
-
-
-void CCorvus::OnEventMessage(_uint iArg)
-{
-	__super::OnEventMessage(iArg);
-
-	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
-	{
-		Change_State<CCorvusState_CheckPointEnd>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Joker_Execution>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
-	{
-		Change_State<CCorvusState_Die>();
-	}
-
-	if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Execution_Start>();
-	}
-
-	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_ClawPlunderAttack>();
-	}
-
-	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-	if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-}
 
 void CCorvus::Free()
 {

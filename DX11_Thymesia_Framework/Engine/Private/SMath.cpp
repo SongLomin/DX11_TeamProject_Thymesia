@@ -647,7 +647,7 @@ const _bool ENGINE_DLL Engine::SMath::Is_Equal(const XMFLOAT4 Left, const XMFLOA
 
 const _bool ENGINE_DLL Engine::SMath::Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange)
 {
-
+	return false;
 }
 
 
