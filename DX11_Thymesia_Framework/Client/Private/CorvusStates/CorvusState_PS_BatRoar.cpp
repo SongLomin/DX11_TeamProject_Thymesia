@@ -16,6 +16,31 @@ void CCorvusState_PS_BatRoar::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 18:
+		GET_SINGLE(CGameManager)->Activate_Zoom(1.5f, 1.f, EASING_TYPE::QUINT_IN);
+		return;
+	case 60:
+		TurnOn_Effect("Corvus_PW_EyeGlow_Red");
+		return;
+	case 71:
+	{
+		GET_SINGLE(CGameManager)->Deactivate_Zoom(0.1f, EASING_TYPE::LINEAR);
+
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
+
+		_float3 vPlayerPos;
+		ZeroMemory(&vPlayerPos, sizeof(_float3));
+		XMStoreFloat3(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
+		vPlayerPos.y += 1.f;
+		GAMEINSTANCE->Set_RadialBlur(0.4f, vPlayerPos);
+	}
+		return;
+	case 108:
+		TurnOff_Effect("Corvus_PW_EyeGlow_Red");
+		return;
 	}
 }
 
