@@ -66,6 +66,10 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_Die>();
 	Add_Component<CNorMonState_Parry>();
 	Add_Component<CNorMonState_Petrol>();
+	Add_Component<CNorMonState_SpecialAttackStart>();
+	Add_Component<CNorMonState_SpecialAttackLoop>();
+	Add_Component<CNorMonState_SpecialAttackEnd>();
+	Add_Component<CNorMonState_Idle2Fight>();
 
 	LIGHTDESC LightDesc;
 
@@ -195,7 +199,7 @@ void CNorMonster::Init_Desc()
 		m_pModelCom.lock()->Init_Model("Skullman", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
-		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "upperarm_r");
 		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
@@ -326,6 +330,10 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_Die);
 	INIT_STATE(CNorMonState_Parry);
 	INIT_STATE(CNorMonState_Petrol);
+	INIT_STATE(CNorMonState_SpecialAttackStart);
+	INIT_STATE(CNorMonState_SpecialAttackLoop);
+	INIT_STATE(CNorMonState_SpecialAttackEnd);
+	INIT_STATE(CNorMonState_Idle2Fight);
 
 
 	string	strModelKey = Weak_StaticCast<CStatus_Monster>(m_pStatus).lock()->Get_Desc().m_szModelKey;

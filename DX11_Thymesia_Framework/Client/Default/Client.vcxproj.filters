@@ -1889,8 +1889,17 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttack.h">
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackStart.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3822,8 +3831,17 @@
     <ClCompile Include="..\Private\AIStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttack.cpp">
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackStart.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5736,6 +5754,15 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90">
       <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop">
+      <UniqueIdentifier>{fa413659-dc96-44f2-a583-1ee427d5fec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End">
+      <UniqueIdentifier>{bb1b3979-1a34-48a3-8208-252bd92c9eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight">
+      <UniqueIdentifier>{df141bf0-d6af-4d3c-9ef7-1342e73aa9c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

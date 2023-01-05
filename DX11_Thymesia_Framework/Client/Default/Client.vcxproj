@@ -521,7 +521,10 @@
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\JavelinWeapon.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
@@ -756,7 +759,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack1.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack3.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Run.h" />
-    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttack.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackStart.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_TakeExecution.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnL90.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnR90.h" />
@@ -1155,7 +1158,10 @@
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\JavelinWeapon.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
@@ -1377,7 +1383,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack1.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack3.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Run.cpp" />
-    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttack.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackStart.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_TakeExecution.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnL90.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnR90.cpp" />

@@ -39,6 +39,7 @@ void CCorvusState_BigHandman_Execution::Start()
 void CCorvusState_BigHandman_Execution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 

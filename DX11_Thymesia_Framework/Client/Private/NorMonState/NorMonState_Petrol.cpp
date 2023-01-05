@@ -71,7 +71,7 @@ void CNorMonState_Petrol::Start()
 
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Petrol::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Petrol::Call_AnimationEnd, this);
 }
 
 void CNorMonState_Petrol::Tick(_float fTimeDelta)
@@ -140,35 +140,35 @@ void CNorMonState_Petrol::OnEventMessage(_uint iArg)
 
 }
 
-_float CNorMonState_Petrol::CrossResult()
+_float CNorMonState_Petrol::Cul_DotResult()
 {
-	_vector vCurMonsterPos = Get_OwnerMonster()->Get_WorldPosition();
+	_vector vCurMonsterPos = m_pTransformCom.lock()->Get_Position();
 	vCurMonsterPos.m128_f32[1] = 0.f;
 	_vector vGoalPos = XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]);
 	vGoalPos.m128_f32[1] = 0.f;
-	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurMonsterPos - vGoalPos);
-	_vector vMyLookVector =-  m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	_vector vMonsterToGoalDirectionVector = XMVector3Normalize(vGoalPos - vCurMonsterPos);
+	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	vMyLookVector.m128_f32[1] = 0.f;
 	vMyLookVector = XMVector3Normalize(vMyLookVector);
 
-	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
+	_float fDot = XMVectorGetY((XMVector3Dot(vMonsterToGoalDirectionVector, vMyLookVector)));
 
-	return fCos;
+	return fDot;
 }
 
-void CNorMonState_Petrol::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	
-	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Petrol>(0.05f);
-}
-
-void CNorMonState_Petrol::OnDestroy()
-{
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Petrol::Call_AnimationEnd, this);
-}
+//void CNorMonState_Petrol::Call_AnimationEnd()
+//{
+//	if (!Get_Enable())
+//		return;
+//
+//	
+//	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Petrol>(0.1f);
+//}
+//
+//void CNorMonState_Petrol::OnDestroy()
+//{
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Petrol::Call_AnimationEnd, this);
+//}
 
 void CNorMonState_Petrol::Free()
 {
@@ -183,7 +183,17 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (CrossResult() > 0.94f && m_bTurnCheck)
+	if (fDistance <= 3.f)
+	{
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_IdleType(1);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ChanegePatrol(true);
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+		return true;
+	}
+
+	if (Cul_DotResult() > 0.94f && m_bTurnCheck)
 	{
 		Get_OwnerMonster()->Get_Transform()->LookAt2D(XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]));
 		m_bTurnCheck = false;
@@ -200,10 +210,12 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 	if (m_iPatrolCount <= 2)
 	{
+		if(!m_bTurnCheck)
 		Get_OwnerMonster()->Get_Transform()->LookAt2D(vOtherPos);
 
 		if (fMonDistance <= 0.05f + DBL_EPSILON)
 		{
+			
 			++m_iPatrolCount;
 			m_bTurnCheck = true;
 		}

@@ -40,7 +40,7 @@ protected:
     _bool                   Rotation_TargetToLookDir();
     _float                  Get_DistanceWithPlayer() const;
     _bool                   Check_RequirementIsTargeted();
-
+   
 public:
     virtual void           Call_OtherControllerHit(const PxControllersHit& In_hit) override;
   

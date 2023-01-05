@@ -152,6 +152,9 @@ void CNorMonState_Idle::Start()
 		case Client::NORMONSTERIDLETYPE::SPIDLE:
 			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle1");
 			break;
+		case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_IdleN");
+			break;
 
 		}
 
@@ -333,6 +336,9 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 					break;
 				case Client::NORMONSTERIDLETYPE::SPIDLE:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SpecialAttackStart>(0.05f);
 					break;
 				}
 				break;

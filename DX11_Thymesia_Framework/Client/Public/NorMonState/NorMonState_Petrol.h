@@ -15,7 +15,7 @@ class CNorMonState_Petrol :
 		SHALLOW_COPY(CNorMonState_Petrol)
 
 public:
-	_float      CrossResult();
+	_float      Cul_DotResult();
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -43,9 +43,9 @@ private:
 	virtual void OnEventMessage(_uint iArg) override;
 
 private:
-	void Call_AnimationEnd();
+//	void Call_AnimationEnd();
 protected:
-	virtual void OnDestroy() override;
+	//virtual void OnDestroy() override;
 	void Free();
 
 };
