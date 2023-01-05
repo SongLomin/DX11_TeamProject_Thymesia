@@ -198,7 +198,7 @@ PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN_SHADOW In)
     clip(DissolveDesc - g_fDissolveAmount);
 
     Out.vLightDepth.r = In.vProjPos.w / 300.f;
-
+   
     Out.vLightDepth.a = 1.f;
 
     return Out;
