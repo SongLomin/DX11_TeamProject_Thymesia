@@ -53,6 +53,12 @@ void CNorMonState_HeavyAttack1::Start()
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack04|BaseLayer|Arm");
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack03");
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboG01");
+		break;
 
 	}
 
@@ -83,6 +89,13 @@ void CNorMonState_HeavyAttack1::LateTick(_float fTimeDelta)
 void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_bSkullComboAttackOnOff = true;
+		break;
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -162,6 +175,32 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		}
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
+		case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
+		case Client::MONSTERTYPE::SKULLSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
 		}
 
 
@@ -193,10 +232,21 @@ _bool CNorMonState_HeavyAttack1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	// ¶¥->Âî¸£±â
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		m_bAttackLookAtLimit = false;
+
+		if (m_bSkullComboAttackOnOff)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+			m_bSkullComboAttackOnOff = false;
+			return true;
+		}
 	}
+
+
 
 	return false;
 }
@@ -206,9 +256,6 @@ void CNorMonState_HeavyAttack1::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
-
-	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

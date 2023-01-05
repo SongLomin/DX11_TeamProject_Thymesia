@@ -279,7 +279,7 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 			return true;
 		}
 
-		if (Check_RequirementFadderAttackState())
+		if (Check_RequirementFeatherAttackState())
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();

@@ -57,6 +57,7 @@
 #include "BossUrd/Urd.h"
 #include "BossBat/Bat.h"
 #include "EliteMonState/Joker/Joker.h"
+#include "EliteMonState/BigHandMan/BigHandMan.h"
 
 #include "Status_Player.h"
 #include "Status_Monster.h"

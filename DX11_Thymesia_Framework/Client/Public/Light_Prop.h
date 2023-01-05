@@ -64,7 +64,7 @@ private:
     weak_ptr<CCollider>   m_pColliderCom;
 
 private:
-    void    SetUpColliderDesc(_float* _pColliderDesc);
+    void    SetUpColliderDesc();
 #endif
 
 private:

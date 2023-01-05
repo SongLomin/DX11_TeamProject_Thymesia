@@ -116,6 +116,9 @@ void CCorvusState_Parry2::Update_ParryType()
 void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
+
 	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock() || 
@@ -164,6 +167,8 @@ void CCorvusState_Parry2::OnStateEnd()
 
 	m_IsNextAttack = false;
 	m_bParryed = false;
+
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 void CCorvusState_Parry2::OnEventMessage(_uint iArg)

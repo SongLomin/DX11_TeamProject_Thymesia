@@ -84,13 +84,16 @@ private:
 	HRESULT Ready_IndexBuffer_Anim_NvCloth(shared_ptr<MESH_DATA> tMeshData);
 
 private:
+	_vector Software_Skinning(const _int In_iVtxAnimIndex);
+
+private:
 	string								m_szName;
 	weak_ptr<MESH_DATA>					m_pMeshData;
 
 	_uint								m_iMaterialIndex = 0;
 	_uint								m_iNumBones = 0;
 
-	_float4x4							m_BoneMatrices[2][256];
+	_float4x4							m_BoneMatrices[256];
 	
 
 	_int								m_iSwapBoneIndex = -1;

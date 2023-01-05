@@ -11,6 +11,8 @@
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "Player.h"
 #include "UIManager.h"
+#include "UI_EvolveMenu_PlagueWeapon.h"
+
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -25,7 +27,6 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 	m_bOpenedPage[(_uint)EVOLVEMENU_TYPE::EVOLVE_LEVELUP] = true;
 	
-
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_LEVELUP], "EvolveMenu_Text_LevelUp");
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_UNLOCKTALENT], "EvolveMenu_Text_UnlockTalent");
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_PLAGUEWEAPON], "EvolveMenu_Text_PlagueWeapon");
@@ -35,8 +36,6 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME], "EvolveMenu_Text_ResumeGame");
 
 #pragma region CREATE_UIS
-
-
 	//Left
 
 	m_pLeftBG = GAMEINSTANCE->Add_GameObject<CUI_EvolveLeftBG>(LEVEL_STATIC);
@@ -279,8 +278,16 @@ void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Talent()
 	GAMEINSTANCE->Get_GameObjects<CUI_EveolveMenu_Talent>(LEVEL_STATIC).front().lock()->Set_Enable(true);
 }
 
+void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_PlagueWeapon()
+{
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu_PlagueWeapon>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+}
 void CUI_EvolveMenu::Free()
 {
+
 }
 
 void CUI_EvolveMenu::ChangeButtonIndex()
@@ -288,9 +295,7 @@ void CUI_EvolveMenu::ChangeButtonIndex()
 	m_pSelectHighlight.lock()->Set_Y(m_pMenuText[m_iSelectedIndex].lock()->Get_UIDESC().fY);
 	m_pLeftSelectDecoration.lock()->Start_Animation();
 
-
 	_float2		fDecorationPos;
-
 
 	fDecorationPos = m_pSelectHighlight.lock()->Get_Point(UI_POINT::LEFT);
 
@@ -370,6 +375,13 @@ void CUI_EvolveMenu::SelectButton()
 		break;
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_PLAGUEWEAPON:
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_PlagueWeapon, this);
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_POTION:
 		break;

@@ -99,6 +99,7 @@ void CUI_Button_Base::Update_LClick()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::AWAY))
 	{
+		OnLButtonUp();
 		if (m_eButtonState != UI_BUTTON_OUT)
 		{
 			Callback_OnLButtonClicked();
@@ -120,6 +121,12 @@ void CUI_Button_Base::OnMouseOut()
 void CUI_Button_Base::OnLButtonDown()
 {
 }
+
+void CUI_Button_Base::OnLButtonUp()
+{
+
+}
+
 
 void CUI_Button_Base::OnLButtonClick()
 {

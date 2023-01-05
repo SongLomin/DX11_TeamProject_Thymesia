@@ -279,12 +279,21 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &isBillboard, sizeof(_bool));
 #pragma endregion
 
-#pragma region Bloom & Glow
+#pragma region Bloom & Glow & ShaderFlag
 	_bool bBloom(Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Bloom));
 	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bBloom, sizeof(_bool));
 
 	_bool bGlow(Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow));
 	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bGlow, sizeof(_bool));
+
+	_vector vShaderFlag;
+	ZeroMemory(&vShaderFlag, sizeof(_vector));
+	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_Emissive))
+	{
+		vShaderFlag = { 0.f, 0.f, 1.f, 0.f };
+	}
+
+	m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
 	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
 #pragma endregion
@@ -1076,7 +1085,6 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 	}
 }
 
-
 void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 {
 	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
@@ -1239,6 +1247,19 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
 	{
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction))
+		{
+			if (SMath::Is_Equal(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition))
+				return;
+		}
+		else if (Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			if (SMath::Is_Equal(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition))
+			{
+				m_tParticleDescs[i].vCurrentScale = { 0.f, 0.f };
+			}
+		}
+
 		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, SMath::Mul_Float3(m_tParticleDescs[i].vTargetLookAt, vMove.z));
 	}
 	else
@@ -2248,6 +2269,21 @@ void CEffect_Rect::Tool_Boner()
 	}
 }
 
+void CEffect_Rect::Tool_Attraction()
+{
+	if (ImGui::TreeNode("Attraction##Attraction_Option"))
+	{
+		ImGui::Text("At Goal...");
+		Tool_ToggleOption("Stop", "##Stop_At_GoalAttraction", EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction);
+		Tool_ToggleOption("Kill", "##Kill_At_GoalAttraction", EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction);
+
+		ImGui::Text("Goal Position"); ImGui::SetNextItemWidth(300.f);
+		ImGui::DragFloat3("##Goal_Position", &m_tEffectParticleDesc.vGoalPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+
+		ImGui::TreePop();
+	}
+}
+
 void CEffect_Rect::Tool_Position()
 {
 	if (ImGui::TreeNode("Spawn Position"))
@@ -3049,13 +3085,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
 			{
-				if (ImGui::TreeNode("Attraction##Attraction_Option"))
-				{
-					ImGui::Text("Goal Position"); ImGui::SetNextItemWidth(300.f);
-					ImGui::DragFloat3("##Goal_Position", &m_tEffectParticleDesc.vGoalPosition.x, 0.01f, 0.f, 0.f, "%.5f");
-
-					ImGui::TreePop();
-				}
+				Tool_Attraction();
 			}
 
 			if (ImGui::CollapsingHeader("Animation Sync"))
@@ -3184,6 +3214,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 				Tool_ToggleOption("Use Bloom", "##Use_Bloom", EFFECTPARTICLE_DESC::Option6::Use_Bloom);
 				Tool_ToggleOption("Use Glow", "##Use_Glow", EFFECTPARTICLE_DESC::Option6::Use_Glow);
+				Tool_ToggleOption("Use Emissive", "##Use_Emissive", EFFECTPARTICLE_DESC::Option4::Use_Emissive);
 
 				if (Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 					Tool_Glow();

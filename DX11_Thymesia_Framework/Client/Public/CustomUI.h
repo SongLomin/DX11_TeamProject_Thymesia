@@ -32,6 +32,8 @@ public:
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
+
+
 protected:
 	_uint	m_iDeffuseIndex = 0;
 

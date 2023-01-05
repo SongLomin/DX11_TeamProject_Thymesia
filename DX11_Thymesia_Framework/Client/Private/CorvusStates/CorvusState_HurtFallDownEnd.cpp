@@ -9,6 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 #include "PhysXCollider.h"
+#include "PhysXCharacterController.h"
 
 
 GAMECLASS_C(CCorvusState_HurtFallDownEnd);

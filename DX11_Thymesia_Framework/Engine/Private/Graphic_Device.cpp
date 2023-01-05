@@ -51,7 +51,6 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE Wi
 	status = GFSDK_SSAO_CreateContext_D3D11(m_pDevice, &m_pAOContext, &CustomHeap);
 	assert(status == GFSDK_SSAO_OK); // HBAO+ requires feature level 11_0 or above
 
-
 	/*uint32_t resetToken = 0;
 	ComPtr<IMFDXGIDeviceManager> manager;*/
 
@@ -264,15 +263,14 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, GRAPHICDESC::WINMODE eWinMod
 HRESULT CGraphic_Device::Ready_BackBufferRenderTargetView()
 {
 
-	ComPtr<ID3D11Texture2D>		pBackBufferTexture;
 
-	if (FAILED(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)pBackBufferTexture.GetAddressOf())))
+	if (FAILED(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)m_pBackBufferTexture.GetAddressOf())))
 		return E_FAIL;
 
-	if (FAILED(m_pDevice->CreateRenderTargetView(pBackBufferTexture.Get(), nullptr, m_pBackBufferRTV.GetAddressOf())))
+	if (FAILED(m_pDevice->CreateRenderTargetView(m_pBackBufferTexture.Get(), nullptr, m_pBackBufferRTV.GetAddressOf())))
 		return E_FAIL;	
 
-	if (FAILED(m_pDevice->CreateShaderResourceView(pBackBufferTexture.Get(), nullptr, m_pBackBufferSRV.GetAddressOf())))
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pBackBufferTexture.Get(), nullptr, m_pBackBufferSRV.GetAddressOf())))
 		return E_FAIL;
 
 	return S_OK;

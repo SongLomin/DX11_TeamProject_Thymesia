@@ -44,6 +44,29 @@ void CNorMonState_Awake::Start()
 		break;
 	case Client::MONSTERTYPE::GARDENER:
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle2_End");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle1_End");
+			break;
+		}
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle2_End");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle1_End");
+			break;
+		}
+		break;
+
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Awake::Call_AnimationEnd, this);

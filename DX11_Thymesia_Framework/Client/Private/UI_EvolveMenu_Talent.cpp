@@ -12,6 +12,7 @@
 #include "UI_EvolveTalent_Active.h"
 #include "UI_Utils.h"
 
+
 GAMECLASS_C(CUI_EveolveMenu_Talent)
 CLONE_C(CUI_EveolveMenu_Talent, CGameObject)
 
@@ -75,20 +76,6 @@ HRESULT CUI_EveolveMenu_Talent::Start()
 void CUI_EveolveMenu_Talent::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
-
-    if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
-    {
-        FaderDesc tFaderDesc;
-        tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-        tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-        tFaderDesc.fFadeMaxTime = 0.2f;
-        tFaderDesc.fDelayTime = 0.f;
-        tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-        m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-        m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EveolveMenu_Talent::Call_ReturnToEvolveMenu, this);
-    }
 
 }
 
@@ -471,10 +458,7 @@ void CUI_EveolveMenu_Talent::SetUp_TalentNode(weak_ptr<CTalent> pNode, UI_DESC t
     }
 }
 
-void CUI_EveolveMenu_Talent::Call_ReturnToEvolveMenu()
+void CUI_EveolveMenu_Talent::Free()
 {
-    Set_Enable(false);
-    m_pFadeMask.lock()->Set_Enable(false);
-    GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
 }
 

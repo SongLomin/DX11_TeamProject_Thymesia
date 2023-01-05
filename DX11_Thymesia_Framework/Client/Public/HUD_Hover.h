@@ -37,8 +37,6 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
-
-
 public:
 	void		Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc);
 	virtual		void Set_UIDesc(UI_DESC _tUIDesc);

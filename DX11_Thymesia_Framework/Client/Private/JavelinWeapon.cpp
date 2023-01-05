@@ -16,8 +16,10 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 	switch (m_eCurrentState)
 	{
 	case Client::CJavelinWeapon::JAVELIN_STATE::BIND_HAND:
+		m_pCurrentModelCom = m_pStakeModelCom;
 		break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::THROW:
+		m_pCurrentModelCom = m_pModelCom;
 		LookAt_Player();
 		break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
@@ -47,6 +49,9 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 	m_vOffset = { 0.f, 0.f, 0.f };
 
 	m_pModelCom.lock()->Init_Model("Boss_UrdWeapon2", "", (_uint)TIMESCALE_LAYER::MONSTER);
+
+	m_pStakeModelCom = Add_Component<CModel>();
+	m_pStakeModelCom.lock()->Init_Model("Boss_UrdWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER);
 
 	Set_Enable(false);
 
@@ -92,39 +97,90 @@ void CJavelinWeapon::LateTick(_float fTimeDelta)
 
 HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
+	if (!m_pCurrentModelCom.lock())
+	{
+		// Use Set_javelinState function.
+		DEBUG_ASSERT;
+	}
+
 	SetUp_ShaderResource();
 
 	__super::Render(pDeviceContext);
 
 	_int iPassIndex;
-	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+	_flag BindTextureFlag;
+	m_iNumMeshContainers = m_pCurrentModelCom.lock()->Get_NumMeshContainers();
 	if (m_bWeaponRenderOnOff)
 	{
 		for (_uint i(0); i < m_iNumMeshContainers; ++i)
 		{
-			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			{
+			BindTextureFlag = 0;
 
+
+			if (SUCCEEDED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			{
+				BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
 			}
 
-			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			if (SUCCEEDED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			{
+				BindTextureFlag |= (1 << aiTextureType_NORMALS);
+			}
+
+			if (SUCCEEDED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+			{
+				BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+			}
+
+
+			if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+			{
+#ifdef _DEBUG
+				cout << "DiffuseTexture is not binded. : " << m_pModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+				continue;
+			}
+
+			// NormalTexture	OK.
+			// ORMTexture		OK.
+			if (
+				(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+				(1 << aiTextureType_SPECULAR) & BindTextureFlag
+				)
+			{
+				iPassIndex = 7;
+			}
+
+			// NormalTexture	OK.
+			// ORMTexture		NO.
+			else if (
+				(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+				!((1 << aiTextureType_SPECULAR) & BindTextureFlag)
+				)
+			{
+				iPassIndex = 3;
+			}
+
+			// NormalTexture	NO.
+			// ORMTexture		NO.
+			else if (
+				!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+				!((1 << aiTextureType_SPECULAR) & BindTextureFlag)
+				)
 			{
 				iPassIndex = 0;
 			}
+
 			else
 			{
-				iPassIndex = 3;
-
-				if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-				{
-					iPassIndex = 3;
-				}
-				else
-					iPassIndex = 7;
+#ifdef _DEBUG
+				cout << "The correct pass does not define. : " << m_pModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+				continue;
 			}
 
 			m_pShaderCom.lock()->Begin(iPassIndex, pDeviceContext);
-			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
+			m_pCurrentModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}
 	
@@ -222,13 +278,13 @@ void CJavelinWeapon::Update_Matrix_Hand()
 
 void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
-	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= 0.4f)
+	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= 0.6f)
 	{
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;
 	}
 	
-	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 4.f);
+	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 60.f);
 	
 }
 

@@ -123,7 +123,7 @@ HRESULT CPlayer_PotionUI::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CPlayer_PotionUI::Bind_Player()
 {
-#ifndef _ONLY_UI_
+
     weak_ptr<CStatus_Player> pStatus_Player;
     pStatus_Player = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
 
@@ -132,7 +132,7 @@ void CPlayer_PotionUI::Bind_Player()
 
     Set_MaxPotion(pStatus_Player.lock()->Get_CurrentPotionDesc().m_iMaxPotion);
     Set_CurrentPotion(pStatus_Player.lock()->Get_CurrentPotionDesc().m_iCurrentPotion);
-#endif
+
 }
 
 void CPlayer_PotionUI::Call_ChangePotion(_uint iCurrentPotion, _uint iMaxPotion)

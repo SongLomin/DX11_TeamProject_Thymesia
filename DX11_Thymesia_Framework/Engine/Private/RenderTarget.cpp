@@ -5,7 +5,7 @@
 
 GAMECLASS_C(CRenderTarget)
 
-HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor)
+HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, const _bool In_bUnorderedAccessView)
 {
 	m_vClearColor = vClearColor;
 
@@ -24,6 +24,7 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eForm
 
 	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
 	TextureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	TextureDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	TextureDesc.CPUAccessFlags = 0;
 	TextureDesc.MiscFlags = 0;
 
@@ -36,6 +37,17 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eForm
 	if (FAILED(DEVICE->CreateShaderResourceView(m_pTexture.Get(), nullptr, &m_pSRV)))
 		return E_FAIL;
 
+	
+	if (In_bUnorderedAccessView)
+	{
+		D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc;
+		ZeroMemory(&uavDesc, sizeof(D3D11_UNORDERED_ACCESS_VIEW_DESC));
+		uavDesc.Format = eFormat;
+		uavDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
+		HRESULT hr = DEVICE->CreateUnorderedAccessView(m_pTexture.Get(), &uavDesc, &m_pUAV);
+
+		int i = 0;
+	}
 
     return S_OK;
 }
@@ -95,11 +107,11 @@ HRESULT CRenderTarget::Render_Debug(weak_ptr<CShader> pShader, weak_ptr<CVIBuffe
 
 
 
-shared_ptr<CRenderTarget> CRenderTarget::Create(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor)
+shared_ptr<CRenderTarget> CRenderTarget::Create(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, const _bool In_bUnorderedAccessView)
 {
 	shared_ptr<CRenderTarget> pInstance = make_shared<CRenderTarget>();
 
-	if (FAILED(pInstance->Initialize(iWidth, iHeight, eFormat, vClearColor)))
+	if (FAILED(pInstance->Initialize(iWidth, iHeight, eFormat, vClearColor, In_bUnorderedAccessView)))
 	{
 		DEBUG_ASSERT;
 	}

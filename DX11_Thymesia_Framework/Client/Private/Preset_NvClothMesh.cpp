@@ -8,8 +8,9 @@ void Preset::NvClothMesh::CorvusSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc)
 	_vector vGravity = XMVectorSet(0.f, -9.81f, 0.f, 0.f);
 
 	MeshDesc.eSimpleAttachType = SELECTION_TYPE::FORWARD;
-	MeshDesc.fSimpleAttachRatio = 0.2f;
-	MeshDesc.fSimpleInvMess = 0.001f;
+	MeshDesc.fSimpleAttachRatio = 0.9f;
+	MeshDesc.fSimpleInvMess = 0.1f;
+	MeshDesc.m_bUseBoneMatrix = true;
 	XMStoreFloat3(&MeshDesc.vGravity, vGravity);
 	//MeshDesc.fDragCoefficient = 1.f;
 	//MeshDesc.fLiftCoefficient = 0.5f;

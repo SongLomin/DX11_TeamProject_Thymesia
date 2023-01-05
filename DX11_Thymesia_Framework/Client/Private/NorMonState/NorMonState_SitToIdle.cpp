@@ -46,6 +46,12 @@ void CNorMonState_SitToIdle::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_SitToIdle");
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SitToIdle");
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SitToIdle");
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SitToIdle::Call_AnimationEnd, this);

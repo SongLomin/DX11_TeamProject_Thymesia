@@ -458,8 +458,6 @@ void CVarg::OnEventMessage(_uint iArg)
 		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
 
-		// TODO : UI 리셋되게 하기
-
 		Change_State<CVargBossState_IdleGeneral>();
 		Set_Enable(false);
 		

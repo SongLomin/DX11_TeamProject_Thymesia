@@ -34,9 +34,11 @@ public:
 private:
     weak_ptr<class CEffect_Trail> m_pTrailDistortion;
     weak_ptr<class CEffect_Trail> m_pTrailDiffuse;
-
+    
 private:
     void SetUp_ShaderResource();
+
+
 
 private:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

@@ -21,7 +21,9 @@
 #include "NorMonState/NorMonState_LightAttack2.h"
 #include "NorMonState/NorMonState_LightAttack3.h"
 #include "NorMonState/NorMonState_Run.h"
-#include "NorMonState/NorMonState_SpecialAttack.h"
+#include "NorMonState/NorMonState_SpecialAttackStart.h"
+#include "NorMonState/NorMonState_SpecialAttackLoop.h"
+#include "NorMonState/NorMonState_SpecialAttackEnd.h"
 #include "NorMonState/NorMonState_TakeExecution.h"
 #include "NorMonState/NorMonState_TurnL90.h"
 #include "NorMonState/NorMonState_TurnR90.h"
@@ -34,7 +36,10 @@
 #include "NorMonState/NorMonState_Walk_L.h"
 #include "NorMonState/NorMonState_Walk_R.h"
 #include "NorMonState/NorMonState_Parry.h"
+#include "NorMonState/NorMonState_Petrol.h"
 
+#include "NorMonState/NorMonState_TakeExecution.h"
+#include "NorMonState/NorMonState_Idle2Fight.h"
 
 
 #include "NorMonster.h"

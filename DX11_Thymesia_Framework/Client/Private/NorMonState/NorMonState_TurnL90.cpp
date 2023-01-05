@@ -51,6 +51,12 @@ void CNorMonState_TurnL90::Start()
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_TurnL90|BaseLayer|Armature|A");
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkF");
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_TurnL90");
+		break;
 	}
 
 

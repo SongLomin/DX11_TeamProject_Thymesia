@@ -3,8 +3,8 @@
 #include "Status_Player.h"
 #include "Base.h"
 
-
 BEGIN(Client)
+
 
 class CUI_Utils : public CBase
 {
@@ -17,6 +17,10 @@ public:
 	static weak_ptr<class CUI> Get_BaseToUI(weak_ptr<CBase> pBase);
 
 	static _float2		Get_BezierCurve(_float2 fStart, _float2 fTarget, _float fCustomWeight);
+
+	static void			Set_SkillIcon(weak_ptr<CUI> pUI, SKILL_NAME eSkillName);
+
+	static ITEM_NAME			ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName);
 
 
 };
