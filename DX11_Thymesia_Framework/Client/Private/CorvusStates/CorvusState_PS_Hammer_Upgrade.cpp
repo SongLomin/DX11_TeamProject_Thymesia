@@ -17,7 +17,7 @@ void CCorvusState_PS_Hammer_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 60:
-		TurnOn_EyeGlow();
+		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
 	case 71:
 		GAMEINSTANCE->Set_MotionBlur(0.15f);
@@ -38,7 +38,7 @@ void CCorvusState_PS_Hammer_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	}
 	return;
 	case 292:
-		TurnOff_EyeGlow();
+		TurnOff_Effect("Corvus_PW_EyeGlow");
 		return;
 	}
 }

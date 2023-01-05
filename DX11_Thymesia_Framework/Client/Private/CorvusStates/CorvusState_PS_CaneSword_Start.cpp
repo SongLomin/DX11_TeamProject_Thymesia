@@ -67,8 +67,8 @@ void CCorvusState_PS_CaneSword_Start::OnStateEnd()
 {
 	CPlayerStateBase::OnStateEnd();
 
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow_Special", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
+	TurnOn_Effect("Corvus_PW_EyeGlow_Special");
+	TurnOn_Effect("Corvus_PW_CaneSword_SP02_Weapon");
 
 	GET_SINGLE(CGameManager)->Activate_Zoom(3.f, 2.f, EASING_TYPE::QUINT_IN);
 

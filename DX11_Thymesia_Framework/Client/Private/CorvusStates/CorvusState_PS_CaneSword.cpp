@@ -37,10 +37,10 @@ void CCorvusState_PS_CaneSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	}
 		return;
 	case 174:
-		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow_Special"));
+		TurnOff_Effect("Corvus_PW_EyeGlow_Special");
 		return;
 	case 191:
-		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_CaneSword_SP02_Weapon"));
+		TurnOff_Effect("Corvus_PW_CaneSword_SP02_Weapon");
 		return;
 	}
 }

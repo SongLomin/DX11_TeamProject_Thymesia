@@ -20,13 +20,13 @@ void CCorvusState_PS_Scythe_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_MotionBlur(0.15f);
 		return;
 	case 65:
-		TurnOn_EyeGlow();
+		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
 	case 112:
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 		return;
 	case 179:
-		TurnOff_EyeGlow();
+		TurnOff_Effect("Corvus_PW_EyeGlow");
 		return;
 	}
 }

@@ -35,10 +35,10 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	}
 	return;
 	case 172:
-		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_VargSword_Weapon", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_VargSword_Weapon"));
+		TurnOff_Effect("Corvus_PW_VargSword_Weapon");
 		return;
 	case 184:
-		TurnOff_EyeGlow();
+		TurnOff_Effect("Corvus_PW_EyeGlow");
 		return;
 	}
 }

@@ -112,12 +112,12 @@ void CCorvusState_PS::Set_WeaponRender(const _bool bRender)
 	}
 }
 
-void CCorvusState_PS::TurnOn_EyeGlow()
+void CCorvusState_PS::TurnOn_Effect(const std::string& szPlagueWeaponName)
 {
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
+	GET_SINGLE(CGameManager)->Store_EffectIndex(szPlagueWeaponName.c_str(), GET_SINGLE(CGameManager)->Use_EffectGroup(szPlagueWeaponName, m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
 }
 
-void CCorvusState_PS::TurnOff_EyeGlow()
+void CCorvusState_PS::TurnOff_Effect(const std::string& szPlagueWeaponName)
 {
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow"));
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup(szPlagueWeaponName, GET_SINGLE(CGameManager)->Get_StoredEffectIndex(szPlagueWeaponName.c_str()));
 }

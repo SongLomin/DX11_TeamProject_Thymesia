@@ -26,8 +26,8 @@ protected:
 	void Free();
 
 	void Set_WeaponRender(const _bool bRender);
-	void TurnOn_EyeGlow();
-	void TurnOff_EyeGlow();
+	void TurnOn_Effect(const std::string& szPlagueWeaponName);
+	void TurnOff_Effect(const std::string& szPlagueWeaponName);
 
 protected:
 	weak_ptr<CGameObject> m_pTargetObject;

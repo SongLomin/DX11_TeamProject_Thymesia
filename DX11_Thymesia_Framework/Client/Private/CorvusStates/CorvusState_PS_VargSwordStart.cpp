@@ -21,8 +21,8 @@ void CCorvusState_PS_VargSwordStart::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 37:
-		GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_VargSword_Weapon", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_VargSword_Weapon", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
-		TurnOn_EyeGlow();
+		TurnOn_Effect("Corvus_PW_VargSword_Weapon");
+		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
 	}
 }

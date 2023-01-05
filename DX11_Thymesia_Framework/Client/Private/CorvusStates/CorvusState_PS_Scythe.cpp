@@ -17,13 +17,13 @@ void CCorvusState_PS_Scythe::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 60:
-		TurnOn_EyeGlow();
+		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
 	case 74:
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 		return;
 	case 145:
-		TurnOff_EyeGlow();
+		TurnOff_Effect("Corvus_PW_EyeGlow");
 		return;
 	}
 }

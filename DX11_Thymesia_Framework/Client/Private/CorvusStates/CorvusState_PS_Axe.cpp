@@ -17,7 +17,7 @@ void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 38:
-		TurnOn_EyeGlow();
+		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
 	case 63:
 	{
@@ -29,7 +29,7 @@ void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	}
 	return;
 	case 156:
-		TurnOff_EyeGlow();
+		TurnOff_Effect("Corvus_PW_EyeGlow");
 		return;
 	}
 }
