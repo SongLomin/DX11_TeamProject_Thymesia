@@ -40,11 +40,6 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 	if (m_pSolver->getSimulationChunkCount() <= 0)
 		return;
 
-	if (fTimeDelta > 0.2f)
-	{
-		return;
-	}
-
 	shared_ptr<CThread_Manager> pThread_Manager = GET_SINGLE(CThread_Manager);
 
 	m_pGraphicsContextManager->mDevice = DEVICE;
@@ -54,7 +49,7 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 	for (int i = 0; i < m_pSolver->getSimulationChunkCount(); i++)
 	{
 		//pThread_Manager->Enqueue_Job(bind(&Solver::simulateChunk, m_pSolver, i));
-		// m_pSolver->simulateChunk(i);
+		m_pSolver->simulateChunk(i);
 	} 
 
 	pThread_Manager->Wait_JobDone();

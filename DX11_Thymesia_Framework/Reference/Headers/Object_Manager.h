@@ -37,6 +37,7 @@ public:
 
 public:
 	void Clear(_uint iLevelIndex);
+	void Delete_GameObjectInstances(_uint iLevelIndex);
 	void Remove_DeadObject();
 	
 	shared_ptr<CGameObject> Find_Object(weak_ptr<CGameObject> pGameObject);

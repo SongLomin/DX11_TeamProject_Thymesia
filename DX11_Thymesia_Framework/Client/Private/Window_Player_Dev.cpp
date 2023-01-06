@@ -4,6 +4,7 @@
 #include "GameManager.h"	
 #include "Camera_Target.h"
 #include "PhysXCharacterController.h"
+#include "MeshContainer.h"
 
 IMPLEMENT_SINGLETON(CWindow_Player_Dev)
 
@@ -67,6 +68,32 @@ HRESULT CWindow_Player_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 		if (ImGui::Button("Stage3. Varg Zone"))
 		{
 			Set_PlayerPosition(_float3(75.f, 0.f, 40.f));
+		}
+	}
+
+	if (ImGui::CollapsingHeader("NvCloth"))
+	{
+		weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+		if (pPlayer.lock())
+		{
+			weak_ptr<CMeshContainer> pCapeMeshContainer = pPlayer.lock()->Get_Component<CModel>().lock()->Get_MeshContainer(2);
+
+			::vector<_float>& PlayerCapeInvMess = pCapeMeshContainer.lock()->Get_InvMesses();
+
+			string szDefaultName = "Index ";
+			string szIndexName;
+
+			if (ImGui::Button("Update InvMess"))
+			{
+				pCapeMeshContainer.lock()->Update_InvMesses();
+			}
+
+			for (_size_t i = 0; i < PlayerCapeInvMess.size(); ++i)
+			{
+				szIndexName = szDefaultName + to_string(i);
+				ImGui::DragFloat(szIndexName.c_str(), &PlayerCapeInvMess[i], 0.05f, 0.f, 1.f, "%.3f", 0);
+			}
 		}
 	}
 

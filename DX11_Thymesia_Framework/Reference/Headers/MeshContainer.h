@@ -65,8 +65,16 @@ public:
 	void Set_NvCloth(const void* In_pNvClothMeshDesc);
 
 public: /* For. NvCloth */
+	_size_t Get_NvVertexCount();
+	vector<_float>& Get_InvMesses();
+
+public:
 	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity = {});
 	void Update_NvClothCollisionSpheres(Range<const physx::PxVec4> spheres, uint32_t first, uint32_t last);
+
+	// Modify and recall the value through the 'Get_InvMesses' function.
+	void Update_InvMesses();
+
 	//void Reset_NvCloth(_fmatrix In_WorldMatrix);
 
 private:
@@ -85,6 +93,7 @@ private:
 
 private:
 	_vector Software_Skinning(const _int In_iVtxAnimIndex);
+	_vector Software_Skinning(_fvector In_vPosition, const _int In_iVtxAnimIndex);
 
 private:
 	string								m_szName;

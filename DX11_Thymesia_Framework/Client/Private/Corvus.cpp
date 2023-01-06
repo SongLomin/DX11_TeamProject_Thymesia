@@ -50,8 +50,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
 	Preset::NvClothMesh::CorvusSetting(NvClothDesc);
 
-	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, &NvClothDesc);
-	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, &NvClothDesc);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
 	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixIdentity());
@@ -112,7 +112,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
 #ifdef _USE_THREAD_
-	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 
 	return S_OK;
@@ -182,6 +182,8 @@ void CCorvus::LateTick(_float fTimeDelta)
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 {
 	__super::Thread_PreBeforeRender(fTimeDelta);
+
+	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
@@ -298,7 +300,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_iPassIndex = 0;
 
 
-		/*if (2 == i)
+		if (2 == i)
 		{
 			m_iPassIndex = 9;
 
@@ -307,7 +309,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		else
 		{
 			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
-		}*/
+		}
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 

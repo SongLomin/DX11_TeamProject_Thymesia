@@ -822,6 +822,12 @@ void CGameManager::Remove_Section(_uint In_iSection, weak_ptr<CGameObject> In_pO
 
 	while (iter != iter_find->second.end())
 	{
+		if (!iter->lock())
+		{
+			iter++;
+			continue;
+		}
+
 		if (iter->lock()->Get_GameObjectIndex() == In_pObj.lock()->Get_GameObjectIndex())
 		{
 			iter_find->second.erase(iter);
