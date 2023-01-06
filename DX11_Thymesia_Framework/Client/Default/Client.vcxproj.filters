@@ -6010,9 +6010,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
-  </ItemGroup>
-  <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTex.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>

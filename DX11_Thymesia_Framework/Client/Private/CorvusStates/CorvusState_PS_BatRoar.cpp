@@ -35,7 +35,7 @@ void CCorvusState_PS_BatRoar::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		ZeroMemory(&vPlayerPos, sizeof(_float3));
 		XMStoreFloat3(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
 		vPlayerPos.y += 1.f;
-		GAMEINSTANCE->Set_RadialBlur(0.4f, vPlayerPos);
+		GAMEINSTANCE->Set_RadialBlur(0.2f, vPlayerPos);
 	}
 		return;
 	case 108:

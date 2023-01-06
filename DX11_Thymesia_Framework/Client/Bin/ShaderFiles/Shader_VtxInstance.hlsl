@@ -101,6 +101,8 @@ VS_OUT VS_MAIN(VS_IN In)
 
     matrix TransformMatrix = mul(float4x4(In.vRight, In.vUp, In.vLook, In.vTranslation), g_WorldMatrix);
 
+
+
     if (g_bBillboard)
     {
         float3 vLook = normalize((g_vCamDirection * -1.f).xyz);
