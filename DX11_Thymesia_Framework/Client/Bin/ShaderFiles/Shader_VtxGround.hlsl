@@ -242,7 +242,9 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     float3 binormal = cross(normal, tangent);
     float3 newPosition1 = localPos + tangent * 0.025f;
     float3 newPosition2 = localPos + binormal * 0.025f;
-    //일단 water클래스가 128,128크기의 버퍼를 사용하기 때문에 128 고정값으로 사용
+    
+    //일단 water클래스가 128,128크기의 사각형 버퍼를 사용하기 때문에 128 고정값으로 사용
+    
     float2 newPos1UV = float2(newPosition1.x * 2.f / 127.f, newPosition1.z * 2.f / 127.f);
     float2 newPos2UV = float2(newPosition2.x * 2.f / 127.f, newPosition2.z * 2.f / 127.f);
     
@@ -425,7 +427,7 @@ PS_OUT PS_MAIN_FILLTER(PS_IN In)
 PS_OUT PS_MAIN_WATER(DS_OUT In)
 {
     PS_OUT Out = (PS_OUT) 0; 
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
+    Out.vDiffuse = 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
       
     Out.vDiffuse.a = 1.f;
  
