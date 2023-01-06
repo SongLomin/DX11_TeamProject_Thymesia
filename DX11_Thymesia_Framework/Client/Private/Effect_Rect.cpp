@@ -127,6 +127,9 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, DEVICECONTEXT, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 #endif // _USE_THREAD_
 
+
+	m_pTransformCom.lock();
+
 	__super::LateTick(fTimeDelta);
 
 	if (Check_DisableAllParticle())
@@ -236,6 +239,7 @@ void CEffect_Rect::SetUp_ShaderResource()
 	}
 
 	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
+
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
 	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
@@ -418,6 +422,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	{
 		Out_Json["Scale_Easing_Type"] = m_tEffectParticleDesc.iScaleEasingType;
 		Out_Json["Scale_Easing_Total_Time"] = m_tEffectParticleDesc.fScaleEasingTotalTime;
+
+		CJson_Utility::Write_Float2(Out_Json["Easing_Start_Scale"], m_tEffectParticleDesc.vEasingStartScale);
+		CJson_Utility::Write_Float2(Out_Json["Easing_Target_Scale"], m_tEffectParticleDesc.vEasingTargetScale);
 	}
 	else
 	{
@@ -801,6 +808,11 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			m_tEffectParticleDesc.iScaleEasingType = In_Json["Scale_Easing_Type"];
 		if (In_Json.find("Scale_Easing_Total_Time") != In_Json.end())
 			m_tEffectParticleDesc.fScaleEasingTotalTime = In_Json["Scale_Easing_Total_Time"];
+
+		if (In_Json.find("Easing_Start_Scale") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Easing_Start_Scale"], m_tEffectParticleDesc.vEasingStartScale);
+		if (In_Json.find("Easing_Target_Scale") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Easing_Target_Scale"], m_tEffectParticleDesc.vEasingTargetScale);
 	}
 	else
 	{
@@ -1304,10 +1316,25 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
 
-		_float3 f3DeltaGravity;
-		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
+		//_float3 f3DeltaGravity;
+		//XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
 
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
+		/*
+		* bone matrix의 역행렬을 구해서
+		* 그 역행렬이랑 내가 중력으로 사용할 글로벌 벡터를 곱해
+		* 곱한 거를 나의 월드행렬에 더해줘
+		*/
+
+		_matrix TotalWorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
+
+		_matrix TotalWorldMatrixInverse = XMMatrixInverse(NULL, TotalWorldMatrix);
+
+		_vector vMul = XMVector3TransformNormal(vDeltaGravity, TotalWorldMatrixInverse);
+
+		_float3 f3Mul;
+		XMStoreFloat3(&f3Mul, vMul);
+
+		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3Mul);
 	}
 }
 
@@ -1355,8 +1382,8 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 		(
 			vScale
 			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMinLimitScale)
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMaxLimitScale)
+			, XMLoadFloat2(&m_tEffectParticleDesc.vEasingStartScale)
+			, XMLoadFloat2(&m_tEffectParticleDesc.vEasingTargetScale)
 			, fElapsedTime
 			, m_tEffectParticleDesc.fScaleEasingTotalTime
 		);
@@ -2653,7 +2680,6 @@ void CEffect_Rect::Tool_Scale()
 		}
 	}
 
-
 	if (ImGui::TreeNode("Scale Limit"))
 	{
 		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit);
@@ -2716,10 +2742,32 @@ void CEffect_Rect::Tool_Scale_Easing()
 	ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
 	ImGui::Text("Start Scale"); ImGui::SetNextItemWidth(300.f);
-	ImGui::DragFloat2("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+	ImGui::DragFloat2("##Easing_Start_Scale", &m_tEffectParticleDesc.vEasingStartScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
 	ImGui::Text("Target Scale"); ImGui::SetNextItemWidth(300.f);
-	ImGui::DragFloat2("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+	ImGui::DragFloat2("##Easing_Target_Scale", &m_tEffectParticleDesc.vEasingTargetScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+	if (ImGui::TreeNode("Scale Limit"))
+	{
+		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit);
+
+		if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit)
+			m_tEffectParticleDesc.vMaxLimitScale = m_tEffectParticleDesc.vMinLimitScale;
+
+		ImGui::Text("Min Limit Scale"); ImGui::SetNextItemWidth(300.f);
+		ImGui::DragFloat2("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+		ImGui::Text("Max Limit Scale"); ImGui::SetNextItemWidth(300.f);
+		ImGui::DragFloat2("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Square_Scale))
+		{
+			m_tEffectParticleDesc.vMinLimitScale.y = m_tEffectParticleDesc.vMinLimitScale.x;
+			m_tEffectParticleDesc.vMaxLimitScale.y = m_tEffectParticleDesc.vMaxLimitScale.x;
+		}
+
+		ImGui::TreePop();
+	}
 }
 
 void CEffect_Rect::Tool_Sprite()

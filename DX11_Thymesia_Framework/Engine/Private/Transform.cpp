@@ -68,7 +68,7 @@ HRESULT CTransform::Go_Direction(_fvector vDirection, _float fTimeDelta)
 {
 	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 
-	vPosition -= XMVector3Normalize(vDirection) /* 회전 속도: XMConvertToRadians(90.0f) */ * fTimeDelta;
+	vPosition += vDirection /* 회전 속도: XMConvertToRadians(90.0f) */ * fTimeDelta;
 
 	Set_State(CTransform::STATE_TRANSLATION, vPosition);
 	return S_OK;
