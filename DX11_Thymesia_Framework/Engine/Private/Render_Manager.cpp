@@ -727,6 +727,13 @@ HRESULT CRender_Manager::Set_GodRayDesc(const _float4& In_vColor, const _float4&
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_GodRayScale(const _float& In_fScale)
+{
+	m_fGodRayScale = In_fScale;
+
+	return S_OK;
+}
+
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
@@ -1904,8 +1911,9 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_LightProjMatrix", &m_LightProjMatrixTranspose, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_LightViewMatrix", &m_LightViewMatrixTranspose, sizeof(_float4x4));
 
-	m_pPostProcessingShader->Set_RawValue("g_vLightPos", &vLightPos, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vLightPos", &m_vGodRayPosition, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vLightDiffuse", &m_vGodRayColor, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_fGodRayScale", &m_fGodRayScale, sizeof(_float));
 	 
 	for (_int i = 0; i < 6; ++i)
 	{

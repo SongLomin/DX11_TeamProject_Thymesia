@@ -55,11 +55,12 @@ void CCharacter::OnStealMonsterSkill(MONSTERTYPE Monstertype)
 	
 }
 
-void CCharacter::Set_RimLightDesc(const _float In_fLightTime, const _float3 In_vColor, const _float In_fPower)
+void CCharacter::Set_RimLightDesc(const _float In_fLightTime, const _float3 In_vColor, const _float In_fPower, const EASING_TYPE In_eEasingType)
 {
 	m_fRimLightTime = m_fRimLightTimeAcc = In_fLightTime;
 	m_vRimLightColor = In_vColor;
 	m_fRimLightPower = In_fPower;
+	m_eRimLightEasingType = In_eEasingType;
 }
 
 

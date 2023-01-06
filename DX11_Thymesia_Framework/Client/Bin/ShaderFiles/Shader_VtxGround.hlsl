@@ -183,9 +183,19 @@ HS_OUT HS_Main(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int vertexIdx : SV_Out
     return output;
 }
 
-// --------------
-// Domain Shader
-// --------------
+float3 Compute_Wave(float3 vWaveCenter, float3 vCurrentPos)
+{
+    float3 vNewPoint = (float3) 0;
+    /*현재 충격파를 더해줌*/
+    //float fDistance = length(vCurrentPos - vWaveCenter);
+    //float fAccFreqLength = _AccTime * _Speed;
+    //if(fDistance <= fAccFreqLength)
+    //{ 
+    //    vNewPoint.y += _Amplitude * sin(_Freq * fDistance - fAccFreqLength) / fDistance;
+    //}
+    
+    return vNewPoint;
+}
 
 struct DS_OUT
 {
@@ -253,6 +263,16 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     
     newPosition1.y += (g_DisplacementTexture.SampleLevel(DefaultSampler, newPos1UV * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.4f;
     newPosition2.y += (g_DisplacementTexture.SampleLevel(DefaultSampler, newPos2UV * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.4f;
+      
+    ////물결 충격 계산 Compute_Wave()
+    /*
+    for(int i=0;i<wavepoint.size();++i)
+    { 
+        localPos = Compute_Wave(wavecenter,localPos);
+        newPosition1 = Compute_Wave(wavecenter,newPosition1);
+        newPosition2 = Compute_Wave(wavecenter,newPosition2);
+    }   
+    */
     
     float3 newNormal = normalize(cross(newPosition1 - localPos, newPosition2 - localPos));
     
