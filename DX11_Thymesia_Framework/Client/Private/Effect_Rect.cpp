@@ -995,6 +995,8 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 			if (m_tParticleDescs[i].fCurrentSpawnTime > m_tParticleDescs[i].fTargetSpawnTime)
 			{
+				// 파티클 생성 시점
+
 				m_tParticleDescs[i].bEnable = true;
 
 				if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
@@ -1311,25 +1313,13 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 		_vector vDeltaGravity(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
 		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
 		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
 		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
 
-		//_float3 f3DeltaGravity;
-		//XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
+		_matrix TotalWorldMatrix(BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+		_matrix TotalWorldMatrixInverse(XMMatrixInverse(nullptr, TotalWorldMatrix));
 
-		/*
-		* bone matrix의 역행렬을 구해서
-		* 그 역행렬이랑 내가 중력으로 사용할 글로벌 벡터를 곱해
-		* 곱한 거를 나의 월드행렬에 더해줘
-		*/
-
-		_matrix TotalWorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
-
-		_matrix TotalWorldMatrixInverse = XMMatrixInverse(NULL, TotalWorldMatrix);
-
-		_vector vMul = XMVector3TransformNormal(vDeltaGravity, TotalWorldMatrixInverse);
+		_vector vMul(XMVector3TransformNormal(vDeltaGravity, TotalWorldMatrixInverse));
 
 		_float3 f3Mul;
 		XMStoreFloat3(&f3Mul, vMul);
