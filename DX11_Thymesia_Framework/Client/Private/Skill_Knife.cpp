@@ -20,6 +20,9 @@ void CSkill_Knife::Start()
 
 void CSkill_Knife::Init_SkillInfo()
 {
+	USE_START(CSkill_Knife);
+
+
 	m_bUseAble = true;
 
 	m_eSkillName = SKILL_NAME::SKILL_KNIFE;

@@ -21,7 +21,6 @@ HRESULT CPlayerSkill_System::Initialize(void* pArg)
 
     USE_START(CPlayerSkill_System);
 
-
     return S_OK;
 }
 

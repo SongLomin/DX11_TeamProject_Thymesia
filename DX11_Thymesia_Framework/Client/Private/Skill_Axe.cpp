@@ -23,6 +23,9 @@ void CSkill_Axe::Start()
 
 void CSkill_Axe::Init_SkillInfo()
 {
+	USE_START(CSkill_Axe);
+
+
 	m_bUseAble = true;
 
 	m_eSkillName = SKILL_NAME::SKILL_AXE;
@@ -33,6 +36,8 @@ void CSkill_Axe::Init_SkillInfo()
 
 	m_pRequirementMana->Init_Req(m_fRequiredCost);
 	m_pRequirementTime->Init_Req(0.f);
+
+
 
 }
 

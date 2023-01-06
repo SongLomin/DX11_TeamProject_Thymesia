@@ -596,6 +596,9 @@ void CCorvus::Ready_States()
 
 void CCorvus::Ready_Skills()
 {
+	//스킬 추가입니다.
+	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
+
 	Add_Component<CSkill_VargSword>();
 	Add_Component<CSkill_Axe>();
 	Add_Component<CStolenSkill>();
@@ -604,8 +607,7 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Scythe>();
 
 
-	//스킬 추가입니다.
-	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
+	
 
 }
 

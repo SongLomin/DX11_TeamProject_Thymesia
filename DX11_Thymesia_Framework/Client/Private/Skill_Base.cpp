@@ -29,8 +29,6 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	USE_START(CSkill_Base);
-
 	m_pRequirementChecker = CRequirementChecker::Create();
 
 	m_pRequirementMana = CRequirementBase::Create< CRequirement_PlayerStatusMana>();
@@ -43,6 +41,8 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 	
 	m_eRequirementSkillPiece = CUI_Utils::ConvertSkillNameToSkillPiece(m_eSkillName);
 
+	RegisterThisSkillFromSkillSystem();
+
 	return S_OK;
 }
 
@@ -50,7 +50,6 @@ void CSkill_Base::Start()
 {
 	__super::Start();
 
-	RegisterThisSkillFromSkillSystem();
 }
 
 void CSkill_Base::Tick(_float fTimeDelta)
@@ -82,7 +81,7 @@ void CSkill_Base::LateTick(_float fTimeDelta)
 
 void CSkill_Base::RegisterThisSkillFromSkillSystem()
 {
-	if (m_eSkillName == SKILL_NAME::SKILL_END);
+	if (m_eSkillName == SKILL_NAME::SKILL_END)
 	{
 		return;
 	}
