@@ -5,6 +5,9 @@
 #include "UI_Utils.h"
 #include "CustomUI.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillButton.h"
+#include "UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h"
+#include "UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h"
+#include "PlayerSkillHeader.h"
 
 
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon_SkillView)
@@ -27,7 +30,11 @@ HRESULT CUI_EvolveMenu_PlagueWeapon_SkillView::Initialize(void* pArg)
 	SetUp_UI();
 	SetUp_SkillPos();
 	SetUp_SkillButtons();
-	
+	SetUp_PlayerSkillSlot();
+
+
+
+
 	return S_OK;
 }
 
@@ -41,7 +48,6 @@ HRESULT CUI_EvolveMenu_PlagueWeapon_SkillView::Start()
 void CUI_EvolveMenu_PlagueWeapon_SkillView::Tick(_float fTimeDelta)
 {
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
-
 
 	__super::Tick(fTimeDelta);
 
@@ -65,17 +71,20 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_SkillPos()
 	}
 
 	fStartPos = { 150.f, 354.f};
+	fOffsetX = 156.f;
 	for (_uint i = 0; i < 4; i++)
 	{
 		m_vecSkillPos.push_back(_float2(fStartPos.x + i * fOffsetX, fStartPos.y));
 	}
 
 	fStartPos = { 221.f, 441.f};
+	fOffsetX = 175.f;
 	for (_uint i = 0; i < 3; i++)
 	{
 		m_vecSkillPos.push_back(_float2(fStartPos.x + i * fOffsetX, fStartPos.y));
 	}
 	fStartPos = { 306.f, 528.f };
+	fOffsetX = 180.f;
 	for (_uint i = 0; i < 2; i++)
 	{
 		m_vecSkillPos.push_back(_float2(fStartPos.x + i * fOffsetX, fStartPos.y));
@@ -104,17 +113,46 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_SkillButtons()
 {
 	weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>	pButton;
 
+	weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot>	pButtonSlot;
+
+
 	for(_uint i = 0 ; i < (_uint)SKILL_NAME::SKILL_END;i++)
 	{
+		pButtonSlot = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot>(LEVEL_STATIC);
+
 		pButton = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_PlagueWeapon_SkillButton>(LEVEL_STATIC);
 		pButton.lock()->Set_Skill((SKILL_NAME)i);
+		pButton.lock()->Set_Slot(pButtonSlot);
 
-		pButton.lock()->Set_UIPosition(m_vecSkillPos[i].x, m_vecSkillPos[i].y);
+		pButton.lock()->Set_UIPositionAllChilds(m_vecSkillPos[i].x, m_vecSkillPos[i].y);
+
+		pButtonSlot.lock()->Set_UIPositionAllChilds(m_vecSkillPos[i].x, m_vecSkillPos[i].y);
 
 		Bind_Callback(pButton);
 
-
+		Add_Child(pButtonSlot);
 		m_vecSkillButton.push_back(pButton);
+	}
+}
+
+void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_PlayerSkillSlot()
+{
+
+	_float2 fPlayerSkillSlotPos[2] = {{194.f, 672.f}, {576.f, 672.f}};
+
+	_uint	iPlayerSkillSlotSize = 2;
+
+	weak_ptr< CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot> pPlayerSkillSlot;
+	for (_uint i = 0; i < iPlayerSkillSlotSize; i++)
+	{
+		pPlayerSkillSlot  = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot>(LEVEL_STATIC);
+		pPlayerSkillSlot.lock()->Set_UIPositionAllChilds(fPlayerSkillSlotPos[i].x, fPlayerSkillSlotPos[i].y);
+	
+		m_vecPlayerSkillSlot.push_back(pPlayerSkillSlot);
+
+		Add_Child(pPlayerSkillSlot);
+
+	
 	}
 }
 
@@ -146,8 +184,13 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::Bind_Callback(weak_ptr<CUI_EvolveMen
 
 	pButton.lock()->Callback_MouseOut += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnMouseOut, this);
 
-	
 	pButton.lock()->Callback_UnLockSkill += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnUnlockSkill, this,
+		placeholders::_1);
+
+	pButton.lock()->Callback_ButtonUp += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnLButtonUp, this,
+		placeholders::_1);
+
+	pButton.lock()->Callback_ButtonDown += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnLButtonDown, this,
 		placeholders::_1);
 
 }
@@ -166,6 +209,34 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnUnlockSkill(weak_ptr<CUI_Evol
 {
 	Callback_OnUnlockSkill(pSkillButton);
 }
+
+void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnLButtonUp(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)
+{
+	Callback_OnLButtonUp(pSkillButton);
+
+	for (_uint i = 0; i < m_vecPlayerSkillSlot.size(); i++)
+	{
+		if (m_vecPlayerSkillSlot[i].lock()->MousePtInUI())
+		{
+			m_vecPlayerSkillSlot[i].lock()->Equip_Skill(pSkillButton, i);
+			return;
+		}
+	}
+	pSkillButton.lock()->SetPosToMyOriginSlot();
+}
+
+void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnLButtonDown(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)
+{
+	//플레이어 슬롯에 있는 것을 집은 경우
+	for (_uint i = 0; i < m_vecPlayerSkillSlot.size(); i++)
+	{
+		if (pSkillButton.lock() == m_vecPlayerSkillSlot[i].lock()->Get_Equiped_Skill().lock())
+		{
+			m_vecPlayerSkillSlot[i].lock()->UnEquip_Skill(i);
+		}
+	}
+}
+
 
 void CUI_EvolveMenu_PlagueWeapon_SkillView::Free()
 {

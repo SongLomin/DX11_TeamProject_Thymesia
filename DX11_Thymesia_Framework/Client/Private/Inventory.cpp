@@ -43,6 +43,9 @@ void CInventory::LateTick(_float fTimeDelta)
 
 void CInventory::Push_Item(ITEM_NAME eItemName)
 {
+	if (eItemName == ITEM_NAME::ITEM_NAME_END)//모종의 이유로 예측불가능한 enum이 들어오면 즉시 나간다.
+		return;
+
 	map<ITEM_NAME, shared_ptr<CItem>>::iterator pair;
 	
 	pair = m_mapInventory.find(eItemName);

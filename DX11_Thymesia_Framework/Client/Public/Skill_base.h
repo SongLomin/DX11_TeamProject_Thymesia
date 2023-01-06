@@ -33,7 +33,9 @@ public:
     ITEM_NAME   Get_RequirementSkillPiece() { return m_eRequirementSkillPiece; }
 
     void        Set_CurrentSkillLevel(_uint iCurrentSkillLevel) { m_iCurrentSkillLevel = iCurrentSkillLevel; }
-
+    
+protected:
+    virtual void        RegisterThisSkillFromSkillSystem();
 
 public:
     /*
@@ -56,8 +58,10 @@ public:
 protected:
     virtual void            Init_SkillInfo() {};
     virtual void            Init_State() {};//스킬은 무!조!건! 상태를 참조하고 있어야 한다.
-    virtual void            Init_RequirementSkillPieceFromSkillName(SKILL_NAME eSkillName);
 protected:
+    
+
+
 
 protected:
     virtual void            Start_Skill();

@@ -8,6 +8,9 @@
 #include "RequirementChecker.h"
 #include "Requirement_PlayerStatusMana.h"
 #include "GameManager.h"
+#include "PlayerSkill_System.h"
+
+
 
 GAMECLASS_C(CSkill_Axe)
 CLONE_C(CSkill_Axe, CComponent)

@@ -580,7 +580,9 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
@@ -1174,7 +1176,9 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillView.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />

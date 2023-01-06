@@ -190,3 +190,35 @@ ITEM_NAME CUI_Utils::ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName)
 	return eItemName;
 }
 
+ITEM_NAME CUI_Utils::ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType)
+{
+	ITEM_NAME	 eItemName = ITEM_NAME::ITEM_NAME_END;
+
+	switch (eMonsterType)
+	{
+	case Client::MONSTERTYPE::AXEMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_AXE;
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_KNIFE;
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		eItemName = ITEM_NAME::SKILLPIECE_KNIFE;
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		eItemName = ITEM_NAME::SKILLPIECE_SCYTHE;
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_AXE;
+		break;
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
+		eItemName = ITEM_NAME::SKILLPIECE_SCYTHE;
+		break;
+	default:
+		break;
+	}
+
+
+	return eItemName;
+}
+

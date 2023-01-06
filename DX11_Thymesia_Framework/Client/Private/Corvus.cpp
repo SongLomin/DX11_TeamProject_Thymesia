@@ -148,7 +148,7 @@ HRESULT CCorvus::Start()
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
 
-	Test_BindSkill();
+	//Test_BindSkill();
 
 
 
@@ -411,6 +411,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY02);
 		
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::AXEMAN);
+		m_pInventory.lock()->Push_Item(MONSTERTYPE::KNIFEWOMAN);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::VARG);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);

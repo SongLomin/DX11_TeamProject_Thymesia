@@ -1829,6 +1829,8 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SKillIcon.h" />
     <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3702,6 +3704,8 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SKillIcon.cpp" />
     <ClCompile Include="..\Private\UI_UnlockEventUI.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

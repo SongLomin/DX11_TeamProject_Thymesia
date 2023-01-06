@@ -125,6 +125,11 @@ HRESULT CUI::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
+weak_ptr<CUI> CUI::Get_This()
+{
+	return Weak_StaticCast<CUI>(m_this);
+}
+
 void CUI::Set_Texture(const _char* sKey)
 {
 	m_pTextureCom.lock()->Use_Texture(sKey);
@@ -181,6 +186,16 @@ void CUI::Set_UIPosition(const _float fX, const _float fY)
 {
 	m_tUIDesc.fX = fX;
 	m_tUIDesc.fY = fY;
+}
+
+void CUI::Set_UIPositionAllChilds(const _float fX, const _float fY)
+{
+	Set_UIPosition(fX, fY);
+
+	for (auto& elem : m_vecChildUI)
+	{
+		elem.lock()->Set_UIPositionAllChilds(fX, fY);
+	}
 }
 
 void CUI::Set_UIDesc(UI_DESC _tUIDesc)
@@ -249,6 +264,24 @@ void CUI::Add_Child(weak_ptr<CUI> pChild)
 void CUI::Set_Target(weak_ptr<CBase> pTarget)
 {
 	m_pTarget = pTarget;
+}
+
+_bool CUI::MousePtInUI()
+{
+	POINT		pt;
+
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
+	if (pt.x < ((m_tUIDesc.fX) - (m_tUIDesc.fSizeX * 0.5f)) ||
+		pt.x >((m_tUIDesc.fX) + (m_tUIDesc.fSizeX * 0.5f)) ||
+		pt.y < ((m_tUIDesc.fY) - (m_tUIDesc.fSizeY * 0.5f)) ||
+		pt.y >((m_tUIDesc.fY) + (m_tUIDesc.fSizeY * 0.5f))
+		)
+	{
+		return false;
+	}
+	return true;
 }
 
 void CUI::Enable_AllEventChild()

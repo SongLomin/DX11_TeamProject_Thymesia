@@ -42,14 +42,25 @@ public:
 public:
 	void			UnBindSkill(SOCKET_TYPE eType);
 	void			OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
+	void			OnChangeSkill(SKILL_NAME eSkillName, SOCKET_TYPE eType);
+
+
+	void			RegisterSkill(SKILL_NAME eName, weak_ptr<CSkill_Base> pSkill);
 
 
 public:
 	FDelegate<weak_ptr<CSkill_Base>>	Callback_OnChangeSkill[(_uint)SOCKET_TYPE::SOCKET_END];
 
+
 	FDelegate<weak_ptr<CSkill_Base>>	Callback_OnStealSkill;
+
+
+
+
+
 private:
-	void			SetUp_MonsterSkillMap();
+	void			SetUp_SkillMapFromMonsterType();
+
 	void			Tick_SkillList(_float fTimeDelta);
 
 private:
@@ -62,6 +73,11 @@ private:
 
 	typedef map<MONSTERTYPE, weak_ptr<CSkill_Base>> MONSTERSKILLMAP;
 	map<MONSTERTYPE, weak_ptr<CSkill_Base>>	m_MonsterSkillMap;
+
+
+	typedef map<SKILL_NAME, weak_ptr<CSkill_Base>> SKILLNAMEMAP;
+	map<SKILL_NAME, weak_ptr<CSkill_Base>>	m_SkillNameMap;
+
 public:
 	
 };

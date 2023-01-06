@@ -42,6 +42,8 @@ public:
     void                    Call_OnSkillButtonMouseOver(weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
     void                    Call_OnSkillButtonMouseOut();
     void                    Call_OnUnlockSkill(weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
+    void                    Call_OnLButtonUp(weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
+
 
 private://For...LeftSkillView
     weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillView>    m_pSkillView;

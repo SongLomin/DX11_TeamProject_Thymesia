@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillButton.h"
+#include "UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h"
 #include "CustomUI.h"
 #include "UI_Utils.h"
 #include "UIManager.h"
@@ -42,6 +43,16 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::Tick(_float fTimeDelta)
         Unlock_Skill();
         Callback_UnLockSkill(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
     }
+
+    if (m_eLockType == SKILLBUTTON_LOCK_TYPE::UNLOCKED && m_eButtonState == UI_BUTTON_BUTTON_DOWN)
+    {
+        POINT		pt;
+
+        GetCursorPos(&pt);
+        ScreenToClient(g_hWnd, &pt);
+       
+       Set_UIPositionAllChilds((_float)pt.x, (_float)pt.y);
+    }
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::LateTick(_float fTimeDelta)
@@ -61,16 +72,6 @@ _bool CUI_EvolveMenu_PlagueWeapon_SkillButton::Check_UnLocked()
     {
         return true;
     }
-}
-
-void CUI_EvolveMenu_PlagueWeapon_SkillButton::Set_UIPosition(const _float fX, const _float fY)
-{
-   __super::Set_UIPosition(fX, fY);
-
-    m_pHover.lock()->Set_UIPosition(fX,fY);
-    m_pBorder.lock()->Set_UIPosition(fX, fY);
-    m_pFrame.lock()->Set_UIPosition(fX,fY);
-    m_pIcon .lock()->Set_UIPosition(fX,fY);
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::Set_Skill(SKILL_NAME eSkillName)
@@ -143,42 +144,59 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::Unlock_Skill()
     m_pIcon.lock()->Set_AlphaColor(1.f);
 }
 
+void CUI_EvolveMenu_PlagueWeapon_SkillButton::Set_Slot(weak_ptr<CUI> pSlot)
+{
+    if (!m_pMyOriginSlot.lock())
+    {
+        m_pMyOriginSlot = pSlot;
+    }
+    m_pMyCurrentSlot = pSlot;
+}
+
+void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetPosToMyCurrentSlot()
+{
+    _float2 SlotPos = m_pMyCurrentSlot.lock()->GetPos();
+        
+    Set_UIPositionAllChilds(SlotPos.x, SlotPos.y);
+}
+
+void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetPosToMyOriginSlot()
+{
+    _float2 SlotPos = m_pMyOriginSlot.lock()->GetPos();
+
+    Set_UIPositionAllChilds(SlotPos.x, SlotPos.y);
+}
+
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
 {
     Set_Size(114.f, 114.f);
 
     m_pHover = ADD_STATIC_CUSTOMUI;
-    m_pBorder = ADD_STATIC_CUSTOMUI;
+
     m_pFrame = ADD_STATIC_CUSTOMUI;
     m_pIcon = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_SKillIcon>(LEVEL_STATIC);
 
     m_pHover.lock()->Set_Size(114.f, 114.f);
-    m_pBorder.lock()->Set_Size(256.f, 256.f);
+
     m_pFrame.lock()->Set_Size(114.f, 114.f);
     m_pIcon.lock()->Set_Size(213.f, 213.f);
 
-    m_pBorder.lock()->Set_Depth(0.6f);
-    m_pFrame.lock()->Set_Depth(0.5f);
-    m_pIcon.lock()->Set_Depth(0.4f);
-    m_pHover.lock()->Set_Depth(0.3f);
+
+    m_pFrame.lock()->Set_Depth(0.55f);
+    m_pIcon.lock()->Set_Depth(0.54f);
+    m_pHover.lock()->Set_Depth(0.53f);
 
     m_pFrame.lock()->Set_Texture("HUD_PlagueWeapon_Frame");
-    m_pBorder.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
     m_pHover.lock()->Set_Texture("None");
     m_pIcon.lock()->Set_Texture("None");
 
-    m_pBorderEasingAlpha = m_pBorder.lock()->Add_Component<CEasingComponent_Alpha>();
-
-    Add_Child(m_pBorder);
     Add_Child(m_pFrame);
     Add_Child(m_pIcon);
-
+    Add_Child(m_pHover);
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnMouseOver()
 {
-     m_pBorderEasingAlpha.lock()->Set_Lerp(0.f, 1.f, 0.5f, EASING_TYPE::QUAD_INOUT, CEasingComponent::LOOP_GO_AND_BACK, false);
-
      Callback_MouseOver(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
 
 }
@@ -188,13 +206,16 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnLButtonUp()
     if (Get_Unlockable())
     {
         m_pIcon.lock()->EndGauge();
+        return;
+    }
+    else if (Get_Unlocked())
+    {
+        Callback_ButtonUp(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
     }
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnMouseOut()
 {
-    m_pBorderEasingAlpha.lock()->Set_Lerp(m_pBorder.lock()->Get_AlphaColor(), 0.f, 0.5f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, false);
-
     Callback_MouseOut();
 
     if (Get_Unlockable())
@@ -210,7 +231,13 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnLButtonDown()
     if (Get_Unlockable())
     {
         m_pIcon.lock()->StartGauge();
+        return;
     }
+    if (Get_Unlocked())
+    {
+        Callback_ButtonDown(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
+    }
+
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnEnable(void* pArg)
@@ -218,7 +245,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnEnable(void* pArg)
     __super::OnEnable(pArg);
 
     m_pHover.lock()->Set_Enable(false);
-    m_pBorder.lock()->Set_AlphaColor(0.f);
 
     if (Check_UnLocked())
     {
@@ -234,6 +260,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnDisable()
 {
     __super::OnDisable();
 
-    m_pHover.lock()->Set_Enable(false);
+
     
 }
