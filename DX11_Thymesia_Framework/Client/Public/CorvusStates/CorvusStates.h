@@ -64,6 +64,7 @@
 #include "CorvusStates/CorvusState_PS_VargSword.h"
 #include "CorvusStates/CorvusState_PS_VargSwordStart.h"
 #include "CorvusStates/CorvusState_PS_BatRoar.h"
+#include "CorvusStates/CorvusState_PS_BatRoar_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_UrdSword.h"
 #include "CorvusStates/CorvusState_Climb_L_Down.h"
 #include "CorvusStates/CorvusState_Climb_L_Down_End.h"

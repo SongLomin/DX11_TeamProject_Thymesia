@@ -2012,6 +2012,9 @@
     <ClInclude Include="..\Public\Interaction_CheckPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4059,6 +4062,9 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

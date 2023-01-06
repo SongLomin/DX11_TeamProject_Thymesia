@@ -612,6 +612,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_PS_Hammer_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_Magician);
 	ADD_STATE_MACRO(CCorvusState_PS_BatRoar);
+	ADD_STATE_MACRO(CCorvusState_PS_BatRoar_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSword);
 	ADD_STATE_MACRO(CCorvusState_PS_UrdSword);
