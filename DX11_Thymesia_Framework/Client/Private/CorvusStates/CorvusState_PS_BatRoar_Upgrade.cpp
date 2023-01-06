@@ -16,6 +16,9 @@ void CCorvusState_PS_BatRoar_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex
 {
 	switch (In_KeyIndex)
 	{
+	case 43:
+		TurnOn_Effect("Corvus_PW_EyeGlow_Red");
+	return;
 	case 53:
 	{
 		GET_SINGLE(CGameManager)->Activate_Zoom(-2.f, 0.1f, EASING_TYPE::CUBIC_OUT);
@@ -23,17 +26,20 @@ void CCorvusState_PS_BatRoar_Upgrade::Call_NextKeyFrame(const _uint& In_KeyIndex
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
 		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
-		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 1.f, 1.f, 9.f, 0.4f);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.5f, 6.f, 0.8f);
 
 		_float3 vPlayerPos;
 		ZeroMemory(&vPlayerPos, sizeof(_float3));
 		XMStoreFloat3(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
 		vPlayerPos.y += 1.f;
-		GAMEINSTANCE->Set_RadialBlur(0.5f, vPlayerPos);
+		GAMEINSTANCE->Set_RadialBlur(0.75f, vPlayerPos);
 	}
 	return;
+	case 121:
+		GET_SINGLE(CGameManager)->Deactivate_Zoom(1.5f, EASING_TYPE::QUAD_OUT);
+		return;
 	case 130:
-		GET_SINGLE(CGameManager)->Deactivate_Zoom(1.f, EASING_TYPE::CUBIC_OUT);
+		TurnOff_Effect("Corvus_PW_EyeGlow_Red");
 		return;
 	}
 }
