@@ -72,12 +72,17 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
+    weak_ptr<CUI>   Get_This();
+
 public:
     void            Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
     virtual void    Set_Texture(const _char* sKey);
     virtual void    Set_UIPosition(const _float fX, const _float fY, const _float fSizeX, const _float fSizeY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER);
     virtual void    Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType);//먼저 선언된 사이즈가 있어야함.
     virtual void    Set_UIPosition(const _float fX, const _float fY);
+    void            Set_UIPositionAllChilds(const _float fX, const _float fY);
+
+
 
     virtual void    Set_UIDesc(UI_DESC _tUIDesc);
     virtual void    Set_Size(const _float& fSizeX, const _float& fSizeY);
@@ -105,9 +110,16 @@ public:
     virtual void            OnDisable() override;
 
     //Moon Functions
+
+public:
+    virtual _bool            MousePtInUI();
+
 protected:
     virtual void             Add_Child(weak_ptr<CUI> pChild);
     virtual void             Set_Target(weak_ptr<CBase> pTarget);
+
+
+
 
 public:
     _float2                  Get_Point(UI_POINT eType);

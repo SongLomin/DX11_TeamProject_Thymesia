@@ -20,6 +20,8 @@ void CSkill_VargSword::Start()
 
 void CSkill_VargSword::Init_SkillInfo()
 {
+	USE_START(CSkill_VargSword)
+
 	m_bUseAble = true;
 
 	m_eSkillName = SKILL_NAME::SKILL_VARGSWORD;

@@ -16,6 +16,7 @@ public:
 	virtual void    UseSkill() override;
 	void		OnStealSkill(weak_ptr<CSkill_Base>	pSkill);
 
+
 private:
 	void		Free();
 

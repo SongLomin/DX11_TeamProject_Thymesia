@@ -1781,6 +1781,24 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SKillIcon.h" />
+    <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
+    <ClInclude Include="..\Public\UI_EffectBase.h" />
+    <ClInclude Include="..\Public\UI_Enums.h" />
+    <ClInclude Include="..\Public\UI_EffectHeaders.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandMan.h">
       <Filter>02. GameObject\03. Actor\Character\Elite\01.BigHandMan</Filter>
     </ClInclude>

@@ -21,6 +21,8 @@ void CSkill_Scythe::Start()
 
 void CSkill_Scythe::Init_SkillInfo()
 {
+	USE_START(CSkill_Scythe)
+
 	m_bUseAble = true;
 
 	m_eSkillName = SKILL_NAME::SKILL_SCYTHE;

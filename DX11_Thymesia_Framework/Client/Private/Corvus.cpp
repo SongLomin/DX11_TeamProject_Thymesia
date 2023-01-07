@@ -128,7 +128,8 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
-	Test_BindSkill();
+
+	//Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -496,6 +497,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY02);
 		
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::AXEMAN);
+		m_pInventory.lock()->Push_Item(MONSTERTYPE::KNIFEWOMAN);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::VARG);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
@@ -687,6 +689,9 @@ void CCorvus::Ready_States()
 
 void CCorvus::Ready_Skills()
 {
+	//스킬 추가입니다.
+	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
+
 	Add_Component<CSkill_VargSword>();
 	Add_Component<CSkill_Axe>();
 	Add_Component<CStolenSkill>();
@@ -694,8 +699,6 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
 
-	//스킬 추가입니다.
-	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
 }
 
 void CCorvus::WriteTalentFromJson(json& Out_Json)
