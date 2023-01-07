@@ -32,7 +32,7 @@ void CGameManager::LateTick(_float fTimeDelta)
 	{
 		for (auto iter_EffectGroup = elem_List.second.begin(); iter_EffectGroup != elem_List.second.end();)
 		{
-			if (!(*iter_EffectGroup).lock().get())
+			if (!(*iter_EffectGroup).lock())
 			{
 				iter_EffectGroup = elem_List.second.erase(iter_EffectGroup);
 			}
@@ -606,10 +606,9 @@ HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	}
 
-	for (auto& elem : m_SectionEventers)
+	for (auto& elem_obj : m_ResetObjects)
 	{
-		for (auto& elem_obj : elem.second)
-			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+		elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	}
 
 	_vector vPlayerDeadSpotPos = m_pCurrentPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION);
@@ -641,10 +640,9 @@ void CGameManager::ResetWorld()
 			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	}
 
-	for (auto& elem : m_SectionEventers)
+	for (auto& elem_obj : m_ResetObjects)
 	{
-		for (auto& elem_obj : elem.second)
-			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+		elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	}
 }
 
@@ -758,24 +756,6 @@ void CGameManager::Change_NextLevel(void* pArg)
 	}
 
 	pCurrentLevel.lock()->Change_NextLevel(nullptr);
-}
-
-void  CGameManager::Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent)
-{
-	auto iter_find = m_SectionEventers.find(In_iSection);
-
-	if (iter_find == m_SectionEventers.end())
-	{
-		list<weak_ptr<CSection_Eventer>> ObjList;
-		ObjList.push_back(In_pSectionEvent);
-
-		m_SectionEventers[In_iSection] = ObjList;
-	}
-	else
-	{
-		iter_find->second.push_back(In_pSectionEvent);
-	}
-
 }
 
 void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj)
@@ -893,6 +873,11 @@ void CGameManager::Remove_SectionLight(_uint In_iSection, weak_ptr<CGameObject> 
 	}
 }
 
+void  CGameManager::Registration_OnlyResetObject(weak_ptr<CGameObject> In_pObj)
+{
+	m_ResetObjects.push_back(In_pObj);
+}
+
 void  CGameManager::Registration_Fog(weak_ptr<CFog> In_pObj)
 {
 	m_FogObject = In_pObj;
@@ -919,7 +904,7 @@ void CGameManager::OnLevelExit()
 {
 	m_SectionObejects.clear();
 	m_SectionLights.clear();
-	m_SectionEventers.clear();
+	m_ResetObjects.clear();
 
 	m_StoredEffects.clear();
 }

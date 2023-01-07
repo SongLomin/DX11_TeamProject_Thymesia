@@ -519,6 +519,8 @@
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
+    <ClInclude Include="..\Public\Camera_Interior.h" />
+    <ClInclude Include="..\Public\InteriorProp.h" />
     <ClInclude Include="..\Public\JavelinWeapon.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
@@ -1162,6 +1164,8 @@
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
+    <ClCompile Include="..\Private\Camera_Interior.cpp" />
+    <ClCompile Include="..\Private\InteriorProp.cpp" />
     <ClCompile Include="..\Private\JavelinWeapon.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />

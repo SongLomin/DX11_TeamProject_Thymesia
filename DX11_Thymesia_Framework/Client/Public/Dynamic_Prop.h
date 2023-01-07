@@ -37,6 +37,7 @@ protected:
     virtual void Load_FromJson(const json& In_Json) override;
 
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnEventMessage(_uint iArg) override;
 
     void Free();
 

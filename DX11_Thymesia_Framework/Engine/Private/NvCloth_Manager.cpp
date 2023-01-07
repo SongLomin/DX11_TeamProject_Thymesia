@@ -71,7 +71,6 @@ void CNvCloth_Manager::OnDestroy()
 	Safe_Delete(m_pAllocatorCallback);
 	Safe_Delete(m_pErrorCallback);
 	Safe_Delete(m_pAssertHander);
-	
 }
 
 void CNvCloth_Manager::Free()

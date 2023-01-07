@@ -2012,6 +2012,12 @@
     <ClInclude Include="..\Public\Interaction_CheckPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Interior.h">
+      <Filter>02. GameObject\00. Camera\NewFilter1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InteriorProp.h">
+      <Filter>02. GameObject\04. Prop\NewFilter1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4059,6 +4065,12 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\Camera_Interior.cpp">
+      <Filter>02. GameObject\00. Camera\NewFilter1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InteriorProp.cpp">
+      <Filter>02. GameObject\04. Prop\NewFilter1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5997,6 +6009,12 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade">
       <UniqueIdentifier>{82824cd3-ecf3-4b36-923d-9d8a4d69ffea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\00. Camera\NewFilter1">
+      <UniqueIdentifier>{86b93e9a-0b38-4da4-898b-87c9eb745011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\NewFilter1">
+      <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
