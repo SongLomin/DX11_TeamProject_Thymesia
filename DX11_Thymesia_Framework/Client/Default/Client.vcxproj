@@ -201,7 +201,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h" />
-    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h" />
     <ClInclude Include="..\Public\Effect_AttackArea.h" />
@@ -860,7 +859,6 @@
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword_Start.cpp" />
