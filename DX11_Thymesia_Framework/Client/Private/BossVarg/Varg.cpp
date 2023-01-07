@@ -103,6 +103,14 @@ HRESULT CVarg::Initialize(void* pArg)
 	m_fCullingRange = 999.f;
 #endif // _DEBUG
 
+	_uint iNvClothColliderCount;
+	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::VergSetting(iNvClothColliderCount);
+
+	m_pNvClothColliderCom = Add_Component<CNvClothCollider>();
+	m_pNvClothColliderCom.lock()->Init_NvClothColliders(m_pModelCom, NvClothColliderDesc, iNvClothColliderCount);
+
+	Safe_Delete_Array(NvClothColliderDesc);
+
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
@@ -173,7 +181,7 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 
 	//Bip001-Ponytail1
 
-	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
+	/*BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
 		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
 
 	_vector vSpherePos = XMVectorSet(0.2f, 0.f, 0.f, 1.f);
@@ -214,10 +222,14 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 
 	spheres[4] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f);
 
-	nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 5);
+	nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 5);*/
 
-	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
-	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->getNumSpheres());
+	m_pNvClothColliderCom.lock()->Update_Colliders(m_pTransformCom.lock()->Get_WorldMatrix());
+	m_pNvClothColliderCom.lock()->Set_Spheres(m_pModelCom.lock()->Get_MeshContainer(1));
+	m_pNvClothColliderCom.lock()->Set_Spheres(m_pModelCom.lock()->Get_MeshContainer(3));
+
+	//m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
+	//m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->getNumSpheres());
 
 	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() *
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix() *

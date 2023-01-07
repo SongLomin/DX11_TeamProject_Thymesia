@@ -14,6 +14,7 @@ namespace Engine
 	typedef size_t						_hashcode;
 
 	typedef unsigned long				_ulong;
+	typedef unsigned long long			_ulonglong;
 	typedef signed long					_long;
 
 	typedef float						_float;
@@ -38,6 +39,7 @@ namespace Engine
 	typedef FXMMATRIX					_fmatrix;
 
 	typedef unsigned long long			_flag;
+	typedef unsigned long long			_time;
 
 
 

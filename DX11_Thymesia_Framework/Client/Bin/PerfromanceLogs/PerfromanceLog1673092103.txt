@@ -1,0 +1,112 @@
+__________________________________________________
+For parts that require performance checks, 
+you can record them using GAMEINSTANCE's 'Begin_PerformanceTime' and 'End_PerformanceTime' functions.
+__________________________________________________
+Resource Rank 0.
+__________________________________________________
+CHECK NAME		: NvCloth_Tick
+AVG TIME		: 4761286
+MIN TIME		: 2300
+MAX TIME		: 203133300
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 1.
+__________________________________________________
+CHECK NAME		: Tick
+AVG TIME		: 4123813
+MIN TIME		: 5200
+MAX TIME		: 18950255700
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 2.
+__________________________________________________
+CHECK NAME		: Thread_Pre_Tick
+AVG TIME		: 400829
+MIN TIME		: 24900
+MAX TIME		: 3816200
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 3.
+__________________________________________________
+CHECK NAME		: Thread_PreLateTick
+AVG TIME		: 316145
+MIN TIME		: 6700
+MAX TIME		: 7422200
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 4.
+__________________________________________________
+CHECK NAME		: LateTick
+AVG TIME		: 270316
+MIN TIME		: 2600
+MAX TIME		: 6375400
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 5.
+__________________________________________________
+CHECK NAME		: Thread_Pre_BeforeRender
+AVG TIME		: 258893
+MIN TIME		: 25200
+MAX TIME		: 693759400
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 6.
+__________________________________________________
+CHECK NAME		: Thread_Tick
+AVG TIME		: 232144
+MIN TIME		: 6300
+MAX TIME		: 1929600
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 7.
+__________________________________________________
+CHECK NAME		: PhysX_Tick
+AVG TIME		: 167324
+MIN TIME		: 1500
+MAX TIME		: 1424800
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 8.
+__________________________________________________
+CHECK NAME		: Before_Render
+AVG TIME		: 78065
+MIN TIME		: 3900
+MAX TIME		: 698500
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 9.
+__________________________________________________
+CHECK NAME		: Render
+AVG TIME		: 55025
+MIN TIME		: 24800
+MAX TIME		: 2523100
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 10.
+__________________________________________________
+CHECK NAME		: Collision_Tick
+AVG TIME		: 49510
+MIN TIME		: 19500
+MAX TIME		: 23839700
+CALL COUNT		: 5203
+__________________________________________________
+
+Resource Rank 11.
+__________________________________________________
+CHECK NAME		: Thread_LateTick
+AVG TIME		: 24675
+MIN TIME		: 6000
+MAX TIME		: 1264400
+CALL COUNT		: 5203
+__________________________________________________
+

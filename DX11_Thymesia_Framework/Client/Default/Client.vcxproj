@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\CNvClothCollider.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h" />
@@ -527,6 +528,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h" />
+    <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
@@ -857,6 +859,7 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\CNvClothCollider.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp" />
@@ -1178,6 +1181,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp" />
+    <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />

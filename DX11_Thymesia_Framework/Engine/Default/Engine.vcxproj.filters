@@ -281,6 +281,9 @@
     <ClInclude Include="..\Public\DXUtilities.h">
       <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\COptimization_Manager.h">
+      <Filter>98. Managers\17. OptimizationManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -534,6 +537,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\NIS_Shader.cpp">
       <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\COptimization_Manager.cpp">
+      <Filter>98. Managers\17. OptimizationManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -815,6 +821,9 @@
     </Filter>
     <Filter Include="01. Elements\00. GameInstance">
       <UniqueIdentifier>{8d7e5b3d-8919-4d60-a4b7-3335f295e1d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\17. OptimizationManager">
+      <UniqueIdentifier>{44ef7174-743b-41ec-89c8-2ad54c90bdc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

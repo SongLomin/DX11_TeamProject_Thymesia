@@ -2127,6 +2127,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNvClothCollider.h">
+      <Filter>05. Component\08. NvClothCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Preset_NvClothCollider.h">
+      <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4271,6 +4277,15 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\CNvClothCollider.cpp">
+      <Filter>05. Component\08. NvClothCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_NvClothCollider.cpp">
+      <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -6335,6 +6350,12 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\NewFilter1">
       <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\08. NvClothCollider">
+      <UniqueIdentifier>{a5cb27b5-931d-41a8-a1f8-9da27b617cf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\08. Preset_NvClothCollider">
+      <UniqueIdentifier>{cd9d80f9-8542-4254-8cd4-7e04db9ea860}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

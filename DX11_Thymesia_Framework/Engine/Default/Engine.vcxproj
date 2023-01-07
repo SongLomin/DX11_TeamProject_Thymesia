@@ -202,6 +202,7 @@
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\CollisionCallBack.h" />
     <ClInclude Include="..\Public\CollisionSimulationEventCallBack.h" />
+    <ClInclude Include="..\Public\COptimization_Manager.h" />
     <ClInclude Include="..\Public\CustomContextManagerCallback.h" />
     <ClInclude Include="..\Public\CustomPxAllocatorCallback.h" />
     <ClInclude Include="..\Public\CustomPxAssertHandler.h" />
@@ -328,6 +329,7 @@
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\CollisionCallBack.cpp" />
     <ClCompile Include="..\Private\CollisionSimulationEventCallBack.cpp" />
+    <ClCompile Include="..\Private\COptimization_Manager.cpp" />
     <ClCompile Include="..\Private\CustomContextManagerCallback.cpp" />
     <ClCompile Include="..\Private\CustomPxAllocatorCallback.cpp" />
     <ClCompile Include="..\Private\CustomPxAssertHandler.cpp" />

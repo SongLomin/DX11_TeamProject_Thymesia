@@ -5,3 +5,4 @@
 #include "Preset_DynamicProp.h"
 #include "Preset_AddGameObject.h" 
 #include "Preset_NvClothMesh.h"
+#include "Preset_NvClothCollider.h"

@@ -5,6 +5,7 @@ BEGIN(Client)
 class CTalent_Sword;
 class CPlayerSkill_System;
 class CCamera_Target;
+class CNvClothCollider;
 
 class CCorvus final :
 	public CPlayer
@@ -21,27 +22,16 @@ private:
 	virtual void LateTick(_float fTimeDelta)       override;
 	virtual void Thread_PreBeforeRender(_float fTimeDelta) override;
 	virtual void Before_Render(_float fTimeDelta)  override;
-	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
-	void Free();
-
 	virtual void SetUp_ShaderResource() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
-	virtual void OnEnable(void* pArg) override;
-	virtual void OnDisable() override;
 
-	virtual void OnEventMessage(_uint iArg) override;
-
-	virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-	virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-
-	virtual void OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
+private:
 
 	void Update_KeyInput(_float fTimeDelta);
 	void Debug_KeyInput(_float fTimeDelta);
 
 	virtual void Move_RootMotion_Internal() override;
-
 
 	void Test_BindSkill();
 
@@ -57,6 +47,9 @@ public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
 
 private:
+	weak_ptr<CNvClothCollider> m_pNvClothColliderCom;
+
+private:
 	LIGHTDESC m_LightDesc;
 	_float3 m_vMoveScale{ 1.f,1.f,1.f };
 
@@ -64,11 +57,23 @@ private:
 	_uint                    m_iContainerIndex = 0;
 
 	weak_ptr<CPlayerSkill_System> m_pSkillSystem;
-
 	weak_ptr<CCamera_Target> m_pCamera;
 	weak_ptr<CTransform> m_pCameraTransform;
 
 	_float4x4 m_TransformationMatrix;
+
+private:
+	virtual void OnEnable(void* pArg) override;
+	virtual void OnDisable() override;
+
+	virtual void OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
+	virtual void OnEventMessage(_uint iArg) override;
+
+	virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+	virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+
+	void Free();
 };
 
 END

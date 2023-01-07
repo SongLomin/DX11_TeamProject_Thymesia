@@ -50,9 +50,9 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 	{
 		//pThread_Manager->Enqueue_Job(bind(&Solver::simulateChunk, m_pSolver, i));
 		m_pSolver->simulateChunk(i);
-	} 
+	}  
 
-	pThread_Manager->Wait_JobDone();
+	//pThread_Manager->Wait_JobDone();
 
 	m_pSolver->endSimulation();
 
