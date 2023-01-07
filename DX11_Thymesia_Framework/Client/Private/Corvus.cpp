@@ -708,11 +708,6 @@ void CCorvus::Ready_Skills()
 
 }
 
-void CCorvus::SetUp_ShaderResource()
-{
-	__super::SetUp_ShaderResource();
-}
-
 void CCorvus::WriteTalentFromJson(json& Out_Json)
 {
 

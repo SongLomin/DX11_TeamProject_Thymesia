@@ -559,13 +559,6 @@ namespace Client
 		SKILLBUTTON_LOCK_TYPE_END
 	};
 
-	enum class SKILLBUTTON_LOCK_TYPE
-	{
-		LOCKED,
-		UNLOCKED,
-		SKILLBUTTON_LOCK_TYPE_END
-	};
-
 }
 
 

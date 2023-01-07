@@ -205,7 +205,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
     m_pHover.lock()->Set_Texture("None");
     m_pIcon.lock()->Set_Texture("None");
 
-    m_pBorderEasingAlpha = m_pBorder.lock()->Add_Component<CEasingComponent_Alpha>();
 
     Add_Child(m_pBorder);
     Add_Child(m_pFrame);
@@ -215,7 +214,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnMouseOver()
 {
-     m_pBorderEasingAlpha.lock()->Set_Lerp(0.f, 1.f, 0.5f, EASING_TYPE::QUAD_INOUT, CEasingComponent::LOOP_GO_AND_BACK, false);
 
      Callback_MouseOver(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
 
@@ -236,7 +234,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnLButtonUp()
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnMouseOut()
 {
-    m_pBorderEasingAlpha.lock()->Set_Lerp(m_pBorder.lock()->Get_AlphaColor(), 0.f, 0.5f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, false);
 
     Callback_MouseOut();
 
