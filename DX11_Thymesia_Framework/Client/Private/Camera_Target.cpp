@@ -32,9 +32,6 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_pTransformCom.lock()->Add_Position(XMVectorSet(0.f, 2.f, 0.f, 1.f));
 	XMStoreFloat4x4(&m_CinemaWorldMatrix, XMMatrixIdentity());
 
-
-	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
-
 	m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
 	m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
 	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom),
@@ -58,6 +55,7 @@ HRESULT CCamera_Target::Start()
 	XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerPos);
 	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
+	GET_SINGLE(CGameManager)->Use_EffectGroup("GlobalDust", m_pTransformCom);
 
 	return S_OK;
 }

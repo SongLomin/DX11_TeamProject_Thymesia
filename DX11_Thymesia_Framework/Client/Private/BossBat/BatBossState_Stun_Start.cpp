@@ -4,7 +4,6 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "Player.h"
-//#include "BehaviorBase.h"
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
@@ -44,15 +43,12 @@ void CBatBossState_Stun_Start::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-
 void CBatBossState_Stun_Start::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
-
-
 
 void CBatBossState_Stun_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -63,24 +59,12 @@ void CBatBossState_Stun_Start::OnStateStart(const _float& In_fAnimationBlendTime
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	Get_OwnerMonster()->Set_RimLightDesc(6.f, { 0.5f,1.f,0.9f }, 1.f);
-
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-
-}	
-
+}
 
 void CBatBossState_Stun_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-
 }
-
-
 
 void CBatBossState_Stun_Start::Call_AnimationEnd()
 {
@@ -102,11 +86,8 @@ void CBatBossState_Stun_Start::Free()
 
 _bool CBatBossState_Stun_Start::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
-
-
 
 	return false;
 }

@@ -127,6 +127,9 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, DEVICECONTEXT, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 #endif // _USE_THREAD_
 
+
+	m_pTransformCom.lock();
+
 	__super::LateTick(fTimeDelta);
 
 	if (Check_DisableAllParticle())
@@ -236,6 +239,7 @@ void CEffect_Rect::SetUp_ShaderResource()
 	}
 
 	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
+
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
 	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
@@ -320,7 +324,14 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion // Particle Options
 
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
+	{
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction) || Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			Out_Json["Goal_Range"] = m_tEffectParticleDesc.fGoalRange;
+		}
+
 		CJson_Utility::Write_Float3(Out_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
+	}
 
 	Out_Json["ShaderPassIndex"] = m_tEffectParticleDesc.iShaderPassIndex;
 
@@ -411,6 +422,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	{
 		Out_Json["Scale_Easing_Type"] = m_tEffectParticleDesc.iScaleEasingType;
 		Out_Json["Scale_Easing_Total_Time"] = m_tEffectParticleDesc.fScaleEasingTotalTime;
+
+		CJson_Utility::Write_Float2(Out_Json["Easing_Start_Scale"], m_tEffectParticleDesc.vEasingStartScale);
+		CJson_Utility::Write_Float2(Out_Json["Easing_Target_Scale"], m_tEffectParticleDesc.vEasingTargetScale);
 	}
 	else
 	{
@@ -589,15 +603,18 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma endregion // Particle Options
 
-#pragma region Attraction
-
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
 	{
-		if (In_Json.find("Goal_Position") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
-	}
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction) || Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			m_tEffectParticleDesc.fGoalRange = In_Json["Goal_Range"];
+		}
 
-#pragma endregion // Attraction
+		if (In_Json.find("Goal_Position") != In_Json.end())
+		{
+			CJson_Utility::Load_Float3(In_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
+		}
+	}
 
 	if (In_Json.find("ShaderPassIndex") != In_Json.end())
 		m_tEffectParticleDesc.iShaderPassIndex = In_Json["ShaderPassIndex"];
@@ -791,6 +808,11 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			m_tEffectParticleDesc.iScaleEasingType = In_Json["Scale_Easing_Type"];
 		if (In_Json.find("Scale_Easing_Total_Time") != In_Json.end())
 			m_tEffectParticleDesc.fScaleEasingTotalTime = In_Json["Scale_Easing_Total_Time"];
+
+		if (In_Json.find("Easing_Start_Scale") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Easing_Start_Scale"], m_tEffectParticleDesc.vEasingStartScale);
+		if (In_Json.find("Easing_Target_Scale") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Easing_Target_Scale"], m_tEffectParticleDesc.vEasingTargetScale);
 	}
 	else
 	{
@@ -973,6 +995,8 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 			if (m_tParticleDescs[i].fCurrentSpawnTime > m_tParticleDescs[i].fTargetSpawnTime)
 			{
+				// 파티클 생성 시점
+
 				m_tParticleDescs[i].bEnable = true;
 
 				if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
@@ -1249,12 +1273,14 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 	{
 		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction))
 		{
-			if (SMath::Is_Equal(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition))
+			if (SMath::Is_InRange(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition, m_tEffectParticleDesc.fGoalRange))
+			{
 				return;
+			}
 		}
 		else if (Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
 		{
-			if (SMath::Is_Equal(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition))
+			if (SMath::Is_InRange(m_tParticleDescs[i].vCurrentTranslation, m_tEffectParticleDesc.vGoalPosition, m_tEffectParticleDesc.fGoalRange))
 			{
 				m_tParticleDescs[i].vCurrentScale = { 0.f, 0.f };
 			}
@@ -1284,18 +1310,9 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Gravity))
 	{
-		_vector vDeltaGravity(XMVectorSet(0.f, 0.f, 0.f, 0.f));
-
-		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		_float3 f3DeltaGravity;
-		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
-
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
+		m_tParticleDescs[i].vCurrentGravity.x += m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta);
+		m_tParticleDescs[i].vCurrentGravity.y += m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta);
+		m_tParticleDescs[i].vCurrentGravity.z += m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta);
 	}
 }
 
@@ -1343,8 +1360,8 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 		(
 			vScale
 			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMinLimitScale)
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMaxLimitScale)
+			, XMLoadFloat2(&m_tEffectParticleDesc.vEasingStartScale)
+			, XMLoadFloat2(&m_tEffectParticleDesc.vEasingTargetScale)
 			, fElapsedTime
 			, m_tEffectParticleDesc.fScaleEasingTotalTime
 		);
@@ -2277,6 +2294,22 @@ void CEffect_Rect::Tool_Attraction()
 		Tool_ToggleOption("Stop", "##Stop_At_GoalAttraction", EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction);
 		Tool_ToggleOption("Kill", "##Kill_At_GoalAttraction", EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction);
 
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction))
+		{
+			TurnOff_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction);
+		}
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			TurnOff_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction);
+		}
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Stop_At_GoalAttraction) || Check_Option(EFFECTPARTICLE_DESC::Option3::Kill_At_GoalAttraction))
+		{
+			ImGui::Text("Goal Range"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat("##Goal_Range", &m_tEffectParticleDesc.fGoalRange, 0.01f, 0.f, 0.f, "%.5f");
+		}
+
 		ImGui::Text("Goal Position"); ImGui::SetNextItemWidth(300.f);
 		ImGui::DragFloat3("##Goal_Position", &m_tEffectParticleDesc.vGoalPosition.x, 0.01f, 0.f, 0.f, "%.5f");
 
@@ -2625,7 +2658,6 @@ void CEffect_Rect::Tool_Scale()
 		}
 	}
 
-
 	if (ImGui::TreeNode("Scale Limit"))
 	{
 		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit);
@@ -2688,10 +2720,32 @@ void CEffect_Rect::Tool_Scale_Easing()
 	ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
 	ImGui::Text("Start Scale"); ImGui::SetNextItemWidth(300.f);
-	ImGui::DragFloat2("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+	ImGui::DragFloat2("##Easing_Start_Scale", &m_tEffectParticleDesc.vEasingStartScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
 	ImGui::Text("Target Scale"); ImGui::SetNextItemWidth(300.f);
-	ImGui::DragFloat2("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+	ImGui::DragFloat2("##Easing_Target_Scale", &m_tEffectParticleDesc.vEasingTargetScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+	if (ImGui::TreeNode("Scale Limit"))
+	{
+		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit);
+
+		if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit)
+			m_tEffectParticleDesc.vMaxLimitScale = m_tEffectParticleDesc.vMinLimitScale;
+
+		ImGui::Text("Min Limit Scale"); ImGui::SetNextItemWidth(300.f);
+		ImGui::DragFloat2("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+		ImGui::Text("Max Limit Scale"); ImGui::SetNextItemWidth(300.f);
+		ImGui::DragFloat2("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Square_Scale))
+		{
+			m_tEffectParticleDesc.vMinLimitScale.y = m_tEffectParticleDesc.vMinLimitScale.x;
+			m_tEffectParticleDesc.vMaxLimitScale.y = m_tEffectParticleDesc.vMaxLimitScale.x;
+		}
+
+		ImGui::TreePop();
+	}
 }
 
 void CEffect_Rect::Tool_Sprite()

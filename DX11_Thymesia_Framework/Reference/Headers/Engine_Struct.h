@@ -398,6 +398,7 @@ namespace Engine
 		_float3			vTargetSpeedForce;  // is Goal Position when using easing position
 
 		_float			fGravityAcc;
+		_float3			vCurrentGravity;
 
 		// For. Rotation
 		_float3         vCurrentRotation;
