@@ -343,7 +343,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//≈∏∞Ÿ ∞Ì¡§
 
 	_matrix vLookTargetMatrix;
 
-	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(30.f));
+	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(25.f));
 
 	vLookTargetMatrix.r[0] = XMVector3TransformNormal(vRight, RotationMatrix);
 	vLookTargetMatrix.r[1] = XMVector3TransformNormal(vUp, RotationMatrix);

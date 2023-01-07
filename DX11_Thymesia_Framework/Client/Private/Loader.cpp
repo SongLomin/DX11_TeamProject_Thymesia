@@ -402,6 +402,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter1.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	GAMEINSTANCE->Set_IrradianceColorScale(_float3(1.f, 1.f, 1.f));
+
 	lstrcpy(m_szLoadingText, TEXT("GamePlay : Loading Complete"));
 
 	m_isFinished = true;
@@ -476,6 +478,7 @@ HRESULT CLoader::Loading_ForStage2Level()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	GAMEINSTANCE->Set_IrradianceColorScale(_float3(0.53f, 0.43f, 0.43f));
 
 	m_isFinished = true;
 	return S_OK;
@@ -521,6 +524,8 @@ HRESULT CLoader::Loading_ForStage3Level()
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
+	GAMEINSTANCE->Set_IrradianceColorScale(_float3(1.f, 1.f, 1.f));
 
 	m_isFinished = true;
 

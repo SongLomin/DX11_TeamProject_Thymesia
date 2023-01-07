@@ -49,7 +49,6 @@ HRESULT CLevel_Stage3::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -50.67f, 50.f, 40.f, 1.f }, { 3.45f, 0.f, 40.f });
 
 
-
 	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
