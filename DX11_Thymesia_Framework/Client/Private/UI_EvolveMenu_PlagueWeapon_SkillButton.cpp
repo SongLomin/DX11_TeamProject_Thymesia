@@ -122,19 +122,15 @@ _uint CUI_EvolveMenu_PlagueWeapon_SkillButton::Get_RequirementSkillPiece()
 {
     _uint iRequirementSkillPiece = 3;
     
-
     switch (m_eSkillName)
     {
-    case Client::SKILL_NAME::SKILL_AXE:
-        break;
-    case Client::SKILL_NAME::SKILL_KNIFE:
-        break;
     case Client::SKILL_NAME::SKILL_HAMMER:
         iRequirementSkillPiece = 1;
         break;
-    case Client::SKILL_NAME::SKILL_SCYTHE:
-        break;
     case Client::SKILL_NAME::SKILL_VARGSWORD:
+        iRequirementSkillPiece = 1;
+        break;
+    case Client::SKILL_NAME::SKILL_BLOODSTORM:
         iRequirementSkillPiece = 1;
         break;
     case Client::SKILL_NAME::SKILL_END:
@@ -142,7 +138,6 @@ _uint CUI_EvolveMenu_PlagueWeapon_SkillButton::Get_RequirementSkillPiece()
     default:
         break;
     }
-
     return iRequirementSkillPiece;
 }
 

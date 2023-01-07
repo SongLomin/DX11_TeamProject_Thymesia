@@ -356,14 +356,6 @@ namespace Client
 		GROWING_FEATHER_LV3 = (1 << 40),
 
 
-
-
-
-
-
-
-
-
 		FLAG_END
 	};
 
@@ -457,7 +449,6 @@ namespace Client
 		URD = (1 << 10),
 		MONSTERTYPE_END
 
-
 	};
 
 	enum class STATE_FLAG
@@ -490,6 +481,7 @@ namespace Client
 		SKILL_HAMMER,
 		SKILL_SCYTHE,
 		SKILL_VARGSWORD,
+		SKILL_BLOODSTORM,
 		SKILL_END
 	};
 
@@ -510,6 +502,10 @@ namespace Client
 		SKILLPIECE_KNIFE,
 		SKILLPIECE_SCYTHE,
 		SKILLPIECE_HAMMER,
+		SKILLPIECE_BLOODSTORM,
+
+
+
 		ITEM_NAME_END
 	};
 
@@ -559,6 +555,12 @@ namespace Client
 		SKILLBUTTON_LOCK_TYPE_END
 	};
 
+	enum class SOUND_TYPE
+	{
+		SOUND_TYPE_EFFECT,
+		SOUND_TYPE_BACKGROUND,
+		SOUND_TYPE_VOICE,
+	};
 }
 
 

@@ -358,6 +358,16 @@ _float CUI::Get_Y()
 	return m_tUIDesc.fY;
 }
 
+_float2 CUI::Get_Size()
+{
+	_float2 fSize;
+
+	fSize.x = m_tUIDesc.fSizeX;
+	fSize.y = m_tUIDesc.fSizeY;
+
+	return fSize;
+}
+
 _float2 CUI::GetPos()
 {
 	_float2 fPos;

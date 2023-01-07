@@ -501,6 +501,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::VARG);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_BLOODSTORM);
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
@@ -698,7 +699,7 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Knife>();
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
-
+	Add_Component<CSkill_BloodStorm>();
 }
 
 void CCorvus::WriteTalentFromJson(json& Out_Json)
