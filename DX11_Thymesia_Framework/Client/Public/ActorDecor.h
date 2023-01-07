@@ -28,6 +28,9 @@ public:// CGameObject을(를) 통해 상속됨
 public:
     void Init_ActorDecor(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
     void Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
+    void Set_OffsetMatrix(_fmatrix In_OffsetMatrix) { XMStoreFloat4x4(&m_OffsetMatrix, In_OffsetMatrix); }
+    void Set_Offset(_fvector In_OffsetVector) { XMStoreFloat3(&m_vOffset, In_OffsetVector); };
+
     weak_ptr<CGameObject> Get_ParentObject();
  
 
@@ -47,6 +50,7 @@ private:
 
 
     _float4x4				m_WorldMatrix;
+    _float4x4               m_OffsetMatrix;
     _float4x4               m_TransformationMatrix;
     _float3                 m_vOffset;
 

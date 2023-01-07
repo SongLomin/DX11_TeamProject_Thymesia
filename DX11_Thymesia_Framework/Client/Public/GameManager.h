@@ -186,8 +186,6 @@ public:
     */
 
 public:
-    void  Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent);
-
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
     void  Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType);
     void  Remove_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
@@ -195,6 +193,8 @@ public:
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
     void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
     void  Remove_SectionLight(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
+
+    void  Registration_OnlyResetObject(weak_ptr<CGameObject> In_pObj);
 
     void  Registration_Fog(weak_ptr<CFog> In_pObj);
     void  Activate_Fog(_uint In_iFogIndex);
@@ -219,14 +219,14 @@ private:
     typedef map<_int, KEYEVENT>                                  ANIM_MAP;
 
 private:
-    typedef map<_int, list<weak_ptr<CSection_Eventer>>>    SECTION_EVENTER;
     typedef map<_int, list<weak_ptr<CGameObject>>>         SECTION_OBJ;
     typedef map<_int, list<weak_ptr<CLight_Prop>>>         SECTION_LIGHT;
+    typedef list<weak_ptr<CGameObject>>                    RESET_OBJ;
 
-    SECTION_EVENTER                     m_SectionEventers;
     SECTION_OBJ                         m_SectionObejects;
-    weak_ptr<CFog>                      m_FogObject;
     SECTION_LIGHT                       m_SectionLights;
+    RESET_OBJ                           m_ResetObjects;
+    weak_ptr<CFog>                      m_FogObject;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
     _uint                               m_iPreEventSection;
