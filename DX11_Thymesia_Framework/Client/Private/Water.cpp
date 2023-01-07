@@ -98,6 +98,7 @@ HRESULT CWater::SetUp_ShaderResource()
 
 
 
+
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
 
 	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };

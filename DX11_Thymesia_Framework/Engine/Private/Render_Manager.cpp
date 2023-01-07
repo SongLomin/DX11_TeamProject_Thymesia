@@ -210,7 +210,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Ambient"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_HBAO+"),

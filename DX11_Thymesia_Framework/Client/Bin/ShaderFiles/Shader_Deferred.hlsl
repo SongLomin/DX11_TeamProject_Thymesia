@@ -272,7 +272,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         vector vReflect = reflect(normalize(g_vLightDir), vNormal);
 
 
-        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) ;
+        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * g_fLightIntensity;
         Out.vSpecular.a = 0.f;
     }
     
@@ -324,7 +324,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     float fDenom = fDistance / g_fRange;
     float fAtt = 1.f / (1.f + fDenom * fDenom);
     
-    clip(fAtt - 0.05f);
+    clip(fAtt - 0.1f);
     
     fAtt *= g_fLightIntensity;
     vector vLook = normalize(g_vCamPosition - vWorldPos);
@@ -430,9 +430,9 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
     float fDistance = length(vLightDir);
 
     float fDenom = fDistance / g_fRange;
-    float fAtt = max(0.0001f, 1.f / (1.f + fDenom * fDenom));
+    float fAtt = 1.f / (1.f + fDenom * fDenom);
  
-    clip(fAtt - 0.05f);
+    clip(fAtt - 0.0001f);
     
     fAtt *= g_fLightIntensity;
     
@@ -578,7 +578,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
  
         litColor = pow(litColor, 2.2f);
       
-        Out.vColor = vAmbientDesc + vSpecular /* * (1 - bIsInShadow)*/ + (litColor * float4(g_IrradianceColorScale, 1.f));
+        Out.vColor = vAmbientDesc + vSpecular*vORMDesc.a + (litColor * float4(g_IrradianceColorScale, 1.f));
         Out.vColor.rgb *= vViewShadow.rgb;
         Out.vColor.rgb *= vHBAO.rgb;
            
@@ -598,7 +598,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     
    
         
-    float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
+    float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.2f));
         
     Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
         
@@ -922,7 +922,7 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
  
     clip(49.5f - iStepDistance);
 
-    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * (1.f - iStepDistance / 60.f);
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * (1.f - iStepDistance / 50.f);
    
     return Out;
 }

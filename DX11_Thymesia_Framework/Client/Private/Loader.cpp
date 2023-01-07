@@ -418,7 +418,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
 	//GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
-	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.1f, 1.05f, 1.05f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.0f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.07f);
 	GAMEINSTANCE->Set_Saturation(1.7f);
 	GAMEINSTANCE->Set_Exposure(2.f);
@@ -494,12 +494,12 @@ HRESULT CLoader::Loading_ForStage2Level()
 #else // _BRIGHT_LIGHT_
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.15f, 0.14f, 1.f);
+	LightDesc.vAmbient = _float4(0.1f, 0.05f, 0.04f, 1.f);
+	LightDesc.vSpecular = _float4(0.3f, 0.25f, 0.24f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.2f;
+	LightDesc.fIntensity = 1.f;
 #endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);

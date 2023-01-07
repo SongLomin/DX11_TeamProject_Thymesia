@@ -134,13 +134,12 @@ PS_OUT PS_MAIN_GODRAY(PS_IN In)
         vSampleUV -= vDeltaTexCoord;
         
         float fDepth = g_DepthTexture.Sample(DefaultSampler, vSampleUV + vDeltaTexCoord * fDither).x;
+  
         s += (fDepth >= 0.9999f) * 1.f / 64.f;
-
     }
-      
-
-    float fAtt = min(0.5f, max(0.01f, 10.f / fDistance));
-           
+    
+    float fAtt = min(0.3f, max(0.01f, 10.f / fDistance));
+    
     Out.vColor = lerp(Out.vColor, g_vLightDiffuse, fAtt * s * g_fGodRayScale);
     
     return Out;
