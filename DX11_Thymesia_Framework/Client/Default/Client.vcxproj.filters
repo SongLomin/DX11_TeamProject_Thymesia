@@ -1831,6 +1831,9 @@
     <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
+    <ClInclude Include="..\Public\UI_EffectBase.h" />
+    <ClInclude Include="..\Public\UI_Enums.h" />
+    <ClInclude Include="..\Public\UI_EffectHeaders.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3706,6 +3709,7 @@
     <ClCompile Include="..\Private\UI_UnlockEventUI.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

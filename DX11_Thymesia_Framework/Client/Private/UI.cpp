@@ -102,7 +102,6 @@ void CUI::LateTick(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 	}
 
-
 	m_fShakedPos.x = m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x;
 	m_fShakedPos.y = -m_tUIDesc.fY + (g_iWinCY * 0.5f) - m_fOffsetPosition.y;
 

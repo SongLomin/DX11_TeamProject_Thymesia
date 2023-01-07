@@ -574,7 +574,10 @@
     <ClInclude Include="..\Public\UI_Cursor.h" />
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
+    <ClInclude Include="..\Public\UI_EffectBase.h" />
+    <ClInclude Include="..\Public\UI_EffectHeaders.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
+    <ClInclude Include="..\Public\UI_Enums.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
@@ -1171,6 +1174,7 @@
     <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
     <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
