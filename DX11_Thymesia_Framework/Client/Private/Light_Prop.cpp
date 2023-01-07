@@ -78,14 +78,17 @@ HRESULT CLight_Prop::Start()
 #ifdef _DEBUG
 	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
 	{
-		_float fDefaultDesc[4] = { 1.f, 0.f, 0.f, 0.f };
-		SetUpColliderDesc(fDefaultDesc);
+		SetUpColliderDesc();
+
+		m_pColliderCom.lock()->Set_DebugColor
+		(
+			("" == m_pModelCom.lock()->Get_ModelKey()) ? (XMVectorSet(1.f, 1.f, 0.f, 1.f)) : (XMVectorSet(0.5f, 0.5f, 0.f, 1.f))
+		);
 	}
 	else
 	{
 		m_pColliderCom.lock()->Set_Enable(false);
 	}
-
 #endif
 
 	return S_OK;
@@ -104,18 +107,22 @@ void CLight_Prop::Tick(_float fTimeDelta)
 
 void CLight_Prop::LateTick(_float fTimeDelta)
 {
+	if (!m_pModelCom.lock()->Get_ModelData().lock().get())
+		return;
+
 	__super::LateTick(fTimeDelta);
 }
 
 void CLight_Prop::Before_Render(_float fTimeDelta)
 {	
+	if (!m_pModelCom.lock()->Get_ModelData().lock().get())
+		return;
+
 	__super::Before_Render(fTimeDelta);
 }
 
 HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (!m_pModelCom.lock()->Get_ModelData().lock().get()) // 모델링 없을 경우 그냥 패스
-		return S_OK;
 
 	if (FAILED(__super::SetUp_ShaderResource()))
 		return E_FAIL;
@@ -261,10 +268,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 			if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
 				GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
-
-#ifdef _DEBUG
-			m_pColliderCom.lock()->Set_Enable(true);
-#endif
 		}
 		break;
 
@@ -337,12 +340,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						{
 							m_fTargetIntensity = m_tLightDesc.fIntensity;
 							m_fTargetRange     = m_tLightDesc.fRange;
-#ifdef _DEBUG
-							COLLIDERDESC ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
-							ColliderDesc.vScale.x = m_fTargetRange;
-
-							m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-#endif
 						}
 					}
 					break;
@@ -444,14 +441,14 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 }
 
 #ifdef _DEBUG
-void CLight_Prop::SetUpColliderDesc(_float* _pColliderDesc)
+void CLight_Prop::SetUpColliderDesc()
 {
 	COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
     ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::ONLY_VIEW;
-    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
-    ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
+    ColliderDesc.vScale       = _float3(2.f, 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

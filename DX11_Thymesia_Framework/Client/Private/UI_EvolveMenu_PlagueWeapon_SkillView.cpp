@@ -31,7 +31,7 @@ HRESULT CUI_EvolveMenu_PlagueWeapon_SkillView::Initialize(void* pArg)
 	SetUp_SkillPos();
 	SetUp_SkillButtons();
 	SetUp_PlayerSkillSlot();
-
+	
 
 
 
@@ -48,6 +48,7 @@ HRESULT CUI_EvolveMenu_PlagueWeapon_SkillView::Start()
 void CUI_EvolveMenu_PlagueWeapon_SkillView::Tick(_float fTimeDelta)
 {
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
+
 
 	__super::Tick(fTimeDelta);
 
@@ -186,7 +187,7 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::Bind_Callback(weak_ptr<CUI_EvolveMen
 
 	pButton.lock()->Callback_UnLockSkill += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnUnlockSkill, this,
 		placeholders::_1);
-
+	
 	pButton.lock()->Callback_ButtonUp += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnLButtonUp, this,
 		placeholders::_1);
 

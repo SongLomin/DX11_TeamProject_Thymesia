@@ -32,6 +32,7 @@ private:
     void            OnEnable(void* pArg) override;
     void            OnDisable() override;
 
+
 public:
     void            Bind_Callback(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pButton);
 
@@ -55,7 +56,7 @@ private:
     
     vector<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>    m_vecSkillButton;
     weak_ptr<CCustomUI>         EvolveMenu_SkillView_Frame;
-
+    
     vector<weak_ptr<CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot>>    m_vecPlayerSkillSlot;
 
     

@@ -25,6 +25,7 @@ private:
 	_bool			Check_UnLocked();
 
 public:
+	virtual void    Set_UIPosition(const _float fX, const _float fY) override;
 	void			Set_Skill(SKILL_NAME eSkillName);
 
 	SKILL_NAME		Get_SkillName() { return m_eSkillName; }
@@ -53,12 +54,13 @@ protected:
 
 	virtual void	OnLButtonDown() override; 
 	virtual void	OnMouseOut() override;
-	virtual void	OnLButtonUp() override;
+	virtual void	OnLButtonUp() override; 
 
 
 private:
 	weak_ptr<CCustomUI>			m_pHover;
 	weak_ptr<CCustomUI>			m_pFrame;
+	weak_ptr<CCustomUI>			m_pBorder;
 	weak_ptr<CUI_EvolveMenu_SKillIcon>			m_pIcon;
 
 	weak_ptr<CUI>	 m_pMyOriginSlot;
@@ -68,7 +70,7 @@ public:
 	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_MouseOver;
 	FDelegate<>														Callback_MouseOut;
 	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_UnLockSkill;
-	
+
 	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_ButtonUp;
 	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_ButtonDown;
 

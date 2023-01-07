@@ -282,6 +282,8 @@ void CMonster::OnEventMessage(_uint iArg)
     if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
     {
         ImGui::InputInt("SectionIndex", &m_tLinkStateDesc.iSectionIndex);
+    
+            
     }
 
     if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
@@ -331,12 +333,18 @@ void CMonster::OnDestroy()
     __super::OnDestroy();
 
     for (auto& elem : m_pWeapons)
-        elem.lock()->Set_Dead();
+    {
+        if (elem.lock())
+            elem.lock()->Set_Dead();
+    }
 
+	m_pWeapons.clear();
     for (auto& elem : m_pActorDecor)
-        elem.lock()->Set_Dead();
+    {
+		if (elem.lock())
+			elem.lock()->Set_Dead();
+    }
 
-    m_pWeapons.clear();
     m_pActorDecor.clear();
 }
 

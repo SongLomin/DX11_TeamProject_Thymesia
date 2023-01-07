@@ -36,9 +36,6 @@ void CSkill_Axe::Init_SkillInfo()
 
 	m_pRequirementMana->Init_Req(m_fRequiredCost);
 	m_pRequirementTime->Init_Req(0.f);
-
-
-
 }
 
 void CSkill_Axe::Init_State()

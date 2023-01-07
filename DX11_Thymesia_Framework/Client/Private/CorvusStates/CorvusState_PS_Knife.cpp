@@ -7,12 +7,36 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "Animation.h"
+#include "PhysXController.h"
 #include "GameManager.h"
-#include "Monster.h"
-#include "NorMonStates.h"
 
 GAMECLASS_C(CCorvusState_PS_Knife);
 CLONE_C(CCorvusState_PS_Knife, CComponent)
+
+void CCorvusState_PS_Knife::Call_AnimationEnd()
+{
+	__super::Call_AnimationEnd();
+}
+
+void CCorvusState_PS_Knife::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 63:
+		TurnOn_Effect("Corvus_PW_EyeGlow");
+		return;
+	case 50:
+		_float3 vPosition;
+		ZeroMemory(&vPosition, sizeof(_float3));
+		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position());
+		GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
+		return;
+	case 78:
+		TurnOff_Effect("Corvus_PW_EyeGlow");
+		return;
+	}
+}
 
 HRESULT CCorvusState_PS_Knife::Initialize_Prototype()
 {
@@ -23,15 +47,12 @@ HRESULT CCorvusState_PS_Knife::Initialize_Prototype()
 HRESULT CCorvusState_PS_Knife::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
 void CCorvusState_PS_Knife::Start()
 {
 	__super::Start();
-	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Knife_A_V1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Knife::Call_AnimationEnd, this);
 }
@@ -39,70 +60,32 @@ void CCorvusState_PS_Knife::Start()
 void CCorvusState_PS_Knife::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
 void CCorvusState_PS_Knife::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	Check_AndChangeNextState();
-}
-
-void CCorvusState_PS_Knife::OnDisable()
-{
-
 }
 
 void CCorvusState_PS_Knife::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	
-#endif
-#endif
-
 }
 
 void CCorvusState_PS_Knife::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 }
-
-void CCorvusState_PS_Knife::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
-}
-
-
 
 void CCorvusState_PS_Knife::OnEventMessage(weak_ptr<CBase> pArg)
 {
-
+	__super::OnEventMessage(pArg);
 }
 
 void CCorvusState_PS_Knife::Free()
 {
+	__super::Free();
+
 	if (m_pModelCom.lock())
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Knife::Call_AnimationEnd, this);
 }
-
-_bool CCorvusState_PS_Knife::Check_AndChangeNextState()
-{
-	if (!Check_Requirement())
-		return false;
-
-	return false;
-}
-

@@ -61,6 +61,12 @@ void CNorMonState_Walk_B::Start()
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkB|BaseLayer|Armatu");
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkB");
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkB");
+		break;
 	}
 
 

@@ -30,6 +30,8 @@ int g_iNumFrameY;
 bool g_bXInverse;
 bool g_bYInverse;
 
+float4 g_vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
+
 struct VS_IN
 {
     float3 vPosition     : POSITION;
@@ -247,6 +249,7 @@ struct PS_OUT
     vector vColor        : SV_TARGET0;
     vector vExtractBloom : SV_Target1;
     vector vExtractGlow  : SV_Target2;
+    vector vShaderFlag   : SV_Target3;
 };
 
 PS_OUT PS_MAIN_ALPHADISCARD(PS_IN In)
@@ -276,6 +279,8 @@ PS_OUT PS_MAIN_ALPHADISCARD(PS_IN In)
 
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
+
+    Out.vShaderFlag = g_vShaderFlag;
 
     return Out;
 }
@@ -324,6 +329,8 @@ PS_OUT PS_MAIN_ALPHADISCARD_SOFT(PS_IN_SOFT In)
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
 
+    Out.vShaderFlag = g_vShaderFlag;
+
     return Out;
 }
 
@@ -354,6 +361,8 @@ PS_OUT PS_MAIN_BLACKDISCARD(PS_IN In)
 
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
+
+    Out.vShaderFlag = g_vShaderFlag;
 
     return Out;
 }
@@ -402,6 +411,8 @@ PS_OUT PS_MAIN_BLACKDISCARD_SOFT(PS_IN_SOFT In)
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
 
+    Out.vShaderFlag = g_vShaderFlag;
+
     return Out;
 }
 
@@ -444,6 +455,8 @@ PS_OUT PS_SPRITE_BLACKDISCARD(PS_IN_SPRITE In)
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
 	
+    Out.vShaderFlag = g_vShaderFlag;
+
     return Out;
 }
 
@@ -502,6 +515,8 @@ PS_OUT PS_SPRITE_ALPHADISCARD_SOFT(PS_IN_SPRITE_SOFT In)
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
 
+    Out.vShaderFlag = g_vShaderFlag;
+
     return Out;
 }
 
@@ -543,6 +558,8 @@ PS_OUT PS_SPRITE_ALPHADISCARD(PS_IN_SPRITE In)
 
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
+
+    Out.vShaderFlag = g_vShaderFlag;
 
     return Out;
 }
@@ -601,6 +618,8 @@ PS_OUT PS_SPRITE_BLACKDISCARD_SOFT(PS_IN_SPRITE_SOFT In)
 
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
+
+    Out.vShaderFlag = g_vShaderFlag;
 
     return Out;
 }

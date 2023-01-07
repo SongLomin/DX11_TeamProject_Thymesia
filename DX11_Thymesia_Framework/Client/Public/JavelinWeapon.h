@@ -74,8 +74,10 @@ public:
     FDelegate<weak_ptr<CCollider>> CallBack_AttackOnce;
 
 protected:
-
+    weak_ptr<CModel> m_pCurrentModelCom;
     weak_ptr<CModel> m_pModelCom;
+    weak_ptr<CModel> m_pStakeModelCom;
+
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
     

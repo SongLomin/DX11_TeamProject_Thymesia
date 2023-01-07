@@ -314,13 +314,10 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\03.Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnL90.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnR90.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttack.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_F.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\21.Walk_F</Filter>
@@ -551,7 +548,6 @@
     <ClInclude Include="..\Public\BossStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClInclude>
@@ -665,7 +661,6 @@
     <ClInclude Include="..\Public\Dynamic_Piece.h">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_T_Dissolve.h" />
     <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\Preset_DynamicProp.h">
       <Filter>06. DataPreset\03. Preset_DynamicProp</Filter>
@@ -673,12 +668,8 @@
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <Filter>05. Component\00. PhysXController\00. PhysXCameraController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
-    <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\00.PS_Axe</Filter>
@@ -758,8 +749,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Fall_Attack.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_DamageFont.h" />
-    <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\00.CorvusState_AvoidSalsh</Filter>
     </ClInclude>
@@ -773,8 +762,6 @@
       <Filter>06. DataPreset\04. Preset_AddGameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MobWeapon.h" />
-    <ClInclude Include="..\Public\UI_Button.h" />
-    <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
     <ClInclude Include="..\Public\PreviewAnimationModel.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
@@ -789,7 +776,6 @@
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
-    <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\NorMonster.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
@@ -804,14 +790,10 @@
       <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
     </ClInclude>
     <ClInclude Include="..\Private\Player_HPBar_Default.h" />
-    <ClInclude Include="..\Public\CState_AVoid.h" />
-    <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\PlayerUI_Defines.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
-    <ClInclude Include="..\Public\UI_Elements.h" />
-    <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
     <ClInclude Include="..\Public\EditSetActor.h">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
@@ -823,7 +805,6 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
-    <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -848,9 +829,6 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\00.CorvusState_CheckPointStart</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VargWeapon.h" />
-    <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
-    <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
-    <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h" />
@@ -868,12 +846,6 @@
     <ClInclude Include="..\Public\Section_Eventer.h">
       <Filter>02. GameObject\13. Section_Eventer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EasingComponent.h" />
-    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
-    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
-    <ClInclude Include="..\Public\UI_Interaction.h" />
-    <ClInclude Include="..\Public\UI_Utils.h" />
-    <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunB.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run\00.State_RunB</Filter>
     </ClInclude>
@@ -949,7 +921,6 @@
     <ClInclude Include="..\Public\Window_Shader_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_MonsterFocus.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h">
       <Filter>06. DataPreset\05. Preset_UIDesc</Filter>
     </ClInclude>
@@ -1088,7 +1059,6 @@
     <ClInclude Include="..\Public\TargetCurve.h">
       <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Joker_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\01.Joker_Execution</Filter>
@@ -1249,7 +1219,6 @@
     <ClInclude Include="..\Public\PlayerSkill_System.h">
       <Filter>05. Component\05. Skill\System</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ClientComponent_Utils.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\Requirement_Time.h">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -1262,13 +1231,13 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Talent_Effects.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h">
       <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
@@ -1283,118 +1252,118 @@
       <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_JumpAttackLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_jumpAttackLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_JumpAttackLV3.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_HealingExecutionLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_HealingExecutionLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Execution.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\00.Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h">
       <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\03.SharpWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\03.SharpWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\04.EnergisedWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\04.EnergisedWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_ParringLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_ParringLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Reckless_ParringLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Reckless_ParringLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_AvoidLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_AvoidLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_AvoidLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_AvoidLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_ClawLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_ClawLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_ClawLv3.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_PredatorLv1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\08.Preadator</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_PredatorLv2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\08.Preadator</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV3.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV4.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV3.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Growing_FeadtherLV1.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Growing_FeadtherLV2.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Growing_FeadtherLV3.h">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk1.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\00.Atk1</Filter>
@@ -1459,7 +1428,6 @@
     <ClInclude Include="..\Public\Water.h">
       <Filter>02. GameObject\15. Water</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_Cursor.h" />
     <ClInclude Include="..\Public\UI_Scroll.h">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClInclude>
@@ -1474,8 +1442,6 @@
       <Filter>06. DataPreset\06. Preset_ItemData</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Inventory.h" />
-    <ClInclude Include="..\Public\UI_ItemInformation.h" />
-    <ClInclude Include="..\Public\UI_ItemPopup.h" />
     <ClInclude Include="..\Public\ItemPopup_Queue.h" />
     <ClInclude Include="..\Public\Window_Optimization_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\03. Optimization</Filter>
@@ -1483,8 +1449,6 @@
     <ClInclude Include="..\Public\Window_GameSystem_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h" />
-    <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_SonicBullet.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom\00.SonicBullet</Filter>
     </ClInclude>
@@ -1509,16 +1473,14 @@
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_R_R.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
-    <ClInclude Include="..\Public\UI_BloodOverlay.h" />
     <ClInclude Include="..\Public\Interaction_NextPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\InventorySorter.h" />
     <ClInclude Include="..\Public\UIManager.h" />
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
     <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
-    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
@@ -1728,11 +1690,9 @@
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EasingComponent_Bezier.h" />
     <ClInclude Include="..\Public\Window_ModelContantView.h">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_ItemRequirement.h" />
     <ClInclude Include="..\Public\Skill_Axe.h" />
     <ClInclude Include="..\Public\PlayerSkillHeader.h" />
     <ClInclude Include="..\Public\Client_Functions.h">
@@ -1741,7 +1701,6 @@
     <ClInclude Include="..\Public\Window_Player_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\UrdWeapon.h">
       <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd\00.Weapon</Filter>
@@ -1760,7 +1719,6 @@
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\StolenSkill.h" />
     <ClInclude Include="..\Public\Skill_Knife.h" />
-    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Effect_AttackArea.h">
@@ -1834,6 +1792,244 @@
     <ClInclude Include="..\Public\UI_EffectBase.h" />
     <ClInclude Include="..\Public\UI_Enums.h" />
     <ClInclude Include="..\Public\UI_EffectHeaders.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandMan.h">
+      <Filter>02. GameObject\03. Actor\Character\Elite\01.BigHandMan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\00.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboA01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\00.ComboA01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboA02.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\04.ComboB_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_TurnL90.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\00.Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Stun_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Stun_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Stun_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_TurnR90.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\01.Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_VS_TakeExecution_01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\05.Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Walk.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\06.Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_SP_Idle1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\00.Sp_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_SP_Idle1_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\01.Sp_Idle_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_HurtR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\00.HurtR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_HurtL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\01.HurtL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_HurtCounter.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\02.HurtCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackStart.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SKillIcon.h" />
+    <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Character.h">
+      <Filter>02. GameObject\03. Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ballon.h">
+      <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\03.ClawAwayAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawTabAttack2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\06.ClawAttackHold</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent.h">
+      <Filter>05. Component\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClientComponent_Utils.h">
+      <Filter>05. Component\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h">
+      <Filter>05. Component\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Bezier.h">
+      <Filter>05. Component\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Float.h">
+      <Filter>05. Component\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Transform.h">
+      <Filter>05. Component\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Utils.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_AppearEventVarg.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_BloodOverlay.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Button.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Cursor.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_DamageFont.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_DamageFontPiece.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Elements.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveLeftBG.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveTalent_Active.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Interaction.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ItemInformation.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ItemPopup.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ItemRequirement.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_LerpBar.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_MenuText.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_MonsterFocus.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Script.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ScriptQueue.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ShuffleIcon.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_T_Dissolve.h">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2122,13 +2318,10 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\03.Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnL90.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnR90.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttack.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_F.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\21.Walk_F</Filter>
@@ -2343,7 +2536,6 @@
     <ClCompile Include="..\Private\BossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
@@ -2542,7 +2734,6 @@
     <ClCompile Include="..\Private\Dynamic_Piece.cpp">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp">
       <Filter>06. DataPreset\03. Preset_DynamicProp</Filter>
     </ClCompile>
@@ -2552,9 +2743,6 @@
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
@@ -2633,9 +2821,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Fall_Attack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_DamageFont.cpp" />
-    <ClCompile Include="..\Private\UI_Script.cpp" />
-    <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AvoidSlash.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\00.CorvusState_AvoidSalsh</Filter>
     </ClCompile>
@@ -2648,7 +2833,6 @@
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp">
       <Filter>06. DataPreset\04. Preset_AddGameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\PreviewAnimationModel.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
@@ -2664,9 +2848,7 @@
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
-    <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\NorMonster.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
@@ -2682,10 +2864,8 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp">
       <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\Player_HPBar_Default.cpp" />
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
-    <ClCompile Include="..\Private\UI_MenuText.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
     </ClCompile>
@@ -2700,7 +2880,6 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
-    <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -2728,9 +2907,6 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\00.CorvusState_CheckPointStart</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VargWeapon.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp" />
@@ -2748,12 +2924,6 @@
     <ClCompile Include="..\Private\Section_Eventer.cpp">
       <Filter>02. GameObject\13. Section_Eventer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EasingComponent.cpp" />
-    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
-    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
-    <ClCompile Include="..\Private\UI_Interaction.cpp" />
-    <ClCompile Include="..\Private\UI_Utils.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_RunB.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run\00.State_RunB</Filter>
     </ClCompile>
@@ -2964,7 +3134,6 @@
     <ClCompile Include="..\Private\TargetCurve.cpp">
       <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Joker_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\01.Joker_Execution</Filter>
@@ -2996,7 +3165,6 @@
     <ClCompile Include="..\Private\PlayerSkill_System.cpp">
       <Filter>05. Component\05. Skill\System</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -3123,10 +3291,10 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp">
       <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
@@ -3141,118 +3309,118 @@
       <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV3.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_HealingExecutionLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_HealingExecutionLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Execution.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\00.Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp">
       <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\03.SharpWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\03.SharpWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\04.EnergisedWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\04.EnergisedWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_ParringLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_ParringLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Reckless_ParringLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Reckless_ParringLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\05.Parrying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_AvoidLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_AvoidLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_AvoidLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_AvoidLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\06.Avoid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_ClawLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_ClawLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_ClawLv3.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\07.Claw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_PredatorLv1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\08.Preadator</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_PredatorLv2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\08.Preadator</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV3.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV4.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Abundant_FeadtherLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Abundant_FeadtherLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Abundant_FeadtherLV3.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Growing_FeadtherLV1.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Growing_FeadtherLV2.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Growing_FeadtherLV3.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawPlunderAttack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\05.ClawPlunderAttack</Filter>
@@ -3317,12 +3485,8 @@
     <ClCompile Include="..\Private\Water.cpp">
       <Filter>02. GameObject\15. Water</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_Scroll.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Interaction_Item.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
@@ -3332,7 +3496,6 @@
       <Filter>06. DataPreset\06. Preset_ItemData</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Inventory.cpp" />
-    <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\Window_Optimization_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\03. Optimization</Filter>
@@ -3341,7 +3504,6 @@
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
-    <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_Inventory.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
     </ClCompile>
@@ -3373,8 +3535,6 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
-    <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
-    <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
@@ -3385,14 +3545,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\InventorySorter.cpp" />
     <ClCompile Include="..\Private\UIManager.cpp" />
-    <ClCompile Include="..\Private\UI_ShuffleIcon.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp">
       <Filter>05. Component\05. Skill\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_InventoryConfirmWindow.cpp" />
-    <ClCompile Include="..\Private\UI_ItemInformation.cpp" />
-    <ClCompile Include="..\Private\UI_MonsterFocus.cpp" />
-    <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />
     <ClCompile Include="..\Private\Interaction_DeadSpot.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClCompile>
@@ -3610,16 +3765,13 @@
     <ClCompile Include="..\Private\Interaction_CastleGate.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EasingComponent_Bezier.cpp" />
     <ClCompile Include="..\Private\Window_ModelContantView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Window_Player_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\UrdWeapon.cpp">
       <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd\00.Weapon</Filter>
@@ -3638,7 +3790,6 @@
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />
     <ClCompile Include="..\Private\Skill_Knife.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Effect_AttackArea.cpp">
@@ -3701,15 +3852,231 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandMan.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Elite\01.BigHandMan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\00.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboA01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\00.ComboA01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboB_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboB_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\04.ComboB_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboA02.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_TurnL90.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\00.Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Stun_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Stun_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Stun_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_TurnR90.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\01.Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_VS_TakeExecution_01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\05.Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Walk.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\06.Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_SP_Idle1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\00.Sp_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_SP_Idle1_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\01.Sp_Idle_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_HurtR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\00.HurtR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_HurtL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\01.HurtL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_HurtCounter.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\02.HurtCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackStart.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillView.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Page.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SKillIcon.cpp" />
     <ClCompile Include="..\Private\UI_UnlockEventUI.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
-    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword_Start.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp">
+      <Filter>02. GameObject\03. Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ballon.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\03.ClawAwayAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawTabAttack2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\06.ClawAttackHold</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent.cpp">
+      <Filter>05. Component\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ClientComponent_Utils.cpp">
+      <Filter>05. Component\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp">
+      <Filter>05. Component\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Bezier.cpp">
+      <Filter>05. Component\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Float.cpp">
+      <Filter>05. Component\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp">
+      <Filter>05. Component\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_AppearEventVarg.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_BloodOverlay.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Button.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Cursor.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_DamageFont.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_DamageFontPiece.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Interaction.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindow.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ItemInformation.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ItemPopup.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ItemRequirement.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_LerpBar.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_MenuText.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_MonsterFocus.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Script.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ScriptQueue.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ShuffleIcon.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_T_Dissolve.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Utils.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5061,45 +5428,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End">
       <UniqueIdentifier>{3f8496d0-c7e7-442f-ba6f-7dce40cc4e70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent">
-      <UniqueIdentifier>{b1925acb-a8f6-4420-a9a0-d0c236df9ecc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\00.Sword">
-      <UniqueIdentifier>{e865e48a-ba05-44c7-9db1-f6ae37aa941c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution">
-      <UniqueIdentifier>{a0ec1387-6eb9-40b2-95cc-5e24e5c2536a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack">
-      <UniqueIdentifier>{72978756-20cb-49a5-996c-04d59a8ccd7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon">
-      <UniqueIdentifier>{b909e4c5-44b8-4bb1-b55c-edd7dfdc7a1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon">
-      <UniqueIdentifier>{b4ef4a75-cabc-4b3e-a1ed-a36c49c05ea1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\05.Parrying">
-      <UniqueIdentifier>{09664bf1-5982-45bd-9bb6-664e4291239a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\06.Avoid">
-      <UniqueIdentifier>{680d5a36-cb36-42f2-bc3e-898c59e91709}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\07.Claw">
-      <UniqueIdentifier>{06ff990d-9401-4546-a4cc-419d3c41650f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying">
-      <UniqueIdentifier>{76a8edc3-1663-4553-9b2e-d6ca169179fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather">
-      <UniqueIdentifier>{b31fe60f-c430-4373-8954-5f4a02279e9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather">
-      <UniqueIdentifier>{7c93dc5f-b0fe-4bf7-bf0e-a10c6b0a5b1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\08.Preadator">
-      <UniqueIdentifier>{07dfef64-e603-4f77-867b-53739db3cc54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack">
       <UniqueIdentifier>{7b588824-cce5-471c-9728-b3fd60930fd6}</UniqueIdentifier>
     </Filter>
@@ -5273,9 +5601,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle">
       <UniqueIdentifier>{7ebce04c-c7c7-478f-b6d1-98c97fd0127b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90">
-      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle">
       <UniqueIdentifier>{d4020cdb-cd3a-4888-96a8-4ab6f434e72b}</UniqueIdentifier>
@@ -5513,6 +5838,183 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade">
       <UniqueIdentifier>{d1172711-659b-4baf-9ad3-f41c455953de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare">
+      <UniqueIdentifier>{5d827422-0701-414c-ae97-a010ecf503e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\00.Armorman">
+      <UniqueIdentifier>{42e7f59c-c3e0-48ea-b8ad-2f5bade9c818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\01.Shieldman">
+      <UniqueIdentifier>{11c45189-b8a1-4e1a-92ec-d8139b302de6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\02.Skullman">
+      <UniqueIdentifier>{1c108e4b-0829-4e96-b276-4006a10e448f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\03.Spearman">
+      <UniqueIdentifier>{9869d864-078a-410f-8130-7ab6f7851b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\Weapon">
+      <UniqueIdentifier>{72a784ab-9e04-4a69-ada2-2db5b79f337b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\01.BigHandMan">
+      <UniqueIdentifier>{55838944-0a78-44b7-8fe2-836f3d52e1fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState">
+      <UniqueIdentifier>{bc9c81d7-18ed-4c88-998c-b3020784bc5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle">
+      <UniqueIdentifier>{b57216b3-37ee-4943-ad70-e9837655211c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack">
+      <UniqueIdentifier>{dff38c86-8051-4f93-8f08-2acc8a30acc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt">
+      <UniqueIdentifier>{dcf6013a-2ce5-4869-914d-f77d66e309b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun">
+      <UniqueIdentifier>{6f0a6406-3fdd-4c39-8508-54bf4e7f18ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn">
+      <UniqueIdentifier>{f1437ad1-7698-4a1c-be29-50d20a196723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\05.Execution">
+      <UniqueIdentifier>{3ead0b45-6bc0-4a02-a178-fae959b5d0ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\06.Walk">
+      <UniqueIdentifier>{aa51dc89-12f2-4afe-94d5-eee555895319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\00.Idle">
+      <UniqueIdentifier>{8ff2f3fe-d5a9-46bb-9459-a074f44b60b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle">
+      <UniqueIdentifier>{23c255bf-5206-4e5a-826d-d00d3aefd41f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\00.ComboA01">
+      <UniqueIdentifier>{fb8a021d-3ccf-4bc9-90c0-63c49fbc2bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02">
+      <UniqueIdentifier>{c00b0c3b-5d0c-4096-bb9e-2a65d911ff21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start">
+      <UniqueIdentifier>{45e023f7-5e93-41a4-b037-3e6e3a438874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop">
+      <UniqueIdentifier>{1b57a9eb-cb2a-4e3f-bfc6-5fd433769695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\04.ComboB_End">
+      <UniqueIdentifier>{17a67d4d-05f5-4e94-a35a-9e9af0ecd1ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\00.HurtR">
+      <UniqueIdentifier>{05c61b4c-7626-4681-b183-5ffa5b6a881a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\01.HurtL">
+      <UniqueIdentifier>{8c18f0c2-879a-466b-8062-8b06a2b4d3e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\02.HurtCounter">
+      <UniqueIdentifier>{4eb7a5a9-85d5-41ab-a81a-0287e33d9a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\00.Start">
+      <UniqueIdentifier>{c9ee9833-d105-4692-b232-c511a76efd1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\01.Loop">
+      <UniqueIdentifier>{ec7655da-6c42-4a99-ba60-ff893e134577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\02.End">
+      <UniqueIdentifier>{dbcc28e2-dcbf-4e91-937f-08fd087a9c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\00.Left">
+      <UniqueIdentifier>{05f3080b-6548-49a4-aaaa-f34aaa3b5119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\01.Right">
+      <UniqueIdentifier>{0d1f028d-5f43-489c-a38d-7a3a65143f16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\00.Sp_Idle">
+      <UniqueIdentifier>{50c47bf7-a829-4180-aa92-aad23e8250b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\01.Sp_Idle_End">
+      <UniqueIdentifier>{4de9d19a-ffdf-47ac-bbcf-1ab3ad3c4d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution">
+      <UniqueIdentifier>{c5ca34d7-7a5c-4924-b918-77444e0b616b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol">
+      <UniqueIdentifier>{cec77c45-c0be-43e3-898c-34fab5a4f0e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start">
+      <UniqueIdentifier>{ec764086-871a-4327-b2d9-fe2e9ae7ba2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.End">
+      <UniqueIdentifier>{ebb248d1-a80d-45be-8c8a-47045f7a4812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90">
+      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop">
+      <UniqueIdentifier>{fa413659-dc96-44f2-a583-1ee427d5fec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End">
+      <UniqueIdentifier>{bb1b3979-1a34-48a3-8208-252bd92c9eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight">
+      <UniqueIdentifier>{df141bf0-d6af-4d3c-9ef7-1342e73aa9c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start">
+      <UniqueIdentifier>{1690cca4-177b-4c90-85b1-be76d3094f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent">
+      <UniqueIdentifier>{b1925acb-a8f6-4420-a9a0-d0c236df9ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\00.Sword">
+      <UniqueIdentifier>{e865e48a-ba05-44c7-9db1-f6ae37aa941c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\02.HealingExecution">
+      <UniqueIdentifier>{a0ec1387-6eb9-40b2-95cc-5e24e5c2536a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\01.JumpAttack">
+      <UniqueIdentifier>{72978756-20cb-49a5-996c-04d59a8ccd7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\03.SharpWeapon">
+      <UniqueIdentifier>{b909e4c5-44b8-4bb1-b55c-edd7dfdc7a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\04.EnergisedWeapon">
+      <UniqueIdentifier>{b4ef4a75-cabc-4b3e-a1ed-a36c49c05ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\05.Parrying">
+      <UniqueIdentifier>{09664bf1-5982-45bd-9bb6-664e4291239a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\06.Avoid">
+      <UniqueIdentifier>{680d5a36-cb36-42f2-bc3e-898c59e91709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\07.Claw">
+      <UniqueIdentifier>{06ff990d-9401-4546-a4cc-419d3c41650f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\09.Feather Flying">
+      <UniqueIdentifier>{76a8edc3-1663-4553-9b2e-d6ca169179fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\10.Abundant Feather">
+      <UniqueIdentifier>{b31fe60f-c430-4373-8954-5f4a02279e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\11.Growing Feather">
+      <UniqueIdentifier>{7c93dc5f-b0fe-4bf7-bf0e-a10c6b0a5b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Talent\08.Preadator">
+      <UniqueIdentifier>{07dfef64-e603-4f77-867b-53739db3cc54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\06.ClawAttackHold">
+      <UniqueIdentifier>{db77b5ab-81b3-494b-ab67-22eda76b0301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\Easing">
+      <UniqueIdentifier>{4cd628d0-8f09-4a88-ab17-94a21a63dbf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\Utils">
+      <UniqueIdentifier>{1e0a1550-7315-46da-8bc2-573afec8b4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar">
+      <UniqueIdentifier>{10c03681-52e1-43db-a6f9-481bee8dc090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade">
+      <UniqueIdentifier>{82824cd3-ecf3-4b36-923d-9d8a4d69ffea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

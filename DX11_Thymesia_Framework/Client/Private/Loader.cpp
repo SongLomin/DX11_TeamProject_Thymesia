@@ -130,6 +130,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CJoker>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CUrd>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CBat>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CBigHandMan>();
 
 
 #ifdef _LOAD_CAPTURED_RESOURCE_
@@ -250,13 +251,19 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources..."));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/TestLevel.json");
 #else // _LOAD_CAPTURED_RESOURCE_
-	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	lstrcpy(m_szLoadingText, TEXT("Loading all Ground Info..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
-	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
-	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading EditGround All Mesh Infos..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/"     , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture("../Bin/GroundInfo/Filter/"      , MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading all Prop Mesh Info..."));
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/"                         , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/NPC/Binary/"             , MODEL_TYPE::ANIM   , MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -265,24 +272,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Column/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
-	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -436,30 +425,19 @@ HRESULT CLoader::Loading_ForStage2Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage2.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage2.json");
 #else // _LOAD_CAPTURED_RESOURCE_
-	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	lstrcpy(m_szLoadingText, TEXT("Loading all Ground Info..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
-	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
-	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture("../Bin/GroundInfo/Texture/"     , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture("../Bin/GroundInfo/Filter/"      , MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
+	lstrcpy(m_szLoadingText, TEXT("Loading all Prop Mesh Info..."));
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
-	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/"                         , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/NPC/Binary/"             , MODEL_TYPE::ANIM   , MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif
 
 	
@@ -518,31 +496,19 @@ HRESULT CLoader::Loading_ForStage3Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage3.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage3.json");
 #else // _LOAD_CAPTURED_RESOURCE_
-	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	lstrcpy(m_szLoadingText, TEXT("Loading all Ground Info..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
-	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
-	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/"     , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture("../Bin/GroundInfo/Filter/"      , MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
+	lstrcpy(m_szLoadingText, TEXT("Loading all Prop Mesh Info..."));
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
-	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/"                         , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/NPC/Binary/"             , MODEL_TYPE::ANIM   , MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif
 	_matrix TransformMatrix(XMMatrixIdentity());
 	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
@@ -571,7 +537,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 HRESULT CLoader::Loading_ForEditLevel()
 {
-	Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	//Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
 	Load_AllDiffuseTexture();
@@ -616,20 +582,19 @@ HRESULT CLoader::Loading_ForEditLevel()
 #endif // _EFFECT_TOOL_
 
 #ifndef _EFFECT_TOOL_
-	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	lstrcpy(m_szLoadingText, TEXT("Loading all Ground Info..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
-	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
-	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/"     , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture("../Bin/GroundInfo/Filter/"      , MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading all Prop Mesh Info..."));
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/"                         , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/NPC/Binary/"             , MODEL_TYPE::ANIM   , MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	_matrix TransformMatrix;
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -1434,6 +1399,34 @@ void CLoader::Load_NormalMobModel()
 	_matrix TransformMatrix = XMMatrixIdentity();
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Armorman", "../Bin/Resources/Meshes/NorMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Shieldman", "../Bin/Resources/Meshes/NorMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Skullman", "../Bin/Resources/Meshes/NorMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Spearman", "../Bin/Resources/Meshes/NorMonster/SpearMan/SpearMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Sword", "../Bin/Resources/Meshes/NorMonster/Weapon/Sword/Sword.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Spear", "../Bin/Resources/Meshes/NorMonster/Weapon/Spear/Spear.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Shield2", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield2/Shield2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Shield1", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield1/Shield1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Halberd", "../Bin/Resources/Meshes/NorMonster/Weapon/Halberd/Halberd.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	//
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Balloon", "../Bin/Resources/Meshes/NorMonster/Balloon/Balloon.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
@@ -1493,19 +1486,7 @@ void CLoader::Load_NormalMobModel()
 
 void CLoader::Load_RareMobModel()
 {
-	_matrix TransformMatrix = XMMatrixIdentity();
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Rare_ArmorMan", "../Bin/Resources/Meshes/RareMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Rare_ShieldMan", "../Bin/Resources/Meshes/RareMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Rare_SpearMan", "../Bin/Resources/Meshes/RareMonster/SpearMan/SpearMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Rare_SkullMan", "../Bin/Resources/Meshes/RareMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_EliteMobModel()
@@ -1551,7 +1532,7 @@ void CLoader::Load_BossMobModel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.f)) * XMMatrixRotationY(XMConvertToRadians(230.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.f)) * XMMatrixRotationY(XMConvertToRadians(250.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_UrdWeapon2", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword02.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);

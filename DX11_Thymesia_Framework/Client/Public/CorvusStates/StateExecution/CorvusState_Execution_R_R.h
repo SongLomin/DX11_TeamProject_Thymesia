@@ -37,7 +37,9 @@ private:
     weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
     weak_ptr<CAnimation> m_ThisStateAnimationCom;
-    BOSSNAME eBossName = BOSSNAME::NAMENED;
+    BOSSNAME eBossName = BOSSNAME::NAMEEND;
+    EXECUTIONMONSTERNAME eExeMonName = EXECUTIONMONSTERNAME::NAMEEND;
+    
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
     void Free();

@@ -58,6 +58,12 @@ void CNorMonState_Run::Start()
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_RunF1|BaseLayer|Armature|Arm");
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Run_F");
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_Run_F");
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Run::Call_AnimationEnd, this);
@@ -291,6 +297,49 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
 					m_bRunCheck = true;
 					break;
+
+				}
+				break;
+			case Client::MONSTERTYPE::SKULLSHIELDMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+					m_bRunCheck = true;
+					break;
+
+				}
+				break;
+			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+					m_bRunCheck = true;
+					break;
+
 				}
 				break;
 			}
@@ -369,6 +418,36 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					}
 					break;
 				case Client::MONSTERTYPE::SHIELDAXEMAN:
+					switch (iMovRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+						Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+						m_bRunCheck = true;
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+						Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+						m_bRunCheck = true;
+						break;
+					}
+					break;
+				case Client::MONSTERTYPE::SKULLSHIELDMAN:
+					switch (iMovRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+						Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+						m_bRunCheck = true;
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+						Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(true);
+						m_bRunCheck = true;
+						break;
+					}
+					break;
+				case Client::MONSTERTYPE::SKULLSPEARMAN:
 					switch (iMovRand)
 					{
 					case 0:
@@ -530,6 +609,52 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					break;
 				}
 				
+			}
+			break;
+			case Client::MONSTERTYPE::SKULLSHIELDMAN:
+			{
+				_int iAttRand = rand() % 3;
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				}
+			}
+			break;
+			case Client::MONSTERTYPE::SKULLSPEARMAN:
+			{
+				_int iAttRand = rand() % 3;
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				}
 			}
 			break;
 			}

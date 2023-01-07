@@ -54,15 +54,17 @@
 #include "CorvusStates/CorvusState_ParryDeflectRightup.h"
 #include "CorvusStates/CorvusState_PS_Axe.h"
 #include "CorvusStates/CorvusState_PS_CaneSword.h"
+#include "CorvusStates/CorvusState_PS_CaneSword_Start.h"
 #include "CorvusStates/CorvusState_PS_Scythe.h"
 #include "CorvusStates/CorvusState_PS_Scythe_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_Knife.h"
 #include "CorvusStates/CorvusState_PS_Hammer.h"
 #include "CorvusStates/CorvusState_PS_Hammer_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_Magician.h"
-#include "CorvusStates/CorvusState_PS_UrdSword.h"
 #include "CorvusStates/CorvusState_PS_VargSword.h"
 #include "CorvusStates/CorvusState_PS_VargSwordStart.h"
+#include "CorvusStates/CorvusState_PS_BatRoar.h"
+#include "CorvusStates/CorvusState_PS_UrdSword.h"
 #include "CorvusStates/CorvusState_Climb_L_Down.h"
 #include "CorvusStates/CorvusState_Climb_L_Down_End.h"
 #include "CorvusStates/CorvusState_Climb_L_Idle.h"
@@ -129,6 +131,7 @@
 #include "CorvusStates/StateExecution/CorvusState_Varg_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_Execution_R_R.h"
 #include "CorvusStates/StateExecution/CorvusState_Urd_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_BigHandman_Execution.h"
 //플레이어 처형 스테이트
 // 
 // 

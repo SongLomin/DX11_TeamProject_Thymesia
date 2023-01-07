@@ -580,7 +580,8 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
       
         Out.vColor = vAmbientDesc + vSpecular /* * (1 - bIsInShadow)*/ + (litColor * float4(g_IrradianceColorScale, 1.f));
         Out.vColor.rgb *= vViewShadow.rgb;
-     
+        Out.vColor.rgb *= vHBAO.rgb;
+           
         Out.vColor.a = 1.f;
     }      
     else
@@ -590,7 +591,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor.rgb *= vViewShadow.rgb;
     }
        
-    Out.vColor.rgb *= vHBAO.rgb;
+
     
     float3 mapped = 1.f - exp(-Out.vColor.rgb * g_fExposure);
     Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
@@ -796,7 +797,7 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     vector vShadowDepth = g_ShadowDepthTexture.Sample(ClampSampler, vNewUV);
 
     //Out.vColor = float4(vDynamicPosition.z / vDynamicPosition.w, vShadowDepth.r, 0.f, 1.f);
-    
+     
     // TODO : Hong Hong Hong Juseok
     if (vDynamicPosition.z / vDynamicPosition.w > vShadowDepth.r||
         vStaticPosition.z / vStaticPosition.w > vStaticShadowDepth.r)

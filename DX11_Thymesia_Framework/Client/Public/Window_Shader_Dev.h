@@ -38,6 +38,8 @@ private:/* For. Screen Tone*/
 private:/* For. Irradiance Color Scale */
 	_float3 m_vIrradianceColorScale{ 1.f,1.f,1.f };
 
+private:/* For. Sharpness */
+	_float	m_fSharpness{ 0.f };
 
 private:
 	virtual void OnEventMessage(_uint iArg) override;

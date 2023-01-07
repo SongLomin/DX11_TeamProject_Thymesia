@@ -16,6 +16,9 @@ void CCorvusState_PS_Hammer::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 50:
+		TurnOn_Effect("Corvus_PW_EyeGlow");
+		return;
 	case 102:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
@@ -25,6 +28,9 @@ void CCorvusState_PS_Hammer::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 	}
 	return;
+	case 155:
+		TurnOff_Effect("Corvus_PW_EyeGlow");
+		return;
 	}
 }
 

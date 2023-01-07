@@ -8,6 +8,7 @@ class CShader;
 class CVIBuffer_Rect;
 class CComponent;
 class CTexture;
+class CNIS_Shader;
 
 class CRender_Manager :
     public CBase
@@ -75,6 +76,8 @@ public:
 
 	HRESULT Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition);
 
+	HRESULT Set_Sharpness(const _float In_fSharpness);
+
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_ShadowDepth();
@@ -106,6 +109,7 @@ private:
 	HRESULT PostProcessing();
 	HRESULT AntiAliasing();
 	HRESULT Render_HBAO_PLUS();
+	HRESULT Render_NvidiaImageScaling();
 	HRESULT Render_UI();
 	HRESULT Render_Final();
 
@@ -147,6 +151,9 @@ private:
 	shared_ptr<CShader>			m_pOutLineShader;
 	shared_ptr<CShader>			m_pDistortionShader;
 	shared_ptr<CShader>			m_pPostProcessingShader;
+	shared_ptr<CNIS_Shader>		m_pNIS_Shader;
+
+
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
 
 	shared_ptr<CTexture>		m_pIrradianceTextureCom;

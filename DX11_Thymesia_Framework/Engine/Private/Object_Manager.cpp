@@ -137,12 +137,14 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	{
 		for (auto& elem_GameObject : Pair.second)
 		{
-			if (elem_GameObject.get())
-				elem_GameObject->OnDestroy();
+			/*if (elem_GameObject.get())
+				elem_GameObject->OnDestroy();*/
+
+			elem_GameObject->Set_Dead();
 		}
 	}
 
-	m_pLayers[iLevelIndex].clear();
+	// m_pLayers[iLevelIndex].clear();
 }
 
 void CObject_Manager::Remove_DeadObject()
