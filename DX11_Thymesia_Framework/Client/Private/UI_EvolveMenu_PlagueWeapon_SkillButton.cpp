@@ -79,7 +79,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::Set_UIPosition(const _float fX, co
    __super::Set_UIPosition(fX, fY);
 
     m_pHover.lock()->Set_UIPosition(fX,fY);
-    m_pBorder.lock()->Set_UIPosition(fX, fY);
     m_pFrame.lock()->Set_UIPosition(fX,fY);
     m_pIcon .lock()->Set_UIPosition(fX,fY);
 }
@@ -191,7 +190,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
     m_pFrame.lock()->Set_Size(114.f, 114.f);
     m_pIcon.lock()->Set_Size(213.f, 213.f);
 
-    m_pBorder.lock()->Set_Depth(0.6f);
     m_pFrame.lock()->Set_Depth(0.5f);
     m_pIcon.lock()->Set_Depth(0.4f);
     m_pHover.lock()->Set_Depth(0.3f);
@@ -201,12 +199,10 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
     m_pHover.lock()->Set_Depth(0.53f);
 
     m_pFrame.lock()->Set_Texture("HUD_PlagueWeapon_Frame");
-    m_pBorder.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
     m_pHover.lock()->Set_Texture("None");
     m_pIcon.lock()->Set_Texture("None");
 
 
-    Add_Child(m_pBorder);
     Add_Child(m_pFrame);
     Add_Child(m_pIcon);
     Add_Child(m_pHover);
@@ -264,7 +260,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnEnable(void* pArg)
     __super::OnEnable(pArg);
 
     m_pHover.lock()->Set_Enable(false);
-    m_pBorder.lock()->Set_AlphaColor(0.f);
 
     if (Check_UnLocked())
     {

@@ -60,7 +60,6 @@ protected:
 private:
 	weak_ptr<CCustomUI>			m_pHover;
 	weak_ptr<CCustomUI>			m_pFrame;
-	weak_ptr<CCustomUI>			m_pBorder;
 	weak_ptr<CUI_EvolveMenu_SKillIcon>			m_pIcon;
 
 	weak_ptr<CUI>	 m_pMyOriginSlot;

@@ -703,9 +703,6 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
 
-
-	
-
 }
 
 void CCorvus::WriteTalentFromJson(json& Out_Json)
