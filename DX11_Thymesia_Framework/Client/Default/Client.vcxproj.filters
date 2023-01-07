@@ -4271,6 +4271,9 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5883,9 +5886,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill">
       <UniqueIdentifier>{8360d8b7-3aab-4118-8eba-da0dd5f006b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
-      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\01.Skill02_1">
       <UniqueIdentifier>{7031e5c8-5cbe-4458-bb9a-5332e80335e5}</UniqueIdentifier>
     </Filter>
@@ -6335,6 +6335,9 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\NewFilter1">
       <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
+      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

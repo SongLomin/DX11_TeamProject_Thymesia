@@ -170,6 +170,8 @@ void CUrd::Init_Desc()
 
 	//m_pModelCom.lock()->Init_Model("Boss_Urd", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(0);
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(true);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
 	//m_pWeapons.back().lock()->Add_Collider({ 0.3f, 0.9f, 0.2f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	
@@ -190,10 +192,16 @@ void CUrd::Init_Desc()
 	
 	
 	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(1);
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(false);
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
 	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(2);
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(false);
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
 	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(3);
+	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(false);
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
 
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));

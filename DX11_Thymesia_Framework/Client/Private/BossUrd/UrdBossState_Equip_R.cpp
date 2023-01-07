@@ -8,6 +8,9 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "Weapon.h"
+#include "MobWeapon.h"
+#include "UrdWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Equip_R);
 CLONE_C(CUrdBossState_Equip_R, CComponent)
@@ -101,7 +104,24 @@ _bool CUrdBossState_Equip_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 12)
+	{
 
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		pWeapons.front().lock()->Set_RenderOnOff(true);
+
+		for (auto& elem : pWeapons)
+		{
+			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
+			{
+				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_RenderOnOff(false);
+				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+				break;
+			}
+		}
+
+	}
 
 	return false;
 }

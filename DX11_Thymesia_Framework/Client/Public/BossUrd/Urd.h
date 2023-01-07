@@ -20,6 +20,7 @@ public:
     _uint  Get_CurrentDecoIndex() {
         return m_iDecoIndex;
     }
+    list<weak_ptr<CJavelinWeapon>>  Get_JavelinWepons() { return m_pJavelinWeapon; }
 private:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;

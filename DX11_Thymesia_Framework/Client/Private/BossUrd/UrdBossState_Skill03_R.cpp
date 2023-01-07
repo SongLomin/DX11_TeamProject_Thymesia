@@ -10,6 +10,7 @@
 #include "BossUrd/UrdStates.h"
 #include "JavelinWeapon.h"
 #include "MobWeapon.h"
+#include "UrdWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Skill03_R);
 CLONE_C(CUrdBossState_Skill03_R, CComponent)
@@ -97,7 +98,17 @@ void CUrdBossState_Skill03_R::Call_AnimationEnd()
 		return;
 	
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+	
+	switch (m_eReuslt)
+	{
+	case Client::CUrdBossState_Skill03_R::RESULT_LEFT:
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Equip_L>(0.05f);
+		break;
+	case Client::CUrdBossState_Skill03_R::RESULTR_RIGHT:
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Equip_R>(0.05f);
+		break;
+	}
+
 }
 
 void CUrdBossState_Skill03_R::OnDestroy()
@@ -152,7 +163,7 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 55 && !m_bOne)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 56 && !m_bOne)
 	{
 		if (!pJavelinWeapon.lock())
 		{
@@ -162,6 +173,35 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 
 
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
+
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+		pWeapons.front().lock()->Set_RenderOnOff(false);
+
+
+		for (auto& elem : pWeapons)
+		{
+			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
+			{
+				_uint WeaponNum = Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_WeaponNum();
+
+				switch (WeaponNum)
+				{
+				case 1:
+					m_eReuslt = RESULTR_RIGHT;
+					break;
+				case 2:
+					m_eReuslt = RESULT_LEFT;
+					break;
+				case 3:
+					m_eReuslt = RESULT_LEFT;
+					break;
+				}
+				break;
+			}
+		}
+	
 	}
 	return false;
 }

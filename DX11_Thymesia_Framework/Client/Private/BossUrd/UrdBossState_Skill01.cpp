@@ -10,6 +10,7 @@
 #include "BossUrd/UrdStates.h"
 #include "MobWeapon.h"
 #include "JavelinWeapon.h"
+#include "UrdWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Skill01);
 CLONE_C(CUrdBossState_Skill01, CComponent)
@@ -156,7 +157,7 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 
 	}	
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 43 && !m_bOne)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 44 && !m_bOne)
 	{
 		if (!pJavelinWeapon.lock())
 		{
@@ -168,9 +169,21 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::STAKE);
 		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.0f));
 		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.0f));
-		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-230.0f));
-		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->LookAt2D(pCurrentPlayer.lock()->Get_WorldPosition());
-		//Get_OwnerMonster
+		
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+		for (auto& elem : pWeapons)
+		{
+			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
+			{
+				elem.lock()->Set_RenderOnOff(false);
+				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+				break;
+			}
+		}
+			
+
 	
 	}
 		
@@ -181,7 +194,11 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 		m_bAttackLookAtLimit = false;
 
 	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+	{
 		Rotation_TargetToLookDir();
+		m_bAttackLookAtLimit = false;
+	}
+		
 
 	return false;
 }

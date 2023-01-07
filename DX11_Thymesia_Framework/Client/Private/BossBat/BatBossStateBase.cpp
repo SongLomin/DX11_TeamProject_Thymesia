@@ -266,7 +266,7 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			if (In_eHitType == HIT_TYPE::STEALMONSTER)
 			{
 				_matrix vOtherWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 1.f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 6.4f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),

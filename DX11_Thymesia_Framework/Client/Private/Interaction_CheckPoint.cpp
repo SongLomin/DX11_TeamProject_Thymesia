@@ -89,7 +89,7 @@ HRESULT CInteraction_CheckPoint::Start()
 	m_tLightDesc.fRange     = 1.f;
 
 	m_tLightDesc   = GAMEINSTANCE->Add_Light(m_tLightDesc);
-    m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+   // m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
 
     return S_OK;
 }

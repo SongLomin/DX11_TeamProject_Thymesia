@@ -110,12 +110,20 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 
 	if (m_bSpecailAttack)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
-		return true;
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+		else
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
+			return true;
+		}
+		
 	}
 	else
 	{
-		if (fPToMDistance <= 4.f)
+		if (fPToMDistance <= 4.3f)
 		{
 			if (m_bTurnCheck)
 			{

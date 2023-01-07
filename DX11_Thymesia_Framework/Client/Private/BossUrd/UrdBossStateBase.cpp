@@ -148,20 +148,23 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 		//1,2 ,3 패턴
-
+		//보스1페이지랑 2페이지 달르게
 		if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 0)
 		{
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(true);
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(1);
 		}
 		else if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1000.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 1)
 		{
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(true);
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(2);
 		}
 		else if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 2)
 		{
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(true);
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(3);
 		}
 

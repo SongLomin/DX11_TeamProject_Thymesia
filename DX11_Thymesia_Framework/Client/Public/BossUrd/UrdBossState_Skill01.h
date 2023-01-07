@@ -8,6 +8,8 @@ END
 BEGIN(Client)
 class CJavelinWeapon;
 
+
+
 class CUrdBossState_Skill01 :
 	public CUrdBossStateBase
 {
@@ -32,6 +34,8 @@ protected:
 private:
 	_bool m_bOne = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
+
+	
 
 private:
 	void Call_AnimationEnd();

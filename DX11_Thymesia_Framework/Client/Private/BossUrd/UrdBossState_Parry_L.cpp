@@ -93,7 +93,7 @@ void CUrdBossState_Parry_L::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepB>(0.05f);
 }
 
 void CUrdBossState_Parry_L::OnDestroy()
