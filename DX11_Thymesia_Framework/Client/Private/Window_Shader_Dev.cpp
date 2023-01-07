@@ -141,6 +141,16 @@ HRESULT CWindow_Shader_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 	}
 
+	if (ImGui::CollapsingHeader("Sharpness"))
+	{
+		ImGui::SliderFloat("Sharpness Ratio", &m_fSharpness, 0.f, 100.f, "%.1f");
+
+		if (ImGui::Button("Update Sharpness"))
+		{
+			GAMEINSTANCE->Set_Sharpness(m_fSharpness);
+		}
+	}
+
 	// Draw actual text bounding box, following by marker of our expected limit (should not overlap!)
 	
 	

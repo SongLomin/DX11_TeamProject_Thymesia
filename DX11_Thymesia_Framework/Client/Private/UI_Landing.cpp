@@ -15,6 +15,8 @@
 #include "UIManager.h"
 #include "GameInstance.h"
 #include "ClientLevel.h"
+#include "EasingComponent_Alpha.h"
+#include "FadeMask.h"
 
 
 GAMECLASS_C(CUI_Landing)
@@ -35,8 +37,6 @@ HRESULT CUI_Landing::Initialize(void* pArg)
     m_LandingTextures[LANDING_DEAD]         = "Landing_MemoryInterrupted";
     m_LandingTextures[LANDING_KILL_BOSS]    = "Landing_RecallCompleted";
     m_LandingTextures[LANDING_ENTER_STAGE] = "Landing_SafeHouse";
-
-
 
     m_tLandingUIDesc[LANDING_BECONFOUND].fX = ((_float)g_iWinCX) * 0.5f;
     m_tLandingUIDesc[LANDING_BECONFOUND].fY = ((_float)g_iWinCY) * 0.5f;
@@ -62,18 +62,12 @@ HRESULT CUI_Landing::Initialize(void* pArg)
     m_tLandingUIDesc[LANDING_ENTER_STAGE].fSizeY = 643.f;
     m_tLandingUIDesc[LANDING_ENTER_STAGE].fDepth = 0.f;
 
-
     //최소 기본 세팅.
     m_pLanding = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tLandingUIDesc[LANDING_BECONFOUND]);
     m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BeconFound");
-
     
-
-
     m_pLandingBG = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tLandingUIDesc[LANDING_BECONFOUND]);
     m_pLandingBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BG");
-
-    
 
     m_tLandingFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
     m_tLandingFaderDesc.eFaderType = FADER_TYPE::FADER_INOUTLOOPING;
@@ -84,6 +78,8 @@ HRESULT CUI_Landing::Initialize(void* pArg)
     m_vecChildUI.push_back(m_pLanding);
     m_vecChildUI.push_back(m_pLandingBG);
 
+    m_pEasingBlurAmount = Add_Component<CEasingComponent_Alpha>();
+    m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
     return S_OK;
 }
@@ -99,15 +95,18 @@ HRESULT CUI_Landing::Start()
 void CUI_Landing::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+   
+    if (m_pEasingBlurAmount.lock()->Is_Lerping())
+    {
+        _float3 fPlayerWorldPos;
 
-#ifdef _DEBUG
-  
+        XMStoreFloat3(&fPlayerWorldPos,
+            GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_WorldPosition());
 
-
-#endif // _DEBUG
-
+        GAMEINSTANCE->Set_RadialBlur(m_pEasingBlurAmount.lock()->Get_Lerp(), 
+            fPlayerWorldPos);
+    }
 }
-
 void CUI_Landing::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
@@ -146,6 +145,9 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
         m_pLandingBG.lock()->Init_Fader(m_tLandingFaderDesc, desc);
         m_pLandingBG.lock()->Set_UIDesc(LandingBG_Desc);
         m_pLandingBG.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+
+        m_pEasingBlurAmount.lock()->Set_Lerp(0.3f, 0.0f, 1.f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, true);
+
     }
     else//스테이지에 따라 나와야함.GetCurrentLevel이나 머시기...그런걸로
     {
@@ -200,6 +202,7 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
     switch (m_PreCalledLanding)
     {
     case Client::CUI_Landing::LANDING_BECONFOUND:
+
         Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Call_Enable_EvolveMenu();
         break;
     case Client::CUI_Landing::LANDING_DEAD:
@@ -215,3 +218,4 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
     }
 
 }
+

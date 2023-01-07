@@ -48,14 +48,9 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
         m_tOriginStatus.m_iPlague = 1;
 
     }
-
     m_tChangeStatus = m_tOriginStatus;
 
-
-
-    
     m_iArrowArraySize = 10;
-
 
     m_fDecorationArrowPos[0] = { 608.f ,195.f };
     m_fDecorationArrowPos[1] = { 608.f ,252.f };
@@ -90,8 +85,6 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
     ChangeSelectedIndex();
     Set_Enable(false);
 
-    m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
     return S_OK;
 }
 
@@ -99,21 +92,6 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
-    //m_pEasingTransformCom.lock()->Tick(fTimeDelta);
-
-    if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
-    {
-        FaderDesc tFaderDesc;
-        tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-        tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-        tFaderDesc.fFadeMaxTime = 0.2f;
-        tFaderDesc.fDelayTime = 0.f;
-        tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-        m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-        m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu_Level::Call_ReturnToEvolveMenu, this);
-    }
 
     if (m_bOpenableReconfirmWindow)//화면이 켜지지 않은 경우.
     {
@@ -1182,10 +1160,6 @@ void CUI_EvolveMenu_Level::OnEnable(void* pArg)
     Update_FontInfo();
 }
 
-void CUI_EvolveMenu_Level::Call_ReturnToEvolveMenu()
+void CUI_EvolveMenu_Level::Free()
 {
-    Set_Enable(false);
-    m_pFadeMask.lock()->Set_Enable(false);
-    GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
-
 }

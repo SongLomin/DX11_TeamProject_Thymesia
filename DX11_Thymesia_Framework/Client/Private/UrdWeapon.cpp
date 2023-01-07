@@ -23,6 +23,8 @@ HRESULT CUrdWeapon::Initialize(void* pArg)
 
 
 	m_pModelCom.lock()->Init_Model("Boss_UrdWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	
+
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 	//TrailDesc.iMaxCnt = 100;

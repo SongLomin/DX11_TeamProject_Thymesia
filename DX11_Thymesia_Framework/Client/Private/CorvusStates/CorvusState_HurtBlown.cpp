@@ -59,6 +59,8 @@ void CCorvusState_HurtBlown::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 34);
 
 	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
@@ -79,6 +81,8 @@ void CCorvusState_HurtBlown::OnStateEnd()
 	__super::OnStateEnd();
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 void CCorvusState_HurtBlown::Call_AnimationEnd()

@@ -10,7 +10,6 @@
 #ifdef _DEBUG
 
 #pragma region System
-//#define _ONLY_UI_
 //#define _BAKE_MIPMAPS_
 #define _USE_THREAD_
 #define _144HZ_
@@ -27,25 +26,25 @@
 #define _USE_GRAVITY_
 #define _LIFEGUARD_FOR_FALL_
 
-#define _DEBUG_COUT_
+//#define _DEBUG_COUT_
 
 #pragma region Map
 //#define _BRIGHT_LIGHT_
 #define _GENERATE_PROP_COLLIDER_ true
-#define _TEST_DYNAMIC_PROPS_
+//#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
 #define _MAP_TOOL_
-//#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
 #pragma region Effects
-// #define _DAGGER_TRAIL_
-//#define _CORVUS_EFFECT_
-//#define _VARG_EFFECT_
-//#define	_BAT_EFFECT_
+//#define _DAGGER_TRAIL_
+#define _CORVUS_EFFECT_
+#define _VARG_EFFECT_
+#define	_BAT_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
@@ -54,12 +53,11 @@
 /////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 #ifdef NDEBUG
 
-#undef _ONLY_UI_
 
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-#undef _RENDER_FPS_
+#define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
 #undef _LOAD_CAPTURED_RESOURCE_
@@ -93,7 +91,6 @@
 #ifdef _EFFECT_TOOL_
 
 #pragma region System
-#undef _ONLY_UI_
 #define _USE_THREAD_
 #define _144HZ_
 #define _RENDER_FPS_
@@ -123,19 +120,9 @@
 // #define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
-#define _ANIMATION_TOOL_WEAPON_
+#undef _ANIMATION_TOOL_WEAPON_
 #undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
-
-#pragma region Boss Mobs
-#undef _BOSS_VARG_
-#undef _BOSS_URD_
-#pragma endregion // Boss Mobs
-
-#pragma region Normal Mobs
-#undef _STAGE_1_MONSTER_
-#undef _STAGE_2_MONSTER_
-#pragma endregion // Normal Mobs
 
 #pragma region Effects
 #undef _DAGGER_TRAIL_

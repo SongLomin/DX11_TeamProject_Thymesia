@@ -158,12 +158,15 @@ void CEditSetActor::View_CreateActor()
 		"Gardener",
 		"Shield Axe Man",
 		"Balloon",
-		"Enhance_Gardener"
+		"Enhance_Gardener",
+		"Skull_Shield",
+		"Skull_Spear"
 	};
 
 	static const char* ActorList_Elite[] =
 	{
-		"Joker"
+		"Joker",
+		"BigHandman"
 	};
 
 
@@ -179,6 +182,8 @@ void CEditSetActor::View_CreateActor()
 		"Idle",
 		"Sit",
 		"Fidget",
+		"Spidle",
+		"RunAttackIdle"
 	};
 
 	static const char* BossActionList[] =
@@ -272,7 +277,13 @@ void CEditSetActor::View_CreateActor()
 			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CJoker>(LEVEL::LEVEL_EDIT));
 			Add_ActorToTool(typeid(CJoker).hash_code(), typeid(CJoker).name(), pObj);
 		}
+		else if (MONSTERTYPE::BIGHANDMAN == tMonsterDesc.eMonType)
+		{
+			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CBigHandMan>(LEVEL::LEVEL_EDIT));
+			Add_ActorToTool(typeid(CBigHandMan).hash_code(), typeid(CBigHandMan).name(), pObj);
+		}
 
+	
 		if (!pObj.lock())
 			return;
 

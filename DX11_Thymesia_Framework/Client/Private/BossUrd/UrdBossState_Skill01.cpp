@@ -148,7 +148,7 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 		}
 
 
-		
+		//¶¥¿¡²È´Â°Å
 		//Get_OwnerMonster()->Get_JavelinWeapon().push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::BIND_HAND);
 		pJavelinWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
@@ -174,10 +174,6 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 	
 	}
 		
-	
-		
-
-
 	if (!Check_Requirement())
 		return false;
 

@@ -20,7 +20,7 @@ public:
 	void Set_ClosePlayerCheck(_bool ClosePlayerCheck) { m_bClosePlayerCheck = ClosePlayerCheck; }
 	void Set_CloseToRun(_bool CloseToRun) { m_bCloseToRun = CloseToRun; }
 	void Set_AnimIndex(_uint AnimIndex) { m_iAnimIndex = AnimIndex; }
-	
+	void Set_ChanegePatrol(_bool bPatrol) { m_bPatrol = bPatrol; }
 
 
 

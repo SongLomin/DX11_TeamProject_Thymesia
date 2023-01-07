@@ -113,6 +113,9 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	if ("TEMP_Corvus" == m_pInstanceModelCom.lock()->Get_ModelKey())
 		return S_OK;
 
+	if ("Tent_P_Rag04" == m_pInstanceModelCom.lock()->Get_ModelKey())
+		int a = 0;
+
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
 
@@ -246,7 +249,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
 			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 		{
-			m_iPassIndex = 6;
+			m_iPassIndex = 7;
 		}
 
 		// Invisibility		OK.
@@ -258,7 +261,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
 			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 		{
-			m_iPassIndex = 7;
+			m_iPassIndex = 6;
 		}		
 
 		// Invisibility		OK.

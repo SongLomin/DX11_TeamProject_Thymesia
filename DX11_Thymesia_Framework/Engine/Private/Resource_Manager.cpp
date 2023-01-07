@@ -788,9 +788,10 @@ HRESULT CResource_Manager::Load_Shader(const _tchar* sKey, const _tchar* sShader
 	{
 		return E_FAIL;
 	}
-	_hashcode KeyToHashcode = hash<tstring>()(sKey);
+	
 
 #ifdef _DEBUG
+	_hashcode KeyToHashcode = hash<tstring>()(sKey);
 
 	auto iter = m_ShaderFilePaths.find(KeyToHashcode);
 
@@ -808,6 +809,31 @@ HRESULT CResource_Manager::Load_Shader(const _tchar* sKey, const _tchar* sShader
 
 
 	return S_OK;
+}
+
+HRESULT CResource_Manager::Load_EngineShader(const _tchar* sKey, const _tchar* sShaderFilePath, const D3D_SHADER_MACRO* In_Defines)
+{
+	ComPtr<ID3DX11Effect> pNewEffect;
+
+	_uint		iHLSLFlag = 0;
+
+#ifdef _DEBUG
+	iHLSLFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_OPTIMIZATION_LEVEL1;
+	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, In_Defines, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), nullptr);
+
+#else
+	iHLSLFlag = D3DCOMPILE_OPTIMIZATION_LEVEL1;
+	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, In_Defines, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), /*&pError*/nullptr);
+#endif
+
+	if (SUCCEEDED(hr))
+	{
+		_hashcode KeyToHashcode = hash<tstring>()(sKey);
+
+		m_pShaderEffect[KeyToHashcode] = pNewEffect;
+	}
+
+	return hr;
 }
 
 HRESULT CResource_Manager::Load_Shader_Internal(const _tchar* sKey, const _tchar* sShaderFilePath, ID3DBlob** ppError)

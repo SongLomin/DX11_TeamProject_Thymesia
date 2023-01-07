@@ -41,6 +41,9 @@ protected:
 	virtual void	OnMouseOver();
 	virtual void	OnMouseOut();
 	virtual void	OnLButtonDown();
+	virtual void	OnLButtonUp();
+
+
 	virtual void	OnLButtonClick();
 	
 protected:

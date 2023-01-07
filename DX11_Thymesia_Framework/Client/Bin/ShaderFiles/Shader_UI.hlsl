@@ -452,6 +452,28 @@ PS_OUT PS_MASK(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_GAUGE_HEIGHT (PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.1f)
+	{
+		discard;
+	}
+	if (1.f - In.vTexUV.y > g_Ratio)
+	{
+		Out.vColor.a = 0.5f;
+	}
+	else
+	{
+		Out.vColor.a  = 1.f;
+	}
+
+	return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -643,5 +665,17 @@ technique11 DefaultTechnique
 		DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MASK();
+	}
+	pass UI_GaugeHeight//15
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_GAUGE_HEIGHT();
 	}
 }

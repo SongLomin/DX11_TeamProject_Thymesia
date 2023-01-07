@@ -94,21 +94,22 @@ HRESULT CInteraction_CastleGate::Start()
 
         XMStoreFloat4x4(&m_RightDoorMatrix, RightWorldMatrix);
         XMStoreFloat4x4(&m_LeftDoorMatrix , LeftWorldMatrix);
-
+#ifdef _GENERATE_PROP_COLLIDER_
         PhysXColliderDesc tDesc;
-        m_pRightPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorRightModelCom.lock()->Get_ModelData(), false);
+        m_pRightPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorRightModelCom.lock()->Get_ModelData(), true);
         m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_RightDoorMatrix));
-        Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
+        Preset::PhysXColliderDesc::ConvexStaticPropSetting(tDesc, m_pTransformCom);
         m_pRightPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
         m_pRightPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
         m_pRightPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
-        m_pLeftPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorLeftModelCom.lock()->Get_ModelData(), false);
+        m_pLeftPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorLeftModelCom.lock()->Get_ModelData(), true);
         m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_LeftDoorMatrix));
-        Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
+        Preset::PhysXColliderDesc::ConvexStaticPropSetting(tDesc, m_pTransformCom);
         m_pLeftPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
         m_pLeftPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
         m_pLeftPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+#endif
 
         m_pTransformCom.lock()->Set_WorldMatrix(WorldMatrix);
     }

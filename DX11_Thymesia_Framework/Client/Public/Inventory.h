@@ -21,6 +21,8 @@ public:
 
 public:
 	void		Push_Item(ITEM_NAME eItemName);
+	void		Push_Item(MONSTERTYPE eMonsterType);
+
 	_bool		Pop_Item(ITEM_NAME eItemName);
 	void		Remove_Item(ITEM_NAME eItemName);
 	_uint		Get_Size();

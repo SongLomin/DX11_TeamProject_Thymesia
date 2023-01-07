@@ -33,6 +33,7 @@ public:
 		_float3			vGravity = _float3(0.f, 9.81f, 0.f);
 		_float			fDragCoefficient = 0.f;
 		_float			fLiftCoefficient = 0.f;
+		_bool			m_bUseBoneMatrix = false;
 	}NVCLOTH_MESH_DESC;
 
 	typedef struct tag_NvCloth_Model_desc
