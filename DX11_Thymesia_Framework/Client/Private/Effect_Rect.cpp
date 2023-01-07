@@ -1310,21 +1310,9 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Gravity))
 	{
-		_vector vDeltaGravity(XMVectorSet(0.f, 0.f, 0.f, 0.f));
-
-		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		_matrix TotalWorldMatrix(BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
-		_matrix TotalWorldMatrixInverse(XMMatrixInverse(nullptr, TotalWorldMatrix));
-
-		_vector vMul(XMVector3TransformNormal(vDeltaGravity, TotalWorldMatrixInverse));
-
-		_float3 f3Mul;
-		XMStoreFloat3(&f3Mul, vMul);
-
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3Mul);
+		m_tParticleDescs[i].vCurrentGravity.x += m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta);
+		m_tParticleDescs[i].vCurrentGravity.y += m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta);
+		m_tParticleDescs[i].vCurrentGravity.z += m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta);
 	}
 }
 

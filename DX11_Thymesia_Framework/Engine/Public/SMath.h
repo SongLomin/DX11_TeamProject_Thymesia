@@ -26,6 +26,7 @@ namespace Engine
 		XMMATRIX		ENGINE_DLL LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition);
 
 		XMMATRIX		ENGINE_DLL Bake_WorldMatrix(const XMFLOAT3& In_vScale, const XMFLOAT3& In_vRot, const XMFLOAT3& In_vPos);
+		XMMATRIX		ENGINE_DLL Bake_WorldMatrix(const XMFLOAT2& In_vScale, const XMFLOAT3& In_vRot, const XMFLOAT3& In_vPos);
 		
 
 		XMVECTOR		ENGINE_DLL Get_Scale(FXMMATRIX Mat);
