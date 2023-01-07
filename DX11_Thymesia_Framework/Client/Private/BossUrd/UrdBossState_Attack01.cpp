@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "Weapon.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Attack01);
 CLONE_C(CUrdBossState_Attack01, CComponent)
@@ -62,6 +64,11 @@ void CUrdBossState_Attack01::LateTick(_float fTimeDelta)
 void CUrdBossState_Attack01::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	for (auto& elem : pWeapons)
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 0.7f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	

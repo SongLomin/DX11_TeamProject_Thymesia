@@ -1869,6 +1869,94 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandMan.h">
+      <Filter>02. GameObject\03. Actor\Character\Elite\01.BigHandMan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\00.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboA01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\00.ComboA01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboA02.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\04.ComboB_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_TurnL90.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\00.Left</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Stun_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Stun_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Stun_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_TurnR90.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\01.Right</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_VS_TakeExecution_01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\05.Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_Walk.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\06.Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_SP_Idle1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\00.Sp_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_SP_Idle1_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\01.Sp_Idle_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_HurtR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\00.HurtR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_HurtL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\01.HurtL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_HurtCounter.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\02.HurtCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackStart.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
@@ -3931,6 +4019,94 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandMan.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Elite\01.BigHandMan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\00.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboA01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\00.ComboA01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboB_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboB_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\04.ComboB_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboA02.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_TurnL90.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\00.Left</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Stun_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Stun_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Stun_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_TurnR90.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\01.Right</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_VS_TakeExecution_01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\05.Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_Walk.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\06.Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_SP_Idle1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\00.Sp_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_SP_Idle1_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\01.Sp_Idle_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_HurtR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\00.HurtR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_HurtL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\01.HurtL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_HurtCounter.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\02.HurtCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackStart.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillView.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Page.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
@@ -5838,6 +6014,126 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade">
       <UniqueIdentifier>{d1172711-659b-4baf-9ad3-f41c455953de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare">
+      <UniqueIdentifier>{5d827422-0701-414c-ae97-a010ecf503e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\00.Armorman">
+      <UniqueIdentifier>{42e7f59c-c3e0-48ea-b8ad-2f5bade9c818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\01.Shieldman">
+      <UniqueIdentifier>{11c45189-b8a1-4e1a-92ec-d8139b302de6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\02.Skullman">
+      <UniqueIdentifier>{1c108e4b-0829-4e96-b276-4006a10e448f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\03.Spearman">
+      <UniqueIdentifier>{9869d864-078a-410f-8130-7ab6f7851b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\Weapon">
+      <UniqueIdentifier>{72a784ab-9e04-4a69-ada2-2db5b79f337b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\01.BigHandMan">
+      <UniqueIdentifier>{55838944-0a78-44b7-8fe2-836f3d52e1fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState">
+      <UniqueIdentifier>{bc9c81d7-18ed-4c88-998c-b3020784bc5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle">
+      <UniqueIdentifier>{b57216b3-37ee-4943-ad70-e9837655211c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack">
+      <UniqueIdentifier>{dff38c86-8051-4f93-8f08-2acc8a30acc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt">
+      <UniqueIdentifier>{dcf6013a-2ce5-4869-914d-f77d66e309b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun">
+      <UniqueIdentifier>{6f0a6406-3fdd-4c39-8508-54bf4e7f18ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn">
+      <UniqueIdentifier>{f1437ad1-7698-4a1c-be29-50d20a196723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\05.Execution">
+      <UniqueIdentifier>{3ead0b45-6bc0-4a02-a178-fae959b5d0ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\06.Walk">
+      <UniqueIdentifier>{aa51dc89-12f2-4afe-94d5-eee555895319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\00.Idle">
+      <UniqueIdentifier>{8ff2f3fe-d5a9-46bb-9459-a074f44b60b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle">
+      <UniqueIdentifier>{23c255bf-5206-4e5a-826d-d00d3aefd41f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\00.ComboA01">
+      <UniqueIdentifier>{fb8a021d-3ccf-4bc9-90c0-63c49fbc2bef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02">
+      <UniqueIdentifier>{c00b0c3b-5d0c-4096-bb9e-2a65d911ff21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start">
+      <UniqueIdentifier>{45e023f7-5e93-41a4-b037-3e6e3a438874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop">
+      <UniqueIdentifier>{1b57a9eb-cb2a-4e3f-bfc6-5fd433769695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\04.ComboB_End">
+      <UniqueIdentifier>{17a67d4d-05f5-4e94-a35a-9e9af0ecd1ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\00.HurtR">
+      <UniqueIdentifier>{05c61b4c-7626-4681-b183-5ffa5b6a881a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\01.HurtL">
+      <UniqueIdentifier>{8c18f0c2-879a-466b-8062-8b06a2b4d3e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\02.Hurt\02.HurtCounter">
+      <UniqueIdentifier>{4eb7a5a9-85d5-41ab-a81a-0287e33d9a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\00.Start">
+      <UniqueIdentifier>{c9ee9833-d105-4692-b232-c511a76efd1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\01.Loop">
+      <UniqueIdentifier>{ec7655da-6c42-4a99-ba60-ff893e134577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\03.Stun\02.End">
+      <UniqueIdentifier>{dbcc28e2-dcbf-4e91-937f-08fd087a9c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\00.Left">
+      <UniqueIdentifier>{05f3080b-6548-49a4-aaaa-f34aaa3b5119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\04.Turn\01.Right">
+      <UniqueIdentifier>{0d1f028d-5f43-489c-a38d-7a3a65143f16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\00.Sp_Idle">
+      <UniqueIdentifier>{50c47bf7-a829-4180-aa92-aad23e8250b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\00.Idle\01.Sp_Idle\01.Sp_Idle_End">
+      <UniqueIdentifier>{4de9d19a-ffdf-47ac-bbcf-1ab3ad3c4d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution">
+      <UniqueIdentifier>{c5ca34d7-7a5c-4924-b918-77444e0b616b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol">
+      <UniqueIdentifier>{cec77c45-c0be-43e3-898c-34fab5a4f0e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start">
+      <UniqueIdentifier>{ec764086-871a-4327-b2d9-fe2e9ae7ba2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.End">
+      <UniqueIdentifier>{ebb248d1-a80d-45be-8c8a-47045f7a4812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90">
+      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.Loop">
+      <UniqueIdentifier>{fa413659-dc96-44f2-a583-1ee427d5fec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\02.End">
+      <UniqueIdentifier>{bb1b3979-1a34-48a3-8208-252bd92c9eea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight">
+      <UniqueIdentifier>{df141bf0-d6af-4d3c-9ef7-1342e73aa9c9}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\Character\Rare">
       <UniqueIdentifier>{5d827422-0701-414c-ae97-a010ecf503e9}</UniqueIdentifier>

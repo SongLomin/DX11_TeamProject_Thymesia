@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "Weapon.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Attack02);
 CLONE_C(CUrdBossState_Attack02, CComponent)
@@ -61,6 +63,7 @@ void CUrdBossState_Attack02::LateTick(_float fTimeDelta)
 void CUrdBossState_Attack02::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
 
 	m_bAttackLookAtLimit = true;
 
