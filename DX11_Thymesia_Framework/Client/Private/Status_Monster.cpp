@@ -352,7 +352,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::URD:
 		m_tMonsterDesc.m_fAtk = 40.f;
-		m_tMonsterDesc.m_fMaxHP_white = 200.f;
+		m_tMonsterDesc.m_fMaxHP_white = 2000.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;

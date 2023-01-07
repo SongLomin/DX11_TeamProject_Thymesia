@@ -61,7 +61,7 @@ void CUrdBossState_WalkF::OnStateStart(const _float& In_fAnimationBlendTime)
 	
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
+	cout << "UrdState: Start -> OnStateStart" << endl;
 #endif
 #endif
 	

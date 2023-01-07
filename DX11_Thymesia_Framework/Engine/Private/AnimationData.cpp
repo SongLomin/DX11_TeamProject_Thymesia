@@ -319,6 +319,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     //SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 0.5f);
     SET_ANIM_SPEED("Corvus_VSUrd_Execution",0.8f);
+    SET_ANIM_SPEED("Corvus_SD_HurtMFL",2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtMFR",2.f);
 
 #undef SET_ANIM_SPEED
 

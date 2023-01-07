@@ -613,7 +613,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			break;
 			case Client::MONSTERTYPE::SKULLSHIELDMAN:
 			{
-				_int iAttRand = rand() % 3;
+				_int iAttRand = rand() % 4;
 				switch (iAttRand)
 				{
 				case 0:
@@ -627,6 +627,11 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					m_bRunCheck = false;
 					break;
 				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
+					m_bRunCheck = false;
+					break;
+				case 3:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
 					Get_Owner().lock()->Get_Component<CNorMonState_Walk_F>().lock()->Set_WalkCheck(false);
 					m_bRunCheck = false;
