@@ -485,11 +485,11 @@ namespace Client
 
 	enum class SKILL_NAME
 	{
-		SKILL_VARGSWORD,
 		SKILL_AXE,
 		SKILL_KNIFE,
 		SKILL_HAMMER,
 		SKILL_SCYTHE,
+		SKILL_VARGSWORD,
 		SKILL_END
 	};
 
@@ -551,6 +551,14 @@ namespace Client
 		ARMORMAN,
 		NAMEEND
 	};
+
+	enum class SKILLBUTTON_LOCK_TYPE
+	{
+		LOCKED,
+		UNLOCKED,
+		SKILLBUTTON_LOCK_TYPE_END
+	};
+
 }
 
 

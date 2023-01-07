@@ -61,6 +61,9 @@ using namespace physx;
 
 using namespace nv::cloth;
 
+// NVIDIA Image Scaling
+#include "NIS_Config.h"
+
 #include <process.h>
 #include <iostream>
 #include <memory>

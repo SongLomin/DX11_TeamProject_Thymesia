@@ -211,6 +211,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\DeferredCommand_Thread.h" />
+    <ClInclude Include="..\Public\DXUtilities.h" />
     <ClInclude Include="..\Public\Easing_Utillity.h" />
     <ClInclude Include="..\Public\Fader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -260,6 +261,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\NIS_Config.h" />
+    <ClInclude Include="..\Public\NIS_Shader.h" />
     <ClInclude Include="..\Public\NodeData.h" />
     <ClInclude Include="..\Public\NvCloth_Manager.h" />
     <ClInclude Include="..\Public\NvCloth_Structs.h" />
@@ -377,6 +380,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\NIS_Shader.cpp" />
     <ClCompile Include="..\Private\NodeData.cpp" />
     <ClCompile Include="..\Private\NvCloth_Manager.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
@@ -432,6 +436,7 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\NIS_Main.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Cell.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_OutLine.hlsl" />
   </ItemGroup>

@@ -32,7 +32,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-#ifndef _ONLY_UI_
 	SetWindowText(g_hWnd, TEXT("Setting Camera..."));
 
 	CCamera::CAMERADESC CameraDesc;
@@ -60,7 +59,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
-#endif	// ONLY_UI
 
 
 	SetWindowText(g_hWnd, TEXT("Setting up UI..."));

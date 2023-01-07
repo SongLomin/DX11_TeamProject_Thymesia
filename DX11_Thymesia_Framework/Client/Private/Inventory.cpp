@@ -56,13 +56,55 @@ void CInventory::Push_Item(ITEM_NAME eItemName)
 	{
 		pair->second->Add_Quantity();//있다면 수량 하나 추가.
 	}
-
 	GET_SINGLE(CUIManager)->Add_ItemPopup(eItemName);
 
 	//weak_ptr<CUI_ItemPopup> pPopupUI = GAMEINSTANCE->Get_GameObjects<CUI_ItemPopup>(LEVEL_STATIC).front();
 	//pPopupUI.lock()->Ready_Popup(eItemName);
 	//pPopupUI.lock()->Start_Popup();
-
+}
+void CInventory::Push_Item(MONSTERTYPE eMonsterType)
+{
+	switch (eMonsterType)
+	{
+	case Client::MONSTERTYPE::START_NORMAL_MONSTER:
+		break;
+	case Client::MONSTERTYPE::AXEMAN:
+		Push_Item(ITEM_NAME::SKILLPIECE_AXE);
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		Push_Item(ITEM_NAME::SKILLPIECE_KNIFE);
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		Push_Item(ITEM_NAME::SKILLPIECE_AXE);
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		Push_Item(ITEM_NAME::SKILLPIECE_AXE);
+		break;
+	case Client::MONSTERTYPE::BALLOON:
+		break;
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
+		Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
+		break;
+	case Client::MONSTERTYPE::JOKER:
+		Push_Item(ITEM_NAME::SKILLPIECE_HAMMER);
+		break;
+	case Client::MONSTERTYPE::VARG:
+		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
+		break;
+	case Client::MONSTERTYPE::BAT:
+		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
+		break;
+	case Client::MONSTERTYPE::URD:
+		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
+		break;
+	case Client::MONSTERTYPE::NMON_END:
+		break;
+	default:
+		break;
+	}
 }
 
 _bool CInventory::Pop_Item(ITEM_NAME eItemName)

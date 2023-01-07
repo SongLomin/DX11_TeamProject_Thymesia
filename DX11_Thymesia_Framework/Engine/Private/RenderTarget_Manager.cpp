@@ -28,12 +28,12 @@ list<const _tchar*> CRenderTarget_Manager::Get_AllSRVNames()
 	return szNameList;
 }
 
-HRESULT CRenderTarget_Manager::Add_RenderTarget(const _tchar* pTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor)
+HRESULT CRenderTarget_Manager::Add_RenderTarget(const _tchar* pTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor, const _bool In_bUnorderedAccessView)
 {
 	if (nullptr != Find_RenderTarget(pTargetTag))
 		return E_FAIL;
 
-	shared_ptr<CRenderTarget> pRenderTarget = CRenderTarget::Create(iWidth, iHeight, eFormat, vClearColor);
+	shared_ptr<CRenderTarget> pRenderTarget = CRenderTarget::Create(iWidth, iHeight, eFormat, vClearColor, In_bUnorderedAccessView);
 	if (!pRenderTarget)
 		return E_FAIL;
 

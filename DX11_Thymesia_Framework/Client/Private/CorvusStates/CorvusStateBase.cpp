@@ -58,7 +58,7 @@ _bool CCorvusStateBase::Check_RequirementAttackState()
 	return false;
 }
 
-_bool CCorvusStateBase::Check_RequirementFadderAttackState()
+_bool CCorvusStateBase::Check_RequirementFeatherAttackState()
 {
 	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
 		return true;

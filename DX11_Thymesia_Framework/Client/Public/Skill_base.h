@@ -28,6 +28,13 @@ public:
     SKILL_TYPE  Get_SkillType() { return m_eSkillType; }
     virtual weak_ptr<CPlayerStateBase>  Get_SkillState() { return m_pSkillState; }
 
+    _uint       Get_CurrentSkillLevel() { return m_iCurrentSkillLevel; }
+    _uint       Get_MaxSkillLevel() { return m_iMaxSkillLevel; }
+    ITEM_NAME   Get_RequirementSkillPiece() { return m_eRequirementSkillPiece; }
+
+    void        Set_CurrentSkillLevel(_uint iCurrentSkillLevel) { m_iCurrentSkillLevel = iCurrentSkillLevel; }
+
+
 public:
     /*
      마나를 소모하는 스킬이 아니라 체력을 소모하는 스킬이 있다면
@@ -49,7 +56,9 @@ public:
 protected:
     virtual void            Init_SkillInfo() {};
     virtual void            Init_State() {};//스킬은 무!조!건! 상태를 참조하고 있어야 한다.
-   
+    virtual void            Init_RequirementSkillPieceFromSkillName(SKILL_NAME eSkillName);
+protected:
+
 protected:
     virtual void            Start_Skill();
     virtual void            End_Skill();
@@ -60,18 +69,19 @@ protected:
     shared_ptr<CRequirement_Time>               m_pRequirementTime;
     shared_ptr<CRequirement_PlayerStatusMana>   m_pRequirementMana;
 
+    _bool                                       m_bUseAble;
+    SKILL_NAME                                  m_eSkillName;
+    SKILL_TYPE                                  m_eSkillType;
+    
+    ITEM_NAME                                   m_eRequirementSkillPiece = ITEM_NAME::ITEM_NAME_END;
 
-    _bool                               m_bUseAble;
-    SKILL_NAME                          m_eSkillName;
-    SKILL_TYPE                          m_eSkillType;
-    _float                              m_fSkillCoolDown;
+    _float                                      m_fSkillCoolDown;
 
-    _float                              m_fRequiredCost;
-    weak_ptr<CPlayerStateBase>          m_pSkillState;
+    _float                                      m_fRequiredCost;
+    weak_ptr<CPlayerStateBase>                  m_pSkillState;
 
-    _uint                               m_iMaxSkillLevel = 0;
-    _uint                               m_iCurrentSkillLevel = 0;
-
+    _uint                                       m_iMaxSkillLevel = 0;
+    _uint                                       m_iCurrentSkillLevel = 0;
 
 private:
     void                        Free();

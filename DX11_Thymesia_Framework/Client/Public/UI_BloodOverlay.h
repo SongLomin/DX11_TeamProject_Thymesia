@@ -22,10 +22,8 @@ public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 
-
 public:
 	void			Call_Overlay(_float fLifeTime);
-
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;

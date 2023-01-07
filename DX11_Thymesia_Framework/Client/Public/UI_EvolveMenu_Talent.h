@@ -1,5 +1,5 @@
 #pragma once
-#include "UI_Container.h"
+#include "UI_EvolveMenu_Page.h"
 
 BEGIN(Client)
 
@@ -9,8 +9,7 @@ class CUI_EvolveMenu_TalentButton;
 class CTalent;
 
 
-
-class CUI_EveolveMenu_Talent : public CUI_Container
+class CUI_EveolveMenu_Talent : public CUI_EvolveMenu_Page
 {
 public:
 	enum class TALENT_TAP{TALENT_SWORD, TALENT_CLAW, TALENT_TAP_END};
@@ -29,7 +28,6 @@ public:
 public:
 	void	SetRootTalent(weak_ptr<CTalent> In_pTalent, TALENT_TAP eRootType);
 	
-
 private:
 	void	Create_Background();
 	void	Create_TalentInformation();
@@ -62,7 +60,6 @@ private:
 
 	
 	void				TalentViewInformaiton_MouseOver(TALENT_NAME eTalentName);
-
 private:
 	weak_ptr<CCustomUI>	m_pTalentImage;
 	weak_ptr<CCustomUI> m_pMediaFrame;//«¡∑π¿”
@@ -81,8 +78,6 @@ private:
 private:
 	_uint				m_iTalentIndex = 0;
 	_uint				m_iTapIndex = 0;
-private:
-	weak_ptr<CFadeMask>   m_pFadeMask;
 
 private:
 	_float				m_fTreeOffsetY;
@@ -93,9 +88,8 @@ private:
 	TEXTINFO			m_tTalentInfo;
 	weak_ptr<CTalent>	m_pSelectedTalent;
 
-public:
-	void            Call_ReturnToEvolveMenu();
-
+private:
+	void				Free();
 
 };
 

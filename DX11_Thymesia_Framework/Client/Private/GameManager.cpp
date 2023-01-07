@@ -612,24 +612,12 @@ HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	}
 
-	/*auto iter_find = m_SectionObejects.find(m_iPreEventSection);
-
-	if (iter_find != m_SectionObejects.end())
-	{
-		for (auto& elem_obj : iter_find->second)
-			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ENTER_SECTION);
-	}*/
-
 	_vector vPlayerDeadSpotPos = m_pCurrentPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION);
 	_uint   iDropMemory        = m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Get_Desc().m_iMemory;
 
 	m_pCurrentPlayer.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
-
-	// TODO : 나중에 status 컴포넌트에 Full_Recovery 가상화되면 해당 클래스에서 하기
-	// Begine
 	m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Full_Recovery();
 	m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Set_Memory(0);
-	// End
 
 	if (!m_pDeadSpot.lock())
 		m_pDeadSpot = GAMEINSTANCE->Get_GameObjects<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC).front();
@@ -639,6 +627,26 @@ HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 	return S_OK;
 }
 
+void CGameManager::ResetWorld()
+{
+	for (auto& elem : m_SectionObejects)
+	{
+		for (auto& elem_obj : elem.second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+	}
+
+	for (auto& elem : m_SectionLights)
+	{
+		for (auto& elem_obj : elem.second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+	}
+
+	for (auto& elem : m_SectionEventers)
+	{
+		for (auto& elem_obj : elem.second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+	}
+}
 
 void CGameManager::Start_Peace()
 {

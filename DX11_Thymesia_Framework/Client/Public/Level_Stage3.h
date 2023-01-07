@@ -5,6 +5,8 @@
 
 BEGIN(Client)
 
+class CPlayer;
+
 class CLevel_Stage3 final : public CClientLevel
 {
 public:

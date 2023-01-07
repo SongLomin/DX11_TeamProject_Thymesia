@@ -41,8 +41,6 @@ void CUI_BloodOverlay::Call_Overlay(_float fLifeTime)
 {
 	Set_Enable(true);
 
-	
-
 	m_pEasingAlpha.lock()->Set_Lerp(1.f, 0.f, fLifeTime,
 		EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, false);
 

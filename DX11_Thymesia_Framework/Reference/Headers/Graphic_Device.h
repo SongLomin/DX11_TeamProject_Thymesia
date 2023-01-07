@@ -21,13 +21,22 @@ public:
 	GFSDK_SSAO_Context_D3D11* Get_AOContext() { return m_pAOContext; }
 
 public:
+	const ComPtr<ID3D11Texture2D>& Get_Texture() const {
+		return m_pBackBufferTexture;
+	}
+
 	const ComPtr<ID3D11ShaderResourceView>& Get_SRV() const {
 		return m_pBackBufferSRV;
+	}
+
+	const ComPtr<ID3D11RenderTargetView>& Get_RTV() const {
+		return m_pBackBufferRTV;
 	}
 
 	const ComPtr<ID3D11ShaderResourceView>& Get_DepthStencilSRV() const {
 		return m_pDepthStencilSRV;
 	}
+
 
 private:	
 	std::mutex m_job_q_;
@@ -40,6 +49,7 @@ private:
 	ComPtr<IDXGISwapChain>			m_pSwapChain;	
 
 	// ComPtr<ID3D11ShaderResourceView>
+	ComPtr<ID3D11Texture2D>				m_pBackBufferTexture;
 	ComPtr<ID3D11RenderTargetView>		m_pBackBufferRTV;
 	ComPtr<ID3D11ShaderResourceView>	m_pBackBufferSRV;
 	ComPtr<ID3D11DepthStencilView>		m_pDepthStencilView;
