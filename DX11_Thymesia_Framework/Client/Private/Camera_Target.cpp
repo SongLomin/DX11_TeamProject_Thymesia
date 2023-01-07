@@ -406,7 +406,6 @@ void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 
 	if (m_fZoomTime >= m_fZoomTimeAcc)
 	{
-
 		_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
 		_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
 

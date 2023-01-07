@@ -158,12 +158,8 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
-	// TODO : Test For RimLight Power
-	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
-	{
-		Set_RimLightDesc(0.5f, { 0.6f,0.f,0.f }, 1.f);
-	}
-	
+
+
 	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
 }

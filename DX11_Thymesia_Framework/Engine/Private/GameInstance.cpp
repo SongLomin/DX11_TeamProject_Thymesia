@@ -400,9 +400,9 @@ HRESULT CGameInstance::Set_GodRayDesc(const _float4& In_vColor, const _float4& I
 	return m_pRender_Manager->Set_GodRayDesc(In_vColor, In_vPosition);
 }
 
-HRESULT CGameInstance::Set_Sharpness(const _float In_fSharpness)
+HRESULT CGameInstance::Set_GodRayScale(const _float& In_fScale)
 {
-	return m_pRender_Manager->Set_Sharpness(In_fSharpness);
+	return m_pRender_Manager->Set_GodRayScale(In_fScale);
 }
 
 
