@@ -236,6 +236,9 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	{
 		m_pTransformCom.lock()->Set_Position(XMVectorSetW(vPos, 1.f));
 	}
+
+	if (m_tLightDesc.eActorType == LIGHTDESC::TYPE::TYPE_DIRECTIONAL)
+		_int a = 0;
 }
 
 void CLight_Prop::OnEventMessage(_uint iArg)

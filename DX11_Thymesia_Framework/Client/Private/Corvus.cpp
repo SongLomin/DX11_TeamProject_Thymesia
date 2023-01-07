@@ -16,6 +16,7 @@
 #include "Corvus_DefaultSaber.h"
 #include "Corvus_DefaultDagger.h"
 #include "Collider.h"
+#include "Effect_Decal.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -159,7 +160,17 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
+	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		DECAL_DESC DecalDesc;
+		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
+		XMStoreFloat4(&DecalDesc.vPosition, Get_WorldPosition()+XMVectorSet(0.f,0.1f,0.f,0.f));
+		DecalDesc.fTime = 3.f;
+		DecalDesc.vScale = { 5.f,5.f,5.f };
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
+	}
 
 	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
