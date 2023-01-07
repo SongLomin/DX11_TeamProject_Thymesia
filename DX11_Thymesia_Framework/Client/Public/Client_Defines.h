@@ -16,7 +16,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
-#define _LOAD_CAPTURED_RESOURCE_
+// #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 // #define _CLOTH_
@@ -36,7 +36,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 

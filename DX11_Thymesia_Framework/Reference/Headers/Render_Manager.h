@@ -212,7 +212,6 @@ private:
 	
 	_float		m_fGodRayScale = 1.f;
 
-
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
 	vector<ID3D11DeviceContext*> m_pBeforeRenderContexts;

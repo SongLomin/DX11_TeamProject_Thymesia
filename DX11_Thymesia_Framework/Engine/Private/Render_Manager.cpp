@@ -6,7 +6,7 @@
 #include "VIBuffer_Rect.h"
 #include "Easing_Utillity.h"
 #include "RenderTarget.h"
-
+#include "NIS_Shader.h"
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
@@ -217,6 +217,10 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_NIS"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true)))
+		DEBUG_ASSERT;
+
 	/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurShadow"),
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;*/
@@ -420,6 +424,9 @@ HRESULT CRender_Manager::Initialize()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_PostProcessing"), TEXT("../Bin/Shaderfiles/Shader_PostProcessing.hlsl"));
 	m_pPostProcessingShader->Set_ShaderInfo(TEXT("Shader_PostProcessing"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 
+	m_pNIS_Shader = CNIS_Shader::Create();
+	m_pNIS_Shader->Initialize(nullptr);
+	m_pNIS_Shader->Update(0.f, (uint32_t)ViewPortDesc.Width, (uint32_t)ViewPortDesc.Height);
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 
@@ -569,6 +576,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 	if (FAILED(AntiAliasing()))
+		DEBUG_ASSERT;
+
+	if (FAILED(Render_NvidiaImageScaling()))
 		DEBUG_ASSERT;
 
 
@@ -734,6 +744,12 @@ HRESULT CRender_Manager::Set_GodRayScale(const _float& In_fScale)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_Sharpness(const _float In_fSharpness)
+{
+	m_pNIS_Shader->Update(In_fSharpness);
+
+	return S_OK;
+}
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
@@ -2000,6 +2016,49 @@ HRESULT CRender_Manager::Render_HBAO_PLUS()
 	status = GET_SINGLE(CGraphic_Device)->Get_AOContext()->RenderAO(DEVICECONTEXT, Input, Params, Output);
 	assert(status == GFSDK_SSAO_OK);
 
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_NvidiaImageScaling()
+{
+	Bake_OriginalRenderTexture();
+
+	shared_ptr<CGraphic_Device> pGraphic_Device = GET_SINGLE(CGraphic_Device);
+	shared_ptr<CRenderTarget_Manager> pRenderTarget_Manager = GET_SINGLE(CRenderTarget_Manager);
+
+	ComPtr<ID3D11RenderTargetView> pBackBufferView;
+	ComPtr<ID3D11DepthStencilView> pDepthStencilView;
+
+	shared_ptr<CRenderTarget> pInput = pRenderTarget_Manager->Find_RenderTarget(TEXT("Target_CopyOriginalRender"));
+	shared_ptr<CRenderTarget> pOutput = pRenderTarget_Manager->Find_RenderTarget(TEXT("Target_NIS"));
+
+	DEVICECONTEXT->CopyResource(pOutput->Get_Texture().Get(), pInput->Get_Texture().Get());
+
+	DEVICECONTEXT->OMGetRenderTargets(1, pBackBufferView.GetAddressOf(), pDepthStencilView.GetAddressOf());
+
+	m_pNIS_Shader->Dispatch(pInput->Get_SRV().GetAddressOf(),
+		pOutput->Get_UAV().GetAddressOf());
+
+	D3D11_BOX sourceRegion;
+	sourceRegion.left = 0;
+	sourceRegion.right = 1600;
+	sourceRegion.top = 0;
+	sourceRegion.bottom = 900;
+	sourceRegion.front = 0;
+	sourceRegion.back = 1;
+	DEVICECONTEXT->CopySubresourceRegion(pInput->Get_Texture().Get(), 0, 0, 0, 0, pOutput->Get_Texture().Get(), 0, &sourceRegion);
+
+	DEVICECONTEXT->OMSetRenderTargets(1, pBackBufferView.GetAddressOf(), pDepthStencilView.Get());
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pInput->Get_SRV())))
+		DEBUG_ASSERT;
+
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pShader->Begin(7, DEVICECONTEXT);
+	m_pVIBuffer->Render(DEVICECONTEXT);
 
 	return S_OK;
 }

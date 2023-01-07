@@ -101,7 +101,7 @@ void CInteraction_CheckPoint::Tick(_float fTimeDelta)
     if (m_bAisemyRender)
         m_pAnimModelCom.lock()->Play_Animation(fTimeDelta);
 
-    CallBack_EquipEnd();
+    // CallBack_EquipEnd();
 
     Update_AnimIndex();
 }

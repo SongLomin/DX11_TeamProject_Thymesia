@@ -70,7 +70,7 @@ HRESULT CDynamic_Prop::Start()
         m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
     }
 
-    GET_SINGLE(CGameManager)->Registration_OnlyResetObject(Weak_Cast<CGameObject>(m_this));
+    // GET_SINGLE(CGameManager)->Registration_OnlyResetObject(Weak_Cast<CGameObject>(m_this));
 
     return S_OK;
 }

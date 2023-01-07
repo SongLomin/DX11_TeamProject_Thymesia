@@ -405,6 +405,10 @@ HRESULT CGameInstance::Set_GodRayScale(const _float& In_fScale)
 	return m_pRender_Manager->Set_GodRayScale(In_fScale);
 }
 
+HRESULT CGameInstance::Set_Sharpness(const _float In_fSharpness)
+{
+	return m_pRender_Manager->Set_Sharpness(In_fSharpness);
+}
 
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
