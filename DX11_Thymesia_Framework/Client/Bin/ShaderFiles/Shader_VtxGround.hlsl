@@ -15,8 +15,6 @@ texture2D g_Texture_AddNo3_Diff, g_Texture_AddNo3_Norm;
 float g_fAddNo3_Density;
 texture2D g_FilterTexture;
 
-texture2D g_NoiseTexture1;
-texture2D g_NoiseTexture2;
 texture2D g_DisplacementTexture;
 
 float g_fFar = 300.f;
@@ -81,8 +79,11 @@ struct VS_OUT_HULL
 VS_OUT_HULL VS_MAIN_HULL(VS_IN In)
 {
     VS_OUT_HULL Out = (VS_OUT_HULL) 0;
-
-    Out.vPosition = vector(In.vPosition, 1.f); //mul(vector(In.vPosition, 1.f), matWVP);
+    
+    float3 localPos = In.vPosition.xyz;
+    localPos.y += (g_DisplacementTexture.SampleLevel(DefaultSampler, In.vTexUV * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f - 0.02f;
+    
+    Out.vPosition = vector(localPos, 1.f); //mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
     //Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vNormal = vector(In.vNormal, 0.f);
@@ -126,11 +127,19 @@ struct HS_OUT
 PatchTess ConstantHS(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int patchID : SV_PrimitiveID)
 {
     PatchTess pt = (PatchTess) 0.f;
-            
-	pt.edgeTess[0] = 4;
-	pt.edgeTess[1] = 4;
-	pt.edgeTess[2] = 4;
-    pt.insideTess = 4;
+    
+    //float factor0 = length(input[0].vPosition - input[1].vPosition) / 0.1f;
+    //float factor1 = length(input[0].vPosition - input[2].vPosition) / 0.1f;
+    //float factor2 = length(input[2].vPosition - input[1].vPosition) / 0.1f;
+    //factor0 *= step(2, factor0);
+    //factor1 *= step(2, factor1);
+    //factor2 *= step(2, factor2);
+    //float factor = max(1.f, (factor0 + factor1 + factor2) / 3.f);
+      
+    pt.edgeTess[0] = 4;
+    pt.edgeTess[1] = 4;
+    pt.edgeTess[2] = 4;
+    pt.insideTess = (pt.edgeTess[0] + pt.edgeTess[1] + pt.edgeTess[2])/3.f;
     
     // Assign Positions
     float3 f3B003 = input[0].vPosition;
@@ -185,9 +194,19 @@ HS_OUT HS_Main(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int vertexIdx : SV_Out
     return output;
 }
 
-// --------------
-// Domain Shader
-// --------------
+float3 Compute_Wave(float3 vWaveCenter, float3 vCurrentPos)
+{
+    float3 vNewPoint = (float3) 0;
+    /*현재 충격파를 더해줌*/
+    //float fDistance = length(vCurrentPos - vWaveCenter);
+    //float fAccFreqLength = _AccTime * _Speed;
+    //if(fDistance <= fAccFreqLength)
+    //{ 
+    //    vNewPoint.y += _Amplitude * sin(_Freq * fDistance - fAccFreqLength) / fDistance;
+    //}
+    
+    return vNewPoint;
+}
 
 struct DS_OUT
 {
@@ -237,24 +256,49 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
 		patch.f3N011 * fU * fV +
 		patch.f3N101 * fW * fV;
     
-    float2 uv       = input[0].vTexUV    * fW + input[1].vTexUV*fU+ input[2].vTexUV*fV;
+    float2 uv       = input[0].vTexUV    * fW + input[1].vTexUV*fU + input[2].vTexUV*fV;
     float3 normal   = input[0].vNormal   * location.r + input[1].vNormal   * location.g + input[2].vNormal   * location.b;
     float3 tangent  = input[0].vTangent  * location.r + input[1].vTangent  * location.g + input[2].vTangent  * location.b;
-       
-    float fDisplacement = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.35f;
-       
-    localPos.y += fDisplacement;
+    
+    float3 binormal = cross(normal, tangent);
+    float3 newPosition1 = localPos + tangent * 0.1f;
+    float3 newPosition2 = localPos + binormal * 0.1f;
+      
+    //일단 water클래스가 128,128크기의 사각형 버퍼를 사용하기 때문에 128 고정값으로 사용
+    
+    float2 newPos1UV = float2(newPosition1.x * 2.f / 127.f, newPosition1.z * 2.f / 127.f);
+    float2 newPos2UV = float2(newPosition2.x * 2.f / 127.f, newPosition2.z * 2.f / 127.f);
+      
+    //float fDisplacement = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.35f;
+    float3 templocalPos = localPos;
+    templocalPos.y = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f;
+    
+    newPosition1.y = (g_DisplacementTexture.SampleLevel(DefaultSampler, newPos1UV * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f;
+    newPosition2.y = (g_DisplacementTexture.SampleLevel(DefaultSampler, newPos2UV * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f;
+     
+    ////물결 충격 계산 Compute_Wave()
+    /*
+    for(int i=0;i<wavepoint.size();++i)
+    { 
+        localPos = Compute_Wave(wavecenter,localPos);
+        newPosition1 = Compute_Wave(wavecenter,newPosition1);
+        newPosition2 = Compute_Wave(wavecenter,newPosition2);
+    }   
+    */
+    
+    float3 newNormal = normalize(cross(newPosition1 - templocalPos, newPosition2 - templocalPos));
     
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
     output.vPosition = mul(float4(localPos, 1.f), matWVP);
     output.vTexUV    = uv;
-    output.vNormal   = normalize(mul(vector(normal, 0.f), g_WorldMatrix));
+    output.vNormal = normalize(mul(vector(newNormal, 0.f), g_WorldMatrix));
     output.vWorldPos = mul(vector(localPos, 1.f), g_WorldMatrix);
+    //output.vWorldPos = vector(localPos, 1.f);
     output.vProjPos  = output.vPosition;
     output.vTangent  = normalize(mul(vector(tangent, 0.f), g_WorldMatrix)).xyz;
-    output.vBinormal = normalize(cross(float3(output.vNormal.xyz), output.vTangent));
+    output.vBinormal = normalize(binormal);
     return output;
 }
 /* ---------------------------------------------------------- */
@@ -277,6 +321,8 @@ struct PS_OUT
     vector vDepth      : SV_TARGET2;
     vector vShaderFlag : SV_Target3;
     vector vORM        : SV_Target4;
+    vector vExtractBloom : SV_Target5;
+    vector vRimLight : SV_Target6;
 };
 
 /* ---------------------------------------------------------- */
@@ -318,7 +364,8 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
-
+    Out.vExtractBloom = 0.f;
+    Out.vRimLight = 0.f;
     return Out;
 }
 
@@ -371,7 +418,8 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM        = 0;
-
+    Out.vExtractBloom = 0.f;
+    Out.vRimLight = 0.f;
     return Out;
 }
 
@@ -384,6 +432,8 @@ PS_OUT PS_MAIN_WIREFRAM(PS_IN In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
+    Out.vExtractBloom = 0.f;
+    Out.vRimLight = 0.f;
     return Out;
 }
 
@@ -409,31 +459,24 @@ PS_OUT PS_MAIN_FILLTER(PS_IN In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
-
+    Out.vExtractBloom = 0.f;
+    Out.vRimLight = 0.f;
     return Out;
 }
 
 PS_OUT PS_MAIN_WATER(DS_OUT In)
 {
-    PS_OUT Out = (PS_OUT) 0;
-
-      //물쉐이더 테스트 용
-    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV*8.f + g_vUVNoise * 0.005f) * 2.f - 1.f;
-    float2 vNoise = g_vUVNoise.yx;
-    vPixelNorm += (g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 4.f + vNoise * 0.01f) * 2.f - 1.f) * 0.3f;
-      
-    vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
-    
-    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
-    vPixelNorm = mul(vPixelNorm, WorldMatrix);
- 
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
+    PS_OUT Out = (PS_OUT) 0; 
+    Out.vDiffuse = 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
       
     Out.vDiffuse.a = 1.f;
-    Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
+ 
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vORM = 0;
+    Out.vORM = vector(1.f,0.3f,0.f,0.f);
+    Out.vExtractBloom = 0.f;
+    Out.vRimLight = 0.f;
     return Out;
 }
 

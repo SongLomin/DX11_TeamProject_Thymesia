@@ -33,7 +33,7 @@ HRESULT CSection_Eventer::Initialize(void* pArg)
 HRESULT CSection_Eventer::Start()
 {
     if (0 <= m_iSectionIndex)
-        GET_SINGLE(CGameManager)->Registration_SectionEvent(m_iSectionIndex, Weak_Cast<CSection_Eventer>(m_this));
+        GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CSection_Eventer>(m_this));
 
     return __super::Start();
 }

@@ -171,6 +171,7 @@ namespace Client
 		_int		iFollowTransformType;
 
 		_float3		vGoalPosition;
+		_float		fGoalRange;
 
 		_int		iShaderPassIndex;
 
@@ -283,6 +284,9 @@ namespace Client
 
 		_int		iScaleEasingType;
 		_float		fScaleEasingTotalTime;
+
+		_float2		vEasingStartScale;
+		_float2		vEasingTargetScale;
 
 		_float2		vMinStartScale;
 		_float2		vMaxStartScale;

@@ -16,6 +16,9 @@
 #include "Item.h"
 #include "Inventory.h"
 #include "Player.h"
+#include "UI_Utils.h"
+
+
 
 GAMECLASS_C(CNorMonState_Die);
 CLONE_C(CNorMonState_Die, CComponent)
@@ -159,6 +162,16 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::MEMORY01);
+
+	ITEM_NAME eSkillPiece;
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	eSkillPiece = CUI_Utils::ConvertMonsterTypeToSkillPiece(pMonster.lock()->Get_MonsterType());
+
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(eSkillPiece);
+
 
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: Stop -> StopStop" << endl;

@@ -50,6 +50,7 @@ void CStolenSkill::OnStealSkill(weak_ptr<CSkill_Base> pSkill)
 	m_pSkillState = pSkill.lock()->Get_SkillState();
 }
 
+
 void CStolenSkill::Free()
 {
 

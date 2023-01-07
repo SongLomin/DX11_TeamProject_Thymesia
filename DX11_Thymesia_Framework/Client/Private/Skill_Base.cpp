@@ -9,6 +9,11 @@
 #include "Requirement_PlayerStatusMana.h"
 #include "Requirement_Time.h"
 #include "GameManager.h"
+#include "UI_Utils.h"
+#include "PlayerSkill_System.h"
+
+
+
 GAMECLASS_C(CSkill_Base)
 CLONE_C(CSkill_Base, CComponent)
 
@@ -24,8 +29,6 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	USE_START(CSkill_Base);
-
 	m_pRequirementChecker = CRequirementChecker::Create();
 
 	m_pRequirementMana = CRequirementBase::Create< CRequirement_PlayerStatusMana>();
@@ -35,7 +38,11 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 	
 	Init_SkillInfo();
 	Init_State();
-	Init_RequirementSkillPieceFromSkillName(m_eSkillName);
+	
+	m_eRequirementSkillPiece = CUI_Utils::ConvertSkillNameToSkillPiece(m_eSkillName);
+
+	RegisterThisSkillFromSkillSystem();
+
 	return S_OK;
 }
 
@@ -70,6 +77,16 @@ void CSkill_Base::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+}
+
+void CSkill_Base::RegisterThisSkillFromSkillSystem()
+{
+	if (m_eSkillName == SKILL_NAME::SKILL_END)
+	{
+		return;
+	}
+
+	m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->RegisterSkill(m_eSkillName, Weak_StaticCast<CSkill_Base>(m_this));
 }
 
 _bool CSkill_Base::Is_UseAble()
@@ -127,33 +144,6 @@ void CSkill_Base::Clear_Callback()
 	Callback_StartSkill.Clear();
 	Callback_UpdateCoolDown.Clear();
 	Callback_EndCoolDown.Clear();
-
-}
-
-void CSkill_Base::Init_RequirementSkillPieceFromSkillName(SKILL_NAME eSkillName)
-{
-	switch (eSkillName)
-	{
-	case Client::SKILL_NAME::SKILL_AXE:
-		m_eRequirementSkillPiece = ITEM_NAME::SKILLPIECE_AXE;
-		break;
-	case Client::SKILL_NAME::SKILL_KNIFE:
-		m_eRequirementSkillPiece = ITEM_NAME::SKILLPIECE_KNIFE;
-		break;
-	case Client::SKILL_NAME::SKILL_HAMMER:
-		m_eRequirementSkillPiece = ITEM_NAME::SKILLPIECE_HAMMER;
-		break;
-	case Client::SKILL_NAME::SKILL_SCYTHE:
-		m_eRequirementSkillPiece = ITEM_NAME::SKILLPIECE_SCYTHE;
-		break;
-	case Client::SKILL_NAME::SKILL_VARGSWORD:
-		m_eRequirementSkillPiece = ITEM_NAME::SKILLPIECE_VARGSWORD;
-		break;
-	case Client::SKILL_NAME::SKILL_END:
-		break;
-	default:
-		break;
-	}
 }
 
 void CSkill_Base::Start_Skill()

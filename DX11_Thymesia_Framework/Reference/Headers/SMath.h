@@ -26,6 +26,7 @@ namespace Engine
 		XMMATRIX		ENGINE_DLL LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition);
 
 		XMMATRIX		ENGINE_DLL Bake_WorldMatrix(const XMFLOAT3& In_vScale, const XMFLOAT3& In_vRot, const XMFLOAT3& In_vPos);
+		XMMATRIX		ENGINE_DLL Bake_WorldMatrix(const XMFLOAT2& In_vScale, const XMFLOAT3& In_vRot, const XMFLOAT3& In_vPos);
 		
 
 		XMVECTOR		ENGINE_DLL Get_Scale(FXMMATRIX Mat);
@@ -85,6 +86,7 @@ namespace Engine
 		const _bool		ENGINE_DLL Is_Equal(const XMFLOAT2 Left, const XMFLOAT2 Right);
 		const _bool		ENGINE_DLL Is_Equal(const XMFLOAT3 Left, const XMFLOAT3 Right);
 		const _bool		ENGINE_DLL Is_Equal(const XMFLOAT4 Left, const XMFLOAT4 Right);
-		const _bool		ENGINE_DLL Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange);
+		const _bool		ENGINE_DLL Is_InRange(const XMFLOAT3 Left, const XMFLOAT3 Right, const _float fRange = DBL_EPSILON);
+		const _bool		ENGINE_DLL Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange = DBL_EPSILON);
 	}
 }

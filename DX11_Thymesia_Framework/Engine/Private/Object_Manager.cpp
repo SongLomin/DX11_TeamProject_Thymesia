@@ -121,7 +121,7 @@ void CObject_Manager::OnDestroy()
 
 	for (_uint i = 0; i < m_iNumLevels; ++i)
 	{
-		Clear(i);
+		Delete_GameObjectInstances(i);
 	}
 
 	m_Prototypes.clear();
@@ -145,6 +145,25 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	}
 
 	// m_pLayers[iLevelIndex].clear();
+}
+
+void CObject_Manager::Delete_GameObjectInstances(_uint iLevelIndex)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return;
+
+	for (auto& Pair : m_pLayers[iLevelIndex])
+	{
+		for (auto& elem_GameObject : Pair.second)
+		{
+			if (elem_GameObject.get())
+				elem_GameObject->OnDestroy();
+
+			elem_GameObject.reset();
+		}
+	}
+
+	 m_pLayers[iLevelIndex].clear();
 }
 
 void CObject_Manager::Remove_DeadObject()

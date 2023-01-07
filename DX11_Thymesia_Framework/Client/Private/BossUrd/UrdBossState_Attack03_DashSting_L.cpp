@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "Weapon.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Attack03_DashSting_L);
 CLONE_C(CUrdBossState_Attack03_DashSting_L, CComponent)
@@ -61,6 +63,11 @@ void CUrdBossState_Attack03_DashSting_L::LateTick(_float fTimeDelta)
 void CUrdBossState_Attack03_DashSting_L::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	for (auto& elem : pWeapons)
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.4f);
 
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
 

@@ -1,0 +1,3 @@
+RootNode
+P_OilLamp01
+0[메쉬]. 15288

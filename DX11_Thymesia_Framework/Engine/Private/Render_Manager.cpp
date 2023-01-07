@@ -2,12 +2,11 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 #include "Shader.h"
-#include "NIS_Shader.h"
 #include "Texture.h"
 #include "VIBuffer_Rect.h"
 #include "Easing_Utillity.h"
 #include "RenderTarget.h"
-
+#include "NIS_Shader.h"
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
@@ -180,7 +179,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_CopyOriginalRender"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurForEffect"),
@@ -211,7 +210,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Ambient"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_HBAO+"),
@@ -582,6 +581,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_NvidiaImageScaling()))
 		DEBUG_ASSERT;
 
+
 	/*hr = futures.front().get();
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
 	{
@@ -737,13 +737,19 @@ HRESULT CRender_Manager::Set_GodRayDesc(const _float4& In_vColor, const _float4&
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_GodRayScale(const _float& In_fScale)
+{
+	m_fGodRayScale = In_fScale;
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Set_Sharpness(const _float In_fSharpness)
 {
 	m_pNIS_Shader->Update(In_fSharpness);
 
 	return S_OK;
 }
-
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
@@ -1921,8 +1927,9 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_LightProjMatrix", &m_LightProjMatrixTranspose, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_LightViewMatrix", &m_LightViewMatrixTranspose, sizeof(_float4x4));
 
-	m_pPostProcessingShader->Set_RawValue("g_vLightPos", &vLightPos, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vLightPos", &m_vGodRayPosition, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vLightDiffuse", &m_vGodRayColor, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_fGodRayScale", &m_fGodRayScale, sizeof(_float));
 	 
 	for (_int i = 0; i < 6; ++i)
 	{
@@ -2052,7 +2059,7 @@ HRESULT CRender_Manager::Render_NvidiaImageScaling()
 
 	m_pShader->Begin(7, DEVICECONTEXT);
 	m_pVIBuffer->Render(DEVICECONTEXT);
-	
+
 	return S_OK;
 }
 
@@ -2076,35 +2083,19 @@ HRESULT CRender_Manager::Bake_OriginalRenderTexture()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	//pRenderTargetManager->Begin_MRT(TEXT("MRT_CopyOriginalRender"));
+	pRenderTargetManager->Begin_MRT(TEXT("MRT_CopyOriginalRender"));
 
-	//m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	//m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	//m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	//m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
+	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
 
-	///* ���� �����. */
-	//m_pShader->Begin(7, pDeviceContext);
-	//m_pVIBuffer->Render(pDeviceContext);
+	/* ���� �����. */
+	m_pShader->Begin(7, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
-	//pRenderTargetManager->End_MRT();
-
-	D3D11_VIEWPORT			ViewPortDesc;
-	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
-
-	_uint		iNumViewports = 1;
-
-	DEVICECONTEXT->RSGetViewports(&iNumViewports, &ViewPortDesc);
-
-	D3D11_BOX sourceRegion;
-	sourceRegion.left = 0;
-	sourceRegion.right = (UINT)ViewPortDesc.Width;
-	sourceRegion.top = 0;
-	sourceRegion.bottom = (UINT)ViewPortDesc.Height;
-	sourceRegion.front = 0;
-	sourceRegion.back = 1;
-	DEVICECONTEXT->CopySubresourceRegion(pRenderTargetManager->Find_RenderTarget(TEXT("Target_CopyOriginalRender"))->Get_Texture().Get(), 0, 0, 0, 0, GET_SINGLE(CGraphic_Device)->Get_Texture().Get(), 0, &sourceRegion);
+	pRenderTargetManager->End_MRT();
 
 	return S_OK;
 }

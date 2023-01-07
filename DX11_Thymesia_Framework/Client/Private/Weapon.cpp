@@ -42,7 +42,8 @@ void CWeapon::Tick(_float fTimeDelta)
 	if (!m_pParentTransformCom.lock() || !m_pTargetBoneNode.lock())
 		return;
 
-	_matrix		BoneMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
+	_matrix		BoneMatrix 
+		= m_pTargetBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);

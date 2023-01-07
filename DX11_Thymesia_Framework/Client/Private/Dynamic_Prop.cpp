@@ -5,6 +5,8 @@
 #include "Dynamic_Piece.h"
 #include "Client_Presets.h"
 
+#include "GameManager.h"
+
 GAMECLASS_C(CDynamic_Prop);
 CLONE_C(CDynamic_Prop, CGameObject);
 
@@ -68,7 +70,7 @@ HRESULT CDynamic_Prop::Start()
         m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
     }
 
-    
+    // GET_SINGLE(CGameManager)->Registration_OnlyResetObject(Weak_Cast<CGameObject>(m_this));
 
     return S_OK;
 }
@@ -169,6 +171,18 @@ void CDynamic_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<C
     }
 
     Set_Dead();
+}
+
+void CDynamic_Prop::OnEventMessage(_uint iArg)
+{
+    switch ((EVENT_TYPE)iArg)
+    {
+        case EVENT_TYPE::ON_RESET_OBJ:
+        {
+
+        }
+        break;
+    }
 }
 
 void CDynamic_Prop::Free()

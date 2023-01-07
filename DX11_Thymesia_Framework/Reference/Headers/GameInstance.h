@@ -150,8 +150,8 @@ public: /* For.Render_Manager */
 	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
 	HRESULT Set_MaskingTexture(const _char* In_szPreFiltered);
 	HRESULT Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition);
+	HRESULT Set_GodRayScale(const _float& In_fScale);
 	HRESULT Set_Sharpness(const _float In_fSharpness);
-
 
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);

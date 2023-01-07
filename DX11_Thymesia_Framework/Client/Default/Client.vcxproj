@@ -199,6 +199,7 @@
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h" />
@@ -519,6 +520,8 @@
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
+    <ClInclude Include="..\Public\Camera_Interior.h" />
+    <ClInclude Include="..\Public\InteriorProp.h" />
     <ClInclude Include="..\Public\JavelinWeapon.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
@@ -599,13 +602,18 @@
     <ClInclude Include="..\Public\UI_Cursor.h" />
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
+    <ClInclude Include="..\Public\UI_EffectBase.h" />
+    <ClInclude Include="..\Public\UI_EffectHeaders.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
+    <ClInclude Include="..\Public\UI_Enums.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillView.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
@@ -850,6 +858,7 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword_Start.cpp" />
@@ -1162,6 +1171,8 @@
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
+    <ClCompile Include="..\Private\Camera_Interior.cpp" />
+    <ClCompile Include="..\Private\InteriorProp.cpp" />
     <ClCompile Include="..\Private\JavelinWeapon.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
@@ -1219,12 +1230,15 @@
     <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
     <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillView.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
@@ -1479,9 +1493,6 @@
   <ItemGroup>
     <Image Include="Client.ico" />
     <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />

@@ -50,8 +50,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
 	Preset::NvClothMesh::CorvusSetting(NvClothDesc);
 
-	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, &NvClothDesc);
-	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, &NvClothDesc);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
 	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixIdentity());
@@ -112,7 +112,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
 #ifdef _USE_THREAD_
-	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 
 	return S_OK;
@@ -128,7 +128,8 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
-	Test_BindSkill();
+
+	//Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -158,12 +159,8 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
-	// TODO : Test For RimLight Power
-	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
-	{
-		Set_RimLightDesc(0.5f, { 0.6f,0.f,0.f }, 1.f);
-	}
-	
+
+
 	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
 }
@@ -182,6 +179,8 @@ void CCorvus::LateTick(_float fTimeDelta)
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 {
 	__super::Thread_PreBeforeRender(fTimeDelta);
+
+	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
@@ -298,7 +297,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_iPassIndex = 0;
 
 
-		/*if (2 == i)
+		if (2 == i)
 		{
 			m_iPassIndex = 9;
 
@@ -307,7 +306,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		else
 		{
 			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
-		}*/
+		}
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 
@@ -498,6 +497,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY02);
 		
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::AXEMAN);
+		m_pInventory.lock()->Push_Item(MONSTERTYPE::KNIFEWOMAN);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::VARG);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
@@ -611,8 +611,11 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_PS_Hammer);
 	ADD_STATE_MACRO(CCorvusState_PS_Hammer_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_Magician);
-	ADD_STATE_MACRO(CCorvusState_PS_UrdSword);
+	ADD_STATE_MACRO(CCorvusState_PS_BatRoar);
+	ADD_STATE_MACRO(CCorvusState_PS_BatRoar_Upgrade);
+	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSword);
+	ADD_STATE_MACRO(CCorvusState_PS_UrdSword);
 	ADD_STATE_MACRO(CCorvusState_AVoidSalsh);
 	ADD_STATE_MACRO(CCorvusState_AVoidThrust);
 	ADD_STATE_MACRO(CCorvusState_Climb_L_Down);
@@ -669,11 +672,6 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtFallDown);
 	ADD_STATE_MACRO(CCorvusState_HurtFallDownEnd);
 	ADD_STATE_MACRO(CCorvusState_KnockBack);
-	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
-	
-
-
-
 
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
@@ -691,6 +689,9 @@ void CCorvus::Ready_States()
 
 void CCorvus::Ready_Skills()
 {
+	//스킬 추가입니다.
+	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
+
 	Add_Component<CSkill_VargSword>();
 	Add_Component<CSkill_Axe>();
 	Add_Component<CStolenSkill>();
@@ -698,8 +699,6 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
 
-	//스킬 추가입니다.
-	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
 }
 
 void CCorvus::WriteTalentFromJson(json& Out_Json)

@@ -6,6 +6,8 @@ BEGIN(Client)
 class CEasingComponent_Alpha;
 class CCustomUI;
 class CUI_EvolveMenu_SKillIcon;
+class CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot;
+
 
 class CUI_EvolveMenu_PlagueWeapon_SkillButton : public CUI_Button_Base
 {
@@ -34,6 +36,14 @@ public:
 	_uint			Get_RequirementSkillPiece();
 
 	void			Unlock_Skill();
+	void			Set_Slot(weak_ptr<CUI> pSlot);
+	weak_ptr<CUI>	Get_CurrentSlot() { return m_pMyCurrentSlot; };
+	weak_ptr<CUI>	Get_OriginSlot() { return m_pMyOriginSlot; }
+
+
+	void			SetPosToMyCurrentSlot();
+	void			SetPosToMyOriginSlot();
+
 
 
 private:
@@ -42,23 +52,27 @@ private:
 protected:
 	virtual void	OnMouseOver() override;
 
-	virtual void	OnLButtonUp() override; 
+	virtual void	OnLButtonDown() override; 
 	virtual void	OnMouseOut() override;
-	virtual void	OnLButtonDown() override;
+	virtual void	OnLButtonUp() override; 
+
 
 private:
 	weak_ptr<CCustomUI>			m_pHover;
 	weak_ptr<CCustomUI>			m_pFrame;
-	weak_ptr<CCustomUI>			m_pBorder;
 	weak_ptr<CUI_EvolveMenu_SKillIcon>			m_pIcon;
 
-private:
-	weak_ptr<CEasingComponent_Alpha> m_pBorderEasingAlpha;
+	weak_ptr<CUI>	 m_pMyOriginSlot;
+	weak_ptr<CUI>	 m_pMyCurrentSlot;
 
 public:
 	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_MouseOver;
 	FDelegate<>														Callback_MouseOut;
 	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_UnLockSkill;
+
+	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_ButtonUp;
+	FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>	Callback_ButtonDown;
+
 
 private:
 	virtual void				OnEnable(void* pArg) override;

@@ -445,7 +445,15 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim_NvCloth(shared_ptr<MESH_DATA> tM
 
 	for (_int i = 0; i < m_iNumVertices; ++i)
 	{
-		m_pPosVertices.push_back(m_pAnimVertices[i].vPosition);
+		//XMMatrixRotationZ(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f)
+		_float3 vPos = m_pAnimVertices[i].vPosition;
+		if (m_pNvCloth_Mesh_Desc.m_bUseBoneMatrix)
+		{
+			_vector vPosWithModelTransform = XMVector3TransformCoord(XMLoadFloat3(&m_pAnimVertices[i].vPosition), XMLoadFloat4x4(&m_ModelTransform));
+			XMStoreFloat3(&vPos, vPosWithModelTransform);
+		}
+		
+		m_pPosVertices.push_back(vPos);
 	}
 	
 
@@ -639,11 +647,18 @@ HRESULT CMeshContainer::Ready_IndexBuffer_Anim_NvCloth(shared_ptr<MESH_DATA> tMe
 
 _vector CMeshContainer::Software_Skinning(const _int In_iVtxAnimIndex)
 {
-	
-
 	VTXANIM& AnimVertice = m_pAnimVertices[In_iVtxAnimIndex];
 
-	_vector vPosVerticeToVector = XMLoadFloat3(&AnimVertice.vPosition);
+	return Software_Skinning(XMLoadFloat3(&m_pAnimVertices[In_iVtxAnimIndex].vPosition), In_iVtxAnimIndex);
+}
+
+_vector CMeshContainer::Software_Skinning(_fvector In_vPosition, const _int In_iVtxAnimIndex)
+{
+	VTXANIM& AnimVertice = m_pAnimVertices[In_iVtxAnimIndex];
+
+	_vector vPosVerticeToVector = In_vPosition;
+
+	vPosVerticeToVector = XMVectorSetW(vPosVerticeToVector, 1.f);
 
 	if (m_iSwapBoneIndex < 0)
 	{
@@ -653,10 +668,10 @@ _vector CMeshContainer::Software_Skinning(const _int In_iVtxAnimIndex)
 	_float	fWeightW = 1.f - (AnimVertice.vBlendWeight.x + AnimVertice.vBlendWeight.y + AnimVertice.vBlendWeight.z);
 
 	_matrix BoneMatrixFromIndex[4];
-	BoneMatrixFromIndex[0] = XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.x]);
-	BoneMatrixFromIndex[1] = XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.y]);
-	BoneMatrixFromIndex[2] = XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.z]);
-	BoneMatrixFromIndex[3] = XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.w]);
+	BoneMatrixFromIndex[0] = XMMatrixTranspose(XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.x]));
+	BoneMatrixFromIndex[1] = XMMatrixTranspose(XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.y]));
+	BoneMatrixFromIndex[2] = XMMatrixTranspose(XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.z]));
+	BoneMatrixFromIndex[3] = XMMatrixTranspose(XMLoadFloat4x4(&m_BoneMatrices[AnimVertice.vBlendIndex.w]));
 
 	_matrix	BoneMatrix = BoneMatrixFromIndex[0] * AnimVertice.vBlendWeight.x +
 		BoneMatrixFromIndex[1] * AnimVertice.vBlendWeight.y +
@@ -843,6 +858,16 @@ void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 
 }
 
+_size_t CMeshContainer::Get_NvVertexCount()
+{
+	return m_pPosVertices.size();
+}
+
+vector<_float>& CMeshContainer::Get_InvMesses()
+{
+	return m_pInvMasses;
+}
+
 void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity)
 {
 	if (!m_pCloth)
@@ -856,18 +881,24 @@ void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext,
 	m_pCloth->setTranslation(SMath::Convert_PxVec3(vPos));
 	m_pCloth->setRotation(SMath::Convert_PxQuat(vQuaternion));*/
 
-	
+	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
+	_vector vTest = SMath::Convert_Vector(particle[0].getXYZ());
 
 	if (!m_bSimulation)
 	{
 		m_bSimulation = true;
 		m_pCloth->clearInertia();
+
 		return;
 	}
 
 	if (!m_bTwoSimulation)
 	{
+		
+
 		m_bTwoSimulation = true;
+
+		
 
 		//const CModel::NVCLOTH_MESH_DESC* pCustomDesc = (const CModel::NVCLOTH_MESH_DESC*)m_pNvCloth_Mesh_Desc;
 
@@ -901,6 +932,16 @@ void CMeshContainer::Update_NvClothCollisionSpheres(Range<const physx::PxVec4> s
 	m_pCloth->setSpheres(spheres, first, last);
 }
 
+void CMeshContainer::Update_InvMesses()
+{
+	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
+
+	for (_size_t i = 0; i < m_pInvMasses.size(); ++i)
+	{
+		particle[i].w = m_pInvMasses[i];
+	}
+}
+
 void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
@@ -908,55 +949,61 @@ void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceCon
 	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
 	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
-	//m_pCloth->get
-
-	/*nv::cloth::Range<physx::PxVec4> motionConstraints = m_pCloth->getMotionConstraints();
-	_int iSize = motionConstraints.size();
-	for (_int i = 0; i < iSize; i++)
-	{
-		_vector vConstraintsPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pAnimVertices[i].vPosition), In_WorldMatrix);
-		motionConstraints[i] = physx::PxVec4(SMath::Convert_PxVec3(vConstraintsPoint), 1.1f);
-	}*/
 
 	pDeviceContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	_vector vPos;
-
-	//Print_Vector(SMath::Convert_Vector(particle[0]));
-
-	for (_int i = 0; i < m_iNumVertices; ++i)
+	if (m_pNvCloth_Mesh_Desc.m_bUseBoneMatrix)
 	{
-		/*m_pParticles[i].x += particle[i].x - preparticle[i].x;
-		m_pParticles[i].y += particle[i].y - preparticle[i].y;
-		m_pParticles[i].z += particle[i].z - preparticle[i].z;
-
-		vPos = XMLoadFloat3(&m_pMeshData.lock()->pAnimVertices[i].vPosition);
-		vPos += SMath::Convert_Vector(m_pParticles[i]);
-
-		XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vPos);*/
-
-		
-		memcpy(&((VTXANIM*)SubResource.pData)[i], &m_pAnimVertices[i], sizeof(VTXANIM));
-		_vector vNewPos = SMath::Convert_Vector(particle[i].getXYZ());
-		XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vNewPos);
-
-		if (particle[i].w < DBL_EPSILON)
+		for (_int i = 0; i < m_iNumVertices; ++i)
 		{
-			_vector vAttachPoint; 
-			
-			if (m_pNvCloth_Mesh_Desc.m_bUseBoneMatrix)
+			_vector vNewPos = SMath::Convert_Vector(particle[i].getXYZ());
+
+			if (particle[i].w <= DBL_EPSILON)
 			{
+				_vector vAttachPoint;
+
 				vAttachPoint = Software_Skinning(i);
-			}
-			else
-			{
-				vAttachPoint = XMLoadFloat3(&m_pAnimVertices[i].vPosition);
+
+				vAttachPoint = XMVector3TransformCoord(vAttachPoint, In_WorldMatrix);
+				particle[i] = PxVec4(SMath::Convert_PxVec3(vAttachPoint), particle[i].w);
+				 
+				vNewPos = vAttachPoint;
 			}
 
-			vAttachPoint = XMVector3TransformCoord(vAttachPoint, In_WorldMatrix);
-			particle[i] = PxVec4(SMath::Convert_PxVec3(vAttachPoint), particle[i].w);
+			memcpy(&((VTXANIM*)SubResource.pData)[i], &m_pAnimVertices[i], sizeof(VTXANIM));
+			
+			//vNewPos = Software_Skinning(vNewPos, i);
+			//vNewPos = XMVector3TransformCoord(vNewPos, In_WorldMatrix);
+			
+
+			XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vNewPos);
 		}
 	}
+	else
+	{
+		for (_int i = 0; i < m_iNumVertices; ++i)
+		{
+			memcpy(&((VTXANIM*)SubResource.pData)[i], &m_pAnimVertices[i], sizeof(VTXANIM));
+			_vector vNewPos = SMath::Convert_Vector(particle[i].getXYZ());
+			XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vNewPos);
+
+			if (particle[i].w < DBL_EPSILON)
+			{
+				_vector vAttachPoint;
+
+				vAttachPoint = XMLoadFloat3(&m_pAnimVertices[i].vPosition);
+				vAttachPoint = XMVectorSetW(vAttachPoint, 1.f);
+
+				vAttachPoint = XMVector3TransformCoord(vAttachPoint, In_WorldMatrix);
+				particle[i] = PxVec4(SMath::Convert_PxVec3(vAttachPoint), particle[i].w);
+			}
+		}
+	}
+
+
+	
+
+	
 
 	pDeviceContext->Unmap(m_pVB.Get(), 0);
 }
@@ -970,7 +1017,7 @@ void CMeshContainer::Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDevice
 
 	pDeviceContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	for (_int i = 0; i < m_iNumVertices; ++i)
+	for (_int i = 0; i < m_iNumVertices; ++i) 
 	{
 		memcpy(&((VTXMODEL*)SubResource.pData)[i], &m_pModelVertices[i], sizeof(VTXMODEL));
 		_vector vNewPos = SMath::Convert_Vector(particle[i].getXYZ());

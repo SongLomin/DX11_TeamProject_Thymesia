@@ -6,10 +6,28 @@ void Preset::NvClothMesh::CorvusSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc)
 	CModel::NVCLOTH_MESH_DESC MeshDesc;
 
 	_vector vGravity = XMVectorSet(0.f, -9.81f, 0.f, 0.f);
+	MeshDesc.InvMesses = vector<_float>(190, 0.1f);
 
-	MeshDesc.eSimpleAttachType = SELECTION_TYPE::FORWARD;
-	MeshDesc.fSimpleAttachRatio = 0.9f;
-	MeshDesc.fSimpleInvMess = 0.1f;
+	_int iAttachCount = 10;
+
+	for (_int i = 0; i < iAttachCount; ++i)
+	{
+		MeshDesc.InvMesses[(190 - 1) - i] = 0.f;
+	}
+
+	//iAttachCount = (_int)(95 * 0.1f);
+
+	// 190°³ÀÇ 10% = 19°³.
+	for (_int i = 94 - iAttachCount + 1; i <= 94; ++i)
+	{
+		MeshDesc.InvMesses[i] = 0.f;
+	}
+
+
+	//190
+	MeshDesc.eSimpleAttachType = SELECTION_TYPE::TYPE_END;
+	//MeshDesc.fSimpleAttachRatio = 0.1f;
+	//MeshDesc.fSimpleInvMess = 0.1f;
 	MeshDesc.m_bUseBoneMatrix = true;
 	XMStoreFloat3(&MeshDesc.vGravity, vGravity);
 	//MeshDesc.fDragCoefficient = 1.f;

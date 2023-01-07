@@ -29,6 +29,8 @@ HRESULT CActorDecor::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
+	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
+
 	return S_OK;
 }
 
@@ -45,21 +47,21 @@ void CActorDecor::Tick(_float fTimeDelta)
 	if (!m_pParentTransformCom.lock())
 		return;
 
-	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
+	_matrix		ParentMatrix 
+		= XMLoadFloat4x4(&m_OffsetMatrix)
+		* m_pTargetBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
-
-	//ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
-	//ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
-	//ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
 
 	//무기 오프셋 나중에 캐릭터별로 매개변수로 받아서 처리하자.
 	ParentMatrix = SMath::Go_Right(ParentMatrix, m_vOffset.x);
 	ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
 	ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
 
-	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
-	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
-	
+	m_pTransformCom.lock()->Set_WorldMatrix
+	(
+		ParentMatrix *
+		m_pParentTransformCom.lock()->Get_WorldMatrix()
+	);	
 }
 
 void CActorDecor::LateTick(_float fTimeDelta)
@@ -113,7 +115,6 @@ void CActorDecor::Init_ActorDecor(weak_ptr<CModel> In_pModelCom, weak_ptr<CTrans
 	m_pParentTransformCom = In_ParentTransformCom;
 	m_pTargetBoneNode = In_pModelCom.lock()->Find_BoneNode(szTargetNode);
 	m_TransformationMatrix = In_pModelCom.lock()->Get_TransformationMatrix();
-
 }
 
 void CActorDecor::Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer)
@@ -126,19 +127,13 @@ weak_ptr<CGameObject> CActorDecor::Get_ParentObject()
 	return m_pParent;
 }
 
-
-
-
 void CActorDecor::SetUp_ShaderResource()
 {
 	CallBack_Bind_SRV(m_pShaderCom, "");
 	m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
-
 }
-
-
 
 void CActorDecor::Free()
 {

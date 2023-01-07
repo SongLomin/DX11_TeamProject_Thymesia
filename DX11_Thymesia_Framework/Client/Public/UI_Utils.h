@@ -22,6 +22,9 @@ public:
 
 	static ITEM_NAME			ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName);
 
+	static ITEM_NAME			ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType);
+
+
 
 };
 

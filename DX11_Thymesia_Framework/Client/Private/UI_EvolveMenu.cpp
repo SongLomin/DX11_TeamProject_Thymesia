@@ -12,6 +12,8 @@
 #include "Player.h"
 #include "UIManager.h"
 #include "UI_EvolveMenu_PlagueWeapon.h"
+#include "ClientLevel.h"
+#include "Interaction_CheckPoint.h"
 
 
 GAMECLASS_C(CUI_EvolveMenu)
@@ -390,6 +392,7 @@ void CUI_EvolveMenu::SelectButton()
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL:
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME:
+	{
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 		tFaderDesc.fFadeMaxTime = 0.3f;
@@ -397,7 +400,17 @@ void CUI_EvolveMenu::SelectButton()
 		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu, this);
+
+		weak_ptr<CClientLevel> pClientLevel = Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel());
+		LEVEL eCurrentLevel = pClientLevel.lock()->Get_MyLevel();
+
+		list<weak_ptr<CInteraction_CheckPoint>> ObjList = GAMEINSTANCE->Get_GameObjects<CInteraction_CheckPoint>(eCurrentLevel);
+
+		for (auto elem : ObjList)
+			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EXIT_SECTION);
+	}
 		break;
+
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_END:
 		break;
 	default:

@@ -21,8 +21,6 @@ HRESULT CPlayerSkill_System::Initialize(void* pArg)
 
     USE_START(CPlayerSkill_System);
 
-
-
     return S_OK;
 }
 
@@ -50,7 +48,7 @@ void CPlayerSkill_System::Start()
 
     m_pStealSkill = m_pOwner.lock()->Get_Component<CStolenSkill>();
 
-    SetUp_MonsterSkillMap();
+    SetUp_SkillMapFromMonsterType();
 }
 
 void CPlayerSkill_System::ResetAllSkillCoolDown()
@@ -139,7 +137,22 @@ void CPlayerSkill_System::OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYP
    
     Callback_OnChangeSkill[(_uint)eType](pSkill);
 }
-void CPlayerSkill_System::SetUp_MonsterSkillMap()
+void CPlayerSkill_System::OnChangeSkill(SKILL_NAME eSkillName, SOCKET_TYPE eType)
+{
+    SKILLNAMEMAP::iterator iter;
+
+    iter = m_SkillNameMap.find(eSkillName);
+
+    if (iter == m_SkillNameMap.end())
+        return;
+
+    OnChangeSkill(iter->second, eType);
+}
+void CPlayerSkill_System::RegisterSkill(SKILL_NAME eName, weak_ptr<CSkill_Base> pSkill)
+{
+    m_SkillNameMap.emplace(eName, pSkill);
+}
+void CPlayerSkill_System::SetUp_SkillMapFromMonsterType()
 {
    m_MonsterSkillMap.emplace(MONSTERTYPE::AXEMAN, m_pOwner.lock()->Get_Component<CSkill_Axe>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::SHIELDAXEMAN, m_pOwner.lock()->Get_Component<CSkill_Axe>());
@@ -150,7 +163,6 @@ void CPlayerSkill_System::SetUp_MonsterSkillMap()
    m_MonsterSkillMap.emplace(MONSTERTYPE::ENHANCE_GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
 
 }
-
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)
 {
     for (_uint i = 0; i < (_uint)SOCKET_TYPE::SOCKET_END; i++)

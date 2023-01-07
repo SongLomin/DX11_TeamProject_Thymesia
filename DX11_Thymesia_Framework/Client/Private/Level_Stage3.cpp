@@ -54,7 +54,7 @@ HRESULT CLevel_Stage3::Initialize()
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
-	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(-50.f, 30.f, -10.f, 1.f));
+	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(3.01f, 25.f, 40.2f, 1.f));
 
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 

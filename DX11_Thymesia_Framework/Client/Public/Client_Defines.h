@@ -16,7 +16,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
-//#define _LOAD_CAPTURED_RESOURCE_
+// #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 // #define _CLOTH_
@@ -30,7 +30,7 @@
 
 #pragma region Map
 //#define _BRIGHT_LIGHT_
-#define _GENERATE_PROP_COLLIDER_ true
+//#define _GENERATE_PROP_COLLIDER_ true
 //#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
@@ -115,12 +115,12 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#undef _MAP_TOOL_
-#define _CORVUS_MODEL_
-// #define _BOSS_MODEL_
+#define _MAP_TOOL_
+// #define _CORVUS_MODEL_
+#define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
-#undef _ANIMATION_TOOL_WEAPON_
+#define _ANIMATION_TOOL_WEAPON_
 #undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
 

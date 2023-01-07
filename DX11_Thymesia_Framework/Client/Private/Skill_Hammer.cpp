@@ -20,6 +20,9 @@ void CSkill_Hammer::Start()
 
 void CSkill_Hammer::Init_SkillInfo()
 {
+	USE_START(CSkill_Hammer);
+
+
 	m_bUseAble = true;
 
 	m_eSkillName = SKILL_NAME::SKILL_HAMMER;
