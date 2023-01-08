@@ -10,6 +10,7 @@
 #include "BossUrd/UrdStates.h"
 #include "MobWeapon.h"
 #include "JavelinWeapon.h"
+#include "UrdWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Skill03_L);
 CLONE_C(CUrdBossState_Skill03_L, CComponent)
@@ -66,6 +67,8 @@ void CUrdBossState_Skill03_L::OnStateStart(const _float& In_fAnimationBlendTime)
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
 
 	m_bAttackLookAtLimit = true;
+
+	m_bDisableWeaponCheck = false;
 
 	m_bOne = true;
 
@@ -130,6 +133,7 @@ _bool CUrdBossState_Skill03_L::Check_AndChangeNextState()
 	{
 		//여기서 첫번쨰꺼 안보이게하고 두번쨰거 여기서 바인딩하면될듯
 		m_bOne = false;
+		m_bDisableWeaponCheck = true;
 
 
 		pJavelinWeapon = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CJavelinWeapon>(Get_Owner().lock()->Get_CreatedLevel());
@@ -148,10 +152,10 @@ _bool CUrdBossState_Skill03_L::Check_AndChangeNextState()
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::BIND_HAND);
 		pJavelinWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 		pJavelinWeapon.lock()->Set_Enable(true);
-		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.0f));
+		
 
 	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 55 && !m_bOne)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 56 && !m_bOne && m_bDisableWeaponCheck)
 	{
 		if (!pJavelinWeapon.lock())
 		{
@@ -159,8 +163,24 @@ _bool CUrdBossState_Skill03_L::Check_AndChangeNextState()
 			DEBUG_ASSERT;
 			return false;
 		}
-			
+
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
+			
+		//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
+
+		for (auto& elem : pDecoWeapons)
+		{
+			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
+			{
+				elem.lock()->Set_RenderOnOff(false);
+				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+				m_bDisableWeaponCheck = false;
+				break;
+			}
+			
+		}
 	}
 
 	return false;

@@ -39,7 +39,7 @@ void CUrdBossState_StepB::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Rotation_TargetToLookDir();
+	
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -58,7 +58,9 @@ void CUrdBossState_StepB::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
+
+	Rotation_TargetToLookDir();
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
@@ -69,9 +71,7 @@ void CUrdBossState_StepB::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 	
-
 }	
-
 
 void CUrdBossState_StepB::OnStateEnd()
 {

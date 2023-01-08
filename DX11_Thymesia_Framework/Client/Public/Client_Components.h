@@ -20,7 +20,7 @@
 #include "PhysXCharacterController.h"
 #include "RequirementChecker.h"
 #include "StateBase.h"
-
+#include "CNvClothCollider.h"
 
 
 //#include "LuxiyaBehavior.h"

@@ -2,13 +2,11 @@
 #include "Client_Defines.h"
 #include "Status_Player.h"
 #include "Base.h"
+#include "UI_EffectBase.h"
 
 BEGIN(Client)
-
-
 class CUI_Utils : public CBase
 {
-
 public:
 	static _float2		ConvertWorldPosToUIPos(_fvector	vWorldPos, _fvector vOffset);
 	static _float		UI_TimeDelta();
@@ -24,6 +22,7 @@ public:
 
 	static ITEM_NAME			ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType);
 
+	static UICLIPDESC			EasyMake_SizeClip();
 
 
 };

@@ -6,6 +6,7 @@
 #include "Level_Test.h"
 #include "Level_Loading.h"
 #include "Level_Stage2.h"
+#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_Optimization_Dev)
 
@@ -26,6 +27,9 @@ void CWindow_Optimization_Dev::Start()
 void CWindow_Optimization_Dev::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+
+
 }
 
 void CWindow_Optimization_Dev::Background_Tick(_float fTimeDelta)
@@ -58,6 +62,15 @@ HRESULT CWindow_Optimization_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 
 #endif // _DEBUG
 
+	if (ImGui::Button("(F6) Clear Perfromance Log") || KEY_INPUT(KEY::F6, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Clear_Logs();
+	}
+
+	if (ImGui::Button("(F7) Write Perfromance Log") || KEY_INPUT(KEY::F7, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_Log();
+	}
 
 	//std::system_category().message(hr)
 	__super::End();

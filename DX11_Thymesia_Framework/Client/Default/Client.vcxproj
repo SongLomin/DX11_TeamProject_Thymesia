@@ -107,7 +107,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Reference/Headers/; ../Public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;$(CUDA_PATH)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>Default</ConformanceMode>
@@ -162,7 +162,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Reference/Headers/; ../Public/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;$(CUDA_PATH)\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>
@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\CNvClothCollider.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h" />
@@ -458,6 +459,7 @@
     <ClInclude Include="..\Public\EditEventContoller.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
+    <ClInclude Include="..\Public\Effect_Decal.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandMan.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStateBase.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStates.h" />
@@ -514,6 +516,7 @@
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkStart.h" />
     <ClInclude Include="..\Public\EliteMonster.h" />
     <ClInclude Include="..\Public\Fog.h" />
+    <ClInclude Include="..\Public\Interaction_Aisemy.h" />
     <ClInclude Include="..\Public\Interaction_CastleGate.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
@@ -527,6 +530,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h" />
+    <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
@@ -579,6 +583,7 @@
     <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\Skill_Axe.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Skill_BloodStorm.h" />
     <ClInclude Include="..\Public\Skill_Hammer.h" />
     <ClInclude Include="..\Public\Skill_Knife.h" />
     <ClInclude Include="..\Public\Skill_Scythe.h" />
@@ -604,6 +609,7 @@
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
     <ClInclude Include="..\Public\UI_EffectBase.h" />
     <ClInclude Include="..\Public\UI_EffectHeaders.h" />
+    <ClInclude Include="..\Public\UI_Effect_MagicCircle.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_Enums.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
@@ -857,6 +863,7 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\CNvClothCollider.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp" />
@@ -1110,6 +1117,7 @@
     <ClCompile Include="..\Private\EditEventContoller.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
+    <ClCompile Include="..\Private\Effect_Decal.cpp" />
     <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandMan.cpp" />
     <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManStateBase.cpp" />
     <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboA01.cpp" />
@@ -1165,6 +1173,7 @@
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_WheelAtkStart.cpp" />
     <ClCompile Include="..\Private\EliteMonster.cpp" />
     <ClCompile Include="..\Private\Fog.cpp" />
+    <ClCompile Include="..\Private\Interaction_Aisemy.cpp" />
     <ClCompile Include="..\Private\Interaction_CastleGate.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_DeadSpot.cpp" />
@@ -1178,6 +1187,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp" />
+    <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
@@ -1215,6 +1225,7 @@
     <ClCompile Include="..\Private\Requirement_State.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Skill_BloodStorm.cpp" />
     <ClCompile Include="..\Private\Skill_Hammer.cpp" />
     <ClCompile Include="..\Private\Skill_Knife.cpp" />
     <ClCompile Include="..\Private\Skill_Scythe.cpp" />
@@ -1231,6 +1242,7 @@
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
     <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_MagicCircle.cpp" />
     <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
@@ -1501,6 +1513,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HPBar.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_PostProcessing.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
@@ -1521,6 +1534,7 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxDecal.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxGround.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">

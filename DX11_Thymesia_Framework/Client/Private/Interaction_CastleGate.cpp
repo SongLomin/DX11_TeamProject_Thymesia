@@ -368,6 +368,8 @@ HRESULT CInteraction_CastleGate::DrawShader_Body(ID3D11DeviceContext* pDeviceCon
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
+
+    return S_OK;
 }
 
 HRESULT CInteraction_CastleGate::DrawShader_Door(ID3D11DeviceContext* pDeviceContext)
@@ -430,6 +432,8 @@ HRESULT CInteraction_CastleGate::DrawShader_Door(ID3D11DeviceContext* pDeviceCon
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pDoorLeftModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
+
+    return S_OK;
 }
 
 HRESULT CInteraction_CastleGate::DrawShader_Gear(ID3D11DeviceContext* pDeviceContext)
@@ -473,6 +477,8 @@ HRESULT CInteraction_CastleGate::DrawShader_Gear(ID3D11DeviceContext* pDeviceCon
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pGearModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
+
+    return S_OK;
 }
 
 void CInteraction_CastleGate::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc, COLLISION_LAYER _eCollLayer)

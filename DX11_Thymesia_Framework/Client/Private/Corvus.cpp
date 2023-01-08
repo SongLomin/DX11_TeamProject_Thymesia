@@ -16,6 +16,8 @@
 #include "Corvus_DefaultSaber.h"
 #include "Corvus_DefaultDagger.h"
 #include "Collider.h"
+#include "Effect_Decal.h"
+#include "CNvClothCollider.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -111,6 +113,14 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	_uint iNvClothColliderCount;
+	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
+
+	m_pNvClothColliderCom = Add_Component<CNvClothCollider>();
+	m_pNvClothColliderCom.lock()->Init_NvClothColliders(m_pModelCom, NvClothColliderDesc, iNvClothColliderCount);
+
+	Safe_Delete_Array(NvClothColliderDesc);
+
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
@@ -159,7 +169,17 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
+	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		DECAL_DESC DecalDesc;
+		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
+		XMStoreFloat4(&DecalDesc.vPosition, Get_WorldPosition()+XMVectorSet(0.f,0.1f,0.f,0.f));
+		DecalDesc.fTime = 3.f;
+		DecalDesc.vScale = { 5.f,5.f,5.f };
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
+	}
 
 	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
@@ -181,6 +201,10 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 	__super::Thread_PreBeforeRender(fTimeDelta);
 
 	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+
+	m_pNvClothColliderCom.lock()->Update_Colliders(m_pTransformCom.lock()->Get_WorldMatrix());
+	m_pNvClothColliderCom.lock()->Set_Spheres(m_pModelCom.lock()->Get_MeshContainer(2));
+
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
@@ -501,6 +525,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::VARG);
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_BLOODSTORM);
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
@@ -698,7 +723,7 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Knife>();
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
-
+	Add_Component<CSkill_BloodStorm>();
 }
 
 void CCorvus::WriteTalentFromJson(json& Out_Json)

@@ -15,7 +15,8 @@ class CUrdBossState_Skill03_R :
 	CLONE_H(CUrdBossState_Skill03_R, CComponent)
 		SHALLOW_COPY(CUrdBossState_Skill03_R)
 
-
+public:
+	enum CHECKDOT {RESULT_LEFT,RESULTR_RIGHT,RESULT_END};
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -32,6 +33,8 @@ protected:
 
 private:
 	_bool m_bOne = false;
+	CHECKDOT m_eReuslt = CHECKDOT::RESULT_END;
+	_bool m_bDisableWeaponCheck = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
 private:
 	void Call_AnimationEnd();

@@ -2,6 +2,7 @@
 
 #include "Graphic_Device.h"
 #include "Input_Device.h"
+#include "Cuda_Device.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Component_Manager.h"
@@ -20,6 +21,7 @@
 #include "PhysX_Manager.h"
 #include "Thread_Manager.h"
 #include "NvCloth_Manager.h"
+#include "COptimization_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -266,9 +268,17 @@ public: /* For. RenderTarget_Manager */
 
 public: /* For. NvCloth_Manager */
 
+public: /* For. Optimization_Manager*/
+	void Begin_PerformanceTime(const string& In_szTag);
+	void End_PerformanceTime(const string& In_szTag);
+	_time Get_PerfromanceTime(const string& In_szTag);
+	void Write_Log();
+	void Clear_Logs();
+
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;
 	shared_ptr<CInput_Device> m_pInput_Device;
+	shared_ptr<CCuda_Device> m_pCuda_Device;
 	shared_ptr<CLevel_Manager> m_pLevel_Manager;
 	shared_ptr<CObject_Manager> m_pObject_Manager;
 	shared_ptr<CComponent_Manager> m_pComponent_Manager;
@@ -286,6 +296,7 @@ private:
 	shared_ptr<CPhysX_Manager> m_pPhysX_Manager;
 	shared_ptr<CThread_Manager> m_pThread_Manager;
 	shared_ptr<CNvCloth_Manager> m_pNvCloth_Manager;
+	shared_ptr<COptimization_Manager> m_pOptimization_Manager;
 
 
 

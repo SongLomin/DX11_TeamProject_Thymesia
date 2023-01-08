@@ -11,6 +11,15 @@
 
 #define HZ_144 0.006944f
 
+#define _SIMULATION_NVCLOTH_
+#define _USE_PERFROMANCE_LOG_
+
+#ifdef _USE_PERFROMANCE_LOG_
+//#define _WRITE_TO_UPDATE_PERFROMANCE_LOG_
+#endif // _USE_PERFROMANCE_LOG_
+
+
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <Effects11/d3dx11effect.h>
@@ -29,6 +38,9 @@
 #include <DirectXTex.h>
 
 using namespace DirectX;
+
+// CUDA 12.0
+#include <cuda.h>
 
 
 // Assimp
@@ -64,6 +76,7 @@ using namespace nv::cloth;
 // NVIDIA Image Scaling
 #include "NIS_Config.h"
 
+#include <execution>
 #include <process.h>
 #include <iostream>
 #include <memory>
@@ -80,6 +93,7 @@ using namespace nv::cloth;
 #include <random>
 #include <mutex>
 #include <queue>
+#include <limits>
 #ifdef _UNICODE
 typedef std::wstring tstring;
 #else

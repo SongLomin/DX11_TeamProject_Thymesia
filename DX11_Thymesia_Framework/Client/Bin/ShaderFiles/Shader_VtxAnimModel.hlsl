@@ -360,7 +360,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
-    Out.vORM = 0;
+    Out.vORM   = 0;
 
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;

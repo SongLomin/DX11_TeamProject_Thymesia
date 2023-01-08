@@ -60,9 +60,6 @@ void CActor::LateTick(_float fTimeDelta)
 
 #endif // !_USE_THREAD_
 
-
-
-
     //m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 }
 

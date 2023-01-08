@@ -12,6 +12,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 {
 	m_pGraphic_Device = CGraphic_Device::Create_Instance();
 	m_pInput_Device = CInput_Device::Create_Instance();
+	m_pCuda_Device = CCuda_Device::Create_Instance();
 	m_pLevel_Manager = CLevel_Manager::Create_Instance();
 	m_pObject_Manager = CObject_Manager::Create_Instance();
 	m_pComponent_Manager = CComponent_Manager::Create_Instance();
@@ -29,31 +30,34 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pPhysX_Manager = CPhysX_Manager::Create_Instance();
 	m_pThread_Manager = CThread_Manager::Create_Instance();
 	m_pNvCloth_Manager = CNvCloth_Manager::Create_Instance();
+	m_pOptimization_Manager = COptimization_Manager::Create_Instance();
 
 	m_GraphicDesc = GraphicDesc;
 	m_WindowHandle = GraphicDesc.hWnd;
 
 	if (nullptr == GET_SINGLE(CGraphic_Device))
-		return E_FAIL;	
+		DEBUG_ASSERT;
 
 	/* 그래픽디바이스. */
 	if (GET_SINGLE(CGraphic_Device)->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.isWindowMode, GraphicDesc.iWinCX, GraphicDesc.iWinCY))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	/* 인풋 디바이스. */
 	if (FAILED(GET_SINGLE(CInput_Device)->Initialize(hInst, GraphicDesc.hWnd)))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
+	if (FAILED(GET_SINGLE(CCuda_Device)->Ready_Cuda_Device()))
+		DEBUG_ASSERT;
 
 	/* 오브젝트 매니져의 예약. */
 	if (FAILED(GET_SINGLE(CObject_Manager)->Reserve_Container(iNumLevels)))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	m_pTimer_Manager->Reserve_TimeScaleLayer(iNumTimeScales);
 	m_pCollision_Manager->Initialize(iNumCollsionLayer);
 
 	if (FAILED(m_pFrustum->Initialize()))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	if (FAILED(m_pRender_Manager->Initialize()))
 	{
@@ -86,31 +90,66 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	GET_SINGLE(CInput_Device)->SetUp_DeviceState();
 	m_pInput_Device->Tick();
 
+
+#ifdef _WRITE_TO_UPDATE_PERFROMANCE_LOG_
+#define BEGIN_UPDATE_PERFROMANCE_CHECK(TAG)\
+	GET_SINGLE(COptimization_Manager)->Begin_PerformanceTime(TAG);
+#define END_UPDATE_PERFROMANCE_CHECK(TAG)\
+	GET_SINGLE(COptimization_Manager)->End_PerformanceTime(TAG);
+
+#else
+#define BEGIN_UPDATE_PERFROMANCE_CHECK(TAG)\
+	void(0);
+#define END_UPDATE_PERFROMANCE_CHECK(TAG)\
+	void(0);
+#endif // _WRITE_TO_UPDATE_PERFROMANCE_LOG_
+
+
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Pre_Tick");
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_TICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	END_UPDATE_PERFROMANCE_CHECK("Thread_Pre_Tick");
 
 	GET_SINGLE(CLevel_Manager)->Tick(fTimeDelta);
+	
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Tick");
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	END_UPDATE_PERFROMANCE_CHECK("Thread_Tick");
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Tick");
 	GET_SINGLE(CObject_Manager)->Tick(fTimeDelta);
+	END_UPDATE_PERFROMANCE_CHECK("Tick");
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_PreLateTick");
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_LATETICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	END_UPDATE_PERFROMANCE_CHECK("Thread_PreLateTick");
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_LateTick");
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::LATETICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	END_UPDATE_PERFROMANCE_CHECK("Thread_LateTick");
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("LateTick");
 	GET_SINGLE(CObject_Manager)->LateTick(fTimeDelta);
+	END_UPDATE_PERFROMANCE_CHECK("LateTick");
 
+
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Collision_Tick");
 	m_pCollision_Manager->Tick();
+	END_UPDATE_PERFROMANCE_CHECK("Collision_Tick");
 	//GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	//m_pTimer_Manager->Tick();
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("NvCloth_Tick");
 
+#ifdef _SIMULATION_NVCLOTH_
 	m_pNvCloth_Manager->Tick(fTimeDelta);
+#endif // _SIMULATION_NVCLOTH_
+
+	END_UPDATE_PERFROMANCE_CHECK("NvCloth_Tick");
 
 	m_pPipeLine->Tick();
 
@@ -120,8 +159,9 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	{
 		m_bDebug = !m_bDebug;
 	}
-
+	BEGIN_UPDATE_PERFROMANCE_CHECK("PhysX_Tick");
 	m_pPhysX_Manager->Tick(fTimeDelta);
+	END_UPDATE_PERFROMANCE_CHECK("PhysX_Tick");
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	++m_iLoopIndex;
@@ -131,15 +171,21 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 HRESULT CGameInstance::Render_Engine()
 {
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Pre_BeforeRender");
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_BEFORERENDER));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	END_UPDATE_PERFROMANCE_CHECK("Thread_Pre_BeforeRender");
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Before_Render");
 	m_pObject_Manager->Before_Render(m_fDeltaTime);
+	END_UPDATE_PERFROMANCE_CHECK("Before_Render");
 
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_RENDER));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
+	BEGIN_UPDATE_PERFROMANCE_CHECK("Render");
 	GET_SINGLE(CLevel_Manager)->Render(DEVICECONTEXT);
+	END_UPDATE_PERFROMANCE_CHECK("Render");
 
 	m_pObject_Manager->After_Render();
 
@@ -469,35 +515,6 @@ HRESULT  CGameInstance::Set_FogDesc(_float4 In_vFogColor, const _float In_fFogRa
 	//return E_FAIL;
 }
 
-
-
-void CGameInstance::Release_Engine()
-{
-	
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
-
-	GET_SINGLE(CThread_Manager)->Destroy_Instance();
-	GET_SINGLE(CComponent_Manager)->Destroy_Instance();
-	GET_SINGLE(CLevel_Manager)->Destroy_Instance();
-	GET_SINGLE(CTimer_Manager)->Destroy_Instance();
-	GET_SINGLE(CInput_Device)->Destroy_Instance();
-	GET_SINGLE(CGraphic_Device)->Destroy_Instance();
-	GET_SINGLE(CRender_Manager)->Destroy_Instance();
-	GET_SINGLE(CPipeLine)->Destroy_Instance();
-	GET_SINGLE(CResource_Manager)->Destroy_Instance();
-	GET_SINGLE(CFont_Manager)->Destroy_Instance();
-	GET_SINGLE(CEvent_Manager)->Destroy_Instance();
-	GET_SINGLE(CCollision_Manager)->Destroy_Instance();
-	GET_SINGLE(CLight_Manager)->Destroy_Instance();
-	GET_SINGLE(CFrustum)->Destroy_Instance();
-	GET_SINGLE(CRenderTarget_Manager)->Destroy_Instance();
-	GET_SINGLE(CSound_Manager)->Destroy_Instance();
-	GET_SINGLE(CObject_Manager)->Destroy_Instance();
-	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
-	GET_SINGLE(CNvCloth_Manager)->Destroy_Instance();
-	GET_SINGLE(CGameInstance)->Destroy_Instance();
-}
-
 _int CGameInstance::BGMVolumeDown(_float _vol)
 {
 	return _int();
@@ -808,10 +825,66 @@ list<const _tchar*> CGameInstance::Get_AllSRVNames()
 	return m_pTarget_Manager->Get_AllSRVNames();
 }
 
+void CGameInstance::Begin_PerformanceTime(const string& In_szTag)
+{
+	m_pOptimization_Manager->Begin_PerformanceTime(In_szTag);
+}
+
+void CGameInstance::End_PerformanceTime(const string& In_szTag)
+{
+	m_pOptimization_Manager->End_PerformanceTime(In_szTag);
+}
+
+_time CGameInstance::Get_PerfromanceTime(const string& In_szTag)
+{
+	return m_pOptimization_Manager->Get_PerfromanceTime(In_szTag);
+}
+
+void CGameInstance::Write_Log()
+{
+	m_pOptimization_Manager->Write_Log();
+}
+
+void CGameInstance::Clear_Logs()
+{
+	m_pOptimization_Manager->Clear_Logs();
+}
+
+void CGameInstance::Release_Engine()
+{
+
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+
+	GET_SINGLE(CThread_Manager)->Destroy_Instance();
+	GET_SINGLE(CComponent_Manager)->Destroy_Instance();
+	GET_SINGLE(CLevel_Manager)->Destroy_Instance();
+	GET_SINGLE(CTimer_Manager)->Destroy_Instance();
+	GET_SINGLE(CInput_Device)->Destroy_Instance();
+	GET_SINGLE(CCuda_Device)->Destroy_Instance();
+	GET_SINGLE(CGraphic_Device)->Destroy_Instance();
+	GET_SINGLE(CRender_Manager)->Destroy_Instance();
+	GET_SINGLE(CPipeLine)->Destroy_Instance();
+	GET_SINGLE(CResource_Manager)->Destroy_Instance();
+	GET_SINGLE(CFont_Manager)->Destroy_Instance();
+	GET_SINGLE(CEvent_Manager)->Destroy_Instance();
+	GET_SINGLE(CCollision_Manager)->Destroy_Instance();
+	GET_SINGLE(CLight_Manager)->Destroy_Instance();
+	GET_SINGLE(CFrustum)->Destroy_Instance();
+	GET_SINGLE(CRenderTarget_Manager)->Destroy_Instance();
+	GET_SINGLE(CSound_Manager)->Destroy_Instance();
+	GET_SINGLE(CObject_Manager)->Destroy_Instance();
+	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
+	GET_SINGLE(CNvCloth_Manager)->Destroy_Instance();
+	GET_SINGLE(COptimization_Manager)->Destroy_Instance();
+	GET_SINGLE(CGameInstance)->Destroy_Instance();
+
+}
+
 void CGameInstance::Free()
 {
 	__super::Free();
 
+	m_pCuda_Device.reset();
 	m_pGraphic_Device.reset();
 	m_pInput_Device.reset();
 	m_pLevel_Manager.reset();

@@ -24,7 +24,6 @@ public:
     void Tick(_float fTimeDelta);
     void LateTick(_float fTimeDelta);
 
-
 public:// For UI;
     POINT   Get_MousePoint();
 

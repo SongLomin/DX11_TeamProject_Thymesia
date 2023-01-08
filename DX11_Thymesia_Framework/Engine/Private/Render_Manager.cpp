@@ -249,7 +249,16 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_RimLight"))))
 		DEBUG_ASSERT;
 
-
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Decal"), TEXT("Target_Diffuse"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Decal"), TEXT("Target_Normal"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Decal"), TEXT("Target_PBR"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Decal"), TEXT("Target_ShaderFlag"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Decal"), TEXT("Target_ExtractBloom"))))
+		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
@@ -497,6 +506,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_ShadowDepth()))
 		DEBUG_ASSERT;
 	if (FAILED(Render_NonAlphaBlend()))
+		DEBUG_ASSERT;
+	if (FAILED(Render_Decal()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Extract_OutLine()))
@@ -903,6 +914,32 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 			DEBUG_ASSERT;
 	}
 
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_Decal()
+{
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_DECAL].empty())
+	{
+		return S_OK;
+	}
+
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_MRTWithNoneClear(TEXT("MRT_Decal"))))
+		DEBUG_ASSERT;
+
+	for (auto& pGameObejct : m_RenderObjects[(_uint)RENDERGROUP::RENDER_DECAL])
+	{
+		if (pGameObejct.lock())
+			pGameObejct.lock()->Render(pDeviceContext);
+	}
+
+	m_RenderObjects[(_uint)RENDERGROUP::RENDER_DECAL].clear();
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_MRT()))
+		DEBUG_ASSERT;
 
 	return S_OK;
 }

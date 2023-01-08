@@ -161,6 +161,7 @@ void CPlayerSkill_System::SetUp_SkillMapFromMonsterType()
    m_MonsterSkillMap.emplace(MONSTERTYPE::JOKER, m_pOwner.lock()->Get_Component<CSkill_Hammer>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::ENHANCE_GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::BAT, m_pOwner.lock()->Get_Component<CSkill_BloodStorm>());
 
 }
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)

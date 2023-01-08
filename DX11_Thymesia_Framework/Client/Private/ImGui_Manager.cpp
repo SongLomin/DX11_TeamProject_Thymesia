@@ -212,9 +212,15 @@ HRESULT CImGui_Manager::Render(void)
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
 
-			if (ImGui::MenuItem("Stage_Lv3-1"))
+			if (ImGui::MenuItem("07. Stage_Lv3-1"))
 			{
 				m_szCurrentLocalPath = "Stage_Lv3-1.json";
+				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
+			}
+
+			if (ImGui::MenuItem("08. Stage_Home"))
+			{
+				m_szCurrentLocalPath = "Stage_Home.json";
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
 

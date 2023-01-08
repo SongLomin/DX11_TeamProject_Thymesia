@@ -277,7 +277,7 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					m_bWalkCheck = true;
 					break;
 				case 2:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
 					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;

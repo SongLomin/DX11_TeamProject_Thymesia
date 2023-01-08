@@ -17,7 +17,7 @@
 #include "ClientLevel.h"
 #include "EasingComponent_Alpha.h"
 #include "FadeMask.h"
-
+#include "EasingComponent_Float.h"
 
 GAMECLASS_C(CUI_Landing)
 CLONE_C(CUI_Landing, CGameObject)
@@ -80,7 +80,7 @@ HRESULT CUI_Landing::Initialize(void* pArg)
 
     m_pEasingBlurAmount = Add_Component<CEasingComponent_Alpha>();
     m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
+    m_pEasingFloat = Add_Component<CEasingComponent_Float>();
     return S_OK;
 }
 
@@ -122,7 +122,7 @@ HRESULT CUI_Landing::Render(ID3D11DeviceContext* pDeviceContext)
 void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
 {
     m_pLanding.lock()->CallBack_FadeEnd -= bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
-    m_PreCalledLanding = eLandingType;
+    m_ePreCalledLanding = eLandingType;
     CHUD_Hover::HUDHOVERDESC desc;
     desc.bSizeChange = true;
     desc.fSizeMag = 0.1f;
@@ -186,6 +186,14 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
     }
 }
 
+void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType, _float fCallTime)
+{
+    m_ePreCalledLanding = eLandingType;
+
+    m_pEasingFloat.lock()->Set_Lerp(0.f, 1.f, fCallTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
+    m_pEasingBlurAmount.lock()->Callback_LerpEnd += bind(&CUI_Landing::Call_TimerEnd, this);
+}
+
 void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
 {
     //이거 루핑 인 에도 돌고 아웃에도 콜백이 발동해서
@@ -199,7 +207,7 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
         m_pLandingBG.lock()->Set_UIDesc(m_tUIDesc);
         m_pLandingBG.lock()->Set_Enable(false);
     }
-    switch (m_PreCalledLanding)
+    switch (m_ePreCalledLanding)
     {
     case Client::CUI_Landing::LANDING_BECONFOUND:
 
@@ -217,5 +225,10 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
         break;
     }
 
+}
+
+void CUI_Landing::Call_TimerEnd()
+{
+    Call_Landing(m_ePreCalledLanding);
 }
 

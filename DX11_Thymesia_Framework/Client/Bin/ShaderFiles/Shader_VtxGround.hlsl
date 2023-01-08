@@ -88,7 +88,7 @@ VS_OUT_HULL VS_MAIN_HULL(VS_IN In)
     //Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vNormal = vector(In.vNormal, 0.f);
     Out.vTangent = In.vTangent;
-
+      
     return Out;
 }
 
@@ -142,13 +142,13 @@ PatchTess ConstantHS(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int patchID : SV
     pt.insideTess = (pt.edgeTess[0] + pt.edgeTess[1] + pt.edgeTess[2])/3.f;
     
     // Assign Positions
-    float3 f3B003 = input[0].vPosition;
-    float3 f3B030 = input[1].vPosition;
-    float3 f3B300 = input[2].vPosition;
+    float3 f3B003 = input[0].vPosition.xyz;
+    float3 f3B030 = input[1].vPosition.xyz;
+    float3 f3B300 = input[2].vPosition.xyz;
 	// And Normals
-    float3 f3N002 =input[0].vNormal;
-    float3 f3N020 =input[1].vNormal;
-    float3 f3N200 = input[2].vNormal;
+    float3 f3N002 = input[0].vNormal.xyz;
+    float3 f3N020 = input[1].vNormal.xyz;
+    float3 f3N200 = input[2].vNormal.xyz;
 
 	// Compute the cubic geometry control points
 	// Edge control points

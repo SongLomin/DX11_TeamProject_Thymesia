@@ -1,5 +1,6 @@
 #include "NvCloth_Manager.h"
 #include "GameInstance.h"
+#include <cuda.h>
 
 IMPLEMENT_SINGLETON(CNvCloth_Manager)
 
@@ -15,6 +16,16 @@ Factory* CNvCloth_Manager::Get_Factory()
 
 HRESULT CNvCloth_Manager::Initialize()
 {
+	//CUcontext cudaContext;
+	///*int deviceCount = 0;
+	//CUresult result = cuDeviceGetCount(&deviceCount);
+	//assert(CUDA_SUCCESS == result);
+	//assert(deviceCount >= 1);*/
+	//
+
+	//CUresult result = cuCtxCreate(&cudaContext, 0, 0); //Pick first device
+
+
 	m_pGraphicsContextManager = DBG_NEW CCustomContextManagerCallback(DEVICE);
 
 	m_pGraphicsContextManager->mContext = DEVICECONTEXT;
@@ -25,9 +36,18 @@ HRESULT CNvCloth_Manager::Initialize()
 
 	InitializeNvCloth(m_pAllocatorCallback, m_pErrorCallback, m_pAssertHander, nullptr);
 
+	if (CHECK_CUDA)
+	{
+		m_pFactory = NvClothCreateFactoryCUDA(*GET_SINGLE(CCuda_Device)->Get_CudaContext());
+	}
+	else
+	{
+		m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
+	}
+
 	//m_pFactory = NvClothCreateFactoryCPU();
-	//m_pFactory = NvClothCreateFactoryCUDA();
-	m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
+	
+	//
 	//We need to release all DX objects after destroying the factory.
 	
 	m_pSolver = m_pFactory->createSolver();
@@ -50,9 +70,9 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 	{
 		//pThread_Manager->Enqueue_Job(bind(&Solver::simulateChunk, m_pSolver, i));
 		m_pSolver->simulateChunk(i);
-	} 
+	}  
 
-	pThread_Manager->Wait_JobDone();
+	//pThread_Manager->Wait_JobDone();
 
 	m_pSolver->endSimulation();
 

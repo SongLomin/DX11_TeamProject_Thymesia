@@ -2127,6 +2127,20 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Decal.h">
+      <Filter>02. GameObject\08. Effect\Effect_Decal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Aisemy.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skill_BloodStorm.h" />
+    <ClInclude Include="..\Public\UI_Effect_MagicCircle.h" />
+    <ClInclude Include="..\Public\CNvClothCollider.h">
+      <Filter>05. Component\08. NvClothCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Preset_NvClothCollider.h">
+      <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4271,6 +4285,35 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\Effect_Decal.cpp">
+      <Filter>02. GameObject\08. Effect\Effect_Decal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\Interaction_Aisemy.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\Skill_BloodStorm.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_MagicCircle.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\CNvClothCollider.cpp">
+      <Filter>05. Component\08. NvClothCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_NvClothCollider.cpp">
+      <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5883,9 +5926,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill">
       <UniqueIdentifier>{8360d8b7-3aab-4118-8eba-da0dd5f006b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
-      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\01.Skill02_1">
       <UniqueIdentifier>{7031e5c8-5cbe-4458-bb9a-5332e80335e5}</UniqueIdentifier>
     </Filter>
@@ -6336,6 +6376,18 @@
     <Filter Include="02. GameObject\04. Prop\NewFilter1">
       <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Effect\Effect_Decal">
+      <UniqueIdentifier>{6f06b722-2574-49ba-893c-70a489bf0f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
+      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\08. NvClothCollider">
+      <UniqueIdentifier>{a5cb27b5-931d-41a8-a1f8-9da27b617cf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\08. Preset_NvClothCollider">
+      <UniqueIdentifier>{cd9d80f9-8542-4254-8cd4-7e04db9ea860}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -6400,6 +6452,12 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxDecal.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

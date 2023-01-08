@@ -7,6 +7,8 @@ END
 
 BEGIN(Client)
 class CMonsterHPBar_Boss;
+class CNvClothCollider;
+
 class CVarg :
     public CBossMonster
 {
@@ -33,6 +35,7 @@ public:
 private:
     weak_ptr<class CEffect_Trail> m_pTrailEffect;
     weak_ptr<CBoneNode> m_pTrailBoneNode;
+    weak_ptr<CNvClothCollider> m_pNvClothColliderCom;
 
     _float4x4                     m_TransformationMatrix;
 

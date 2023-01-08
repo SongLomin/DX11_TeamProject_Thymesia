@@ -71,15 +71,6 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	
-	
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
 }	
 
 
@@ -104,6 +95,12 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 
+	//if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	//{
+	//	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_VS_TakeExecution>(0.05f);
+	//	return true;
+	//}
+
 	//여기서 해줘야한다 
 	//거리가 8정도 가까우면 공격을하고 
 	// 공격을 하고 한번걷고 다시 스탭밟음 
@@ -112,10 +109,11 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	{
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
 		return true;
+		
 	}
 	else
 	{
-		if (fPToMDistance <= 4.f)
+		if (fPToMDistance <= 4.3f)
 		{
 			if (m_bTurnCheck)
 			{
@@ -142,9 +140,9 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 						return true;
 					}
 				}
-
+	
 			}
-
+	
 		}
 		else
 		{
@@ -180,11 +178,11 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 							return true;
 						}
 					}
-
+	
 				}
-
+	
 			}
-
+	
 		}
 	}
 	

@@ -1,0 +1,30 @@
+0. C++ 17 for_each 병렬 연산에서 오버헤드보다 성능적 향상이 더 이득을 볼 수 있는 구간은 언제부터인가?
+
+일반적으로 범위 요소에 적용되는 함수 개체의 실행 시간이 상대적으로 높을 것으로 예상되는 경우에만 병렬 실행 정책을 사용하는 것이 좋습니다. 이를 통해 병렬화의 이점이 병렬화의 오버헤드를 능가할 수 있습니다.
+
+대략적인 예로 1백만 개의 요소 범위와 각 요소에 적용하는 데 1마이크로초가 걸리는 함수 개체를 생각해 보십시오. 병렬화의 오버헤드가 10밀리초인 경우 총 실행 시간은 약 11초(100만 요소 * 1마이크로초/요소 + 10밀리초)가 됩니다. 이 경우 병렬화의 오버헤드가 실행 시간을 좌우하기 때문에 병렬 실행 정책을 사용하는 것은 유용하지 않습니다.
+
+반면, 범위 요소에 적용되는 함수 개체가 각 요소에 적용되는 데 1밀리초가 걸린다면 총 실행 시간은 약 2초(100만 요소 * 1밀리초/요소 + 10밀리초)가 됩니다. 이 경우 병렬화의 이점이 병렬화의 오버헤드보다 크기 때문에 병렬 실행 정책을 사용하는 것이 좋습니다.
+
+연산을 하는데 사용한 시간을 측정해서 비교해보자.
+void long_running_function() {
+    // ...
+}
+
+int main() {
+    // Record the start time
+    auto start = std::chrono::high_resolution_clock::now();
+
+    // Call the function we want to measure
+    long_running_function();
+
+    // Record the end time
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate the elapsed time
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    std::cout << "Elapsed time: " << elapsed << " milliseconds\n";
+
+    return 0;
+}

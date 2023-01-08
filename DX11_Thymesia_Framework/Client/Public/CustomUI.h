@@ -36,7 +36,6 @@ protected:
 
 protected:
 	_uint	m_iDeffuseIndex = 0;
-
 public:
 	void Free();
 };
