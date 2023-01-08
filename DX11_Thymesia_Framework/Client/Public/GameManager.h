@@ -181,9 +181,19 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
-    /*
-        사형수 전원 집행완료
-    */
+public:
+    template <class T>
+    weak_ptr<T>         GetGameObject_SafetyUseMemoryPool(_uint iLevelIndex)
+    {
+        weak_ptr<T> pTemplate = GAMEINSTANCE->Get_GameObject_UseMemoryPool<T>(iLevelIndex);
+
+        if (!pTemplate.lock())
+        {
+            pTemplate = GAMEINSTANCE->Add_GameObject<T>(iLevelIndex);
+        }
+        return pTemplate;
+    }
+
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
@@ -244,3 +254,4 @@ protected:
 };
 
 END
+

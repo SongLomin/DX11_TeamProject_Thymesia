@@ -19,6 +19,10 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	
+
+public:
+	void			Call_OnEasingFloatConditionEvent(_uint iEventNumber);
+
 public:
 	virtual void	SetUp_Component();
 	
@@ -26,16 +30,18 @@ public:
 	void			StartGauge();
 	void			EndGauge();
 
-	
-
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
 private:
+
+
 	_float				m_fRatio = 0.f;
 	_float				m_fShakeMag = 5.f;
 
 	weak_ptr<CEasingComponent_Float>	m_pEasingRatio;
+
+
 
 private:
 	void				Free();

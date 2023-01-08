@@ -43,10 +43,10 @@
 #pragma region Effects
 //#define _DAGGER_TRAIL_
 //#define _PROP_EFFECT_
-#define _CORVUS_EFFECT_
-#define _VARG_EFFECT_
-#define	_BAT_EFFECT
-#define _INTERACTION_EFFECT_
+//#define _CORVUS_EFFECT_
+//#define _VARG_EFFECT_
+//#define	_BAT_EFFECT
+//#define _INTERACTION_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG

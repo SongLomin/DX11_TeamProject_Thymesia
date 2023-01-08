@@ -55,8 +55,7 @@ void CUI_Button_Base::Update_MouseOver()
 {
 	POINT		pt;
 
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
+	pt = GET_SINGLE(CUIManager)->Get_MousePoint();
 
 	if (pt.x < ((m_tUIDesc.fX) - (m_tUIDesc.fSizeX * 0.5f)) ||
 		pt.x >((m_tUIDesc.fX) + (m_tUIDesc.fSizeX * 0.5f)) ||

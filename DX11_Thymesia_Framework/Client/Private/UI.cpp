@@ -413,14 +413,17 @@ void CUI::Bind_Player()
 
 void CUI::Update_Shaking(_float fTimeDelta)
 {
-	if (m_fCurrentFreq > 0.f)
+	//if (m_fCurrentFreq > 0.f)
+	//{
+	//	m_fCurrentFreq -= fTimeDelta;
+	//
+	//	return;
+	//}
+	if (m_fPower < 0.f)
 	{
-		m_fCurrentFreq -= fTimeDelta;
-
 		return;
 	}
-
-	m_fPower -= (fTimeDelta * m_fPower) * 30.f;
+	m_fPower -= (fTimeDelta * (m_fPower / m_fShakingTime));
 
 	m_fOffsetPosition.x = SMath::fRandom(-m_fPower, m_fPower);
 	m_fOffsetPosition.y = SMath::fRandom(-m_fPower, m_fPower);

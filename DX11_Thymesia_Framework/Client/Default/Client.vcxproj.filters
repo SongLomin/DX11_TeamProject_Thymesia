@@ -2141,6 +2141,10 @@
     <ClInclude Include="..\Public\Preset_NvClothCollider.h">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Effect_FadeBackground.h" />
+    <ClInclude Include="..\Public\UI_Effect_Twinkl.h" />
+    <ClInclude Include="..\Public\UI_CustomEffect.h" />
+    <ClInclude Include="..\Public\UI_EffectGroup_SkillOpen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4314,6 +4318,10 @@
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_Effect_FadeBackground.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_Twinkl.cpp" />
+    <ClCompile Include="..\Private\UI_CustomEffect.cpp" />
+    <ClCompile Include="..\Private\UI_EffectGroup_SkillOpen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

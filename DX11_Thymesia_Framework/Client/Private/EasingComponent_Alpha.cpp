@@ -46,6 +46,11 @@ void CEasingComponent_Alpha::Set_Lerp(_float vStart, _float vTarget, _float fTim
 
 }
 
+void CEasingComponent_Alpha::Set_Lerp_once(_float vStart, _float vTarget, _float fTime, EASING_TYPE eEasingType, _bool bCustomUse)
+{
+    Set_Lerp(vStart, vTarget, fTime, eEasingType, CEasingComponent::ONCE, bCustomUse);
+}
+
 
 
 
