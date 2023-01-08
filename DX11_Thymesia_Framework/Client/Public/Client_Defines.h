@@ -36,7 +36,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-//#define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
@@ -54,7 +54,6 @@
 
 /////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 #ifdef NDEBUG
-
 
 #pragma region System
 #define _USE_THREAD_
@@ -121,7 +120,7 @@
 #pragma region Tool
 #define _MAP_TOOL_
 // #define _CORVUS_MODEL_
-#define _BOSS_MODEL_
+// #define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
 #define _ANIMATION_TOOL_WEAPON_
