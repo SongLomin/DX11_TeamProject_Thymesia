@@ -40,6 +40,8 @@ private:
     _uint                   m_iMemory     = 0;
     LIGHTDESC               m_tLightDesc;
 
+    _uint m_iEffectIndex = 0;
+
 private:
     virtual void OnDestroy() override;
     void Free();

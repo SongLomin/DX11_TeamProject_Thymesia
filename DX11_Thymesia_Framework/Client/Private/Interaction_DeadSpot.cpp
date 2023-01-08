@@ -66,7 +66,9 @@ HRESULT CInteraction_DeadSpot::Start()
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);  
     m_pColliderCom.lock()->Set_Enable(false);
     Set_Enable(false);
-
+#ifdef _INTERACTION_EFFECT_
+    m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("DeadSpotEffect", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+#endif // _INTERACTION_EFFECT_
     return S_OK;
 }
 
@@ -97,6 +99,9 @@ void CInteraction_DeadSpot::OnEventMessage(_uint iArg)
 
             m_tLightDesc.bEnable = false;
             GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+#ifdef _INTERACTION_EFFECT_
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("DeadSpotEffect", m_iEffectIndex);
+#endif // _INTERACTION_EFFECT_
         }
         break;
     }
