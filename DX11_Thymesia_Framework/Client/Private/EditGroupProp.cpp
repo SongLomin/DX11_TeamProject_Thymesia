@@ -246,6 +246,7 @@ void CEditGroupProp::View_CreateProp()
 		"NextPoint",
 		"CastleGate",
 		"Item",
+		"Interaction_Aisemy"
 	};
 
 	static const char* items_Event_Prop[] =
@@ -369,6 +370,17 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode  = typeid(CInteraction_Item).hash_code();
 				tObjDesc.TypeName  = typeid(CInteraction_Item).name();
+			}
+			break;
+
+			case 8 :
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Aisemy>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode = typeid(CInteraction_Aisemy).hash_code();
+				tObjDesc.TypeName = typeid(CInteraction_Aisemy).name();
 			}
 			break;
 		}

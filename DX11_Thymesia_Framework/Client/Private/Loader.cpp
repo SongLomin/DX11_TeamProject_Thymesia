@@ -104,6 +104,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Prototype Objects..."));
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Interior>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CNorMonster>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
@@ -122,6 +123,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Aisemy>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CFog>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CProp_Fence>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();

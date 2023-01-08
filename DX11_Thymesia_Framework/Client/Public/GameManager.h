@@ -196,6 +196,9 @@ public:
 
     void  Registration_OnlyResetObject(weak_ptr<CGameObject> In_pObj);
 
+    void  Registration_Camera(string In_szTag, weak_ptr<CCamera> In_pCamera);
+    void  Activate_Camera(string In_szTag);
+
     void  Registration_Fog(weak_ptr<CFog> In_pObj);
     void  Activate_Fog(_uint In_iFogIndex);
 
@@ -222,10 +225,12 @@ private:
     typedef map<_int, list<weak_ptr<CGameObject>>>         SECTION_OBJ;
     typedef map<_int, list<weak_ptr<CLight_Prop>>>         SECTION_LIGHT;
     typedef list<weak_ptr<CGameObject>>                    RESET_OBJ;
+    typedef map<string, weak_ptr<CCamera>>                 SECTION_CAMERA;
 
     SECTION_OBJ                         m_SectionObejects;
     SECTION_LIGHT                       m_SectionLights;
     RESET_OBJ                           m_ResetObjects;
+    SECTION_CAMERA                      m_SectionCamera;
     weak_ptr<CFog>                      m_FogObject;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;

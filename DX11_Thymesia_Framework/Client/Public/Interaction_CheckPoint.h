@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CCollider;
 class CModel;
 class CActorDecor;
+class CTransform;
 END
 
 BEGIN(Client)
@@ -58,7 +59,7 @@ private:
     void Exit_AnimIndex();
     void Call_CheckAnimEnd();
     void Set_State(const ANIM_EVENT In_eEvent);
-    void Call_CheckEquipEnd();
+    void Call_CheckEquipEnd(_bool& bState);
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
@@ -66,6 +67,7 @@ private:
     weak_ptr<CShader>       m_pAnimShader;
     weak_ptr<CTexture>      m_pTextureCom;
     weak_ptr<CActorDecor>   m_pDeco;
+    weak_ptr<CTransform>    m_pChairTransfromCom;
 
     _int                    m_iTexPass      = 84;
     _float2                 m_vAddSpeed     = { -0.2f, 0.2f };
@@ -74,11 +76,11 @@ private:
     _int                    m_iAnimIndex    = 0;
 
     _int                    m_iCheckIndex   = 0;
-    _uint                   m_iEffectIndex  = 0;
+    _int                    m_iEffectIndex   = -1;
     LIGHTDESC               m_tLightDesc;   
     _float2                 m_vAddUVPos     = { 0.f, 0.f };
 
-    FDelegate<>             CallBack_EquipEnd;
+    FDelegate<_bool&>       CallBack_EquipEnd;
     _bool                   m_bAisemyRender = false;
     ANIM_EVENT              m_eAnimEvent    = ANIM_EVENT::NONE;
     _bool                   m_bAnimEnd      = false;

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "Camera_Target.h"
 #include "GameManager.h"
 #include "Monster.h"
@@ -9,6 +10,7 @@
 #include "Easing_Utillity.h"
 #include "PhysXCameraController.h"
 #include "Preset_PhysXControllerDesc.h"
+#include "Transform.h"
 
 GAMECLASS_C(CCamera_Target);
 CLONE_C(CCamera_Target, CGameObject);
@@ -20,8 +22,6 @@ CCamera_Target::CCamera_Target(const CCamera_Target& rhs)
 
 HRESULT CCamera_Target::Initialize_Prototype()
 {
-
-
 	return S_OK;
 }
 
@@ -56,6 +56,7 @@ HRESULT CCamera_Target::Start()
 	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("GlobalDust", m_pTransformCom);
+	GET_SINGLE(CGameManager)->Registration_Camera("Camera_Target", Weak_Cast<CCamera>(m_this));
 
 	return S_OK;
 }

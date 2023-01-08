@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Camera_Interior.h"
 
+#include "GameManager.h"
+
 GAMECLASS_C(CCamera_Interior)
 CLONE_C(CCamera_Interior, CGameObject)
 
@@ -21,6 +23,8 @@ HRESULT CCamera_Interior::Initialize(void* pArg)
 
 	m_iCameraSpeed = 7;
 	Set_Enable(false);
+
+	GET_SINGLE(CGameManager)->Registration_Camera("Camera_Interior", Weak_Cast<CCamera>(m_this));
 
 	return S_OK;
 }

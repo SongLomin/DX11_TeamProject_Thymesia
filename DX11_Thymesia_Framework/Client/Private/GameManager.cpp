@@ -884,6 +884,24 @@ void  CGameManager::Registration_OnlyResetObject(weak_ptr<CGameObject> In_pObj)
 	m_ResetObjects.push_back(In_pObj);
 }
 
+void CGameManager::Registration_Camera(string In_szTag, weak_ptr<CCamera> In_pCamera)
+{
+	m_SectionCamera.emplace(In_szTag, In_pCamera);
+}
+
+void CGameManager::Activate_Camera(string In_szTag)
+{
+	auto iter_find = m_SectionCamera.find(In_szTag);
+
+	if (m_SectionCamera.end() == iter_find)
+		return;
+
+	for (auto& elem : m_SectionCamera)
+		elem.second.lock()->Set_Enable(false);
+
+	iter_find->second.lock()->Set_Enable(true);
+}
+
 void  CGameManager::Registration_Fog(weak_ptr<CFog> In_pObj)
 {
 	m_FogObject = In_pObj;
@@ -911,6 +929,7 @@ void CGameManager::OnLevelExit()
 	m_SectionObejects.clear();
 	m_SectionLights.clear();
 	m_ResetObjects.clear();
+	m_SectionCamera.clear();
 
 	m_StoredEffects.clear();
 }
