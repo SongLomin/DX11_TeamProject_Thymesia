@@ -31,6 +31,7 @@ protected:
 
 private:
 	_bool           m_bOne = false;
+	_bool           m_bAnimaionSpeedControl = false;
 private:
 	void Call_AnimationEnd();
 protected:

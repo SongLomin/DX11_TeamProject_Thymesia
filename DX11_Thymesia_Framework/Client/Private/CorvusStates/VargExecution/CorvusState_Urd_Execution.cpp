@@ -9,7 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 #include "Monster.h"
-#include "NorMonStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_Urd_Execution);
 CLONE_C(CCorvusState_Urd_Execution, CComponent)
@@ -44,6 +44,15 @@ void CCorvusState_Urd_Execution::Tick(_float fTimeDelta)
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::EXECUTION);
+	
+	if (m_MovingRoot)
+	{
+		m_fCurrentSpeed += m_fAccel * fTimeDelta;
+		m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	}
+
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -148,6 +157,11 @@ _bool CCorvusState_Urd_Execution::Check_AndChangeNextState()
 	{
 		m_MovingRoot = true;
 	}
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 135)
+	{
+		m_MovingRoot = false;
+	}
+
 
 	return false;
 }

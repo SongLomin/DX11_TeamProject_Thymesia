@@ -91,6 +91,7 @@ void CUrdBossState_VS_TakeExecution::OnStateEnd()
 	__super::OnStateEnd();
 
 	//m_pPhysXControllerCom.lock()->Set_Enable(true);
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
@@ -124,6 +125,13 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	PxControllerFilters Filters;
+	_matrix                    vResultOtherWorldMatrix;
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+	_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+	_matrix vMonsterMaxtrix = Get_OwnerMonster()->Get_Transform()->Get_WorldMatrix();
+
 	//124 180 °¡Áö
 	
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 1 &&
@@ -131,19 +139,14 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 	{
 		if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
 		{
-			PxControllerFilters Filters;
-			_matrix                    vResultOtherWorldMatrix;
-			weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-			weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
-			_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-			_matrix vMonsterMaxtrix = Get_OwnerMonster()->Get_Transform()->Get_WorldMatrix();
+			
 	
 			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.8f, 0.f, -0.9f, 0.f));
 			pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),
 				Filters);
-			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vResultOtherWorldMatrix, XMVectorSet(-0.8f, 0.f, 0.53f, 0.f));
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vResultOtherWorldMatrix, XMVectorSet(-0.8f, 0.f, 0.5f, 0.f));
 			Get_OwnerMonster()->Get_Transform()->LookAt2D(vResultOtherWorldMatrix.r[3]);
 			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vMonsterMaxtrix, XMVectorSet(0.8f, 0.f, -0.4f, 0.f));
 			pCurrentPlayer.lock()->Get_Transform()->LookAt2D(vResultOtherWorldMatrix.r[3]);
@@ -160,11 +163,36 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		m_pPhysXControllerCom.lock()->Set_Enable(false);
 	}
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 140 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 160 &&
+		m_bOne)
+	{
+		m_pModelCom.lock()->Set_AnimationSpeed(0.5f);
+		m_bOne = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 160  && !m_bOne)
+	{
+		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+		m_bOne = true;
+		m_bAnimaionSpeedControl = true;
+	}
+
 
 	
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 165)
 	{
 		m_pPhysXControllerCom.lock()->Set_Enable(true);
+
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 366 && 
+		m_bAnimaionSpeedControl)
+	{		
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		Rotation_TargetToLookDir();
+		//pCurrentPlayer.lock()->Get_Transform()->LookAt2D(vMonsterMaxtrix.r[3]);
+		m_bAnimaionSpeedControl = false;
 	}
 
 	return false;
