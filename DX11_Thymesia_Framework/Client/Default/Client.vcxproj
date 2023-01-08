@@ -459,6 +459,7 @@
     <ClInclude Include="..\Public\EditEventContoller.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
+    <ClInclude Include="..\Public\Effect_Decal.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandMan.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStateBase.h" />
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManStates.h" />
@@ -1116,6 +1117,7 @@
     <ClCompile Include="..\Private\EditEventContoller.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
+    <ClCompile Include="..\Private\Effect_Decal.cpp" />
     <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandMan.cpp" />
     <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManStateBase.cpp" />
     <ClCompile Include="..\Private\EliteMonState\BigHandMan\BigHandManState_ComboA01.cpp" />
@@ -1532,6 +1534,7 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxDecal.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxGround.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">

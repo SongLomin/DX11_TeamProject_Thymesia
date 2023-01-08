@@ -88,7 +88,7 @@ VS_OUT_HULL VS_MAIN_HULL(VS_IN In)
     //Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
     Out.vNormal = vector(In.vNormal, 0.f);
     Out.vTangent = In.vTangent;
-
+      
     return Out;
 }
 

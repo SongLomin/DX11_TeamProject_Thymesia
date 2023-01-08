@@ -344,7 +344,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 
 	_matrix vLookTargetMatrix;
 
-	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(30.f));
+	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(25.f));
 
 	vLookTargetMatrix.r[0] = XMVector3TransformNormal(vRight, RotationMatrix);
 	vLookTargetMatrix.r[1] = XMVector3TransformNormal(vUp, RotationMatrix);
@@ -400,18 +400,21 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 
 void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 {
-	if (1.f < fTimeDelta)
-		m_fZoomTimeAcc = 1.f;
-	else
+	if (m_fZoomTime > fTimeDelta)
+	{
 		m_fZoomTimeAcc += fTimeDelta;
+		m_fZoomTimeAcc = min(m_fZoomTimeAcc, m_fZoomTime);
+	}
+ 
 
-	if (m_fZoomTime >= m_fZoomTimeAcc)
+	if (fabs(m_fZoomEndOffSet - m_fZoom)> DBL_EPSILON)
 	{
 		_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
 		_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
 
 		m_fZoom = CEasing_Utillity::LerpToType(vStartPoint, vEndPoint, m_fZoomTimeAcc, m_fZoomTime, m_eZoomLerpFunc).m128_f32[0];
 	}
+
 
 }
 

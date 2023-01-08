@@ -2127,6 +2127,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Decal.h">
+      <Filter>02. GameObject\08. Effect\Effect_Decal</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Aisemy.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -4285,6 +4288,12 @@
     <ClCompile Include="..\Private\UI_EffectBase.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\Effect_Decal.cpp">
+      <Filter>02. GameObject\08. Effect\Effect_Decal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
     <ClCompile Include="..\Private\UI_EffectBase.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
@@ -6367,6 +6376,9 @@
     <Filter Include="02. GameObject\04. Prop\NewFilter1">
       <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Effect\Effect_Decal">
+      <UniqueIdentifier>{6f06b722-2574-49ba-893c-70a489bf0f23}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
       <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
     </Filter>
@@ -6440,6 +6452,9 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxDecal.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl">

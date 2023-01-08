@@ -492,5 +492,14 @@ namespace Engine
 		_float4 vGain;
 	};
 	
+	typedef struct DECAL_DESC
+	{
+		_float4 vPosition;
+		_float3 vScale;
+		_char* pTextureTag;
+
+		_float  fTime;
+		_float	fDissapearTime;
+	};
 	
 }

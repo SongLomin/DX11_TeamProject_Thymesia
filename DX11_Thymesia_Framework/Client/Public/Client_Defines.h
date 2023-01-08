@@ -85,6 +85,7 @@
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
 #define	_BAT_EFFECT_
+#define _CHAIR_EFFECT
 #pragma endregion // Effects
 
 #endif // NDEBUG

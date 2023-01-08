@@ -50,9 +50,6 @@ HRESULT CLevel_Stage2::Initialize()
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
-
-
-
 	return S_OK;
 }
 
