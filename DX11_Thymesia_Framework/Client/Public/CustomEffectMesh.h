@@ -20,14 +20,14 @@ class CCustomEffectMesh final :
 public: // Get & Set
 	const _char* Get_EffectName() const;
     _bool Is_Finish() const;
-    void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
+    void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer);
     void Set_EffectGroup(weak_ptr<CEffectGroup> pEffectGroup);
-    _matrix Get_EffectWorldMatrix() { return XMLoadFloat4x4(&m_WorldMatrix); }
-public:
+    _matrix Get_EffectWorldMatrix();
 
-	
     void Reset_Effect(weak_ptr<CTransform> pParentTransform);
+#ifdef _EFFECT_TOOL_
     virtual void OnEventMessage(_uint iArg) override;
+#endif // _EFFECT_TOOL_
     void OnChangeAnimationKey(const _uint& In_Key);
     void Init_EffectMesh(const EFFECTMESH_DESC& In_tEffectMeshDesc, const _char* In_szModelKey);
     void Sync_Animation();
@@ -43,8 +43,7 @@ private:
 	virtual HRESULT Start()                  override;
 	virtual void    Tick(_float fTimeDelta)  override;
 	virtual void LateTick(_float fTimeDelta) override;
-	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext)                 override;
-    void Free();
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
     virtual void SetUp_ShaderResource() override;
     virtual void SetUp_ShaderResource_Dissolve();
@@ -75,14 +74,11 @@ private:
         , _float    fTotalTime
     );
 
-
-#ifdef _DEBUG
-    void Clone_EffectMesh();
 #ifdef _EFFECT_TOOL_
+    void Clone_EffectMesh();
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
     void Make_Collider();
-#endif // _EFFECT_TOOL_
     void Tool_Control();
     void Tool_Spawn_Life_Time();
     void Tool_AnimationSync();
@@ -98,7 +94,9 @@ private:
     void Tool_Texture_Noise();
     void Tool_Texture_Mask();
     void Tool_Collider();
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
+
+    void Free();
 
 private:
     weak_ptr<CEffectGroup> m_pEffectGroup;
@@ -158,10 +156,12 @@ private:
     _float4               m_vCurrentGlowForce;
 
     // For. Boner
-    std::vector<std::string> m_AllBoneNames;
     weak_ptr<CBoneNode>      m_pBoneNode;
     weak_ptr<CModel>         m_pParentModel;
     std::string              m_strBoneName = "";
+#ifdef _EFFECT_TOOL_
+    std::vector<std::string> m_AllBoneNames;
     _int                     m_iCurrentBoneIndex = 0;
+#endif // _EFFECT_TOOL_
 };
 END
