@@ -145,10 +145,12 @@ void CGameObject::Set_Dead()
 
 void CGameObject::Use_Thread(const THREAD_TYPE In_Type)
 {
+	if (m_ThreadFlag & (1 << (_flag)In_Type))
+		return;
+
 	m_ThreadFlag |= (1 << (_flag)In_Type);
 
 	GET_SINGLE(CThread_Manager)->Bind_ThreadObject(In_Type, Weak_StaticCast<CGameObject>(m_this));
-
 }
 
 void CGameObject::UnUse_Thread(const THREAD_TYPE In_Type)

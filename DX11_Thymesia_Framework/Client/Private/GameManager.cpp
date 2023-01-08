@@ -331,10 +331,16 @@ void CGameManager::UnUse_EffectGroup(const string& In_szEffectGroupName, const _
 #endif
 			if (elem.lock())
 				elem.lock()->UnUse_EffectGroup();
+
+			return;
 		}
 
 		++iIndex;
 	}
+
+#ifdef _DEBUG
+	cout << In_szEffectGroupName << ": " << In_EffectGroupIndex << ", Effect is not unused" << endl;
+#endif // _DEBUG
 }
 
 void CGameManager::Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable)

@@ -86,6 +86,8 @@ private:
     _bool                   m_bAnimEnd      = false;
     _bool                   m_bInteraction  = false;
 
+    _int    m_iCount = 0;
+
 private:
     virtual void OnDestroy() override;
     void Free();

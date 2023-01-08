@@ -64,7 +64,7 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
 
 #ifdef _USE_THREAD_
     Use_Thread(THREAD_TYPE::PRE_TICK);
-    Use_Thread(THREAD_TYPE::PRE_LATETICK);
+    // Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
 
     return S_OK;
@@ -147,35 +147,41 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
     __super::Thread_PreLateTick(fTimeDelta);
 
 #ifdef _Actor_Culling_
-    // TODO : 과연 수정을 할 것인가?
+	// TODO : 과연 수정을 할 것인가?
 
-    //m_bRendering = true;
+	//m_bRendering = true;
 
-    if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 30.f))
-    {
-        m_bRendering = true;
-
-#ifdef _INTERACTION_EFFECT_
-        if ((0 > m_iEffectIndex))
-        {
-            m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-        }
-#endif // _INTERACTION_EFFECT_
-    }
-    else
-    {
-        m_bRendering = false;
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 1.f))
+	{
+		m_bRendering = true;
 
 #ifdef _INTERACTION_EFFECT_
-        if (0 <= m_iEffectIndex)
-        {
-            GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
-            m_iEffectIndex = -1;
-        }
+		if (-1 == m_iEffectIndex)
+		{
+			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+			m_iCount++;
+
+			cout << "Chair Effect Count : " << m_iCount << endl;
+		}
 #endif // _INTERACTION_EFFECT_
-    }
+	}
+	else
+	{
+		m_bRendering = false;
+
+#ifdef _INTERACTION_EFFECT_
+		if (-1 != m_iEffectIndex)
+		{
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+			m_iEffectIndex = -1;
+			m_iCount--;
+
+			cout << "Chair Effect Count : " << m_iCount << endl;
+		}
+#endif // _INTERACTION_EFFECT_
+	}
 #else
-    m_bRendering = true;
+	m_bRendering = true;
 #endif // _Actor_Culling_
 }
 
