@@ -6,7 +6,7 @@ void Preset::NvClothMesh::CorvusSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc)
 	CModel::NVCLOTH_MESH_DESC MeshDesc;
 
 	_vector vGravity = XMVectorSet(0.f, -9.81f, 0.f, 0.f);
-	MeshDesc.InvMesses = vector<_float>(190, 0.1f);
+	MeshDesc.InvMesses = vector<_float>(190, 0.001f);
 
 	_int iAttachCount = 10;
 

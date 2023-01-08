@@ -4,7 +4,7 @@
 
 void* Preset::NvClothCollider::CorvusSetting(_uint& Out_Count)
 {
-	CNvClothCollider::NVCLOTH_COLLIDER_DESC* pColliderDesc = DBG_NEW CNvClothCollider::NVCLOTH_COLLIDER_DESC[7];
+	CNvClothCollider::NVCLOTH_COLLIDER_DESC* pColliderDesc = DBG_NEW CNvClothCollider::NVCLOTH_COLLIDER_DESC[5];
 
 	pColliderDesc[0].szBoneName = "Bip001-Head";
 	pColliderDesc[0].vOffset = _float3(0.f, 0.f, 0.f);
@@ -62,6 +62,8 @@ void* Preset::NvClothCollider::VergSetting(_uint& Out_Count)
 	pColliderDesc[4].szBoneName = "Bip001";
 	pColliderDesc[4].vOffset = _float3(0.f, 0.f, 0.f);
 	pColliderDesc[4].fScale = 0.3f;
+
+	Out_Count = 5;
 
 	return pColliderDesc;
 }
