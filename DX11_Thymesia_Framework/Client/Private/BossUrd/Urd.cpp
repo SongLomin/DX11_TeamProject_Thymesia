@@ -192,16 +192,16 @@ void CUrd::Init_Desc()
 	
 	
 	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(1);
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(false);
+	Weak_StaticCast<CUrdWeapon>(m_pDecoWeapons.back()).lock()->Set_WeaponNum(1);
+	Weak_StaticCast<CUrdWeapon>(m_pDecoWeapons.back()).lock()->Set_UsingCheck(false);
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
 	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(2);
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(false);
+	Weak_StaticCast<CUrdWeapon>(m_pDecoWeapons.back()).lock()->Set_WeaponNum(2);
+	Weak_StaticCast<CUrdWeapon>(m_pDecoWeapons.back()).lock()->Set_UsingCheck(false);
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
 	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_WeaponNum(3);
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(false);
+	Weak_StaticCast<CUrdWeapon>(m_pDecoWeapons.back()).lock()->Set_WeaponNum(3);
+	Weak_StaticCast<CUrdWeapon>(m_pDecoWeapons.back()).lock()->Set_UsingCheck(false);
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
 
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
@@ -319,8 +319,8 @@ void CUrd::OnEnable(void* _Arg)
 }
 void CUrd::Use_DecoWeapon()
 {
-	m_pDecoWeapons[m_iDecoIndex].lock()->Set_Enable(false);
-	++m_iDecoIndex;
+	//m_pDecoWeapons[m_iDecoIndex].lock()->Set_Enable(false);
+	//++m_iDecoIndex;
 }
 
 void CUrd::OnDisable()

@@ -34,6 +34,7 @@ protected:
 private:
 	_bool m_bOne = false;
 	CHECKDOT m_eReuslt = CHECKDOT::RESULT_END;
+	_bool m_bDisableWeaponCheck = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
 private:
 	void Call_AnimationEnd();

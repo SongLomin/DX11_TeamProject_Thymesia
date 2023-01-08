@@ -31,6 +31,7 @@ protected:
 
 private:
 	_bool m_bOne = false;
+	_bool m_bDisableWeaponCheck = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
 private:
 	void Call_AnimationEnd();

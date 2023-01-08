@@ -59,6 +59,8 @@ void CUrdBossState_Equip_R::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_bDisableWeaponCheck = false;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -104,21 +106,26 @@ _bool CUrdBossState_Equip_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 12)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 13 && !m_bDisableWeaponCheck)
 	{
 
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
+
 		pWeapons.front().lock()->Set_RenderOnOff(true);
 
-		for (auto& elem : pWeapons)
+		for (auto& elem : pDecoWeapons)
 		{
 			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
 			{
 				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_RenderOnOff(false);
 				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+				m_bDisableWeaponCheck = true;
 				break;
 			}
+			
 		}
 
 	}

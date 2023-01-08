@@ -20,7 +20,8 @@ public:
     _uint  Get_CurrentDecoIndex() {
         return m_iDecoIndex;
     }
-    list<weak_ptr<CJavelinWeapon>>  Get_JavelinWepons() { return m_pJavelinWeapon; }
+    list<weak_ptr<CJavelinWeapon>>    Get_JavelinWepons() { return m_pJavelinWeapon; }
+    list<weak_ptr<CMobWeapon>>      Get_DecoWeapons() { return   m_pDecoWeapons; }
 private:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -39,7 +40,7 @@ public:
 private:
     weak_ptr<class CEffect_Trail>   m_pTrailEffect;
     list<weak_ptr<CJavelinWeapon>>  m_pJavelinWeapon;
-    vector<weak_ptr<CMobWeapon>>    m_pDecoWeapons;
+    list<weak_ptr<CMobWeapon>>      m_pDecoWeapons;
     weak_ptr<CBoneNode> m_pTrailBoneNode;
     _float3             m_vMoveScale = {1.f,1.f,1.f};
     _uint               m_iDecoIndex = 0;

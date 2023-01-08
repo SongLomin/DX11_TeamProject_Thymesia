@@ -64,7 +64,7 @@ void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,59);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,52);
 
 	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
 
@@ -140,7 +140,14 @@ _bool CCorvusState_Urd_Execution::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	//125부터 135까지 피직스 강제로이동시켜야될듯>?
 
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 124 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 135)
+	{
+		m_MovingRoot = true;
+	}
 
 	return false;
 }

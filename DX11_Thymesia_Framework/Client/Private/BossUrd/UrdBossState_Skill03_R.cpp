@@ -68,6 +68,8 @@ void CUrdBossState_Skill03_R::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bAttackLookAtLimit = true;
 
+	m_bDisableWeaponCheck = false;
+
 	m_bOne = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -142,7 +144,7 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 	{
 		//여기서 첫번쨰꺼 안보이게하고 두번쨰거 여기서 바인딩하면될듯
 		m_bOne = false;
-
+		m_bDisableWeaponCheck = true;
 
 		pJavelinWeapon = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CJavelinWeapon>(Get_Owner().lock()->Get_CreatedLevel());
 
@@ -163,7 +165,7 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 56 && !m_bOne)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 56 && !m_bOne && m_bDisableWeaponCheck)
 	{
 		if (!pJavelinWeapon.lock())
 		{
@@ -174,15 +176,16 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
 
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
 
 		pWeapons.front().lock()->Set_RenderOnOff(false);
 
 
-		for (auto& elem : pWeapons)
+		for (auto& elem : pDecoWeapons)
 		{
-			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
+ 			if (!Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_UsingCheck())
 			{
 				_uint WeaponNum = Weak_StaticCast<CUrdWeapon>(elem).lock()->Get_WeaponNum();
 
@@ -190,16 +193,20 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 				{
 				case 1:
 					m_eReuslt = RESULTR_RIGHT;
+					m_bDisableWeaponCheck = false;
 					break;
 				case 2:
 					m_eReuslt = RESULT_LEFT;
+					m_bDisableWeaponCheck = false;
 					break;
 				case 3:
 					m_eReuslt = RESULT_LEFT;
+					m_bDisableWeaponCheck = false;
 					break;
 				}
 				break;
 			}
+			
 		}
 	
 	}

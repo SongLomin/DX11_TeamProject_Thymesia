@@ -15,8 +15,7 @@ class CUrdBossState_HurtS_FR :
 		SHALLOW_COPY(CUrdBossState_HurtS_FR)
 
 public:
-	void        Set_ParryCount(_int iParryCount) { m_iParryCount += iParryCount;}
-	void        Set_ParryStart(_bool bParryStart) { m_bParryStart = bParryStart; }
+	void        Set_ParryCount(_int iParryCount) { m_iParryCount += iParryCount;}        
 	void        Set_ParryZeroCount(_int iParryCount) { m_iParryCount = iParryCount; }
 	const _int  Get_ParryCount() { return m_iParryCount; }
 protected:
@@ -35,7 +34,7 @@ protected:
 
 private:
 	_int   m_iParryCount = 0;
-	_bool  m_bParryStart = false;
+                  
 
 private:
 	void Call_AnimationEnd();

@@ -99,14 +99,7 @@ _bool CUrdBossState_HurtS_FR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_bParryStart)
-	{
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Parry_L>(0.05f);
-			return true;
-		}
-	}
+
 
 	return false;
 }

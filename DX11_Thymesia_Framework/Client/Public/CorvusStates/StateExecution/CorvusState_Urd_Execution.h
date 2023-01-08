@@ -41,7 +41,7 @@ private:
 private:
     weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
-
+    _bool                m_MovingRoot = false;
     weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
 protected:

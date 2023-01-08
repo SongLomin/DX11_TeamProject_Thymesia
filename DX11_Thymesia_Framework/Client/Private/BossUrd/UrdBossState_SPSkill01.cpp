@@ -106,18 +106,18 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 12)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 250)
 	{
 
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
-		//list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWepons();
-	
-
-		for (auto& elem : pWeapons)
+		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
+			
+		for (auto& elem : pDecoWeapons)
 		{
 			elem.lock()->Set_RenderOnOff(true);
+			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+			
 		}
 
 		pUrd.lock()->Reset_JavelinWeapon();
