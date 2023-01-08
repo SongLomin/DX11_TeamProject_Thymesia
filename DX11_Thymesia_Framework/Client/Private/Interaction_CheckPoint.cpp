@@ -95,9 +95,6 @@ HRESULT CInteraction_CheckPoint::Start()
     m_pChairTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
 
 	m_tLightDesc   = GAMEINSTANCE->Add_Light(m_tLightDesc);
-#ifdef _INTERACTION_EFFECT_
-    m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-#endif // _INTERACTION_EFFECT_
 
     return S_OK;
 }
@@ -158,24 +155,24 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
     {
         m_bRendering = true;
 
-#ifdef _PROP_EFFECT_
-        if (0 > m_iEffectIndex)
+#ifdef _INTERACTION_EFFECT_
+        if ((0 > m_iEffectIndex))
         {
             m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
         }
-#endif
+#endif // _INTERACTION_EFFECT_
     }
     else
     {
         m_bRendering = false;
 
-#ifdef _PROP_EFFECT_
+#ifdef _INTERACTION_EFFECT_
         if (0 <= m_iEffectIndex)
         {
             GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
             m_iEffectIndex = -1;
         }
-#endif
+#endif // _INTERACTION_EFFECT_
     }
 #else
     m_bRendering = true;

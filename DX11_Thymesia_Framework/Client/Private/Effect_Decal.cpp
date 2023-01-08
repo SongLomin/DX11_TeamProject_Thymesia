@@ -85,11 +85,16 @@ void CEffect_Decal::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_InvViewMatrix", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_InvProjMatrix", &ProjMatrixInv, sizeof(_float4x4));
 
-	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&XMMatrixTranspose(ViewMatrix), sizeof(_float4x4));
-	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&XMMatrixTranspose(ProjMatrix), sizeof(_float4x4));
+	_matrix TempMatrix = XMMatrixTranspose(ViewMatrix);
+	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&TempMatrix, sizeof(_matrix));
+	TempMatrix = XMMatrixTranspose(ProjMatrix);
+	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&TempMatrix, sizeof(_matrix));
 
-	m_pShaderCom.lock()->Set_RawValue( "g_WorldMatrix", (void*)&XMMatrixTranspose(WorldMatrix),sizeof(_float4x4));
-	m_pShaderCom.lock()->Set_RawValue("g_InvWorldMatrix", (void*)&XMMatrixTranspose(WorldInvMatrix), sizeof(_float4x4));
+	TempMatrix = XMMatrixTranspose(WorldMatrix);
+	m_pShaderCom.lock()->Set_RawValue( "g_WorldMatrix", (void*)&TempMatrix,sizeof(_matrix));
+
+	TempMatrix = XMMatrixTranspose(WorldInvMatrix);
+	m_pShaderCom.lock()->Set_RawValue("g_InvWorldMatrix", (void*)&TempMatrix, sizeof(_matrix));
 
 	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture",0);
 	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture",1);
