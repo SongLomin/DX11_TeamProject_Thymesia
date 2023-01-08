@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "Status_Player.h"
 #include "Base.h"
+#include "UI_EffectBase.h"
 
 BEGIN(Client)
 class CUI_Utils : public CBase
@@ -20,6 +21,10 @@ public:
 	static ITEM_NAME			ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName);
 
 	static ITEM_NAME			ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType);
+
+	static UICLIPDESC			EasyMake_SizeClip();
+
+
 };
 
 END

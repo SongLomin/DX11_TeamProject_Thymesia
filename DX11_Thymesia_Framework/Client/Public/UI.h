@@ -125,6 +125,8 @@ public:
     _float2                  Get_Point(UI_POINT eType);
     _float                   Get_Y();
     _float                   Get_SizeY() { return m_tUIDesc.fSizeY; }
+    _float2                   Get_Size();
+
     _float2                  GetPos();
 
 
@@ -200,5 +202,3 @@ protected:
 };
 
 END
-
-

@@ -38,9 +38,11 @@ public:
 
 public:
 	void					Call_Landing(LANDING_TYPE eLandingType);
+	void					Call_Landing(LANDING_TYPE eLandingType, _float fCallTime);
+
 
 private:
-	LANDING_TYPE			m_PreCalledLanding;
+	LANDING_TYPE			m_ePreCalledLanding;
 	weak_ptr<CHUD_Hover>	m_pLanding;
 	weak_ptr<CHUD_Hover>	m_pLandingBG;
 
@@ -51,7 +53,7 @@ private:
 
 public:
 	void			Call_FadeEnd(FADER_TYPE eFaderType);
-
+	void			Call_TimerEnd();
 
 
 private://For Blur

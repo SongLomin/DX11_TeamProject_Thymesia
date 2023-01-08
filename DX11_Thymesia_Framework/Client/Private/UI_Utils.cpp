@@ -152,6 +152,9 @@ void CUI_Utils::Set_SkillIcon(weak_ptr<CUI> pUI, SKILL_NAME eSkillName)
 	case Client::SKILL_NAME::SKILL_SCYTHE:
 		pUI.lock()->Set_Texture("SkillIcon_Scythe");
 		break;
+	case Client::SKILL_NAME::SKILL_BLOODSTORM:
+		pUI.lock()->Set_Texture("SkillIcon_BloodStorm");
+		break;
 	case Client::SKILL_NAME::SKILL_END:
 		pUI.lock()->Set_Texture("None");
 		break;
@@ -181,6 +184,9 @@ ITEM_NAME CUI_Utils::ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName)
 		break;
 	case Client::SKILL_NAME::SKILL_VARGSWORD:
 		eItemName = ITEM_NAME::SKILLPIECE_VARGSWORD;
+		break;
+	case Client::SKILL_NAME::SKILL_BLOODSTORM:
+		eItemName = ITEM_NAME::SKILLPIECE_BLOODSTORM;
 		break;
 	case Client::SKILL_NAME::SKILL_END:
 		break;

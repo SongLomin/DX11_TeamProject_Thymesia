@@ -59,6 +59,8 @@ protected:
 
 
 protected:
+	
+
 	UI_BUTTON_STATE m_eButtonState;
 	_bool		m_bClickToggle;
 	BUTTON_LEVEL	 m_eButtonLevel = BUTTON_LEVEL::LEVEL1;

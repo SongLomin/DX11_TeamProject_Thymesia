@@ -2127,6 +2127,8 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_BloodStorm.h" />
+    <ClInclude Include="..\Public\UI_Effect_MagicCircle.h" />
     <ClInclude Include="..\Public\CNvClothCollider.h">
       <Filter>05. Component\08. NvClothCollider</Filter>
     </ClInclude>
@@ -4280,6 +4282,11 @@
     <ClCompile Include="..\Private\UI_EffectBase.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\Skill_BloodStorm.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_MagicCircle.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
     <ClCompile Include="..\Private\CNvClothCollider.cpp">
       <Filter>05. Component\08. NvClothCollider</Filter>
     </ClCompile>
@@ -6421,6 +6428,9 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

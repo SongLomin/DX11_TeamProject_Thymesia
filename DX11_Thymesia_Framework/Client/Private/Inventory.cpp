@@ -98,7 +98,7 @@ void CInventory::Push_Item(MONSTERTYPE eMonsterType)
 		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
 		break;
 	case Client::MONSTERTYPE::BAT:
-		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
+		Push_Item(ITEM_NAME::SKILLPIECE_BLOODSTORM);
 		break;
 	case Client::MONSTERTYPE::URD:
 		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);

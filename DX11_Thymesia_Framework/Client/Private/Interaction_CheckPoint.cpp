@@ -545,7 +545,7 @@ void CInteraction_CheckPoint::Call_CheckAnimEnd()
 
 void CInteraction_CheckPoint::OnDestroy()
 {
-    GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+  //  GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
 
 }
 

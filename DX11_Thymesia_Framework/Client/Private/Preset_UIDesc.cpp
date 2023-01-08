@@ -326,6 +326,10 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_VargSword_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
         break;
+    case Client::ITEM_NAME::SKILLPIECE_BLOODSTORM:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_BloodStorm_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
     default:
         break;
     }
@@ -392,7 +396,9 @@ void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM
     case Client::ITEM_NAME::SKILLPIECE_VARGSWORD:
         pUI.lock()->Set_Texture("Popup_SkillPiece_Varg");
         break;
-
+    case Client::ITEM_NAME::SKILLPIECE_BLOODSTORM:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_BloodStorm");
+        break;
     default:
         break;
     }
