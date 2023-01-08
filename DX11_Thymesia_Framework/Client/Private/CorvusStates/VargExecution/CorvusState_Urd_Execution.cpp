@@ -9,7 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 #include "Monster.h"
-#include "NorMonStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_Urd_Execution);
 CLONE_C(CCorvusState_Urd_Execution, CComponent)
@@ -44,6 +44,15 @@ void CCorvusState_Urd_Execution::Tick(_float fTimeDelta)
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::EXECUTION);
+	
+	if (m_MovingRoot)
+	{
+		m_fCurrentSpeed += m_fAccel * fTimeDelta;
+		m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	}
+
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -64,7 +73,7 @@ void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,59);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,52);
 
 	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
 
@@ -140,6 +149,18 @@ _bool CCorvusState_Urd_Execution::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	//125부터 135까지 피직스 강제로이동시켜야될듯>?
+
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 124 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 135)
+	{
+		m_MovingRoot = true;
+	}
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 135)
+	{
+		m_MovingRoot = false;
+	}
 
 
 	return false;

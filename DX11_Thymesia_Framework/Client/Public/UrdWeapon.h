@@ -19,6 +19,12 @@ public:
     GAMECLASS_H(CUrdWeapon);
     CLONE_H(CUrdWeapon, CGameObject);
 
+public:
+    void          Set_WeaponNum(_uint iWeaponNum) { m_iWeaponNum = iWeaponNum; }
+    _uint         Get_WeaponNum() { return m_iWeaponNum; }
+    void          Set_UsingCheck(_bool bUsingCheck) { m_bUsingCheck = bUsingCheck; }
+    _bool         Get_UsingCheck() { return m_bUsingCheck; }
+
 public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -34,6 +40,8 @@ public:
 private:
     weak_ptr<class CEffect_Trail> m_pTrailDistortion;
     weak_ptr<class CEffect_Trail> m_pTrailDiffuse;
+    _uint                         m_iWeaponNum = 0;
+    _bool                         m_bUsingCheck = false;
     
 private:
     void SetUp_ShaderResource();

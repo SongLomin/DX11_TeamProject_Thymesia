@@ -107,7 +107,7 @@ _bool CUrdBossState_TurnR::Check_AndChangeNextState()
 
 
 
-	if (ComputeAngleWithPlayer() > 0.98f)
+	if (ComputeAngleWithPlayer() > 0.94f)
 	{
 		Rotation_TargetToLookDir();
 		Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(false);

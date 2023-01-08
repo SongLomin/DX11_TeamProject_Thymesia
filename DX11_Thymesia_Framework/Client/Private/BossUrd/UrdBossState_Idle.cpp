@@ -104,89 +104,96 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_VS_TakeExecution>(0.05f);
+		return true;
+	}
+
 	//여기서 해줘야한다 
 	//거리가 8정도 가까우면 공격을하고 
 	// 공격을 하고 한번걷고 다시 스탭밟음 
 
-	if (m_bSpecailAttack)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
-		return true;
-	}
-	else
-	{
-		if (fPToMDistance <= 4.f)
-		{
-			if (m_bTurnCheck)
-			{
-				TurnMechanism();
-			}
-			else
-			{
-				if (m_bWalkStart)
-				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
-					return true;
-				}
-				else
-				{
-					if (m_bSkillStart) // 만약 피가 어느정도달면 무조건 이거먼저실행하게끔 이렇게 짬
-					{
-						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
-						return true;
-					}
-					else
-					{
-						Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepClose(true);
-						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
-						return true;
-					}
-				}
-
-			}
-
-		}
-		else
-		{
-			if (m_bTurnCheck)
-			{
-				TurnMechanism();
-			}
-			else
-			{
-				if (m_bSkillStart) // 만약 피가 어느정도달면 무조건 이거먼저실행하게끔 이렇게 짬
-				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
-					return true;
-				}
-				else
-				{
-					if (m_bWalkStart)
-					{
-						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
-						return true;
-					}
-					else
-					{
-						if (m_bAttack) // 거리가 존나게 먼상태에서 두번 댄싱공격했을떄 ->바로 발동하게
-						{
-							Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
-							return true;
-						}
-						else
-						{
-							Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepClose(false);
-							Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
-							return true;
-						}
-					}
-
-				}
-
-			}
-
-		}
-	}
+	//if (m_bSpecailAttack)
+	//{
+	//	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
+	//	return true;
+	//	
+	//}
+	//else
+	//{
+	//	if (fPToMDistance <= 4.3f)
+	//	{
+	//		if (m_bTurnCheck)
+	//		{
+	//			TurnMechanism();
+	//		}
+	//		else
+	//		{
+	//			if (m_bWalkStart)
+	//			{
+	//				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
+	//				return true;
+	//			}
+	//			else
+	//			{
+	//				if (m_bSkillStart) // 만약 피가 어느정도달면 무조건 이거먼저실행하게끔 이렇게 짬
+	//				{
+	//					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
+	//					return true;
+	//				}
+	//				else
+	//				{
+	//					Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepClose(true);
+	//					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
+	//					return true;
+	//				}
+	//			}
+	//
+	//		}
+	//
+	//	}
+	//	else
+	//	{
+	//		if (m_bTurnCheck)
+	//		{
+	//			TurnMechanism();
+	//		}
+	//		else
+	//		{
+	//			if (m_bSkillStart) // 만약 피가 어느정도달면 무조건 이거먼저실행하게끔 이렇게 짬
+	//			{
+	//				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
+	//				return true;
+	//			}
+	//			else
+	//			{
+	//				if (m_bWalkStart)
+	//				{
+	//					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
+	//					return true;
+	//				}
+	//				else
+	//				{
+	//					if (m_bAttack) // 거리가 존나게 먼상태에서 두번 댄싱공격했을떄 ->바로 발동하게
+	//					{
+	//						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+	//						return true;
+	//					}
+	//					else
+	//					{
+	//						Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepClose(false);
+	//						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
+	//						return true;
+	//					}
+	//				}
+	//
+	//			}
+	//
+	//		}
+	//
+	//	}
+	//}
 	
 
 	return false;

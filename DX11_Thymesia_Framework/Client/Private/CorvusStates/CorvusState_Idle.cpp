@@ -302,6 +302,9 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		case 6:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
 			break;
+		case 7:
+			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
+			break;
 		}
 		return true;
 	}

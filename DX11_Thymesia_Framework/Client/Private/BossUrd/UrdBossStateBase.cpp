@@ -148,7 +148,8 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 		//1,2 ,3 패턴
-
+		//보스1페이지랑 2페이지 달르게
+		
 		if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 0)
 		{
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
@@ -165,7 +166,7 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(3);
 		}
 
-
+	
 
 		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CUrdBossState_StunStart>().lock() &&
 			Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CUrdBossState_StunLoop>().lock())
@@ -230,10 +231,12 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 4 ||
 						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 4)
 					{
-						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Set_ParryStart(true);
-					}					
+						Get_OwnerMonster()->Change_State<CUrdBossState_Parry_L>();
+						return;
+					}			
 					Get_OwnerMonster()->Change_State<CUrdBossState_HurtS_FR>();
 					return;
+				
 				}
 
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
@@ -241,10 +244,12 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 4 ||
 						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 4)
 					{
-						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Set_ParryStart(true);
+						Get_OwnerMonster()->Change_State<CUrdBossState_Parry_R>();
+						return;
 					}
 					Get_OwnerMonster()->Change_State<CUrdBossState_HurtS_FL>();
 					return;
+					
 				}
 			}
 		}

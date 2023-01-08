@@ -4285,6 +4285,9 @@
     <ClCompile Include="..\Private\UI_EffectBase.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.cpp" />
     <ClCompile Include="..\Private\Interaction_Aisemy.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -5914,9 +5917,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill">
       <UniqueIdentifier>{8360d8b7-3aab-4118-8eba-da0dd5f006b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
-      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\01.Skill02_1">
       <UniqueIdentifier>{7031e5c8-5cbe-4458-bb9a-5332e80335e5}</UniqueIdentifier>
     </Filter>
@@ -6366,6 +6366,9 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\NewFilter1">
       <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
+      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\08. NvClothCollider">
       <UniqueIdentifier>{a5cb27b5-931d-41a8-a1f8-9da27b617cf6}</UniqueIdentifier>

@@ -94,7 +94,7 @@ _bool CUrdBossState_Skill_Idle::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 3.5f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill02_1>(0.05f);
 		return true;
 	}
 	
@@ -123,7 +123,7 @@ _bool CUrdBossState_Skill_Idle::Check_AndChangeNextState()
 		}
 			break;
 	case 1:
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill02_1>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
 		break;
 		}
 

@@ -41,8 +41,11 @@ private:
 private:
     weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
-
+    _bool                m_MovingRoot = false;
     weak_ptr<CAnimation> m_ThisStateAnimationCom;
+    _float m_fMaxSpeed = 1.3f;
+    _float m_fCurrentSpeed = 1.3f;
+    _float m_fAccel = 0.f;
 
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
