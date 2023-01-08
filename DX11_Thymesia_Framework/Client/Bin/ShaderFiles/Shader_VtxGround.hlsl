@@ -1,6 +1,7 @@
 #include "Client_Shader_Defines.hpp"
 
 #define PATCH_SIZE 3
+#define MAX_WATER_WAVE 128
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4 g_vShaderFlag;
@@ -20,6 +21,19 @@ texture2D g_DisplacementTexture;
 float g_fFar = 300.f;
 
 float2 g_vUVNoise;
+
+struct WATERWAVE_DESC
+{
+    float2 vPosition;
+    float fTimeAcc;
+    float fVibrationScale;
+    float fFreq;
+};
+
+WATERWAVE_DESC  g_WaterWaveDescs[MAX_WATER_WAVE];
+uint            g_WaterWaveSize;
+
+
 /* ---------------------------------------------------------- */
 
 struct VS_IN

@@ -18,13 +18,16 @@ class CWater final :
     GAMECLASS_H(CWater)
     CLONE_H(CWater, CGameObject)
 
-public:
+private:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+
+public:
+    void Add_WaterWave(const WATERWAVE_DESC& In_WaterWaveDesc);
 
 public:
     virtual void Load_FromJson(const json& In_Json) override;
@@ -40,6 +43,8 @@ private:
     weak_ptr<CTexture>              m_pNoiseTextureCom;
 
     _float2                         m_vNoiseUV    = {0.f,0.f};
+
+    vector<WATERWAVE_DESC>          m_WaterWaveDescs;
 
 public:
     void Free();

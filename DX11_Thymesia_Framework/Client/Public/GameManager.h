@@ -33,6 +33,7 @@ class CItemPopup_Queue;
 class CInteraction_DeadSpot;
 class CSection_Eventer;
 class CFog;
+class CWater;
 
 class CGameManager :
     public CBase
@@ -202,6 +203,10 @@ public:
     void  Registration_Fog(weak_ptr<CFog> In_pObj);
     void  Activate_Fog(_uint In_iFogIndex);
 
+public:
+    void Register_Water(weak_ptr<CWater> pWater);
+    void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fTime, const _float In_fForce);
+
  public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
@@ -234,10 +239,13 @@ private:
     weak_ptr<CFog>                      m_FogObject;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
-    _uint                               m_iPreEventSection;
+    weak_ptr<CWater>                    m_pWater;
+    _uint                               m_iPreEventSection;  
 
 private:
     _int                                m_iMonsterCount   = 0;
+
+private:
 
 protected:
     void Free();
