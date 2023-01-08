@@ -12,6 +12,8 @@
 #include "imgui.h"
 #include "SMath.h"
 
+#include <time.h>
+
 IMPLEMENT_SINGLETON(CWindow_HierarchyView)
 
 HRESULT CWindow_HierarchyView::Initialize()
@@ -308,6 +310,7 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 				 typeid(CInteraction_Elevator).hash_code()   == TempDesc.HashCode ||
 				 typeid(CInteraction_Ladder).hash_code()     == TempDesc.HashCode ||
 				 typeid(CInteraction_Item).hash_code()       == TempDesc.HashCode ||
+				 typeid(CInteraction_Aisemy).hash_code()       == TempDesc.HashCode ||
 			     typeid(CProp_Fence).hash_code()             == TempDesc.HashCode ||
 			     typeid(CSection_Eventer).hash_code()        == TempDesc.HashCode)
 		{

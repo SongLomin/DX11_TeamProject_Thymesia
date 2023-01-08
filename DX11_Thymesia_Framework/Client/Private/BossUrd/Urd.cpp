@@ -105,11 +105,10 @@ HRESULT CUrd::Start()
 	__super::Start();
 
 
-	CBase::Set_Enable(true);
+	//CBase::Set_Enable(true);
 	Change_State<CUrdBossState_Start>();
 
-
-	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
+	m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
 
 	return S_OK;
 }

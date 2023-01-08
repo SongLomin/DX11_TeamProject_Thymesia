@@ -118,7 +118,7 @@ HRESULT CVarg::Start()
 	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
-	CBase::Set_Enable(true);
+	//CBase::Set_Enable(true);
 
 	Change_State<CVargBossState_IdleGeneral>();
 

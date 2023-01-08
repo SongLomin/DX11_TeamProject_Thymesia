@@ -29,11 +29,12 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pColliderCom  = Add_Component<CCollider>();
-    m_pAnimShader   = Add_Component<CShader>();
-    m_pTextureCom   = Add_Component<CTexture>();
-    m_pAnimModelCom = Add_Component<CModel>();
-    m_pDeco         = GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel);
+    m_pColliderCom       = Add_Component<CCollider>();
+    m_pAnimShader        = Add_Component<CShader>();
+    m_pTextureCom        = Add_Component<CTexture>();
+    m_pAnimModelCom      = Add_Component<CModel>();
+    m_pChairTransfromCom = Add_Component<CTransform>();
+    m_pDeco              = GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel);
     
     m_pShaderCom.lock()->Set_ShaderInfo
     (
@@ -87,9 +88,14 @@ HRESULT CInteraction_CheckPoint::Start()
 	m_tLightDesc.vLightFlag = { 1.f, 1.f,    1.f, 1.f };
     m_tLightDesc.fIntensity = 5.f;
 	m_tLightDesc.fRange     = 1.f;
+    
+    _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+    OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * -m_fAisemyOffset;
+    m_pTransformCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
+    m_pChairTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
 
 	m_tLightDesc   = GAMEINSTANCE->Add_Light(m_tLightDesc);
-    m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+    //m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
 
     return S_OK;
 }
@@ -101,7 +107,15 @@ void CInteraction_CheckPoint::Tick(_float fTimeDelta)
     if (m_bAisemyRender)
         m_pAnimModelCom.lock()->Play_Animation(fTimeDelta);
 
-    // CallBack_EquipEnd();
+    if (!CallBack_EquipEnd.empty())
+    {
+        _bool bCheckState = false;
+
+         CallBack_EquipEnd(bCheckState);
+
+         if (bCheckState)
+             CallBack_EquipEnd.Clear();
+    }
 
     Update_AnimIndex();
 }
@@ -141,10 +155,25 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
     if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 30.f))
     {
         m_bRendering = true;
+
+#ifdef _PROP_EFFECT_
+        if (0 > m_iEffectIndex)
+        {
+            m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+        }
+#endif
     }
     else
     {
         m_bRendering = false;
+
+#ifdef _PROP_EFFECT_
+        if (0 <= m_iEffectIndex)
+        {
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+            m_iEffectIndex = -1;
+        }
+#endif
     }
 #else
     m_bRendering = true;
@@ -172,7 +201,7 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
         {
             if (ANIM_EVENT::EQUIP_LOOP == m_eAnimEvent || ANIM_EVENT::EQUIP_BEGINE == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
             {
-                CallBack_EquipEnd += bind(&CInteraction_CheckPoint::Call_CheckEquipEnd, this);
+                CallBack_EquipEnd += bind(&CInteraction_CheckPoint::Call_CheckEquipEnd, this, placeholders::_1);
             }
         }
         break;
@@ -323,7 +352,7 @@ HRESULT CInteraction_CheckPoint::Draw_Chair(ID3D11DeviceContext* pDeviceContext)
     _float4x4 WorldMatrix;
     XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(Mat));
 
-    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
+    if (FAILED(m_pChairTransfromCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
         return E_FAIL;
@@ -381,17 +410,6 @@ HRESULT CInteraction_CheckPoint::Draw_Aisemy(ID3D11DeviceContext* pDeviceContext
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
         return E_FAIL;
 
-    _float4 vCamDesc;
-    XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
-    m_pAnimShader.lock()->Set_RawValue("g_vCamPosition", &vCamDesc, sizeof(_float4));
-
-    XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
-    m_pAnimShader.lock()->Set_RawValue("g_vCamLook", &vCamDesc, sizeof(_float4));
-
-    _float4 vPlayerPos;
-    XMStoreFloat4(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
-    m_pAnimShader.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));
-
     _vector	vShaderFlag = { 0.f,0.f,0.f,0.f };
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
         return E_FAIL;
@@ -439,8 +457,6 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
 
         case Client::CInteraction_CheckPoint::EQUIP_END:
         {
-            CallBack_EquipEnd.Clear();
-
             m_pAnimModelCom.lock()->Set_CurrentAnimation(EQUIP_END);
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.5f);
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
@@ -530,10 +546,13 @@ void CInteraction_CheckPoint::Set_State(const ANIM_EVENT In_eEvent)
     m_bAnimEnd = false;
 }
 
-void CInteraction_CheckPoint::Call_CheckEquipEnd()
+void CInteraction_CheckPoint::Call_CheckEquipEnd(_bool& bState)
 {
     if (m_bAnimEnd)
+    {
         Set_State(ANIM_EVENT::EQUIP_END);
+        bState = true;
+    }
 }
 
 void CInteraction_CheckPoint::Call_CheckAnimEnd()
@@ -543,8 +562,8 @@ void CInteraction_CheckPoint::Call_CheckAnimEnd()
 
 void CInteraction_CheckPoint::OnDestroy()
 {
-    GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
-
+    if (0 <= m_iEffectIndex)
+        GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
 }
 
 void CInteraction_CheckPoint::Free()

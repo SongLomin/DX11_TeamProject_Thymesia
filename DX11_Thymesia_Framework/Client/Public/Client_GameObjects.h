@@ -5,6 +5,7 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_Static.h"
+#include "Camera_Interior.h"
 #include "SkyBox.h"
 #include "Ground.h"
 
@@ -29,6 +30,7 @@
 #include "Interaction_Note.h"
 #include "Interaction_Item.h"
 #include "Interaction_DeadSpot.h"
+#include "Interaction_Aisemy.h"
 #include "Section_Eventer.h"
 #include "Fog.h"
 #include "Water.h"
