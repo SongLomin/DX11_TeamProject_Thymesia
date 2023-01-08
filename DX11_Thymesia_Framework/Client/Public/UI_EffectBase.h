@@ -24,14 +24,15 @@ typedef struct tagUIClipDesc
 	_float2		_fTargetSize;
 	
 	EASING_TYPE	_eAlphaEasingType = EASING_TYPE::QUAD_IN;
-	_ulong		_eEffectCondition = (LONGLONG)UI_EFFECT_CONDITION::UI_NONE;
+	_flag		_eEffectCondition = (_flag)UI_EFFECT_CONDITION::UI_NONE;
+	_flag		_eUseCondition = (_flag)UI_USE_CONDITION::UI_USE_NONE;
 
 	tagUIClipDesc()
 	{
 		ZeroMemory(this, sizeof(tagUIClipDesc));
 	}
 
-}UICLIPDESC;
+} UICLIPDESC;
 
 class CUI_EffectBase : public CCustomUI
 {
@@ -52,16 +53,13 @@ public:
 	void		Init_UIEffect();
 	void		Add_Clip(UICLIPDESC tUIClipDesc);
 
-	void		Play();
-	void		Stop();
+	virtual void	Play(_bool bRepeat = false);
+	void			Stop();
 protected:
 	virtual void SetUp_Component() override;
 	virtual void SetUp_Animaiton();
 
-
 protected:
-	
-
 	virtual void	ExecuteCurrentClip(UICLIPDESC tagClipDesc);
 
 protected:

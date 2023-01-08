@@ -14,7 +14,6 @@ namespace Engine
 	typedef size_t						_hashcode;
 
 	typedef unsigned long				_ulong;
-
 	typedef signed long					_long;
 
 	typedef float						_float;

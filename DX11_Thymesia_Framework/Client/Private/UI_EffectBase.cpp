@@ -20,7 +20,9 @@ HRESULT CUI_EffectBase::Initialize_Prototype()
 
 HRESULT CUI_EffectBase::Initialize(void* pArg)
 {
-    __super::Initialize(pArg);
+    CUI::Initialize(pArg);
+
+    m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
     m_pShaderCom.lock()->Set_ShaderInfo(
         TEXT("Shader_UIEffect"),
@@ -84,7 +86,7 @@ void CUI_EffectBase::Tick(_float fTimeDelta)
     if (m_pEasingSizing.lock()->Is_Lerping())
     {
         _float2 fSize = m_pEasingSizing.lock()->Get_Lerp();
-        Set_UIPosition(fSize.x, fSize.y);
+        Set_Size(fSize.x, fSize.y);
     }
 }
 
@@ -95,73 +97,90 @@ void CUI_EffectBase::LateTick(_float fTimeDelta)
 
 void CUI_EffectBase::ExecuteCurrentClip(UICLIPDESC tagClipDesc)
 {
-    if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_ALPHA)
+    if (tagClipDesc._eUseCondition & (_flag)UI_USE_CONDITION::UI_USE_ALPHA)
     {
-        m_pEasingAlpha.lock()->Set_Lerp(
-            Get_AlphaColor(), 
-            tagClipDesc._fTargetAlpha, 
-            tagClipDesc._fClipTime,
-            tagClipDesc._eAlphaEasingType, 
-            CEasingComponent::ONCE, true);
-    }
-    else
-    {
-        m_pEasingAlpha.lock()->Set_Lerp(
-            tagClipDesc._fStartAlpha, 
-            tagClipDesc._fTargetAlpha, 
-            tagClipDesc._fClipTime, 
-            tagClipDesc._eAlphaEasingType, 
-            CEasingComponent::ONCE, true);
+        if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_ALPHA)
+        {
+            m_pEasingAlpha.lock()->Set_Lerp(
+                Get_AlphaColor(),
+                tagClipDesc._fTargetAlpha,
+                tagClipDesc._fClipTime,
+                tagClipDesc._eAlphaEasingType,
+                CEasingComponent::ONCE, true);
+        }
+        else
+        {
+            m_pEasingAlpha.lock()->Set_Lerp(
+                tagClipDesc._fStartAlpha,
+                tagClipDesc._fTargetAlpha,
+                tagClipDesc._fClipTime,
+                tagClipDesc._eAlphaEasingType,
+                CEasingComponent::ONCE, true);
+
+        }
 
     }
-    if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_POS)
+    if (tagClipDesc._eUseCondition & (_flag)UI_USE_CONDITION::UI_USE_TRANSFORM)
     {
-        m_pEasingTransform.lock()->Set_Lerp(
-            GetPos(),
-            tagClipDesc._fTargetPos,
-            tagClipDesc._fClipTime,
-            tagClipDesc._eAlphaEasingType,
-            CEasingComponent::ONCE, true);
+        if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_POS)
+        {
+            m_pEasingTransform.lock()->Set_Lerp(
+                GetPos(),
+                tagClipDesc._fTargetPos,
+                tagClipDesc._fClipTime,
+                tagClipDesc._eAlphaEasingType,
+                CEasingComponent::ONCE, true);
+        }
+        else
+        {
+            m_pEasingTransform.lock()->Set_Lerp(
+                tagClipDesc._fStartPos,
+                tagClipDesc._fTargetPos,
+                tagClipDesc._fClipTime,
+                tagClipDesc._eAlphaEasingType,
+                CEasingComponent::ONCE, true);
+        }
     }
-    else
-    {
-        m_pEasingTransform.lock()->Set_Lerp(
-            tagClipDesc._fStartPos,
-            tagClipDesc._fTargetPos,
-            tagClipDesc._fClipTime,
-            tagClipDesc._eAlphaEasingType,
-            CEasingComponent::ONCE, true);
-    }
-    if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_ROTATE)
-    {
-        //m_pEasingRotation.lock()->Set_Lerp(
-        //    GetPos(),
-        //    tagClipDesc._fTargetPos,
-        //    tagClipDesc._fClipTime,
-        //    tagClipDesc._eAlphaEasingType,
-        //    CEasingComponent::ONCE, true);
-    }
-    else
+
+    if (tagClipDesc._eUseCondition & (_flag)UI_USE_CONDITION::UI_USE_ROTATE)
     {
 
+        if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_ROTATE)
+        {
+            //m_pEasingRotation.lock()->Set_Lerp(
+            //    GetPos(),
+            //    tagClipDesc._fTargetPos,
+            //    tagClipDesc._fClipTime,
+            //    tagClipDesc._eAlphaEasingType,
+            //    CEasingComponent::ONCE, true);
+        }
+        else
+        {
+
+        }
     }
-    if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_SIZE)
+
+    if (tagClipDesc._eUseCondition & (_flag)UI_USE_CONDITION::UI_USE_SIZE)
     {
-        m_pEasingSizing.lock()->Set_Lerp(
-            Get_Size(),
-            tagClipDesc._fTargetSize,
-            tagClipDesc._fClipTime,
-            tagClipDesc._eAlphaEasingType,
-            CEasingComponent::ONCE, true);
-    }
-    else
-    {
-        m_pEasingSizing.lock()->Set_Lerp(
-            tagClipDesc._fStartSize,
-            tagClipDesc._fTargetSize,
-            tagClipDesc._fClipTime,
-            tagClipDesc._eAlphaEasingType,
-            CEasingComponent::ONCE, true);
+
+        if (tagClipDesc._eEffectCondition | (_ulong)UI_EFFECT_CONDITION::UI_FROM_ORIGIN_SIZE)
+        {
+            m_pEasingSizing.lock()->Set_Lerp(
+                Get_Size(),
+                tagClipDesc._fTargetSize,
+                tagClipDesc._fClipTime,
+                tagClipDesc._eAlphaEasingType,
+                CEasingComponent::ONCE, true);
+        }
+        else
+        {
+            m_pEasingSizing.lock()->Set_Lerp(
+                tagClipDesc._fStartSize,
+                tagClipDesc._fTargetSize,
+                tagClipDesc._fClipTime,
+                tagClipDesc._eAlphaEasingType,
+                CEasingComponent::ONCE, true);
+        }
     }
 }
 
@@ -180,13 +199,21 @@ void CUI_EffectBase::Add_Clip(UICLIPDESC tUIClipDesc)
     m_vecUIClipDesc.push_back(tUIClipDesc);
 }
 
-void CUI_EffectBase::Play()
+void CUI_EffectBase::Play(_bool bRepeat)
 {
+    Init_UIEffect();
+
+
     Set_Enable(true);
 
-    Init_UIEffect();
-    m_eAnimState = UI_EFFECT_ANIM_STATE::PLAY;
-
+    if (bRepeat)
+    {
+        m_eAnimState = UI_EFFECT_ANIM_STATE::REPEAT;
+    }
+    else
+    {
+        m_eAnimState = UI_EFFECT_ANIM_STATE::PLAY;
+    }
     ExecuteCurrentClip(m_vecUIClipDesc[m_iIndex]);
 }
 
@@ -195,7 +222,6 @@ void CUI_EffectBase::Stop()
     m_eAnimState = UI_EFFECT_ANIM_STATE::STOP;
 
     Init_UIEffect();
-
 }
 
 void CUI_EffectBase::SetUp_Component()

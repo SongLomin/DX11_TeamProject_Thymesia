@@ -11,14 +11,15 @@ public:
 
 
 public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
-	virtual HRESULT Start();
-	virtual void Tick(_float fTimeDelta);
-	virtual void LateTick(_float fTimeDelta);
-
-
+	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Start() override;
+	virtual void Tick(_float fTimeDelta) override;
+	virtual void LateTick(_float fTimeDelta) override;
+	virtual void Play(_bool bRepeat) override;
 private:
+	virtual void SetUp_Animaiton() override;
+
 
 };
 

@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "Status_Player.h"
 #include "Base.h"
+#include "UI_EffectBase.h"
 
 BEGIN(Client)
 
@@ -24,6 +25,7 @@ public:
 
 	static ITEM_NAME			ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType);
 
+	static UICLIPDESC			EasyMake_SizeClip();
 
 
 };

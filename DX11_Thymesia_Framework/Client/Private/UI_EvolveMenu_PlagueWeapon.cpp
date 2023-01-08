@@ -8,8 +8,7 @@
 #include "UI_EvolveMenu_PlagueWeapon_SkillView.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillInformation.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillButton.h"
-
-
+#include "UI_Effect_MagicCircle.h"
 
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon);
 CLONE_C(CUI_EvolveMenu_PlagueWeapon, CGameObject);
@@ -48,6 +47,19 @@ void CUI_EvolveMenu_PlagueWeapon::Tick(_float fTimeDelta)
 {
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
 	__super::Tick(fTimeDelta);
+
+
+	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		weak_ptr<CUI_Effect_MagicCircle> pEffect = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CUI_Effect_MagicCircle>(LEVEL_STATIC);
+
+		if (!pEffect.lock())
+			pEffect = GAMEINSTANCE->Add_GameObject<CUI_Effect_MagicCircle>(LEVEL_STATIC);
+
+		pEffect.lock()->Play(false);
+
+	}
+
 
 }
 
