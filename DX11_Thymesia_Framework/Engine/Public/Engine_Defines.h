@@ -39,6 +39,9 @@
 
 using namespace DirectX;
 
+// CUDA 12.0
+#include <cuda.h>
+
 
 // Assimp
 #include <assimp/scene.h>

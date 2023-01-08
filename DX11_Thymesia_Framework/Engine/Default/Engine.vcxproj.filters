@@ -284,6 +284,9 @@
     <ClInclude Include="..\Public\COptimization_Manager.h">
       <Filter>98. Managers\17. OptimizationManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Cuda_Device.h">
+      <Filter>00. System\02. Cuda</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -540,6 +543,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\COptimization_Manager.cpp">
       <Filter>98. Managers\17. OptimizationManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cuda_Device.cpp">
+      <Filter>00. System\02. Cuda</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -824,6 +830,9 @@
     </Filter>
     <Filter Include="98. Managers\17. OptimizationManager">
       <UniqueIdentifier>{44ef7174-743b-41ec-89c8-2ad54c90bdc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\02. Cuda">
+      <UniqueIdentifier>{aabfcc7b-c1ed-46a0-81ef-08f660c4f305}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

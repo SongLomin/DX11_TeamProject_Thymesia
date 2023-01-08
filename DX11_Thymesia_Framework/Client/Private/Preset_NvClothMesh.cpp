@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Preset_NvClothMesh.h"
 
+
 void Preset::NvClothMesh::CorvusSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc)
 {
 	CModel::NVCLOTH_MESH_DESC MeshDesc;

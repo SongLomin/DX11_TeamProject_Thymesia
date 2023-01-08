@@ -12,6 +12,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 {
 	m_pGraphic_Device = CGraphic_Device::Create_Instance();
 	m_pInput_Device = CInput_Device::Create_Instance();
+	m_pCuda_Device = CCuda_Device::Create_Instance();
 	m_pLevel_Manager = CLevel_Manager::Create_Instance();
 	m_pObject_Manager = CObject_Manager::Create_Instance();
 	m_pComponent_Manager = CComponent_Manager::Create_Instance();
@@ -35,26 +36,28 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_WindowHandle = GraphicDesc.hWnd;
 
 	if (nullptr == GET_SINGLE(CGraphic_Device))
-		return E_FAIL;	
+		DEBUG_ASSERT;
 
 	/* 그래픽디바이스. */
 	if (GET_SINGLE(CGraphic_Device)->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.isWindowMode, GraphicDesc.iWinCX, GraphicDesc.iWinCY))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	/* 인풋 디바이스. */
 	if (FAILED(GET_SINGLE(CInput_Device)->Initialize(hInst, GraphicDesc.hWnd)))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
+	if (FAILED(GET_SINGLE(CCuda_Device)->Ready_Cuda_Device()))
+		DEBUG_ASSERT;
 
 	/* 오브젝트 매니져의 예약. */
 	if (FAILED(GET_SINGLE(CObject_Manager)->Reserve_Container(iNumLevels)))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	m_pTimer_Manager->Reserve_TimeScaleLayer(iNumTimeScales);
 	m_pCollision_Manager->Initialize(iNumCollsionLayer);
 
 	if (FAILED(m_pFrustum->Initialize()))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	if (FAILED(m_pRender_Manager->Initialize()))
 	{
@@ -857,6 +860,7 @@ void CGameInstance::Release_Engine()
 	GET_SINGLE(CLevel_Manager)->Destroy_Instance();
 	GET_SINGLE(CTimer_Manager)->Destroy_Instance();
 	GET_SINGLE(CInput_Device)->Destroy_Instance();
+	GET_SINGLE(CCuda_Device)->Destroy_Instance();
 	GET_SINGLE(CGraphic_Device)->Destroy_Instance();
 	GET_SINGLE(CRender_Manager)->Destroy_Instance();
 	GET_SINGLE(CPipeLine)->Destroy_Instance();
@@ -880,6 +884,7 @@ void CGameInstance::Free()
 {
 	__super::Free();
 
+	m_pCuda_Device.reset();
 	m_pGraphic_Device.reset();
 	m_pInput_Device.reset();
 	m_pLevel_Manager.reset();

@@ -7,3 +7,8 @@ vcpkg install directXTK:x64-windows
 
 //DirectXTex
 vcpkg install DirectXTex:x64-windows
+
+쿠다 12.0 세팅 방법
+1. Cuda 12.0 설치
+2. https://hiuaa.tistory.com/39 참고
+3. 나머지는 내가 세팅해둠

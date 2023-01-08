@@ -2,6 +2,7 @@
 
 #include "Graphic_Device.h"
 #include "Input_Device.h"
+#include "Cuda_Device.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Component_Manager.h"
@@ -277,6 +278,7 @@ public: /* For. Optimization_Manager*/
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;
 	shared_ptr<CInput_Device> m_pInput_Device;
+	shared_ptr<CCuda_Device> m_pCuda_Device;
 	shared_ptr<CLevel_Manager> m_pLevel_Manager;
 	shared_ptr<CObject_Manager> m_pObject_Manager;
 	shared_ptr<CComponent_Manager> m_pComponent_Manager;
