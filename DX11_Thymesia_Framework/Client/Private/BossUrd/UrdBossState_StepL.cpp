@@ -58,10 +58,9 @@ void CUrdBossState_StepL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.1f, 2.1f, 2.1f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	
 	
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -107,7 +106,7 @@ _bool CUrdBossState_StepL::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 29)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 		return true;

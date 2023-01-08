@@ -43,6 +43,7 @@ public:
     void  Disable_Weapon();
     weak_ptr<CCharacter> Get_ParentCharacter();
     void  Set_RenderOnOff(_bool RenderOnOff) { m_bWeaponRenderOnOff = RenderOnOff; }
+    _bool Get_RenderOnOff() { return  m_bWeaponRenderOnOff; }
     void  Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
     void  Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
 

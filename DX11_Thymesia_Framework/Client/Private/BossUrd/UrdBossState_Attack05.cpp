@@ -100,6 +100,7 @@ void CUrdBossState_Attack05::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 

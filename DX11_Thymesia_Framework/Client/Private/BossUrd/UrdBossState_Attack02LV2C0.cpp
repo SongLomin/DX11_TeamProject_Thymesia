@@ -61,9 +61,6 @@ void CUrdBossState_Attack02LV2C0::OnStateStart(const _float& In_fAnimationBlendT
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_WalkStart(true);
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	

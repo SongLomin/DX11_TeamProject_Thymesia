@@ -64,7 +64,7 @@ void CUrdBossState_Skill03_L::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
 	m_bAttackLookAtLimit = true;
 
@@ -152,6 +152,7 @@ _bool CUrdBossState_Skill03_L::Check_AndChangeNextState()
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::BIND_HAND);
 		pJavelinWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 		pJavelinWeapon.lock()->Set_Enable(true);
+		pJavelinWeapon.lock()->Set_RenderCheck(true);
 		
 
 	}

@@ -29,7 +29,6 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
-
 protected:
 	void Free();
 

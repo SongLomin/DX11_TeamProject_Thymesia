@@ -106,23 +106,80 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 250)
-	{
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWepons();
+	list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
 
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
-		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 250 &&
+		m_iResetWeaponNum == 0)
+	{
+		m_iResetWeaponNum = 1;
 			
+		for (auto& elem : pJavelinWeapons)
+		{
+			if (elem.lock()->Get_RenderCheck())
+			{
+				elem.lock()->Set_RenderCheck(false);
+				elem.lock()->Set_Enable(false);
+				break;
+			}
+		
+		}	
+		
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 275 &&
+		m_iResetWeaponNum == 1)
+	{
+		m_iResetWeaponNum = 2;
+
+		for (auto& elem : pJavelinWeapons)
+		{
+			if (elem.lock()->Get_RenderCheck())
+			{
+				elem.lock()->Set_RenderCheck(false);
+				elem.lock()->Set_Enable(false);
+				break;
+			}
+		
+		}
+
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 300 &&
+		m_iResetWeaponNum == 2)
+	{
+		m_iResetWeaponNum = 3;
+
+		for (auto& elem : pJavelinWeapons)
+		{
+			if (elem.lock()->Get_RenderCheck())
+			{
+				elem.lock()->Set_RenderCheck(false);
+				elem.lock()->Set_Enable(false);
+				break;
+			}
+			
+		}
+
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 368 &&
+		m_iResetWeaponNum == 3)
+	{
+		
+
 		for (auto& elem : pDecoWeapons)
 		{
 			elem.lock()->Set_RenderOnOff(true);
 			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
-			
+
 		}
 
-		pUrd.lock()->Reset_JavelinWeapon();
-
 	}
+
+
 
 	return false;
 }

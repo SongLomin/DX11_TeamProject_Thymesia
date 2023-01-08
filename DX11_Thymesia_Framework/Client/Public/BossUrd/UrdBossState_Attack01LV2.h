@@ -15,7 +15,6 @@ class CUrdBossState_Attack01LV2 :
 		SHALLOW_COPY(CUrdBossState_Attack01LV2)
 
 
-
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -27,6 +26,9 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
+
+
+
 
 private:
 	void Call_AnimationEnd();

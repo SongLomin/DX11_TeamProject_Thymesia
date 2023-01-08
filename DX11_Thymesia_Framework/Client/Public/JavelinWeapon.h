@@ -29,7 +29,9 @@ public:
     };
 
 public:
-    void Set_JavelinState(const JAVELIN_STATE In_JavelinState);
+    void  Set_JavelinState(const JAVELIN_STATE In_JavelinState);
+    void  Set_RenderCheck(_bool bRenderCheck) { m_bRenderCheck = bRenderCheck; }
+    _bool Get_RenderCheck() { return m_bRenderCheck; }
 
 protected:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -91,6 +93,7 @@ protected:
     _bool                   m_bWeaponRenderOnOff = true;
     _uint                   m_iNumMeshContainers;
     _uint                   m_iWeaponNum = 0;
+    _bool                   m_bRenderCheck = false;
     _bool                   m_bBoneBind = true;
 
 private:

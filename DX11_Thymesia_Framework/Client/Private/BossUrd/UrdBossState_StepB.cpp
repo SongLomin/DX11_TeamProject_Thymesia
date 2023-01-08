@@ -58,7 +58,7 @@ void CUrdBossState_StepB::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
 
 	Rotation_TargetToLookDir();
 
@@ -106,11 +106,28 @@ _bool CUrdBossState_StepB::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	//만약 스킬그게트루인상태에서는 바로 칼꽂게
+
+	if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillStart())
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
-		return true;
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+			return true;
+		}
+		
 	}
+	else
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+			return true;
+		}
+	}
+
+	
 
 	return false;
 }

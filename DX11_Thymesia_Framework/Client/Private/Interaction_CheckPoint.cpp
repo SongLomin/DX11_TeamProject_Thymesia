@@ -154,24 +154,24 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
     if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 30.f))
     {
         m_bRendering = true;
-
-#ifdef _INTERACTION_EFFECT_
-        if ((0 > m_iEffectIndex))
-        {
-            m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-        }
-#endif // _INTERACTION_EFFECT_
+//
+//#ifdef _INTERACTION_EFFECT_
+//        if ((0 > m_iEffectIndex))
+//        {
+//            m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+//        }
+//#endif // _INTERACTION_EFFECT_
     }
     else
     {
         m_bRendering = false;
 
 #ifdef _INTERACTION_EFFECT_
-        if (0 <= m_iEffectIndex)
-        {
-            GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
-            m_iEffectIndex = -1;
-        }
+        //if (0 <= m_iEffectIndex)
+        //{
+        //    GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+        //    m_iEffectIndex = -1;
+        //}
 #endif // _INTERACTION_EFFECT_
     }
 #else
@@ -562,7 +562,7 @@ void CInteraction_CheckPoint::Call_CheckAnimEnd()
 void CInteraction_CheckPoint::OnDestroy()
 {
     if (0 <= m_iEffectIndex)
-        GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+		GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
 }
 
 void CInteraction_CheckPoint::Free()

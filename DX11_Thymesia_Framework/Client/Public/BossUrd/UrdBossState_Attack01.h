@@ -14,7 +14,8 @@ class CUrdBossState_Attack01 :
 	CLONE_H(CUrdBossState_Attack01, CComponent)
 		SHALLOW_COPY(CUrdBossState_Attack01)
 
-
+public:
+	void    Set_ComboATKAnimation(_bool bComboATKAnimation) { m_bComboATKAnimation = bComboATKAnimation; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -27,6 +28,10 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
+
+
+private:
+	_bool    m_bComboATKAnimation = false;
 
 private:
 	void Call_AnimationEnd();

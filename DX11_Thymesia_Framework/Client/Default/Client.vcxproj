@@ -198,6 +198,11 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB1.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB2.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB3.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC1.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC2.h" />
     <ClInclude Include="..\Public\CNvClothCollider.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
@@ -863,6 +868,11 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB1.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB2.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB3.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC1.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC2.cpp" />
     <ClCompile Include="..\Private\CNvClothCollider.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />

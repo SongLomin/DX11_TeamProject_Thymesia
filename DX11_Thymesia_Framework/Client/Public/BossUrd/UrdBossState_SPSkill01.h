@@ -28,6 +28,8 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+	_uint   m_iResetWeaponNum = 0;
+
 private:
 	void Call_AnimationEnd();
 protected:
