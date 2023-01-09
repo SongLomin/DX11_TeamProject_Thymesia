@@ -113,8 +113,8 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
     Out.vNormal.a*= g_fAlphaValue;
     Out.vNormal.xyz = Out.vNormal.xyz *0.5f + 0.5f;
           
-    //Out.vORM = g_ORMTexture.Sample(DefaultSampler, vDecalUV);
-   // Out.vORM *= g_fAlphaValue;
+    Out.vORM = g_ORMTexture.Sample(DefaultSampler, vDecalUV);
+    Out.vORM *= g_fAlphaValue;
       
     Out.vShaderFlag = 0.f;
     Out.vShaderFlag.b = 0.f < g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r + g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r; //일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
