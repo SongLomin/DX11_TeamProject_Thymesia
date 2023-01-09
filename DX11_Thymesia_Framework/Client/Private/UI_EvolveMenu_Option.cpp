@@ -118,13 +118,8 @@ void CUI_EvolveMenu_Option::Init_OptionItem()
 {
     weak_ptr<CUI_OptionItem> pItem;
 
-    //Todo : Test For
-    /*
-        206 35
-        241
-        327
-    */
-    for (_uint i = 0; i < 5; i++)
+  
+    for (_uint i = 0; i < (_uint); i++)
     {
         pItem = GAMEINSTANCE->Add_GameObject<CUI_OptionItem>(LEVEL_STATIC);
      

@@ -553,12 +553,21 @@ namespace Client
 		SKILLBUTTON_LOCK_TYPE_END
 	};
 
+
+	/*
+	해당 타입 UI의 콜백이 넘겨주는 값
+	//Slider 0~100
+	//Slider 0 ~100
+	//On off 0~1(false, true)
+	//Level 0~3(off, Low, Middle, High)
+	
+	*/
 	enum class OPTION_TYPE
 	{
 		SOUND_TYPE_EFFECT = 0,			//Slider
 		SOUND_TYPE_VOICE,				//Slider
 		SSAA,							//On off
-		PARTICLE_QUALITY,				//Level
+		PARTICLE_QUALITY,				//Level 
 		AMBIENT_OCCLUSION,				//On off
 		NVIDIA_IMAGE_SCALING,			//On off
 		SCALING_SHARPNESS,				//Slider
@@ -572,7 +581,8 @@ namespace Client
 		STATIC_SHADOW,					//On off
 		BRIGHTLESS,						//Slider
 		SATURATION,						//Slider
-		CONTRAST						//Slider
+		CONTRAST,						//Slider
+		OPTION_TYPE_END
 	};
 
 
