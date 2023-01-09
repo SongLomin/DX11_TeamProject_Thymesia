@@ -23,6 +23,12 @@ void CUrdBossState_Attack01LV2::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 34:
+		TurnOn_Effect("Urd_WeaponShine");
+		return;
+	case 105:
+		TurnOff_Effect("Urd_WeaponShine");
+		return;
 	}
 }
 
