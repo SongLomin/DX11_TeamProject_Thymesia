@@ -48,6 +48,9 @@ HRESULT CUI::Initialize(void* pArg)
 	m_bShaking = false;
 
 	m_bRender = true;
+
+	m_fAlphaColor = 1.f;
+
 	return S_OK;
 }
 
@@ -83,7 +86,6 @@ void CUI::Tick(_float fTimeDelta)
 			m_bShaking = false;
 		}
 	}
-	
 }
 
 void CUI::LateTick(_float fTimeDelta)
@@ -101,6 +103,11 @@ void CUI::LateTick(_float fTimeDelta)
 	{
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 	}
+	if (m_pOwner.lock())
+	{
+		m_fOwnerAlphaColor = m_pOwner.lock()->Get_AlphaColor();
+	}
+
 
 	m_fShakedPos.x = m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x;
 	m_fShakedPos.y = -m_tUIDesc.fY + (g_iWinCY * 0.5f) - m_fOffsetPosition.y;
@@ -257,12 +264,19 @@ void CUI::Add_Child(weak_ptr<CUI> pChild)
 {
 	m_vecChildUI.push_back(pChild);
 
-	pChild.lock()->m_eRenderGroup = m_eRenderGroup;//자식의 렌더그룹을 부모의 렌더그룹으로 옮긴다.
+	pChild.lock()->Set_Owner(Get_This());
+
+	pChild.lock()->m_eRenderGroup = m_eRenderGroup;//자식의 렌더그룹을 오너의 렌더그룹으로 옮긴다.
 }
 
 void CUI::Set_Target(weak_ptr<CBase> pTarget)
 {
 	m_pTarget = pTarget;
+}
+
+void CUI::Set_Owner(weak_ptr<CUI> pOwner)
+{
+	m_pOwner = pOwner;
 }
 
 _bool CUI::MousePtInUI()
@@ -413,14 +427,17 @@ void CUI::Bind_Player()
 
 void CUI::Update_Shaking(_float fTimeDelta)
 {
-	if (m_fCurrentFreq > 0.f)
+	//if (m_fCurrentFreq > 0.f)
+	//{
+	//	m_fCurrentFreq -= fTimeDelta;
+	//
+	//	return;
+	//}
+	if (m_fPower < 0.f)
 	{
-		m_fCurrentFreq -= fTimeDelta;
-
 		return;
 	}
-
-	m_fPower -= (fTimeDelta * m_fPower) * 30.f;
+	m_fPower -= (fTimeDelta * (m_fPower / m_fShakingTime));
 
 	m_fOffsetPosition.x = SMath::fRandom(-m_fPower, m_fPower);
 	m_fOffsetPosition.y = SMath::fRandom(-m_fPower, m_fPower);

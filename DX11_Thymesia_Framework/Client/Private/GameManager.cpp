@@ -12,6 +12,7 @@ IMPLEMENT_SINGLETON(CGameManager)
 
 void CGameManager::LateTick(_float fTimeDelta)
 {
+
 	//지워진 객체 정리
 	for (_uint i = 0; i < (_uint)OBJECT_LAYER::LAYER_END; i++)
 	{

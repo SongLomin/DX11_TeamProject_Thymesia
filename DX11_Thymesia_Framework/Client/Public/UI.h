@@ -117,10 +117,7 @@ public:
 protected:
     virtual void             Add_Child(weak_ptr<CUI> pChild);
     virtual void             Set_Target(weak_ptr<CBase> pTarget);
-
-
-
-
+    virtual void             Set_Owner(weak_ptr<CUI> pOwner);
 public:
     _float2                  Get_Point(UI_POINT eType);
     _float                   Get_Y();
@@ -169,12 +166,17 @@ protected:
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
     _float	        m_fAlphaColor = 1.f;
+    _float          m_fOwnerAlphaColor = 1.f;
     _bool           m_bRender = true;
 
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
     vector<weak_ptr<CUI>> m_vecEventChildUI;
    
+    weak_ptr<CUI>       m_pOwner;
+
+
+
     weak_ptr<CBase>       m_pTarget;
 
     weak_ptr<CPlayer> m_pPlayer;

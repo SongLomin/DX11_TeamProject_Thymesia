@@ -16,6 +16,7 @@ public:
 	virtual void	Tick(_float fTimeDelta) override;
 
 protected:
+	virtual	void	Update_KeyInput(_float fTimeDelta);
 	void			Call_ExitTap();
 
 

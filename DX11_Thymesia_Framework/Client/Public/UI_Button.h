@@ -3,7 +3,7 @@
 #include "UI_Container.h"
 BEGIN(Client)
 
-class CUI_Button_Base abstract : public CUI_Container
+class CUI_Button_Base abstract : public CCustomUI
 {
 public:
 	enum UI_BUTTON_STATE

@@ -508,8 +508,6 @@ namespace Client
 		SKILLPIECE_HAMMER,
 		SKILLPIECE_BLOODSTORM,
 
-
-
 		ITEM_NAME_END
 	};
 
@@ -560,12 +558,41 @@ namespace Client
 		SKILLBUTTON_LOCK_TYPE_END
 	};
 
-	enum class SOUND_TYPE
+
+	/*
+	해당 타입 UI의 콜백이 넘겨주는 값
+	//Slider 0~100
+	//Slider 0 ~100
+	//On off 0~1(false, true)
+	//Level 0~3(off, Low, Middle, High)
+	
+	*/
+	enum class OPTION_TYPE
 	{
-		SOUND_TYPE_EFFECT,
-		SOUND_TYPE_BACKGROUND,
-		SOUND_TYPE_VOICE,
+		SOUND_TYPE_EFFECT = 0,			//Slider
+		SOUND_TYPE_VOICE,				//Slider
+		SSAA,							//On off
+		PARTICLE_QUALITY,				//Level 
+		AMBIENT_OCCLUSION,				//On off
+		NVIDIA_IMAGE_SCALING,			//On off
+		SCALING_SHARPNESS,				//Slider
+		WATER_REFLECTION_QUALITY,		//Level
+		PBR,							//On off
+		MOTION_BLUR,					//On off
+		GODRAY,							//On off
+		CHROMATIC_ABRRATION,			//On off
+		RADIAL_BLUR,					//On off
+		DYNAMIC_SHADOW,					//On off
+		STATIC_SHADOW,					//On off
+		BRIGHTLESS,						//Slider
+		SATURATION,						//Slider
+		CONTRAST,						//Slider
+		OPTION_TYPE_END
 	};
+
+
+
+
 }
 
 

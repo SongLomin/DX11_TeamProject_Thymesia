@@ -41,7 +41,7 @@
 #include "UI_AppearEventVarg.h"
 #include "UI_ItemRequirement.h"
 #include "UI_EvolveMenu_PlagueWeapon.h"
-
+#include "UI_EvolveMenu_Option.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -147,6 +147,7 @@ void CClientLevel::SetUp_UI()
 	m_pEvolveMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_PlagueWeapon>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_Option>(LEVEL_STATIC);
 
 	Preset::AddGameObject::TalentSetting();
 

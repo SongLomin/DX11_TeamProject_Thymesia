@@ -16,7 +16,7 @@
 #include "UI_EvolveMenu.h"
 #include "Client_Presets.h"
 #include "Model.h"
-
+#include "UI_EffectGroup_SkillOpen.h"
 
 CLevel_Test::CLevel_Test()
 //: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -93,6 +93,14 @@ void CLevel_Test::Tick(_float fTimeDelta)
 			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Test::Call_Enable_PauseMenu, this);
 		}
+	}
+
+	if (KEY_INPUT(KEY::NUMPAD1, KEY_STATE::TAP))
+	{
+		weak_ptr<CUI_EffectGroup_SkillOpen> pEffectGroup = GET_SINGLE(CGameManager)->
+			GetGameObject_SafetyUseMemoryPool< CUI_EffectGroup_SkillOpen>(LEVEL_STATIC);
+
+		pEffectGroup.lock()->Play(SKILL_NAME::SKILL_AXE);
 	}
 
 	if (!m_bFadeTrigger)

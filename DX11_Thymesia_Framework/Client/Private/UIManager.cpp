@@ -20,22 +20,27 @@ void CUIManager::OnEnterStage()
 
 }
 
+void CUIManager::Initalize()
+{
+	
+}
+
 void CUIManager::Tick(_float fTimeDelta)
 {
 }
 
 void CUIManager::LateTick(_float fTimeDelta)
 {
+
 }
 
 POINT CUIManager::Get_MousePoint()
 {
-	POINT	tMousePt;
+	m_MousePt = { 0, 0 };
 
-	GetCursorPos(&tMousePt);
-	ClientToScreen(g_hWnd, &tMousePt);
-
-	return tMousePt;
+	GetCursorPos(&m_MousePt);
+	ScreenToClient(g_hWnd, &m_MousePt);
+	return m_MousePt;
 }
 
 void CUIManager::EnableCursor()
