@@ -136,6 +136,11 @@ void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)
 		eBossName = BOSSNAME::VARG;
 	}
 
+	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
+	{
+		eExeMonName = EXECUTIONMONSTERNAME::JOKER;
+	}
+
 }
 
 _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
@@ -176,6 +181,7 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 			for (auto& elem : pBossMonsters)
 			{
 				elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTION);
+				elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTIONSTART);
 			}
 
 			switch (eExeMonName)
@@ -184,6 +190,9 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_BigHandman_Execution>();
 				break;
 			case Client::EXECUTIONMONSTERNAME::ARMORMAN:
+				break;
+			case Client::EXECUTIONMONSTERNAME::JOKER:
+				Get_OwnerPlayer()->Change_State<CCorvusState_Joker_Execution>();
 				break;
 			}
 		}

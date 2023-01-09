@@ -374,10 +374,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_CheckPointEnd>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Joker_Execution>();
-	}
+	//if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
+	//{
+	//	Change_State<CCorvusState_Joker_Execution>();
+	//}
 
 	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
 	{
@@ -395,6 +395,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 
 	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if (EVENT_TYPE::ON_JOKEREXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}

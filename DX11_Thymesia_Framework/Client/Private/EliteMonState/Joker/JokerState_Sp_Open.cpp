@@ -63,7 +63,13 @@ void CJokerState_Sp_Open::LateTick(_float fTimeDelta)
 void CJokerState_Sp_Open::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+
+	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
 
 	m_bCloseStart = false;
