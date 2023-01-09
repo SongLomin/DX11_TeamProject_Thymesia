@@ -139,7 +139,7 @@ HRESULT CCorvus::Start()
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
 
-	//Test_BindSkill();
+	Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -734,6 +734,7 @@ void CCorvus::WriteTalentFromJson(json& Out_Json)
 
 void CCorvus::Free()
 {
+	int a = 0;
 }
 
 void CCorvus::Save_ClientComponentData()

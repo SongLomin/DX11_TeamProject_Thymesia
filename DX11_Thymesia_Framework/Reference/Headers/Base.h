@@ -72,7 +72,11 @@ protected:
 	template<typename T>
 	static weak_ptr<T> Weak_StaticCast(weak_ptr<CBase> Instance)
 	{
+#ifdef _DEBUG
+		return dynamic_pointer_cast<T>(Instance.lock());
+#else // _DEBUG
 		return static_pointer_cast<T>(Instance.lock());
+#endif // _DEBUG
 	}
 
 	template<typename T>
