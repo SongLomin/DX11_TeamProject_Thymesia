@@ -37,6 +37,10 @@ float g_fGrayScale;
 float g_fContrastValue;
 float g_fSaturation;
 
+//Color Inversion
+float g_fInversionStrength;
+float g_fInversionRatio;
+
 texture2D g_MaskTexture;
 texture2D g_StaticShadowDepthTexture;
 
@@ -141,6 +145,22 @@ PS_OUT PS_MAIN_GODRAY(PS_IN In)
     float fAtt = min(0.3f, max(0.01f, 10.f / fDistance));
     
     Out.vColor = lerp(Out.vColor, g_vLightDiffuse, fAtt * s * g_fGodRayScale);
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_COLOR_INVERSION(PS_IN In)
+{
+    clip(1.f - g_fInversionRatio);
+    
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float3 vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+    
+    float3 vInversedColor = (1.f - vColor) * g_fInversionStrength;
+    
+    Out.vColor.rgb = lerp(vInversedColor, vColor, g_fInversionRatio);
+    Out.vColor.a = 1.f;
     
     return Out;
 }
@@ -340,7 +360,20 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_GODRAY();
     }
-    pass Lift_Gamma_Gain //1
+    pass Color_Inversion//1
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_COLOR_INVERSION();
+    }
+
+    pass Lift_Gamma_Gain //2
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -352,7 +385,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_LIFTGAMMAGAIN();
     }
-    pass ScreenTone //2
+    pass ScreenTone //3
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -364,7 +397,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SCREENTONE();
     }
-	pass Chromatic_Aberration//3
+	pass Chromatic_Aberration//4
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -376,7 +409,7 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_CHROMATIC();
 	}
-	pass MotionBlur //4
+	pass MotionBlur //5
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -389,7 +422,7 @@ technique11 DefaultTechnique
 		PixelShader    = compile ps_5_0 PS_MAIN_MOTION_BLUR();
 	}
 
-    pass RadialBlur//5
+    pass RadialBlur//6
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTestWrite_True_StencilTest, 1);

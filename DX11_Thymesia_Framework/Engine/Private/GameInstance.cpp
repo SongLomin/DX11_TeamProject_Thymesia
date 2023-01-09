@@ -456,6 +456,11 @@ HRESULT CGameInstance::Set_Sharpness(const _float In_fSharpness)
 	return m_pRender_Manager->Set_Sharpness(In_fSharpness);
 }
 
+HRESULT CGameInstance::Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio)
+{
+	return m_pRender_Manager->Set_ColorInversion(In_fInversionStrength, In_fInversionRatio);
+}
+
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
 	return m_pRender_Manager->Get_BeforeRenderContext();

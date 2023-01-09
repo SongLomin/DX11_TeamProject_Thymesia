@@ -45,6 +45,8 @@ private:
 
 public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
+private:
+	void Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd);
 
 private:
 	weak_ptr<CNvClothCollider> m_pNvClothColliderCom;
@@ -61,6 +63,12 @@ private:
 	weak_ptr<CTransform> m_pCameraTransform;
 
 	_float4x4 m_TransformationMatrix;
+	
+	_float m_fInversionStrength = 1.f;
+	_float m_fInversionRatio = 0.f;
+
+private:
+	FDelegate<_float, _bool&> CallBack_ColorInversion;
 
 private:
 	virtual void OnEnable(void* pArg) override;
