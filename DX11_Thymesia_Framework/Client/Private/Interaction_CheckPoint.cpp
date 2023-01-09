@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Collider.h"
+
 #include "ActorDecor.h"
 #include "UI_Landing.h"
 #include "UIManager.h"
@@ -62,9 +63,9 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
     m_pDeco.lock()->Set_OffsetMatrix(DecoMatrix);
     m_pDeco.lock()->Set_Offset(XMVectorSet(0.05f, 0.f, 0.f, 0.f));
 
+
 #ifdef _USE_THREAD_
     Use_Thread(THREAD_TYPE::PRE_TICK);
-    // Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
 
     return S_OK;
@@ -158,10 +159,7 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _INTERACTION_EFFECT_
 		if (-1 == m_iEffectIndex)
 		{
-			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-			m_iCount++;
-
-			cout << "Chair Effect Count : " << m_iCount << endl;
+			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
 		}
 #endif // _INTERACTION_EFFECT_
 	}
@@ -172,11 +170,8 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _INTERACTION_EFFECT_
 		if (-1 != m_iEffectIndex)
 		{
-			GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iEffectIndex);
 			m_iEffectIndex = -1;
-			m_iCount--;
-
-			cout << "Chair Effect Count : " << m_iCount << endl;
 		}
 #endif // _INTERACTION_EFFECT_
 	}
@@ -472,7 +467,6 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
         {
             m_pAnimModelCom.lock()->Set_CurrentAnimation(EQUIP_LOOP);
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.f);
-            m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
         }
         break;
 

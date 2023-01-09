@@ -91,9 +91,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -165,9 +165,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -205,9 +205,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -525,9 +525,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -599,9 +599,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -639,9 +639,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -959,9 +959,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -1033,9 +1033,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -1073,9 +1073,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -1393,9 +1393,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -1467,9 +1467,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -1507,9 +1507,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -1827,9 +1827,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -1901,9 +1901,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -1941,9 +1941,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -2261,9 +2261,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -2335,9 +2335,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -2375,9 +2375,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -2695,9 +2695,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -2769,9 +2769,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -2809,9 +2809,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -3129,9 +3129,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -3203,9 +3203,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -3243,9 +3243,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -3563,9 +3563,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -3637,9 +3637,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -3677,9 +3677,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -3997,9 +3997,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -4071,9 +4071,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -4111,9 +4111,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -4431,9 +4431,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -4505,9 +4505,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -4545,9 +4545,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,
@@ -4865,9 +4865,9 @@
         0
       ],
       "Max_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Max_Start_Rotation": [
@@ -4939,9 +4939,9 @@
         0
       ],
       "Min_Start_Color": [
-        0.8833333253860474,
         1,
-        0.9922221899032593,
+        1,
+        1,
         1
       ],
       "Min_Start_Rotation": [
@@ -4979,9 +4979,9 @@
       "Render_Group": 7,
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
-        0.44999998807907104,
         1,
-        0.963333249092102,
+        1,
+        1,
         0.75
       ],
       "Sync_Animation": false,

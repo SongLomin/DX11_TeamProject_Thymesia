@@ -59,7 +59,7 @@ void CNorMonState_TurnR90::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TurnR90::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TurnR90::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_TurnR90::Tick(_float fTimeDelta)
@@ -120,7 +120,7 @@ void CNorMonState_TurnR90::OnStateEnd()
 
 
 
-void CNorMonState_TurnR90::Call_AnimationEnd()
+void CNorMonState_TurnR90::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -130,7 +130,7 @@ void CNorMonState_TurnR90::Call_AnimationEnd()
 
 void CNorMonState_TurnR90::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_TurnR90::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_TurnR90::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_TurnR90::Free()

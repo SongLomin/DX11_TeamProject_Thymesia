@@ -37,16 +37,11 @@ void CEasingComponent_Transform::LateTick(_float fTimeDelta)
         return;
     if (m_bCustomUse)
         return;
-    
-
     if (m_bLerpUseOffset)
     {
         Weak_StaticCast<CUI>(m_pOwner).lock()->Set_OffsetPosition(_float2(m_vLerped.x, m_vLerped.y));
     }
-    
-    
 }
-
 void CEasingComponent_Transform::Set_Lerp(_float2 vStart, _float2 vTarget, _float fTime, EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse, _bool bLerpUseOffset)
 {
     _float4         _vStart;

@@ -336,6 +336,8 @@ HRESULT CInteraction_CastleGate::SetUp_ShaderResource_Default(ID3D11DeviceContex
     _vector vShaderFlag = { 1.f, m_fOutLineBlurIntensity, 0.f, 0.f };
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
         return E_FAIL;
+
+    return S_OK;
 }
 
 HRESULT CInteraction_CastleGate::DrawShader_Body(ID3D11DeviceContext* pDeviceContext)

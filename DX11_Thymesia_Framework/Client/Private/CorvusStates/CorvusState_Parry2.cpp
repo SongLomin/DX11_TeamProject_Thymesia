@@ -36,7 +36,7 @@ void CCorvusState_Parry2::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_ParryR_NEW");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Parry2::Tick(_float fTimeDelta)
@@ -59,7 +59,7 @@ void CCorvusState_Parry2::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Parry2::Call_AnimationEnd()
+void CCorvusState_Parry2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -117,7 +117,7 @@ void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
 
 	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
 
@@ -168,7 +168,7 @@ void CCorvusState_Parry2::OnStateEnd()
 	m_IsNextAttack = false;
 	m_bParryed = false;
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 void CCorvusState_Parry2::OnEventMessage(_uint iArg)
@@ -209,7 +209,7 @@ void CCorvusState_Parry2::OnEventMessage(_uint iArg)
 
 void CCorvusState_Parry2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Parry2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Parry2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Parry2::Free()

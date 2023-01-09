@@ -32,6 +32,8 @@ public:
 private:
 	void Add_EffectKeyEvent();
 	void Add_EnableWeaponEvent(const _bool In_bEnable);
+	void Add_SoundKeyEvent();
+	void Add_RandomSoundKeyEvent();
 	
 	void Save_KeyEvent();
 	HRESULT Load_KeyEvent();
@@ -62,9 +64,11 @@ private:
 	_int			m_CurrentAnimationIndex = 0;
 
 	string m_strKeyEventFileName = "";
+	string m_strSoundFileName = "";
 
 private:
 	json m_KeyEventJson;
+	weak_ptr<CModel>		m_pCurrentModelCom;
 	map<_int, list<string>>	m_KeyEventEffectGroupNames;
 
 public:

@@ -93,10 +93,10 @@ HRESULT CWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 
 				if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 				{
-					iPassIndex = 3;
+					iPassIndex = 14;
 				}
 				else
-					iPassIndex = 7;
+					iPassIndex = 13;
 			}
 
 			m_pShaderCom.lock()->Begin(iPassIndex, pDeviceContext);

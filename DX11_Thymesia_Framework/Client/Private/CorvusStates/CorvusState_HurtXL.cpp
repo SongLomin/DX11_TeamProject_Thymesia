@@ -32,7 +32,7 @@ void CCorvusState_HurtXL::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtXLF");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtXL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtXL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_HurtXL::Tick(_float fTimeDelta)
@@ -85,7 +85,7 @@ void CCorvusState_HurtXL::OnStateEnd()
 	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
-void CCorvusState_HurtXL::Call_AnimationEnd()
+void CCorvusState_HurtXL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -97,7 +97,7 @@ void CCorvusState_HurtXL::Call_AnimationEnd()
 void CCorvusState_HurtXL::OnDestroy()
 {
 
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtXL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtXL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_HurtXL::Free()

@@ -32,7 +32,7 @@ void CUrdBossState_StepL::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_StepL|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepL::Tick(_float fTimeDelta)
@@ -58,10 +58,9 @@ void CUrdBossState_StepL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.1f, 2.1f, 2.1f));
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 4);
 	
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -82,7 +81,7 @@ void CUrdBossState_StepL::OnStateEnd()
 
 
 
-void CUrdBossState_StepL::Call_AnimationEnd()
+void CUrdBossState_StepL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +91,7 @@ void CUrdBossState_StepL::Call_AnimationEnd()
 
 void CUrdBossState_StepL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepL::Free()
@@ -107,7 +106,7 @@ _bool CUrdBossState_StepL::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 29)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 		return true;

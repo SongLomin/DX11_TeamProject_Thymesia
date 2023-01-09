@@ -38,7 +38,7 @@ void CJokerState_TurnR90::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_TurnR90");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_TurnR90::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_TurnR90::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_TurnR90::Tick(_float fTimeDelta)
@@ -84,7 +84,7 @@ void CJokerState_TurnR90::OnStateEnd()
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
-void CJokerState_TurnR90::Call_AnimationEnd()
+void CJokerState_TurnR90::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -94,7 +94,7 @@ void CJokerState_TurnR90::Call_AnimationEnd()
 
 void CJokerState_TurnR90::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_TurnR90::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_TurnR90::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_TurnR90::Free()

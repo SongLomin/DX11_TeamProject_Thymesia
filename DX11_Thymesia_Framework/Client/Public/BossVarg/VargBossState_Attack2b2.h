@@ -32,7 +32,7 @@ protected:
 	void Free();
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 };
 
 END

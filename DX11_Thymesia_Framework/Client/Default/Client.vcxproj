@@ -54,8 +54,7 @@
     <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -120,7 +119,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../Reference/Librarys/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;imguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;cudart.lib;imguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <EntryPointName>VS_MAIN</EntryPointName>
@@ -175,7 +174,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../Reference/Librarys/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;cudart.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <EntryPointName>VS_MAIN</EntryPointName>
@@ -198,6 +197,12 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB1.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB2.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB3.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC1.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC2.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attacks.h" />
     <ClInclude Include="..\Public\CNvClothCollider.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
@@ -518,19 +523,25 @@
     <ClInclude Include="..\Public\Fog.h" />
     <ClInclude Include="..\Public\Interaction_Aisemy.h" />
     <ClInclude Include="..\Public\Interaction_CastleGate.h" />
+    <ClInclude Include="..\Public\Interaction_Chair.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Camera_Interior.h" />
+    <ClInclude Include="..\Public\Interaction_InteriorActivate.h" />
+    <ClInclude Include="..\Public\Interaction_MapTable.h" />
     <ClInclude Include="..\Public\InteriorProp.h" />
     <ClInclude Include="..\Public\JavelinWeapon.h" />
+    <ClInclude Include="..\Public\Level_Home.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h" />
+    <ClInclude Include="..\Public\PhysXColliderObject_Interior.h" />
     <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
+    <ClInclude Include="..\Public\PreView_InteriorProp.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
@@ -590,6 +601,7 @@
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
+    <ClInclude Include="..\Public\Static_InteriorProp.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
@@ -605,17 +617,22 @@
     <ClInclude Include="..\Public\UI_Container.h" />
     <ClInclude Include="..\Public\UI_Containers.h" />
     <ClInclude Include="..\Public\UI_Cursor.h" />
+    <ClInclude Include="..\Public\UI_CustomEffect.h" />
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
     <ClInclude Include="..\Public\UI_EffectBase.h" />
+    <ClInclude Include="..\Public\UI_EffectGroup_SkillOpen.h" />
     <ClInclude Include="..\Public\UI_EffectHeaders.h" />
+    <ClInclude Include="..\Public\UI_Effect_FadeBackground.h" />
     <ClInclude Include="..\Public\UI_Effect_MagicCircle.h" />
+    <ClInclude Include="..\Public\UI_Effect_Twinkl.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_Enums.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Option.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
@@ -638,6 +655,7 @@
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
+    <ClInclude Include="..\Public\UI_OptionItem.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Inventory.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
@@ -863,6 +881,12 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB1.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB2.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB3.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC1.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC2.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attacks.cpp" />
     <ClCompile Include="..\Private\CNvClothCollider.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
@@ -1175,19 +1199,25 @@
     <ClCompile Include="..\Private\Fog.cpp" />
     <ClCompile Include="..\Private\Interaction_Aisemy.cpp" />
     <ClCompile Include="..\Private\Interaction_CastleGate.cpp" />
+    <ClCompile Include="..\Private\Interaction_Chair.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_DeadSpot.cpp" />
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Camera_Interior.cpp" />
+    <ClCompile Include="..\Private\Interaction_InteriorActivate.cpp" />
+    <ClCompile Include="..\Private\Interaction_MapTable.cpp" />
     <ClCompile Include="..\Private\InteriorProp.cpp" />
     <ClCompile Include="..\Private\JavelinWeapon.cpp" />
+    <ClCompile Include="..\Private\Level_Home.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp" />
+    <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp" />
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
+    <ClCompile Include="..\Private\PreView_InteriorProp.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
@@ -1230,6 +1260,7 @@
     <ClCompile Include="..\Private\Skill_Knife.cpp" />
     <ClCompile Include="..\Private\Skill_Scythe.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
+    <ClCompile Include="..\Private\Static_InteriorProp.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
@@ -1239,14 +1270,19 @@
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
     <ClCompile Include="..\Private\UI_Cursor.cpp" />
+    <ClCompile Include="..\Private\UI_CustomEffect.cpp" />
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
     <ClCompile Include="..\Private\UI_EffectBase.cpp" />
+    <ClCompile Include="..\Private\UI_EffectGroup_SkillOpen.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_FadeBackground.cpp" />
     <ClCompile Include="..\Private\UI_Effect_MagicCircle.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_Twinkl.cpp" />
     <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Option.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
@@ -1286,6 +1322,7 @@
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\UI_MenuText.cpp" />
     <ClCompile Include="..\Private\UI_MonsterFocus.cpp" />
+    <ClCompile Include="..\Private\UI_OptionItem.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
@@ -1567,7 +1604,10 @@
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_XBlur.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Private\Update_Particle.cu" />
+    <None Include="..\Public\Update_Particle.cuh" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

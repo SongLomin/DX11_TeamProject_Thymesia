@@ -33,6 +33,8 @@ class CItemPopup_Queue;
 class CInteraction_DeadSpot;
 class CSection_Eventer;
 class CFog;
+class CInteriorProp;
+class CWater;
 
 class CGameManager :
     public CBase
@@ -181,9 +183,19 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
-    /*
-        사형수 전원 집행완료
-    */
+public:
+    template <class T>
+    weak_ptr<T>         GetGameObject_SafetyUseMemoryPool(_uint iLevelIndex)
+    {
+        weak_ptr<T> pTemplate = GAMEINSTANCE->Get_GameObject_UseMemoryPool<T>(iLevelIndex);
+
+        if (!pTemplate.lock())
+        {
+            pTemplate = GAMEINSTANCE->Add_GameObject<T>(iLevelIndex);
+        }
+        return pTemplate;
+    }
+
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
@@ -201,6 +213,10 @@ public:
 
     void  Registration_Fog(weak_ptr<CFog> In_pObj);
     void  Activate_Fog(_uint In_iFogIndex);
+
+public:
+    void Register_Water(weak_ptr<CWater> pWater);
+    void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq, const _float In_fSpeed);
 
  public:
     FDelegate<>                 CallBack_ChangePlayer;
@@ -234,13 +250,18 @@ private:
     weak_ptr<CFog>                      m_FogObject;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
-    _uint                               m_iPreEventSection;
+    weak_ptr<CWater>                    m_pWater;
+    weak_ptr<CInteriorProp>             m_pInterior;
+    _uint                               m_iPreEventSection;  
 
 private:
     _int                                m_iMonsterCount   = 0;
+
+private:
 
 protected:
     void Free();
 };
 
 END
+

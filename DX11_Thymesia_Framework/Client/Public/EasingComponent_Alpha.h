@@ -18,6 +18,8 @@ public:
 public:
     virtual void	Set_Lerp(_float	vStart, _float	vTarget, _float fTime,
         EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse);
+    virtual void	Set_Lerp_once(_float	vStart, _float	vTarget, _float fTime,
+        EASING_TYPE eEasingType, _bool bCustomUse);
     _float         Get_Lerp()
     {
         return     m_vLerped.x;

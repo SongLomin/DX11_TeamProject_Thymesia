@@ -34,7 +34,7 @@ void CBatBossState_Atk_L01_2b::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_AttackL_01_2b");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_L01_2b::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_L01_2b::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Atk_L01_2b::Tick(_float fTimeDelta)
@@ -85,7 +85,7 @@ void CBatBossState_Atk_L01_2b::OnStateStart(const _float& In_fAnimationBlendTime
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 	for (auto& elem : pWeapons)
 	{
@@ -109,7 +109,7 @@ void CBatBossState_Atk_L01_2b::OnStateEnd()
 }
 
 
-void CBatBossState_Atk_L01_2b::Call_AnimationEnd()
+void CBatBossState_Atk_L01_2b::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -121,7 +121,7 @@ void CBatBossState_Atk_L01_2b::Call_AnimationEnd()
 
 void CBatBossState_Atk_L01_2b::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Atk_L01_2b::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Atk_L01_2b::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Atk_L01_2b::Free()

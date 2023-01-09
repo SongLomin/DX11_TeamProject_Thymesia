@@ -35,6 +35,7 @@ HRESULT CInteraction_Prop::Start()
 void CInteraction_Prop::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
     if (m_bNearPlayer && !m_bUsingInteraction)
     {
         m_fOutLineBlurIntensity += fTimeDelta*2.f;

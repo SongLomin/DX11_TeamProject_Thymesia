@@ -33,7 +33,7 @@ void CCorvusState_Execution_R_R::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_StunExecute_StartR_R");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Execution_R_R::Tick(_float fTimeDelta)
@@ -83,7 +83,7 @@ void CCorvusState_Execution_R_R::OnStateEnd()
 	
 }
 
-void CCorvusState_Execution_R_R::Call_AnimationEnd()
+void CCorvusState_Execution_R_R::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -113,7 +113,7 @@ void CCorvusState_Execution_R_R::Free()
 void CCorvusState_Execution_R_R::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)
@@ -134,6 +134,11 @@ void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
 		eBossName = BOSSNAME::VARG;
+	}
+
+	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
+	{
+		eExeMonName = EXECUTIONMONSTERNAME::JOKER;
 	}
 
 }
@@ -176,6 +181,7 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 			for (auto& elem : pBossMonsters)
 			{
 				elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTION);
+				elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTIONSTART);
 			}
 
 			switch (eExeMonName)
@@ -184,6 +190,9 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_BigHandman_Execution>();
 				break;
 			case Client::EXECUTIONMONSTERNAME::ARMORMAN:
+				break;
+			case Client::EXECUTIONMONSTERNAME::JOKER:
+				Get_OwnerPlayer()->Change_State<CCorvusState_Joker_Execution>();
 				break;
 			}
 		}

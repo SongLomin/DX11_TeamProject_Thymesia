@@ -16,6 +16,9 @@ class CJokerState_Sp_Open :
 
 public:
 	void Call_NextKeyFrame(const _uint& In_KeyIndex);
+	_matrix Get_PlayerTransform() {
+		return XMLoadFloat4x4(&m_vPlyerMatrix);
+	}
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -32,10 +35,12 @@ protected:
 	void Free();
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 
 private:
-	_bool m_bCloseStart = false;
+	_bool      m_bCloseStart = false;
+	_bool      m_bOnce = false;
+	_float4x4  m_vPlyerMatrix;
 };
 
 END

@@ -28,7 +28,7 @@ protected:
     virtual void OnStateEnd() override;
 
 public:
-    void Call_AnimationEnd();
+    void Call_AnimationEnd(_uint iEndAnimIndex);
     void Init_Varg(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
 
 private:

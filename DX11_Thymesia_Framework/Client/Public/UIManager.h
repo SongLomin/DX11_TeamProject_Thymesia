@@ -20,6 +20,8 @@ public:
 
     void        OnEnterStage();
 
+    void        Initalize();
+
 public:
     void Tick(_float fTimeDelta);
     void LateTick(_float fTimeDelta);
@@ -47,6 +49,9 @@ private:
 
 
 private:
+    POINT       m_MousePt;
+
+private:
 	_bool		m_bOpenedMenu = false;
 	_bool		m_bIsAnimation = false;
 private:
@@ -56,3 +61,5 @@ private:
 
 
 END
+
+

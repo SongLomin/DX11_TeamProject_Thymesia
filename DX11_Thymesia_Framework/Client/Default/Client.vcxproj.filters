@@ -1478,7 +1478,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\InventorySorter.h" />
     <ClInclude Include="..\Public\UIManager.h" />
-    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
     <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
@@ -2122,7 +2121,7 @@
       <Filter>02. GameObject\00. Camera\NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\InteriorProp.h">
-      <Filter>02. GameObject\04. Prop\NewFilter1</Filter>
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
@@ -2140,6 +2139,54 @@
     </ClInclude>
     <ClInclude Include="..\Public\Preset_NvClothCollider.h">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Effect_FadeBackground.h" />
+    <ClInclude Include="..\Public\UI_Effect_Twinkl.h" />
+    <ClInclude Include="..\Public\UI_CustomEffect.h" />
+    <ClInclude Include="..\Public\UI_EffectGroup_SkillOpen.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Option.h" />
+    <ClInclude Include="..\Public\UI_OptionItem.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB3.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\02.ComboB3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\01.ComboB2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\00.ComboB1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\00.ComboC1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attacks.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Home.h">
+      <Filter>01. ClientLevel\06. Home</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PreView_InteriorProp.h">
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_MapTable.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Chair.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXColliderObject_Interior.h">
+      <Filter>02. GameObject\12. PhysXColliderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Static_InteriorProp.h">
+      <Filter>02. GameObject\04. Prop\01. Static_Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_InteriorActivate.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3648,9 +3695,6 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
-    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -3685,9 +3729,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossBat\BatBossState_HellIdle.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Manager.cpp">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack01.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\00.Attack01</Filter>
@@ -4280,7 +4321,7 @@
       <Filter>02. GameObject\00. Camera\NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\InteriorProp.cpp">
-      <Filter>02. GameObject\04. Prop\NewFilter1</Filter>
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
@@ -4313,6 +4354,57 @@
     </ClCompile>
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Effect_FadeBackground.cpp" />
+    <ClCompile Include="..\Private\UI_Effect_Twinkl.cpp" />
+    <ClCompile Include="..\Private\UI_CustomEffect.cpp" />
+    <ClCompile Include="..\Private\UI_EffectGroup_SkillOpen.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Option.cpp" />
+    <ClCompile Include="..\Private\UI_OptionItem.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB3.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\02.ComboB3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\01.ComboB2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\00.ComboB1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\00.ComboC1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attacks.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager.cpp">
+      <Filter>97. Tool\00. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Home.cpp">
+      <Filter>01. ClientLevel\06. Home</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PreView_InteriorProp.cpp">
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_MapTable.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Chair.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp">
+      <Filter>02. GameObject\12. PhysXColliderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Static_InteriorProp.cpp">
+      <Filter>02. GameObject\04. Prop\01. Static_Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_InteriorActivate.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -6373,9 +6465,6 @@
     <Filter Include="02. GameObject\00. Camera\NewFilter1">
       <UniqueIdentifier>{86b93e9a-0b38-4da4-898b-87c9eb745011}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\NewFilter1">
-      <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\08. Effect\Effect_Decal">
       <UniqueIdentifier>{6f06b722-2574-49ba-893c-70a489bf0f23}</UniqueIdentifier>
     </Filter>
@@ -6387,6 +6476,36 @@
     </Filter>
     <Filter Include="06. DataPreset\08. Preset_NvClothCollider">
       <UniqueIdentifier>{cd9d80f9-8542-4254-8cd4-7e04db9ea860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB">
+      <UniqueIdentifier>{c89cce93-e59f-4c0f-bbab-6675fc7b3766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\00.ComboB1">
+      <UniqueIdentifier>{71cfa768-de41-4e2a-a8f6-4127e8e3d2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\01.ComboB2">
+      <UniqueIdentifier>{25daec0f-2b35-484f-b072-7073039c5045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\02.ComboB3">
+      <UniqueIdentifier>{820ec911-c3bd-4fa4-961c-fd3418ab79bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC">
+      <UniqueIdentifier>{42867c24-39cb-43db-a8f2-c6b855ca12fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\00.ComboC1">
+      <UniqueIdentifier>{7ca4610c-d0a2-4695-b48a-ab172f77c249}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2">
+      <UniqueIdentifier>{1d74ec4a-70f6-4196-aeae-7f29f23c5033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle">
+      <UniqueIdentifier>{eb3eb2c3-da78-44ed-927c-98aca6faf564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ClientLevel\06. Home">
+      <UniqueIdentifier>{215264ff-3fd9-440f-8179-6710e4628f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\Interior">
+      <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -6460,5 +6579,13 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Private\Update_Particle.cu">
+      <Filter>02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle</Filter>
+    </None>
+    <None Include="..\Public\Update_Particle.cuh">
+      <Filter>02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle</Filter>
+    </None>
   </ItemGroup>
 </Project>

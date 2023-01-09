@@ -735,47 +735,47 @@ shared_ptr<MODEL_DATA> CResource_Manager::Get_ModelFromKey(const _char* _sKey, M
 	return shared_ptr<MODEL_DATA>();
 }
 
-vector<string> CResource_Manager::Get_AllModelKeys()
+vector<const string*> CResource_Manager::Get_AllModelKeys()
 {
-	vector<string> ResultKeys;
+	vector<const string*> ResultKeys;
 
 	for (auto& elem_List : m_pScenes)
 	{
 		for (auto& elem : elem_List)
 		{
-			ResultKeys.push_back(elem.first);
+			ResultKeys.push_back(&(elem.first));
 		}
 	}
 
 	return ResultKeys;
 }
 
-vector<string> CResource_Manager::Get_AllNoneAnimModelKeys()
+vector<const string*> CResource_Manager::Get_AllNoneAnimModelKeys()
 {
-	vector<string> ResultKeys;
+	vector<const string*> ResultKeys;
 
 	for (auto& elem_List : m_pScenes)
 	{
 		for (auto& elem : elem_List)
 		{
 			if (MODEL_TYPE::NONANIM == elem.second->eModelType)
-				ResultKeys.push_back(elem.first);
+				ResultKeys.push_back(&elem.first);
 		}
 	}
 
 	return ResultKeys;
 }
 
-vector<string> CResource_Manager::Get_AllAnimModelKeys()
+vector<const string*> CResource_Manager::Get_AllAnimModelKeys()
 {
-	vector<string> ResultKeys;
+	vector<const string*> ResultKeys;
 
 	for (auto& elem_List : m_pScenes)
 	{
 		for (auto& elem : elem_List)
 		{
 			if(MODEL_TYPE::ANIM == elem.second->eModelType)
-				ResultKeys.push_back(elem.first);
+				ResultKeys.push_back(&elem.first);
 		}
 	}
 

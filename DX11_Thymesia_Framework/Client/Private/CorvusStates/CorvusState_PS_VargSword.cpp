@@ -7,9 +7,9 @@
 GAMECLASS_C(CCorvusState_PS_VargSword);
 CLONE_C(CCorvusState_PS_VargSword, CComponent)
 
-void CCorvusState_PS_VargSword::Call_AnimationEnd()
+void CCorvusState_PS_VargSword::Call_AnimationEnd(_uint iEndAnimIndex)
 {
-	__super::Call_AnimationEnd();
+	__super::Call_AnimationEnd(iEndAnimIndex);
 }
 
 void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
@@ -59,7 +59,7 @@ void CCorvusState_PS_VargSword::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_VargSword_B");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_VargSword::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_VargSword::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_PS_VargSword::Tick(_float fTimeDelta)
@@ -104,5 +104,5 @@ void CCorvusState_PS_VargSword::Free()
 	__super::Free();
 
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_VargSword::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_VargSword::Call_AnimationEnd, this, placeholders::_1);
 }

@@ -55,7 +55,7 @@ private:
     virtual void Write_Json(json& Out_Json) override;
 
 private:
-    typedef vector<string>                      RESOURCE_LIST;
+    typedef vector<const string*>                      RESOURCE_LIST;
 
     _bool               m_bSubDraw            = false;
                                               

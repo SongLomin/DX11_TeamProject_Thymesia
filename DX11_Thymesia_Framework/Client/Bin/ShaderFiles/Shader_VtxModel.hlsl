@@ -16,6 +16,7 @@ vector      g_vPlayerPosition;
 float       g_fMaskingRange = 2.f;
 float       g_fMaskingScalar;
 
+vector      g_vColor;
 float g_fFar = 300.f;
 
 float g_fUVScale;
@@ -329,14 +330,24 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
 {
     PS_OUT		Out = (PS_OUT)0;
 
-    Out.vDiffuse    = vector(1.f, 0.f, 0.f, 0.5f);
-    clip(Out.vDiffuse.a - 0.1f);
-    
+    Out.vDiffuse    = vector(1.f, 0.f, 0.f, 0.5f);   
     Out.vNormal     = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
+    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vRimLight = 0;
+    Out.vRimLight   = 0;
 
+    return Out;
+}
+
+PS_OUT      PS_MAIN_INTERIOR_PICK(PS_IN In)
+{
+    PS_OUT		Out = (PS_OUT)0;
+
+    Out.vDiffuse    = g_vColor;   
+    Out.vNormal     = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
+    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
+    Out.vShaderFlag = g_vShaderFlag;
+    Out.vRimLight   = 0;
 
     return Out;
 }
@@ -635,7 +646,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass Pass12_Normal_Dissolve
+    pass Pass12_Normal_Dissolve//12
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -647,6 +658,43 @@ technique11 DefaultTechnique
         GeometryShader  = NULL;
         PixelShader     = compile ps_5_0 PS_MAIN_DISSOLVE();
     }
+    
+    pass Character_Weapon_PBR//13
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
+        SetRasterizerState(RS_NonCulling);
 
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_PBR();
+    }
 
+    pass Character_Weapon //14
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
+    }
+
+    pass Pass13_InterioriPick
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_INTERIOR_PICK();
+    }
 }

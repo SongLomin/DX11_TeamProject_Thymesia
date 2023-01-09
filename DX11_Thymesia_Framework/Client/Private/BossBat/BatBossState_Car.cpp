@@ -33,7 +33,7 @@ void CBatBossState_Car::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Car");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Car::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Car::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Car::Tick(_float fTimeDelta)
@@ -102,7 +102,7 @@ void CBatBossState_Car::OnStateEnd()
 
 
 
-void CBatBossState_Car::Call_AnimationEnd()
+void CBatBossState_Car::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -113,7 +113,7 @@ void CBatBossState_Car::Call_AnimationEnd()
 
 void CBatBossState_Car::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Car::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Car::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Car::Free()

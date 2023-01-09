@@ -31,7 +31,7 @@ void CCorvusState_CheckPointStart::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_ArchiveSitStart");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_CheckPointStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_CheckPointStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_CheckPointStart::Tick(_float fTimeDelta)
@@ -74,7 +74,7 @@ void CCorvusState_CheckPointStart::OnStateEnd()
 
 }
 
-void CCorvusState_CheckPointStart::Call_AnimationEnd()
+void CCorvusState_CheckPointStart::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -90,7 +90,7 @@ void CCorvusState_CheckPointStart::Free()
 
 void CCorvusState_CheckPointStart::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_CheckPointStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_CheckPointStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_CheckPointStart::Check_AndChangeNextState()

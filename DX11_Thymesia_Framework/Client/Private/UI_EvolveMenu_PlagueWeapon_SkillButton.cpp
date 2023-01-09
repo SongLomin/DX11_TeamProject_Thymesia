@@ -11,6 +11,7 @@
 #include "Item.h"
 #include "GameManager.h"
 
+
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon_SkillButton)
 CLONE_C(CUI_EvolveMenu_PlagueWeapon_SkillButton, CGameObject)
 
@@ -18,7 +19,7 @@ HRESULT CUI_EvolveMenu_PlagueWeapon_SkillButton::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+    m_eRenderGroup = RENDERGROUP::RENDER_UI;
 
     SetUp_UI();
     return S_OK;
@@ -36,6 +37,8 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::Tick(_float fTimeDelta)
     fTimeDelta = CUI_Utils::UI_TimeDelta();
 
     __super::Tick(fTimeDelta);
+
+
 
     //해금 가능하고, 최대치로 꾹 누르고 있었다면
     if (((m_pIcon.lock()->Get_Ratio() > 0.99)) && Get_Unlockable())

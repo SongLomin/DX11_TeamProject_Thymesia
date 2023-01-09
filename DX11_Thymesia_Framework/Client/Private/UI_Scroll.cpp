@@ -81,7 +81,6 @@ void CUI_Scroll::CreateScroll()
     m_pScrollTrack = ADD_STATIC_CUSTOMUI;
     m_pScrollTrack.lock()->Set_Texture("Scroll_Track");
 
-
     Add_Child(m_pDecorationHead);
     Add_Child(m_pDecorationTail);
     Add_Child(m_pScrollBoder);
@@ -96,6 +95,24 @@ void CUI_Scroll::Scrolling(_float fTimeDelta)
 
     m_pScrollTrack.lock()->Add_Y(-fAmount);
 
+}
+
+void CUI_Scroll::Up_Scroll(_float fUpAmount)
+{
+    m_pScrollTrack.lock()->Add_Y(fUpAmount);
+
+    CheckTrackOverHeadOrTail();
+    CalcScrolledTrackToMaxSize();
+    Callback_OnWheelMove(m_fMaxSize * m_fProgressRatio);
+}
+
+void CUI_Scroll::Down_Scroll(_float fDownAmount)
+{
+    m_pScrollTrack.lock()->Add_Y(-fDownAmount);
+
+    CheckTrackOverHeadOrTail();
+    CalcScrolledTrackToMaxSize();
+    Callback_OnWheelMove(m_fMaxSize * m_fProgressRatio);
 }
 
 void CUI_Scroll::CheckTrackOverHeadOrTail()
@@ -177,6 +194,7 @@ void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const
 
     _float2  fHeadLeftBottomPos = m_pDecorationHead.lock()->Get_Point(CUI::UI_POINT::LEFT_BOTTOM);
 
+    //StartSize : 처음 화면에 보이는 크기.
     _float  fTrackSize = (fStartSize / fMaxSize) * fScrollSize;
 
     m_fMaxSize = fMaxSize;

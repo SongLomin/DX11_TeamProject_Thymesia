@@ -55,7 +55,7 @@ void CVargBossState_RaidAttack::Start()
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack2");
 	m_bAttackLookAtLimit = true;
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_RaidAttack::Tick(_float fTimeDelta)
@@ -83,7 +83,7 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 	for (auto& elem : pWeapons)
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 
@@ -106,7 +106,7 @@ void CVargBossState_RaidAttack::OnStateEnd()
 
 
 
-void CVargBossState_RaidAttack::Call_AnimationEnd()
+void CVargBossState_RaidAttack::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -116,7 +116,7 @@ void CVargBossState_RaidAttack::Call_AnimationEnd()
 
 void CVargBossState_RaidAttack::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_RaidAttack::Free() { }

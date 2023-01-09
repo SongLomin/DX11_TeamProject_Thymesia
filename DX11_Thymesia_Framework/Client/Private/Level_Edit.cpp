@@ -16,7 +16,7 @@ HRESULT CLevel_Edit::Initialize()
 	/*GAMEINSTANCE->Clear_Lights();*/
 
 	SetWindowText(g_hWnd, TEXT("Loading All Effect Group..."));
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
+	//Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 
 	m_pImGui_Manager = CImGui_Manager::Create_Instance();
 	m_pImGui_Manager->Initialize();

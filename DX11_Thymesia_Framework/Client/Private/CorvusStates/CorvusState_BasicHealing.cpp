@@ -32,7 +32,7 @@ void CCorvusState_BasicHealing::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Healing2_InPlace");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_BasicHealing::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_BasicHealing::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_BasicHealing::Tick(_float fTimeDelta)
@@ -76,7 +76,7 @@ void CCorvusState_BasicHealing::OnStateEnd()
 
 }
 
-void CCorvusState_BasicHealing::Call_AnimationEnd()
+void CCorvusState_BasicHealing::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -88,7 +88,7 @@ void CCorvusState_BasicHealing::Call_AnimationEnd()
 void CCorvusState_BasicHealing::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_BasicHealing::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_BasicHealing::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_BasicHealing::Check_AndChangeNextState()

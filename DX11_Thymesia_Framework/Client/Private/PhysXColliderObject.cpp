@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "PhysXColliderObject.h"
+
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
 #include "VIBuffer_Cube.h"
 #include "Renderer.h"
 #include "Shader.h"
+
+#include "SMath.h"
 
 GAMECLASS_C(CPhysXColliderObject);
 CLONE_C(CPhysXColliderObject, CGameObject);

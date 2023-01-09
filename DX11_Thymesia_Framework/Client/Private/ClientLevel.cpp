@@ -41,7 +41,7 @@
 #include "UI_AppearEventVarg.h"
 #include "UI_ItemRequirement.h"
 #include "UI_EvolveMenu_PlagueWeapon.h"
-
+#include "UI_EvolveMenu_Option.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -87,20 +87,35 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
 {
-	fs::directory_iterator itr(In_FolderPath);
+	std::filesystem::path dir_path = In_FolderPath;
+	std::vector<fs::directory_entry> entries;
+	std::copy(fs::directory_iterator(dir_path), fs::directory_iterator(), std::back_inserter(entries));
+	fs::directory_iterator itr(dir_path);
+	std::filesystem::directory_iterator end;
 	 
+	BEGIN_PERFROMANCE_CHECK("LOAD_ALL_EFFECT_GROUP");
+
+	/*for_each_n(std::execution::par, entries.begin(), entries.size(), [In_LevelIndex](const std::filesystem::directory_entry& entry)
+		{
+			weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+			cout << entry.path().filename() << std::endl;
+		});*/
+
+	
+
 	while (itr != fs::end(itr)) {
 		const fs::directory_entry& entry = *itr;
 
 		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
 		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-
 #ifdef _DEBUG_COUT_
 		cout << entry.path().filename() << std::endl;
 #endif
 
 		itr++;
 	}
+	END_PERFROMANCE_CHECK("LOAD_ALL_EFFECT_GROUP");
 }
 
 void CClientLevel::Tick(_float fTimeDelta)
@@ -132,6 +147,7 @@ void CClientLevel::SetUp_UI()
 	m_pEvolveMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_PlagueWeapon>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_Option>(LEVEL_STATIC);
 
 	Preset::AddGameObject::TalentSetting();
 

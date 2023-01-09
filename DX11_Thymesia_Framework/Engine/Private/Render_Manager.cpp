@@ -762,6 +762,14 @@ HRESULT CRender_Manager::Set_Sharpness(const _float In_fSharpness)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio)
+{
+	m_fInversionStrength = In_fInversionStrength;
+	m_fInversionRatio = In_fInversionRatio;
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
 	m_LiftGammaGainDesc.vLift = In_vLift;
@@ -1968,7 +1976,10 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vLightDiffuse", &m_vGodRayColor, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_fGodRayScale", &m_fGodRayScale, sizeof(_float));
 	 
-	for (_int i = 0; i < 6; ++i)
+	m_pPostProcessingShader->Set_RawValue("g_fInversionStrength", &m_fInversionStrength, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fInversionRatio", &m_fInversionRatio, sizeof(_float));
+
+	for (_int i = 0; i < 7; ++i)
 	{
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))

@@ -456,6 +456,11 @@ HRESULT CGameInstance::Set_Sharpness(const _float In_fSharpness)
 	return m_pRender_Manager->Set_Sharpness(In_fSharpness);
 }
 
+HRESULT CGameInstance::Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio)
+{
+	return m_pRender_Manager->Set_ColorInversion(In_fInversionStrength, In_fInversionRatio);
+}
+
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
 	return m_pRender_Manager->Get_BeforeRenderContext();
@@ -609,17 +614,17 @@ shared_ptr<MODEL_DATA> CGameInstance::Get_ModelFromKey(const _char* _sKey, MEMOR
 	return m_pResource_Manager->Get_ModelFromKey(_sKey, _eType);
 }
 
-vector<string> CGameInstance::Get_AllModelKeys()
+vector<const string*> CGameInstance::Get_AllModelKeys()
 {
 	return m_pResource_Manager->Get_AllModelKeys();
 }
 
-vector<string> CGameInstance::Get_AllNoneAnimModelKeys()
+vector<const string*> CGameInstance::Get_AllNoneAnimModelKeys()
 {
 	return m_pResource_Manager->Get_AllNoneAnimModelKeys();
 }
 
-vector<string> CGameInstance::Get_AllAnimModelKeys()
+vector<const string*> CGameInstance::Get_AllAnimModelKeys()
 {
 	return m_pResource_Manager->Get_AllAnimModelKeys();
 }
@@ -745,19 +750,19 @@ _int CGameInstance::Pause(CHANNELID eID)
 	return m_pSound_Manager->Pause(eID);
 }
 
-_uint CGameInstance::PlaySound(const TCHAR* pSoundKey, _uint _iIndex, _float _vol)
+_uint CGameInstance::PlaySound(const string& In_szSoundKey, _uint _iIndex, _float _vol)
 {
-	return m_pSound_Manager->PlaySound(pSoundKey, _iIndex, _vol);
+	return m_pSound_Manager->PlaySound(In_szSoundKey, _iIndex, _vol);
 }
 
-_uint CGameInstance::PlaySound(const TCHAR* pSoundKey, _float _vol)
+_uint CGameInstance::PlaySound(const string& In_szSoundKey, _float _vol)
 {
-	return m_pSound_Manager->PlaySound(pSoundKey, _vol);
+	return m_pSound_Manager->PlaySound(In_szSoundKey, _vol);
 }
 
-void CGameInstance::PlayBGM(const TCHAR* pSoundKey, _float _vol)
+void CGameInstance::PlayBGM(const string& In_szSoundKey, _float _vol)
 {
-	m_pSound_Manager->PlayBGM(pSoundKey, _vol);
+	m_pSound_Manager->PlayBGM(In_szSoundKey, _vol);
 }
 
 void CGameInstance::StopSound(_uint _iChannelIndex)
@@ -768,6 +773,16 @@ void CGameInstance::StopSound(_uint _iChannelIndex)
 void CGameInstance::StopAll()
 {
 	m_pSound_Manager->StopAll();
+}
+
+void CGameInstance::Load_SoundFileFromFolderPath(const string& In_szFolderPath)
+{
+	m_pSound_Manager->LoadSoundFile(In_szFolderPath);
+}
+
+vector<const string*> CGameInstance::Get_AllSoundNames()
+{
+	return m_pSound_Manager->Get_AllSoundNames();
 }
 
 void CGameInstance::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)

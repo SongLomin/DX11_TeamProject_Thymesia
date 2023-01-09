@@ -39,9 +39,9 @@ private:
 public: /* For Model */
 	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC, _bool bAnimZero = false);
 	shared_ptr<MODEL_DATA> Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
-	vector<string> Get_AllModelKeys();
-	vector<string> Get_AllNoneAnimModelKeys();
-	vector<string> Get_AllAnimModelKeys();
+	vector<const string*> Get_AllModelKeys();
+	vector<const string*> Get_AllNoneAnimModelKeys();
+	vector<const string*> Get_AllAnimModelKeys();
 
 private:
 	unordered_map<string, shared_ptr<MODEL_DATA>>	m_pScenes[(_uint)MEMORY_TYPE::MEMORY_END];

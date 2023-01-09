@@ -159,6 +159,28 @@ void CNorMonState_Idle::Start()
 		}
 
 	}
+
+	//if (m_eMonType == MONSTERTYPE::ARMORSHIELDMAN)
+	//{
+	//	switch (m_eNorMonIdleType)
+	//	{
+	//	case Client::NORMONSTERIDLETYPE::NORIDLE:
+	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Idle");
+	//		break;
+	//	case Client::NORMONSTERIDLETYPE::SITIDLE:
+	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Sit_Idle");
+	//		break;
+	//	case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Idle2");
+	//		break;
+	//	case Client::NORMONSTERIDLETYPE::SPIDLE:
+	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Idle1");
+	//		break;
+	//	case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_IdleN");
+	//		break;
+	//	}
+	//}
 }
 
 

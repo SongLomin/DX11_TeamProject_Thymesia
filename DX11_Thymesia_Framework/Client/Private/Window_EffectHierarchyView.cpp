@@ -4,6 +4,7 @@
 #include "Window_EffectResourceView.h"
 #include "EffectGroup.h"
 #include "Window_EffectEditerView.h"
+#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_EffectHierarchyView)
 
@@ -40,8 +41,13 @@ void CWindow_EffectHierarchyView::Start()
     GET_SINGLE(CWindow_EffectResourceView)->CallBack_EffectGroupClick +=
         bind(&CWindow_EffectHierarchyView::Call_LoadEffectGroup, this, placeholders::_1);
 
+    GET_SINGLE(CWindow_EffectResourceView)->CallBack_SoundFileClick +=
+        bind(&CWindow_EffectHierarchyView::Call_LoadSoundFile, this, placeholders::_1);
+
     GET_SINGLE(CWindow_EffectEditerView)->CallBack_RemoveCurrentEffect +=
         bind(&CWindow_EffectHierarchyView::Call_RemoveCurrentIndex, this);
+
+
 }
 
 void CWindow_EffectHierarchyView::Tick(_float fTimeDelta)
@@ -59,55 +65,23 @@ HRESULT CWindow_EffectHierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("CWindow_EffectHierarchyView", tab_bar_flags))
     {
+        switch (m_eCurrentResourceType)
+        {
+        case Client::CWindow_EffectHierarchyView::EFFECTRESOURCE_TYPE::EFFECT:
+            Render_Effect();
+            break;
+        case Client::CWindow_EffectHierarchyView::EFFECTRESOURCE_TYPE::SOUND:
+            Render_Sound();
+            break;
+        case Client::CWindow_EffectHierarchyView::EFFECTRESOURCE_TYPE::TYPE_END:
+            break;
+        default:
+            break;
+        }
+
         if (!m_pEffectGroup.lock())
         {
 
-        }
-
-        else if (ImGui::BeginTabItem(m_pEffectGroup.lock()->Get_EffectGroupName()))
-        {
-            //static ImGuiFilter filter;
-            //ImGui::Text("Search : ");
-            //filter.Draw("##EffectGroupSearchBar", 340.f);
-            //ImGui::BeginChild("##Effect");
-            for (int i(0); i < m_szEffectMeshNames.size(); ++i)
-            {
-                const bool is_selected = (m_iCurrentEffectIndex == i);
-                if (ImGui::Selectable(m_szEffectMeshNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-                {
-                    m_iCurrentEffectIndex = i;
-
-                    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-                    {
-                        CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
-                    }
-                }
-
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                if (is_selected)
-                    ImGui::SetItemDefaultFocus();
-            }
-
-            for (int i(0); i < m_szEffectParticleNames.size(); ++i)
-            {
-                const bool is_selected = (m_iCurrentEffectIndex == i + m_szEffectMeshNames.size());
-                if (ImGui::Selectable(m_szEffectParticleNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-                {
-                    m_iCurrentEffectIndex = i + _uint(m_szEffectMeshNames.size());
-
-                    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-                    {
-                        CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
-                    }
-                }
-
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                if (is_selected)
-                    ImGui::SetItemDefaultFocus();
-            }
-
-
-            ImGui::EndTabItem();
         }
 
         ImGui::EndTabBar();
@@ -143,6 +117,8 @@ void CWindow_EffectHierarchyView::Load_FromJson(const json& In_Json)
 
 void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
 {
+    m_eCurrentResourceType = EFFECTRESOURCE_TYPE::EFFECT;
+
     // 모델 키 받아와서 이펙트 메쉬 추가하고 선택
 
     // 이펙트메쉬그룹이 없으면 만들어서 이펙트 메쉬 추가
@@ -189,6 +165,8 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
 
 void CWindow_EffectHierarchyView::Call_AddParticle(const _char* In_szName, const _char* In_szTextureKey)
 {
+    m_eCurrentResourceType = EFFECTRESOURCE_TYPE::EFFECT;
+
     if (!m_pEffectGroup.lock())
         m_pEffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(LEVEL_EDIT);
 
@@ -201,6 +179,8 @@ void CWindow_EffectHierarchyView::Call_AddParticle(const _char* In_szName, const
 
 void CWindow_EffectHierarchyView::Call_LoadEffectGroup(const _char* In_szEffectGroupName)
 {
+    m_eCurrentResourceType = EFFECTRESOURCE_TYPE::EFFECT;
+
     string szPath = "../Bin/EffectData/";
     szPath += In_szEffectGroupName;
 
@@ -222,6 +202,20 @@ void CWindow_EffectHierarchyView::Call_LoadEffectGroup(const _char* In_szEffectG
     m_szEffectParticleNames = m_pEffectGroup.lock()->Get_EffectParticleKeys();
 
     CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
+
+}
+
+void CWindow_EffectHierarchyView::Call_LoadSoundFile(const _char* In_szSoundFileName)
+{
+    m_eCurrentResourceType = EFFECTRESOURCE_TYPE::SOUND;
+
+    if (m_pEffectGroup.lock())
+    {
+        m_pEffectGroup.lock()->Remove_AllEffects();
+        m_pEffectGroup.lock()->Set_Dead();
+    }
+
+    CallBack_SelectSound(In_szSoundFileName);
 
 }
 
@@ -270,6 +264,67 @@ void CWindow_EffectHierarchyView::Add_EffectParticle_Internal(const _char* In_sz
     m_pEffectGroup.lock()->Add_EditParticle(In_szName, In_szModelKey);
     m_szEffectParticleNames.emplace_back(In_szName);
 }
+
+void CWindow_EffectHierarchyView::Render_Effect()
+{
+    if (ImGui::BeginTabItem(m_pEffectGroup.lock()->Get_EffectGroupName()))
+    {
+        //static ImGuiFilter filter;
+        //ImGui::Text("Search : ");
+        //filter.Draw("##EffectGroupSearchBar", 340.f);
+        //ImGui::BeginChild("##Effect");
+        for (int i(0); i < m_szEffectMeshNames.size(); ++i)
+        {
+            const bool is_selected = (m_iCurrentEffectIndex == i);
+            if (ImGui::Selectable(m_szEffectMeshNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+            {
+                m_iCurrentEffectIndex = i;
+
+                if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                {
+                    CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
+                }
+            }
+
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+
+        for (int i(0); i < m_szEffectParticleNames.size(); ++i)
+        {
+            const bool is_selected = (m_iCurrentEffectIndex == i + m_szEffectMeshNames.size());
+            if (ImGui::Selectable(m_szEffectParticleNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+            {
+                m_iCurrentEffectIndex = i + _uint(m_szEffectMeshNames.size());
+
+                if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                {
+                    CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
+                }
+            }
+
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+
+
+        ImGui::EndTabItem();
+    }
+}
+
+void CWindow_EffectHierarchyView::Render_Sound()
+{
+    if (ImGui::BeginTabItem("SoundFile"))
+    {
+
+
+
+        ImGui::EndTabItem();
+    }
+}
+
 void CWindow_EffectHierarchyView::Free()
 {
 }

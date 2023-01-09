@@ -34,7 +34,7 @@ void CCorvusState_Long_AvoidB::Start()
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidLongB_NEW");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Long_AvoidB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Long_AvoidB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Long_AvoidB::Tick(_float fTimeDelta)
@@ -87,7 +87,7 @@ void CCorvusState_Long_AvoidB::OnStateEnd()
 
 }
 
-void CCorvusState_Long_AvoidB::Call_AnimationEnd()
+void CCorvusState_Long_AvoidB::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -110,7 +110,7 @@ void CCorvusState_Long_AvoidB::Free()
 void CCorvusState_Long_AvoidB::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Long_AvoidB::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Long_AvoidB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_Long_AvoidB::Check_AndChangeNextState()

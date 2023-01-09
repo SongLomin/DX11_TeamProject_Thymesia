@@ -174,3 +174,8 @@ void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)
         }
     }
 }
+
+void CPlayerSkill_System::Free()
+{
+    int a = 0;
+}

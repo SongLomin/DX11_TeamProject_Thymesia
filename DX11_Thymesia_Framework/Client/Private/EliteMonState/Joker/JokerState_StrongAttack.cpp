@@ -45,7 +45,7 @@ void CJokerState_StrongAttack::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_StrongAttack");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_StrongAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_StrongAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_StrongAttack::Tick(_float fTimeDelta)
@@ -70,7 +70,7 @@ void CJokerState_StrongAttack::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.52f);
 	m_bAttackLookAtLimit = true;
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -90,7 +90,7 @@ void CJokerState_StrongAttack::OnStateEnd()
 		bind(&CJokerState_StrongAttack::Call_NextKeyFrame, this, placeholders::_1);
 }
 
-void CJokerState_StrongAttack::Call_AnimationEnd()
+void CJokerState_StrongAttack::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -100,7 +100,7 @@ void CJokerState_StrongAttack::Call_AnimationEnd()
 
 void CJokerState_StrongAttack::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_StrongAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_StrongAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_StrongAttack::Free()

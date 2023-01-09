@@ -8,7 +8,7 @@ class CCorvusState_PS abstract :
 	GAMECLASS_H(CCorvusState_PS);
 
 public:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 	virtual void Call_NextKeyFrame(const _uint& In_KeyIndex) = 0;
 
 protected:
@@ -23,11 +23,12 @@ protected:
 	virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
 	virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 	virtual _bool Check_AndChangeNextState() override;
-	void Free();
 
 	void Set_WeaponRender(const _bool bRender);
 	void TurnOn_Effect(const std::string& szPlagueWeaponName);
 	void TurnOff_Effect(const std::string& szPlagueWeaponName);
+
+	void Free();
 
 protected:
 	weak_ptr<CGameObject> m_pTargetObject;

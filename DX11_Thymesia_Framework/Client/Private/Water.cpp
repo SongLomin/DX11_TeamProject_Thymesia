@@ -11,6 +11,7 @@
 #include "MeshData.h"
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
+#include "GameManager.h"
 
 GAMECLASS_C(CWater)
 CLONE_C(CWater, CGameObject)
@@ -41,6 +42,11 @@ HRESULT CWater::Initialize(void* pArg)
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("DefaultGround");
 	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0], D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
+	m_WaterWaveDescs.resize(128, {});
+	
+
+	GET_SINGLE(CGameManager)->Register_Water(Weak_StaticCast<CWater>(m_this));
+
 	return S_OK;
 }
 
@@ -58,6 +64,25 @@ void CWater::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_vNoiseUV.x += fTimeDelta;
+	sort(m_WaterWaveDescs.begin(), m_WaterWaveDescs.end(), [](const WATERWAVE_DESC& left, const WATERWAVE_DESC& right) {
+			return left.fVibrationScale > right.fVibrationScale;
+			});
+
+	m_iDescCount = 0;
+
+	for (_uint i = 0; i < m_WaterWaveDescs.size(); ++i)
+	{
+		
+		m_WaterWaveDescs[i].fVibrationScale *= 0.9f;
+		m_WaterWaveDescs[i].fTimeAcc += fTimeDelta;
+
+		if (m_WaterWaveDescs[i].fVibrationScale > 0.001f)
+		{
+			++m_iDescCount;
+		}
+			
+	}
+	
 }
 
 void CWater::LateTick(_float fTimeDelta)
@@ -80,6 +105,22 @@ HRESULT CWater::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
+void CWater::Add_WaterWave(const WATERWAVE_DESC& In_WaterDesc)
+{
+	m_iDescCount = 0;
+	
+	for (_uint i = 0; i < m_WaterWaveDescs.size(); ++i)
+	{
+		if (m_WaterWaveDescs[i].fVibrationScale < 0.001f)
+		{
+			m_WaterWaveDescs[i] = In_WaterDesc;
+			m_iDescCount = i;
+			return;
+		}
+	}
+	
+}
+
 void CWater::Load_FromJson(const json& In_Json)
 {
 	__super::Load_FromJson(In_Json);
@@ -94,6 +135,35 @@ HRESULT CWater::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
+	//_matrix WorldMatrixInv = XMMatrixTranspose(XMMatrixInverse(nullptr, m_pTransformCom.lock()->Get_WorldMatrix()));
+
+	//if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrixInv", &WorldMatrixInv, sizeof(_float4x4))))
+	//	return E_FAIL;
+
+
+	// WaterWaveDesc을 배열 크기(최대 128개)만큼 던진다.
+	// 배열이 있을때만 던진다.
+	if (m_iDescCount > 0)
+	{
+		// 셰이더 내부의 WATERWAVE_DESC과 프로젝트의 WATERWAVE_DESC의 바이트와 멤버 위치가 같아야됨.
+		/*if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WaveDescArray", &m_WaterWaveDescs[0], sizeof(WATERWAVE_DESC) * iWaverWaveCnt)))
+		{
+			DEBUG_ASSERT;
+		}*/
+
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue("WaterWaveDescs", &m_WaterWaveDescs[0], sizeof(WATERWAVE_DESC) * 128)))
+		{
+			DEBUG_ASSERT;
+		}
+		
+	}
+
+	// 사이즈가 0이더라도, 0이라는 것을 알려준다.
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WaterWaveSize", &m_iDescCount, sizeof(_uint))))
+	{
+		DEBUG_ASSERT;
+	}
+
 	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DisplacementTexture", 679);
 
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
@@ -105,6 +175,7 @@ HRESULT CWater::SetUp_ShaderResource()
 
 	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
 	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
+
 
 	return S_OK;
 }

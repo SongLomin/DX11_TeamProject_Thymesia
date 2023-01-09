@@ -56,7 +56,7 @@ void CVargBossState_AvoidAttack::Start()
 
 	m_bAttackLookAtLimit = true;
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_AvoidAttack::Tick(_float fTimeDelta)
@@ -86,7 +86,7 @@ void CVargBossState_AvoidAttack::OnStateStart(const _float& In_fAnimationBlendTi
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 	for (auto& elem : pWeapons)
 	{
@@ -128,7 +128,7 @@ void CVargBossState_AvoidAttack::OnStateEnd()
 
 
 
-void CVargBossState_AvoidAttack::Call_AnimationEnd()
+void CVargBossState_AvoidAttack::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -139,7 +139,7 @@ void CVargBossState_AvoidAttack::Call_AnimationEnd()
 
 void CVargBossState_AvoidAttack::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_AvoidAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_AvoidAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_AvoidAttack::Free()

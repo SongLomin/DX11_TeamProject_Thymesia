@@ -139,7 +139,7 @@ HRESULT CCorvus::Start()
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
 
-	//Test_BindSkill();
+	Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -171,15 +171,23 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
-		DECAL_DESC DecalDesc;
+		/*DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
-		XMStoreFloat4(&DecalDesc.vPosition, Get_WorldPosition()+XMVectorSet(0.f,0.1f,0.f,0.f));
-		DecalDesc.fTime = 3.f;
 		DecalDesc.vScale = { 5.f,5.f,5.f };
+		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
+		DecalDesc.fTime = 3.f;
 
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
 	}
+	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
+	{
+		m_fInversionStrength = 0.5f;
+		m_fInversionRatio = 0.f;
+		CallBack_ColorInversion+= bind(&CCorvus::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+	}
+
 
 	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
@@ -194,6 +202,32 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 	__super::LateTick(fTimeDelta);
+
+	if (CallBack_ColorInversion.empty())
+		return;
+
+	_bool bEnd = false;
+
+	CallBack_ColorInversion(fTimeDelta, bEnd);
+	if (bEnd)
+	{
+		CallBack_ColorInversion.Clear();
+		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
+	}
+}
+
+void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
+{
+	if (3.f > m_fInversionStrength)
+		m_fInversionStrength += In_fTimeDelta*0.5f;
+	else if (1.f > m_fInversionRatio)
+	{
+		m_fInversionRatio += In_fTimeDelta;
+	}
+	else
+		In_bEnd = true;
+
+	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
 }
 
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
@@ -374,10 +408,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_CheckPointEnd>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
-	{
-		Change_State<CCorvusState_Joker_Execution>();
-	}
+	//if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
+	//{
+	//	Change_State<CCorvusState_Joker_Execution>();
+	//}
 
 	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
 	{
@@ -395,6 +429,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 
 	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if (EVENT_TYPE::ON_JOKEREXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
@@ -734,6 +773,7 @@ void CCorvus::WriteTalentFromJson(json& Out_Json)
 
 void CCorvus::Free()
 {
+	int a = 0;
 }
 
 void CCorvus::Save_ClientComponentData()

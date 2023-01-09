@@ -31,7 +31,7 @@ protected:
 
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 private:
 	_bool        m_bSpecialAtk = false;
 protected:

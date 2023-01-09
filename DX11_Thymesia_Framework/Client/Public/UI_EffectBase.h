@@ -3,6 +3,13 @@
 #include "CustomUI.h"
 #include "UI_Enums.h"
 
+BEGIN(Engine)
+
+class CTexture;
+
+END
+
+
 BEGIN(Client)
 
 class CEasingComponent_Float;
@@ -49,42 +56,23 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 
-public:
-	void		Init_UIEffect();
-	void		Add_Clip(UICLIPDESC tUIClipDesc);
-
-	virtual void	Play(_bool bRepeat = false);
-	void			Stop();
-protected:
-	virtual void SetUp_Component() override;
-	virtual void SetUp_Animaiton();
+	virtual void SetMaskIndex(_uint iIndex);
 
 protected:
-	virtual void	ExecuteCurrentClip(UICLIPDESC tagClipDesc);
+	virtual HRESULT SetUp_ShaderResource() override;
 
 protected:
-	void					NextClip();
-	
-
-	void					Call_AnimaitonClipEnd(_uint	iCallbackClipIndex);
-	void					Call_AnimationEnd();
-public:
-	FDelegate<>				Callback_AnimaitonEnd;
-	FDelegate<_uint>		Callback_AnimaitonClipEnd;
-
+	virtual void	SetUp_Component() override;
+	virtual void	Init_UI();
 protected:
-	UI_EFFECT_ANIM_STATE	m_eAnimState = UI_EFFECT_ANIM_STATE::STOP;
-
-	_float					m_fCurrentClipTime = 0;
-	int						m_iIndex = 0;
-	
-	vector<UICLIPDESC>		m_vecUIClipDesc;
-protected:
-	weak_ptr<CEasingComponent_Alpha> m_pEasingAlpha;
-	weak_ptr<CEasingComponent_Float> m_pEasingFloat;
-	weak_ptr<CEasingComponent_Transform> m_pEasingTransform;
-	weak_ptr<CEasingComponent_Transform> m_pEasingSizing;
+	weak_ptr<CEasingComponent_Alpha>		m_pEasingAlpha;
+	weak_ptr<CEasingComponent_Float>		m_pEasingFloat;
+	weak_ptr<CEasingComponent_Transform>	m_pEasingTransform;
+	weak_ptr<CEasingComponent_Transform>	m_pEasingSizing;
 	weak_ptr<CEasingComponent_Float> m_pEasingRotation;
+	weak_ptr<CTexture>				m_pMask;
+	_uint							m_iMaskIndex;
+	_float2							m_fUVOffset;
 
 };
 

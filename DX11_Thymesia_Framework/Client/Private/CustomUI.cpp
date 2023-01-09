@@ -35,7 +35,7 @@ HRESULT CCustomUI::Initialize(void* pArg)
 		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
-
+	Set_Texture("None");
 	return S_OK;
 }
 
@@ -82,6 +82,8 @@ void CCustomUI::Set_DeffuseIndex(_uint _iDeffuseIndex)
 HRESULT CCustomUI::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
+
+	//_float fTotalColor = m_fAlphaColor * m_fOwnerAlphaColor;
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_fAlphaColor", &m_fAlphaColor, sizeof(_float))))
 		return E_FAIL;

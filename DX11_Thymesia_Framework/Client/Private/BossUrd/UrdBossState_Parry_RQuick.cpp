@@ -32,7 +32,7 @@ void CUrdBossState_Parry_RQuick::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Parry_RQuick|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Parry_RQuick::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Parry_RQuick::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Parry_RQuick::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CUrdBossState_Parry_RQuick::OnStateEnd()
 
 
 
-void CUrdBossState_Parry_RQuick::Call_AnimationEnd()
+void CUrdBossState_Parry_RQuick::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CUrdBossState_Parry_RQuick::Call_AnimationEnd()
 
 void CUrdBossState_Parry_RQuick::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Parry_RQuick::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Parry_RQuick::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Parry_RQuick::Free()

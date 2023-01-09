@@ -11,6 +11,7 @@
 #include "JokerStates.h"
 #include "MonsterHPBar_Base.h"
 #include "Status_Monster.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CJokerState_TakeExecution_Start);
 CLONE_C(CJokerState_TakeExecution_Start, CComponent)
@@ -38,7 +39,7 @@ void CJokerState_TakeExecution_Start::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_TakeExecution_Start");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_TakeExecution_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_TakeExecution_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_TakeExecution_Start::Tick(_float fTimeDelta)
@@ -63,6 +64,32 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
+	{
+		PxControllerFilters Filters;
+		_matrix                    vDoorOpenPlayerMatrix = Get_Owner().lock()->Get_Component<CJokerState_Sp_Open>().lock()->Get_PlayerTransform();
+		m_pPhysXControllerCom.lock()->Set_Position(
+			XMVectorSet(41.5f, 0.09f, 40.05f, 1.f),
+			GAMEINSTANCE->Get_DeltaTime(),
+			Filters);
+		Get_OwnerCharacter().lock()->Get_Transform()->Set_Look2D(-vDoorOpenPlayerMatrix.r[2]);
+
+		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+
+
+		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+		vOtherWorldMatrix.r[3] = XMVectorSet(41.5f, 0.09f, 40.05f, 1.f);
+		_matrix                    vResultOtherWorldMatrix;
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 1.1f, 0.f));
+		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+			vResultOtherWorldMatrix.r[3],
+			GAMEINSTANCE->Get_DeltaTime(),
+			Filters);
+		pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+		Get_OwnerMonster()->Set_BossExecutionStartOnOff(false);
+	}
 	
 	m_pOwner.lock()->Get_Component<CStatus_Monster>().lock()->CallBack_UI_Disable();
 
@@ -81,7 +108,7 @@ void CJokerState_TakeExecution_Start::OnStateEnd()
 
 }
 
-void CJokerState_TakeExecution_Start::Call_AnimationEnd()
+void CJokerState_TakeExecution_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -91,7 +118,7 @@ void CJokerState_TakeExecution_Start::Call_AnimationEnd()
 
 void CJokerState_TakeExecution_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_TakeExecution_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_TakeExecution_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_TakeExecution_Start::Free()

@@ -330,7 +330,7 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
 	}
 
-	//m_pScenes[eScene]->setSimulationEventCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack());
+	m_pScenes[eScene]->setSimulationEventCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack());
 	//m_pScenes[eScene]->setContactModifyCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionCallBack());
 
 	m_pCurScene = m_pScenes[eScene];

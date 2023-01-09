@@ -4,6 +4,8 @@
 #include "Client_GameObjects.h"
 #include "Client_Components.h"
 #include "Window_HierarchyView.h"
+#include <imgui_impl_win32.h>
+#include "SMath.h"
 
 #define PICKED_GAMEOBJECT m_tPickedGameObjectDesc.pInstance.lock().get()
 
@@ -84,7 +86,7 @@ void CWindow_ComponentView::Draw_Components()
 	if (pCastUI.lock())
 		return;*/
 
-	weak_ptr<CTransform> pTransformCom   = PICKED_GAMEOBJECT->Get_Component<CTransform>();
+	weak_ptr<Engine::CTransform> pTransformCom   = PICKED_GAMEOBJECT->Get_Component<Engine::CTransform>();
 	static _bool bSelect_ActivateHotkey  = false;
 
 	if (!pTransformCom.lock().get())
@@ -108,13 +110,13 @@ void CWindow_ComponentView::Draw_Components()
 			ImGui::Checkbox("Trasnfrom HotKey", &bSelect_ActivateHotkey);
 
 			{ // Position
-				_vector vPositionVector = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+				_vector vPositionVector = pTransformCom.lock()->Get_State(Engine::CTransform::STATE_TRANSLATION);
 
 				ImGui::Text("Position");
 				ImGui::DragFloat3("##Position", &vPositionVector.m128_f32[0], 1.f);
 				ImGui::Separator();
 
-				pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPositionVector);
+				pTransformCom.lock()->Set_State(Engine::CTransform::STATE_TRANSLATION, vPositionVector);
 			}
 			
 			{ // Quaternion
@@ -202,11 +204,11 @@ void CWindow_ComponentView::Draw_Components()
 
 void CWindow_ComponentView::Init_Components()
 {
-	vector<string> ModelKeys = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
+	vector<const string*> ModelKeys = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
 
 	for (auto& iter : ModelKeys)
 	{
-		const char* pKey = iter.c_str();
+		const char* pKey = iter->c_str();
 
 		auto iter = find_if(m_AllModelKeys.begin(), m_AllModelKeys.end(), [&](string& ModelKey)
 		{
@@ -227,7 +229,10 @@ void CWindow_ComponentView::Init_Components()
 		{
 			const char* szCurrentModelKey = pModel.lock()->Get_ModelKey();
 
-			m_AllModelKeys = GAMEINSTANCE->Get_AllModelKeys();
+			for (auto& KeyPointer : GAMEINSTANCE->Get_AllModelKeys())
+			{
+				m_AllModelKeys.push_back(*KeyPointer);
+			}
 
 			auto iter = find_if(m_AllModelKeys.begin(), m_AllModelKeys.end(), [&](string& ModelKey)
 				{
@@ -241,7 +246,7 @@ void CWindow_ComponentView::Init_Components()
 
 
 
-void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform)
+void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<Engine::CTransform> _pTransform)
 {
 	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 		return;
@@ -250,17 +255,17 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 	_float4 vMouseDir;
 	ZeroMemory(&vMouseDir, sizeof(_float4));
 
-	vMouseDir.y = XMVectorGetY(_pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION));
+	vMouseDir.y = XMVectorGetY(_pTransform.lock()->Get_State(Engine::CTransform::STATE_TRANSLATION));
 
 	_bool _bClick_Terrain = SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir);
 
 	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
 	if (_bClick_Terrain && KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 	{
-		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vObjPos = _pTransform.lock()->Get_State(Engine::CTransform::STATE_TRANSLATION);
 		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
 
-		_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
+		_pTransform.lock()->Set_State(Engine::CTransform::STATE_TRANSLATION, vAddPos);
 	}
 
 	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
@@ -289,16 +294,16 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 		_long		MouseMove = 0;
 		if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 		{
-			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+			_vector vObjPos = _pTransform.lock()->Get_State(Engine::CTransform::STATE_TRANSLATION);
 			vObjPos.m128_f32[1] += (MouseMove * -0.01f);
 
-			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vObjPos);
+			_pTransform.lock()->Set_State(Engine::CTransform::STATE_TRANSLATION, vObjPos);
 		}
 	}
 	
 }
 
-void CWindow_ComponentView::View_FreeCamera(weak_ptr<CTransform> In_pTransform)
+void CWindow_ComponentView::View_FreeCamera(weak_ptr<Engine::CTransform> In_pTransform)
 {
 	if (ImGui::Button("Look + X", ImVec2(100.f, 25.f)))
 	{

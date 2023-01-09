@@ -271,3 +271,33 @@ void Preset::PhysXColliderDesc::StaticBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_D
     Out_Desc.pMaterial = pMaterial;
     Out_Desc.bTrigger = false;
 }
+
+void Preset::PhysXColliderDesc::StaticInteriorBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform, MESH_VTX_INFO& MeshData, _float* _pOut)
+{
+    Out_Desc.eShape      = PHYSXCOLLIDER_TYPE::BOX;
+    Out_Desc.eActorType  = PHYSXACTOR_TYPE::STATIC;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::INTERIOR;
+    Out_Desc.fDensity    = 5.f;
+    Out_Desc.pConvecMesh = nullptr;
+
+    _float3 PitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
+    Out_Desc.vAngles     = XMLoadFloat3(&PitchYawRoll);
+
+    _float3 vScale       = pTransform.lock()->Get_Scaled();
+    vScale.x *= (MeshData.vMax.x - MeshData.vMin.x);
+    vScale.y *= (MeshData.vMax.y - MeshData.vMin.y);
+    //vScale.y *= 10.f;
+    vScale.z *= (MeshData.vMax.z - MeshData.vMin.z);
+
+    (*_pOut) = (MeshData.vMax.y - MeshData.vMin.y);
+
+    _vector vPos = pTransform.lock()->Get_Position();
+
+    Out_Desc.vPosition = vPos;
+    Out_Desc.vScale    = XMLoadFloat3(&vScale);
+
+    PxMaterial* pMaterial = nullptr;
+    GAMEINSTANCE->Create_Material(1.f, 1.f, 0.f, &pMaterial);
+    Out_Desc.pMaterial = pMaterial;
+    Out_Desc.bTrigger = false;
+}

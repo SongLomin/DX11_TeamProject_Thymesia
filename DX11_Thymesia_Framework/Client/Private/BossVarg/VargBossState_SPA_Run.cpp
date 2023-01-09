@@ -36,7 +36,7 @@ void CVargBossState_SPA_Run::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Run");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_SPA_Run::Tick(_float fTimeDelta)
@@ -78,7 +78,7 @@ void CVargBossState_SPA_Run::OnStateEnd()
 	__super::OnStateEnd();
 }
 
-void CVargBossState_SPA_Run::Call_AnimationEnd()
+void CVargBossState_SPA_Run::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -100,7 +100,7 @@ void CVargBossState_SPA_Run::Call_AnimationEnd()
 
 void CVargBossState_SPA_Run::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_SPA_Run::Free()

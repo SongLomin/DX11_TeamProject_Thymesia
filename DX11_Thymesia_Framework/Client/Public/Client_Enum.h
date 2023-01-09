@@ -21,6 +21,7 @@ namespace Client
 		LEVEL_STAGE4,
 		LEVEL_EDIT,
 		LEVEL_TEST,
+		LEVEL_HOME,
 		LEVEL_END
 	};
 	enum class TIMER { TIMER_DEFAULT, TIMER_FRAME, TIMER_HYPERSPACE, TIMER_END };
@@ -69,6 +70,7 @@ namespace Client
 		ON_BOSS_EXECUTIONSTART,
 		ON_STEALCORVUS,
 		ON_BIGHANDMANEXECUTION,
+		ON_JOKEREXECUTIONSTART,
 		EVENT_END
 	};
 
@@ -166,6 +168,7 @@ namespace Client
 		DYNAMIC_PEICE,
 		GROUND,
 		CAMERA,
+		INTERIOR,
 		LAYER_END
 	};
 
@@ -199,10 +202,11 @@ namespace Client
 		ENHANCE_GARDENER,  // 강화 가드너
 		SKULLSHIELDMAN,
 		SKULLSPEARMAN,
+		ARMORSHIELDMAN,
+		ARMORSPEARMAN,
 		SPEARMAN,
 		SHIELDMAN,
-		ARMORSPEARMAN,
-		ARMORSHIELDMAN,
+
 
 
 		START_ELITE_MONSTER = 10000,
@@ -504,8 +508,6 @@ namespace Client
 		SKILLPIECE_HAMMER,
 		SKILLPIECE_BLOODSTORM,
 
-
-
 		ITEM_NAME_END
 	};
 
@@ -545,6 +547,7 @@ namespace Client
 	{
 		BIGHANDMAN,
 		ARMORMAN,
+		JOKER,
 		NAMEEND
 	};
 
@@ -555,12 +558,41 @@ namespace Client
 		SKILLBUTTON_LOCK_TYPE_END
 	};
 
-	enum class SOUND_TYPE
+
+	/*
+	해당 타입 UI의 콜백이 넘겨주는 값
+	//Slider 0~100
+	//Slider 0 ~100
+	//On off 0~1(false, true)
+	//Level 0~3(off, Low, Middle, High)
+	
+	*/
+	enum class OPTION_TYPE
 	{
-		SOUND_TYPE_EFFECT,
-		SOUND_TYPE_BACKGROUND,
-		SOUND_TYPE_VOICE,
+		SOUND_TYPE_EFFECT = 0,			//Slider
+		SOUND_TYPE_VOICE,				//Slider
+		SSAA,							//On off
+		PARTICLE_QUALITY,				//Level 
+		AMBIENT_OCCLUSION,				//On off
+		NVIDIA_IMAGE_SCALING,			//On off
+		SCALING_SHARPNESS,				//Slider
+		WATER_REFLECTION_QUALITY,		//Level
+		PBR,							//On off
+		MOTION_BLUR,					//On off
+		GODRAY,							//On off
+		CHROMATIC_ABRRATION,			//On off
+		RADIAL_BLUR,					//On off
+		DYNAMIC_SHADOW,					//On off
+		STATIC_SHADOW,					//On off
+		BRIGHTLESS,						//Slider
+		SATURATION,						//Slider
+		CONTRAST,						//Slider
+		OPTION_TYPE_END
 	};
+
+
+
+
 }
 
 

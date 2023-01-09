@@ -54,7 +54,7 @@ void CNorMonState_SitToIdle::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SitToIdle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SitToIdle::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -102,7 +102,7 @@ void CNorMonState_SitToIdle::OnStateEnd()
 }
 
 
-void CNorMonState_SitToIdle::Call_AnimationEnd()
+void CNorMonState_SitToIdle::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -114,7 +114,7 @@ void CNorMonState_SitToIdle::Call_AnimationEnd()
 
 void CNorMonState_SitToIdle::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_SitToIdle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_SitToIdle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_SitToIdle::Free()

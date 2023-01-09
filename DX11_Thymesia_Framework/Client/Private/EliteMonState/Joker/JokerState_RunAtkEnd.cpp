@@ -43,7 +43,7 @@ void CJokerState_RunAtkEnd::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_RunAttackEnd");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_RunAtkEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_RunAtkEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_RunAtkEnd::Tick(_float fTimeDelta)
@@ -84,7 +84,7 @@ void CJokerState_RunAtkEnd::OnStateEnd()
 		bind(&CJokerState_RunAtkEnd::Call_NextKeyFrame, this, placeholders::_1);
 }
 
-void CJokerState_RunAtkEnd::Call_AnimationEnd()
+void CJokerState_RunAtkEnd::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -94,7 +94,7 @@ void CJokerState_RunAtkEnd::Call_AnimationEnd()
 
 void CJokerState_RunAtkEnd::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_RunAtkEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_RunAtkEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_RunAtkEnd::Free()
@@ -110,7 +110,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.4f)
 	{
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 		m_bAttackLookAtLimit = false;
 	}
@@ -119,7 +119,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.42f)
 	{
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.5f);
 		m_bAttackLookAtLimit = true;
 	}

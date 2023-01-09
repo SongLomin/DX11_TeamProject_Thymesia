@@ -32,7 +32,7 @@ void CBatBossState_TurnR::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_TurnR90");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_TurnR::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_TurnR::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_TurnR::Tick(_float fTimeDelta)
@@ -75,7 +75,7 @@ void CBatBossState_TurnR::OnStateEnd()
 
 
 
-void CBatBossState_TurnR::Call_AnimationEnd()
+void CBatBossState_TurnR::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -85,7 +85,7 @@ void CBatBossState_TurnR::Call_AnimationEnd()
 
 void CBatBossState_TurnR::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_TurnR::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_TurnR::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_TurnR::Free()

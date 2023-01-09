@@ -43,7 +43,7 @@ void CJokerState_TurnAtkL::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_TurnAttackL");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_TurnAtkL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_TurnAtkL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_TurnAtkL::Tick(_float fTimeDelta)
@@ -63,7 +63,7 @@ void CJokerState_TurnAtkL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
@@ -82,7 +82,7 @@ void CJokerState_TurnAtkL::OnStateEnd()
 		bind(&CJokerState_TurnAtkL::Call_NextKeyFrame, this, placeholders::_1);
 }
 
-void CJokerState_TurnAtkL::Call_AnimationEnd()
+void CJokerState_TurnAtkL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +92,7 @@ void CJokerState_TurnAtkL::Call_AnimationEnd()
 
 void CJokerState_TurnAtkL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_TurnAtkL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_TurnAtkL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_TurnAtkL::Free()

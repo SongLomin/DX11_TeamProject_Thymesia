@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Level_Test.h"
+
 #include "GameInstance.h"
 #include "Client_GameObjects.h"
 #include "GameManager.h"
@@ -15,7 +16,7 @@
 #include "UI_EvolveMenu.h"
 #include "Client_Presets.h"
 #include "Model.h"
-
+#include "UI_EffectGroup_SkillOpen.h"
 
 CLevel_Test::CLevel_Test()
 //: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -36,15 +37,16 @@ HRESULT CLevel_Test::Initialize()
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
 	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	// Load_FromJson(m_szDefaultJsonPath + "Stage_Home.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.vEye     = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt      = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy    = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect  = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear    = 0.2f;
+	CameraDesc.fFar     = 300.f;
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_TEST, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
@@ -63,7 +65,6 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
 
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
-
 
 	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.f), 9999.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
@@ -92,6 +93,14 @@ void CLevel_Test::Tick(_float fTimeDelta)
 			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Test::Call_Enable_PauseMenu, this);
 		}
+	}
+
+	if (KEY_INPUT(KEY::NUMPAD1, KEY_STATE::TAP))
+	{
+		weak_ptr<CUI_EffectGroup_SkillOpen> pEffectGroup = GET_SINGLE(CGameManager)->
+			GetGameObject_SafetyUseMemoryPool< CUI_EffectGroup_SkillOpen>(LEVEL_STATIC);
+
+		pEffectGroup.lock()->Play(SKILL_NAME::SKILL_AXE);
 	}
 
 	if (!m_bFadeTrigger)
@@ -141,6 +150,7 @@ void CLevel_Test::ExitLevel(LEVEL eLevel)
 	{
 		case  LEVEL::LEVEL_STAGE2:
 		case  LEVEL::LEVEL_STAGE3:
+		case  LEVEL::LEVEL_HOME:
 		{
 			m_eNextLevel = eLevel;
 

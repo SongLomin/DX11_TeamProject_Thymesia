@@ -20,6 +20,7 @@ public:
 	{
 		MESH = 0,
 		PARTICLE,
+		SOUND,
 		TYPE_END
 	};
 
@@ -39,11 +40,13 @@ public:
 	void Call_SetCurrentEffect(weak_ptr<CEffectGroup> pEffectGroup, _uint iIndex);
 	void Call_UpdatePreViewModel();
 	void Call_SyncAnimation();
+	void Call_SelectSoundFile(const _char* In_szSoundFileName);
 	
 
 private:
 	void Update_MeshInfo();
 	void Update_ParticleInfo();
+	void Update_Sound();
 
 private:
 	weak_ptr<CEffectGroup>		m_pCurrentEffectGroup;
@@ -53,6 +56,11 @@ private:
 	EFFECTRESOURCE_TYPE			m_eCurrentEffectType = EFFECTRESOURCE_TYPE::TYPE_END;
 
 	weak_ptr<CPreviewAnimationModel> m_pPreViewModel;
+
+private: /* For. Sound */
+	string						m_szSoundFileName;
+	_float						m_fVolume{};
+
 
 public:
 	void Free();

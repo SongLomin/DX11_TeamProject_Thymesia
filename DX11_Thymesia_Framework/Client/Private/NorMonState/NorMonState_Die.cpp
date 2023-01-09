@@ -93,7 +93,7 @@ void CNorMonState_Die::Start()
 	m_fDissolveTime = 4.f;
 
 	m_bAnimEnd = false;
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Die::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Die::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Die::Tick(_float fTimeDelta)
@@ -129,7 +129,7 @@ void CNorMonState_Die::LateTick(_float fTimeDelta)
 	{
 		m_pOwner.lock()->Set_Enable(false);
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		for (auto& elem : pWeapons)
 			elem.lock()->Set_Enable(false);
 	}
@@ -187,11 +187,11 @@ void CNorMonState_Die::OnStateEnd()
 
 void CNorMonState_Die::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Die::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Die::Call_AnimationEnd, this, placeholders::_1);
 }
 
 
-void CNorMonState_Die::Call_AnimationEnd()
+void CNorMonState_Die::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

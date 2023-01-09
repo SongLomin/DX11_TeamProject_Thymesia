@@ -32,7 +32,6 @@ public:
 	_bool			Get_Unlocked();
 	_bool			Get_Unlockable();
 
-
 	_uint			Get_RequirementSkillPiece();
 
 	void			Unlock_Skill();

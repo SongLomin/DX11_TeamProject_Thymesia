@@ -54,7 +54,7 @@ void CNorMonState_HeavyAttack2::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -131,7 +131,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -144,7 +144,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -161,7 +161,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -174,7 +174,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -187,7 +187,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -213,7 +213,7 @@ void CNorMonState_HeavyAttack2::OnStateEnd()
 
 void CNorMonState_HeavyAttack2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_HeavyAttack2::Free()
@@ -268,7 +268,7 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 
 }
 
-void CNorMonState_HeavyAttack2::Call_AnimationEnd()
+void CNorMonState_HeavyAttack2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

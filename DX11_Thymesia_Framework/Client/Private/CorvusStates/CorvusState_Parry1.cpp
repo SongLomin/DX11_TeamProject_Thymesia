@@ -35,7 +35,7 @@ void CCorvusState_Parry1::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_ParryL_NEW");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Parry1::Tick(_float fTimeDelta)
@@ -58,7 +58,7 @@ void CCorvusState_Parry1::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Parry1::Call_AnimationEnd()
+void CCorvusState_Parry1::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -122,7 +122,7 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
 
 	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
 
@@ -162,7 +162,7 @@ void CCorvusState_Parry1::OnStateEnd()
 	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
 	m_bParryed = false;
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 
 }
 
@@ -340,43 +340,11 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 
 void CCorvusState_Parry1::OnEventMessage(_uint iArg)
 {
-	//__super::OnEventMessage(iArg);
-	//
-	//if ((_uint)EVENT_TYPE::ON_FIRSTHIT == iArg)
-	//{
-	//	switch (m_pModelCom.lock()->Get_CurrentAnimationIndex())
-	//	{
-	//	case 0:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack01.wav"), 1.f);
-	//		break;
-	//
-	//	case 1:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack02.wav"), 1.f);
-	//		break;
-	//
-	//	case 2:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack03.wav"), 1.f);
-	//		break;
-	//
-	//	case 3:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack04.wav"), 1.f);
-	//		break;
-	//
-	//	case 4:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack05.wav"), 1.f);
-	//		break;
-	//
-	//	case 5:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack06.wav"), 1.f);
-	//		break;
-	//	}
-	//}
-
 }
 
 void CCorvusState_Parry1::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Parry1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Parry1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Parry1::Free()

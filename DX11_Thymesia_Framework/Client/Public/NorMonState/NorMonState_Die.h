@@ -27,16 +27,19 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
-
 	virtual void OnDestroy() override;
-	void Free();
-
-private:
-	void Call_AnimationEnd();
 
 private:
 	_float      m_fDissolveTime;
 	_bool       m_bAnimEnd;
+
+	
+	
+private:
+	void Call_AnimationEnd(_uint iEndAnimIndex);
+	void Free();
+
+
 };
 
 END

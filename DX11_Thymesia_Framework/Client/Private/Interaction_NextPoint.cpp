@@ -238,6 +238,8 @@ HRESULT CInteraction_NextPoint::SetUp_ShaderResource(ID3D11DeviceContext* pDevic
 
     m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_iTexPass);
     m_pShaderCom.lock()->Set_RawValue("g_vAddUVPos", &m_vAddUVPos, sizeof(_float2));
+
+    return S_OK;
 }
 
 void CInteraction_NextPoint::SetUpColliderDesc()

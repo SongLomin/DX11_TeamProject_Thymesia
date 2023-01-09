@@ -287,6 +287,8 @@ void CPreviewAnimationModel::SetUp_ShaderResource()
 
 void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szModelKey)
 {
+	this->Clear_ModelWeapon();
+
 	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)
 	{
 		CModel::NVCLOTH_MODEL_DESC NvModelDesc;
@@ -302,7 +304,7 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 	if (!strcmp(In_szModelKey.c_str(), "Corvus"))
 	{
-		this->Clear_ModelWeapon();
+		
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
@@ -316,8 +318,6 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 	if (!strcmp(In_szModelKey.c_str(), "Boss_Varg"))
 	{
-		this->Clear_ModelWeapon();
-
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
@@ -330,8 +330,6 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 	if (!strcmp(In_szModelKey.c_str(), "Elite_Joker"))
 	{
-		this->Clear_ModelWeapon();
-
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Joker_Weapon", TIMESCALE_LAYER::MONSTER);
@@ -341,12 +339,34 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 	if (!strcmp(In_szModelKey.c_str(), "Boss_Urd"))
 	{
-		this->Clear_ModelWeapon();
-
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword01_Point");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
 #endif // _ANIMATION_TOOL_WEAPON_
 	}
 }

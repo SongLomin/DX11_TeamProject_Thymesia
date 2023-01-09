@@ -3,6 +3,10 @@
 #include "UI_Utils.h"
 #include "UIManager.h"
 
+#include "EasingComponent_Alpha.h"
+#include "EasingComponent_Transform.h"
+
+
 GAMECLASS_C(CUI_Effect_MagicCircle)
 CLONE_C(CUI_Effect_MagicCircle, CGameObject)
 
@@ -17,14 +21,13 @@ HRESULT CUI_Effect_MagicCircle::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    Set_Texture("UVMask");
+    Set_Texture("HighLight");
 
+    m_iMaskIndex = 107;
     m_iPassIndex = 1;
-    m_iDeffuseIndex = 107;
+    m_iDeffuseIndex = 0;
 
     Set_Depth(0.5f);
-
-    SetUp_Animaiton();
 
     return S_OK;
 }
@@ -42,6 +45,13 @@ void CUI_Effect_MagicCircle::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 
+    if (m_pEasingSizing.lock()->Is_Lerping())
+    {
+        _float2 fSize = m_pEasingSizing.lock()->Get_Lerp();
+        
+        Set_Size(fSize.x, fSize.y);
+
+    }
 }
 
 void CUI_Effect_MagicCircle::LateTick(_float fTimeDelta)
@@ -51,30 +61,29 @@ void CUI_Effect_MagicCircle::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-void CUI_Effect_MagicCircle::Play(_bool bRepeat)
+void CUI_Effect_MagicCircle::Play(_float2 fPt, _float fSizeMag)
 {
-    POINT	tMousePt;
+    Set_Enable(true);
 
-    GetCursorPos(&tMousePt);
-    ClientToScreen(g_hWnd, &tMousePt);
+    Set_UIPosition(fPt.x, fPt.y);
 
-    Set_UIPosition((_float)tMousePt.x, (_float)tMousePt.y);
+    m_fPlayTime = 0.5f;
 
-    __super::Play(bRepeat);
+    m_pEasingAlpha.lock()->Set_Lerp_once(1.0f, 0.0f, m_fPlayTime, EASING_TYPE::SINE_IN, false);
+    m_pEasingSizing.lock()->Set_Lerp
+    (
+    _float2(128.f * fSizeMag , 128.f * fSizeMag),
+    _float2(196.f * fSizeMag, 196.f * fSizeMag),
+     m_fPlayTime, EASING_TYPE::SINE_IN, CEasingComponent::ONCE, true
+    );
+
+//    m_pEasingAlpha.lock()->Callback_LerpEnd += bind(&CUI_Effect_MagicCircle::Init_UI, this);
 }
 
-void CUI_Effect_MagicCircle::SetUp_Animaiton()
-{   
-    UICLIPDESC tUIClipDesc;
+void CUI_Effect_MagicCircle::Init_UI()
+{
+    __super::Init_UI();
 
-    tUIClipDesc._fClipTime = 1.f;
-    tUIClipDesc._eAlphaEasingType = EASING_TYPE::QUAD_IN;
-    tUIClipDesc._fStartSize = _float2(128.f, 128.f);
-    tUIClipDesc._fTargetSize = _float2(128.f, 128.f);
-    tUIClipDesc._fStartAlpha = 0.f;
-    tUIClipDesc._fTargetAlpha = 1.f;
-    tUIClipDesc._eUseCondition |= (_flag)UI_USE_CONDITION::UI_USE_ALPHA;
-    tUIClipDesc._eUseCondition |= (_flag)UI_USE_CONDITION::UI_USE_SIZE;
-
-    Add_Clip(tUIClipDesc);
+    Set_Size(128.f, 128.f);
 }
+

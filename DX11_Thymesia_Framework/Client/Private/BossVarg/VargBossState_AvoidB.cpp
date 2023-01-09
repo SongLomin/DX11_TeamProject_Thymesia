@@ -35,7 +35,7 @@ void CVargBossState_AvoidB::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_AvoidB");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_AvoidB::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CVargBossState_AvoidB::OnStateEnd()
 
 
 
-void CVargBossState_AvoidB::Call_AnimationEnd()
+void CVargBossState_AvoidB::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CVargBossState_AvoidB::Call_AnimationEnd()
 
 void CVargBossState_AvoidB::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_AvoidB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_AvoidB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_AvoidB::Free()

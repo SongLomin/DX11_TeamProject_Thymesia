@@ -335,16 +335,31 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
     _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
 
     _vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * Get_Scaled().x;
-    _vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * Get_Scaled().y;
-    _vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * Get_Scaled().z;
+    _vector		vUp    = XMVectorSet(0.f, 1.f, 0.f, 0.f) * Get_Scaled().y;
+    _vector		vLook  = XMVectorSet(0.f, 0.f, 1.f, 0.f) * Get_Scaled().z;
 
     vRight = XMVector3TransformNormal(vRight, RotationMatrix);
-    vUp = XMVector3TransformNormal(vUp, RotationMatrix);
-    vLook = XMVector3TransformNormal(vLook, RotationMatrix);
+    vUp    = XMVector3TransformNormal(vUp, RotationMatrix);
+    vLook  = XMVector3TransformNormal(vLook, RotationMatrix);
 
     Set_State(CTransform::STATE_RIGHT, vRight);
     Set_State(CTransform::STATE_UP, vUp);
     Set_State(CTransform::STATE_LOOK, vLook);
+}
+
+void CTransform::Rotation_Add(_fvector vAxis, _float fRadian)
+{
+    _matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, fRadian);
+
+    _vector		vLook  = XMVector3Normalize(XMVector3TransformNormal(Get_State(CTransform::STATE_LOOK), RotationMatrix));
+    _vector		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+    _vector		vUp    = XMVector3Normalize(XMVector3Cross(vLook, vRight));
+
+    _float3		vScale = Get_Scaled();
+
+    Set_State(CTransform::STATE_RIGHT, XMVectorSetW(XMVector3Normalize(vRight) * vScale.x, 0.f));
+    Set_State(CTransform::STATE_UP   , XMVectorSetW(XMVector3Normalize(vUp)    * vScale.y, 0.f));
+    Set_State(CTransform::STATE_LOOK , XMVectorSetW(XMVector3Normalize(vLook)  * vScale.z, 0.f));
 }
 
 void CTransform::Rotation_Quaternion(_fvector vQuaternion)
@@ -384,17 +399,15 @@ void CTransform::LookAt(_fvector vTargetPos)
 {
     _vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 
-    _vector		vLook = XMVector3Normalize(vTargetPos - vPosition);
-
+    _vector		vLook  = XMVector3Normalize(vTargetPos - vPosition);
     _vector		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
-
-    _vector		vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
+    _vector		vUp    = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
     _float3		vScale = Get_Scaled();
 
-    Set_State(CTransform::STATE_RIGHT, XMVector3Normalize(vRight) * vScale.x);
-    Set_State(CTransform::STATE_UP, XMVector3Normalize(vUp) * vScale.y);
-    Set_State(CTransform::STATE_LOOK, XMVector3Normalize(vLook) * vScale.z);
+    Set_State(CTransform::STATE_RIGHT, XMVectorSetW(XMVector3Normalize(vRight) * vScale.x, 0.f));
+    Set_State(CTransform::STATE_UP   , XMVectorSetW(XMVector3Normalize(vUp)    * vScale.y, 0.f));
+    Set_State(CTransform::STATE_LOOK , XMVectorSetW(XMVector3Normalize(vLook)  * vScale.z, 0.f));
 }
 
 void CTransform::LookAt2D(_fvector vTargetPos)

@@ -92,13 +92,12 @@ _bool CUrdBossState_Skill_Idle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
-	if (fPToMDistance <= 3.5f)
+	if (fPToMDistance <= 4.5f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill02_1>(0.05f);
 		return true;
 	}
 	
-
 	if (fPToMDistance > 3.5f)
 	{
 		

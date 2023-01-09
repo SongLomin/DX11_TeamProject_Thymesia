@@ -281,7 +281,7 @@
     <ClInclude Include="..\Public\DXUtilities.h">
       <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\COptimization_Manager.h">
+    <ClInclude Include="..\Public\Optimization_Manager.h">
       <Filter>98. Managers\17. OptimizationManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Cuda_Device.h">
@@ -541,7 +541,7 @@
     <ClCompile Include="..\Private\NIS_Shader.cpp">
       <Filter>04. Thirdparty\00. NvidiaImageScaling</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\COptimization_Manager.cpp">
+    <ClCompile Include="..\Private\Optimization_Manager.cpp">
       <Filter>98. Managers\17. OptimizationManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Cuda_Device.cpp">

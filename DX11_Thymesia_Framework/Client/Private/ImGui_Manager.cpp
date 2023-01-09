@@ -335,7 +335,7 @@ void CImGui_Manager::Init_EffectEditer()
 
 	m_pEditerCamera = GAMEINSTANCE->Add_GameObject<CCamera_Free>(LEVEL_EDIT, &CameraDesc);
 	m_pTerrain = GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_EDIT);
-	m_pTerrain.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(-30.f, 0.f, -30.f, 1.f));
+	m_pTerrain.lock()->Get_Component<Engine::CTransform>().lock()->Add_Position(XMVectorSet(-30.f, 0.f, -30.f, 1.f));
 
 	for (auto& elem : m_arrWindows)
 	{
@@ -367,7 +367,7 @@ void CImGui_Manager::Init_ModelEditer()
 
 	m_pEditerCamera = GAMEINSTANCE->Add_GameObject<CCamera_Free>(LEVEL_EDIT, &CameraDesc);
 	m_pTerrain = GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_EDIT);
-	m_pTerrain.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(-30.f, 0.f, -30.f, 1.f));
+	m_pTerrain.lock()->Get_Component<Engine::CTransform>().lock()->Add_Position(XMVectorSet(-30.f, 0.f, -30.f, 1.f));
 
 	for (auto& elem : m_arrWindows)
 	{

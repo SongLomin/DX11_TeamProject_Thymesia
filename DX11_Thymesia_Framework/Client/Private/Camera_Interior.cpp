@@ -36,13 +36,6 @@ HRESULT CCamera_Interior::Start()
 
 void CCamera_Interior::Tick(_float fTimeDelta)
 {
-	if (GetFocus() != g_hWnd)
-	{
-		CCamera::Bind_PipeLine();
-
-		return;
-	}
-
 	ControlCamera(fTimeDelta);
 
 	if (FAILED(CCamera::Bind_PipeLine()))

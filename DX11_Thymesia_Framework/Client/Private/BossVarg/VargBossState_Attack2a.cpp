@@ -53,7 +53,7 @@ void CVargBossState_Attack2a::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack1_2");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2a::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2a::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Attack2a::Tick(_float fTimeDelta)
@@ -81,7 +81,7 @@ void CVargBossState_Attack2a::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_bNextAttack = false;
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 	for (auto& elem : pWeapons)
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.2f);
 
@@ -104,7 +104,7 @@ void CVargBossState_Attack2a::OnStateEnd()
 
 
 
-void CVargBossState_Attack2a::Call_AnimationEnd()
+void CVargBossState_Attack2a::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -114,7 +114,7 @@ void CVargBossState_Attack2a::Call_AnimationEnd()
 
 void CVargBossState_Attack2a::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack2a::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack2a::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Attack2a::Free()

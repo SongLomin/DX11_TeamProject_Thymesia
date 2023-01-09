@@ -38,7 +38,7 @@ void CJokerState_Stun_Start::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_Stun_Start");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Stun_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Stun_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Stun_Start::Tick(_float fTimeDelta)
@@ -80,7 +80,7 @@ void CJokerState_Stun_Start::OnStateEnd()
 
 }
 
-void CJokerState_Stun_Start::Call_AnimationEnd()
+void CJokerState_Stun_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -90,7 +90,7 @@ void CJokerState_Stun_Start::Call_AnimationEnd()
 
 void CJokerState_Stun_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Stun_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Stun_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Stun_Start::Free()
@@ -104,7 +104,11 @@ _bool CJokerState_Stun_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	if (Get_OwnerMonster()->Get_EliteExecutionStartOnOff())
+	{
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
+		return true;
+	}
 
 	return false;
 }

@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Animation.h"
 #include "EffectGroup.h"
+#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_AnimationPlayerView)
 
@@ -37,8 +38,6 @@ void CWindow_AnimationPlayerView::Start()
 void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
-
 
     if (!m_bStop)
     {
@@ -87,7 +86,7 @@ void CWindow_AnimationPlayerView::Call_UpdatePreViewModel()
     weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
 
     m_AllAnimationKeys = pCurrentModel.lock()->Get_AllAnimationKeys();
-    m_pCurrentAnimation = pCurrentModel.lock()->Get_CurrentAnimation().lock();
+    m_pCurrentAnimation = pCurrentModel.lock()->Get_CurrentAnimation();
     m_fCurrentTime = m_pCurrentAnimation.lock()->Get_AbsoluteTimeAcc();
     m_fMaxAnimationTime = m_pCurrentAnimation.lock()->Get_AbsoluteDuration();
     Load_KeyEvent();
@@ -151,6 +150,32 @@ void CWindow_AnimationPlayerView::Add_EnableWeaponEvent(const _bool In_bEnable)
     [iIndex]["Enable_Weapon"] = In_bEnable;
 }
 
+void CWindow_AnimationPlayerView::Add_SoundKeyEvent()
+{
+    if (!m_pPreViewModel.lock())
+        return;
+
+    if (m_strSoundFileName.empty())
+        return;
+
+    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
+
+    _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
+
+    /*m_KeyEventJson["AnimationIndex"]
+        [to_string(pCurrentModel.lock()->Get_CurrentAnimationIndex())].emplace_back();*/
+
+    /*m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["Sound"] emplace_back(m_strSoundFileName);*/
+}
+
+void CWindow_AnimationPlayerView::Add_RandomSoundKeyEvent()
+{
+
+
+}
+
 void CWindow_AnimationPlayerView::Save_KeyEvent()
 {
     weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
@@ -170,14 +195,14 @@ void CWindow_AnimationPlayerView::Save_KeyEvent()
 
 HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
 {
-    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
+    m_pCurrentModelCom = m_pPreViewModel.lock()->Get_CurrentModel();
 
     string szPath = "../Bin/KeyEventData/";
 
     if (0 < m_strKeyEventFileName.size())
         szPath += m_strKeyEventFileName;
     else
-        szPath += pCurrentModel.lock()->Get_ModelKey();
+        szPath += m_pCurrentModelCom.lock()->Get_ModelKey();
 
     szPath += ".json";
 
@@ -188,7 +213,7 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
     //m_pPreViewModel.lock()->Clear_DebugWeapon();
 
     // 읽어서 콜라이더 추가
-    if (m_KeyEventJson.end() != m_KeyEventJson.find("Collider"))
+    /*if (m_KeyEventJson.end() != m_KeyEventJson.find("Collider"))
     {
         for (_size_t i = 0; i < m_KeyEventJson["Collider"].size(); ++i)
         {
@@ -197,14 +222,14 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
 
             m_pPreViewModel.lock()->Add_DebugWeapon(m_KeyEventJson["Collider"][i], {0.f, 0.f, 0.f}, 0.1f);
         }
-    }
+    }*/
 
-    json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
+    json& KeyJson = m_KeyEventJson["AnimationIndex"][m_pCurrentModelCom.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
         return E_FAIL;
 
-    for (_size_t i = 0; i < KeyJson.size(); ++i)
+    /*for (_size_t i = 0; i < KeyJson.size(); ++i)
     {
         if (KeyJson[i].empty())
             continue;
@@ -229,7 +254,7 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
             for (_size_t j(0); j < KeyJson[i]["EffectName"].size(); ++j)
                 m_KeyEventEffectGroupNames[(_int)i].emplace_back(KeyJson[i]["EffectName"][j]);
         }
-    }
+    }*/
 
     return S_OK;
 }
@@ -335,12 +360,19 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::SameLine();
     ImGui::Text(to_string(iMaxKeyIndex).c_str());
 
+    if (ImGui::Button("Play"))
+    {
+        m_bStop = !m_bStop;
+    }
+    ImGui::Separator();
+
     _char pFileNameBuffer[MAX_PATH];
     strcpy_s(pFileNameBuffer, m_strKeyEventFileName.c_str());
     ImGui::SetNextItemWidth(250.f);
     if (ImGui::InputText("File Name", pFileNameBuffer, MAX_PATH))
         m_strKeyEventFileName = pFileNameBuffer;
 
+    ImGui::SameLine();
 
     if (ImGui::Button("Save Custom"))
     {
@@ -351,6 +383,8 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
 		Save_KeyEvent();
     }
+    
+    ImGui::Separator();
 
     if (ImGui::Button("Add_Effect"))
     {
@@ -375,6 +409,37 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         Load_KeyEvent();
     }
 
+    if (m_strSoundFileName.empty())
+    {
+        ImGui::Text("[Select Sound Resource]");
+
+    }
+    else
+    {
+        ImGui::Text(m_strSoundFileName.c_str());
+    }
+
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Add_Sound"))
+    {
+        Add_SoundKeyEvent();
+        Save_KeyEvent();
+        Load_KeyEvent();
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Add_RandomSound"))
+    {
+        Add_RandomSoundKeyEvent();
+        Save_KeyEvent();
+        Load_KeyEvent();
+    }
+
+    ImGui::Separator();
+
     //if (ImGui::Button("Clear"))
     //{
     //    Clear_KeyEvent();
@@ -386,12 +451,126 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     //}
     //ImGui::SameLine();
 
-    if (ImGui::Button("Play"))
+    
+
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader("KeyEvent List"))
     {
-        m_bStop = !m_bStop;
+        json& KeyJson = m_KeyEventJson["AnimationIndex"][m_pCurrentModelCom.lock()->Get_CurrentAnimationIndex()];
+
+        string szKeyFrameName;
+        string szKeyValueTypeName;
+        string szKeyValueName;
+
+        for (_size_t i = 0; i < KeyJson.size(); ++i)
+        {
+            if (KeyJson[i].empty())
+            {
+                continue;
+            }
+
+            szKeyFrameName = "KeyFrame " + to_string(i) + ". ";
+
+            ImGui::SetNextItemOpen(true);
+            if (ImGui::TreeNode(szKeyFrameName.c_str()))
+            {
+                for (auto iter = KeyJson[i].begin(); iter != KeyJson[i].end();)
+                {
+                    _bool bKeyEventErase = false;
+
+                    szKeyValueTypeName = iter.key();
+
+                    //for(auto iter_EffectName = iter.value().begin();)
+
+                    
+                    if (strcmp(szKeyValueTypeName.c_str(), "EffectName") == 0)
+                    {
+                        if (ImGui::TreeNode(szKeyValueTypeName.c_str()))
+                        {
+
+                            for (auto iter_EffectName = iter.value().begin(); iter_EffectName != iter.value().end();)
+                            {
+                                _bool bEffectErase = false;
+
+                                szKeyValueName = iter_EffectName.value();
+                                if (ImGui::TreeNode(szKeyValueName.c_str()))
+                                {
+                                    if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
+                                    {
+                                        iter_EffectName = iter.value().erase(iter_EffectName);
+                                        bEffectErase = true;
+                                    }
+
+                                    ImGui::TreePop();
+                                }
+
+                                if (!bEffectErase)
+                                {
+                                    ++iter_EffectName;
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+
+                    else if (strcmp(szKeyValueTypeName.c_str(), "Enable_Weapon") == 0)
+                    {
+                        if (ImGui::TreeNode(string(iter.value().get<_bool>() ? "Enable_Weapon [true]" : "Enable_Weapon [false]").c_str()))
+                        {
+                            if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
+                            {
+                                iter = KeyJson[i].erase(iter);
+                                bKeyEventErase = true;
+                            }
+
+                            ImGui::TreePop();
+                        }
+                    }
+
+                    else if (strcmp(szKeyValueTypeName.c_str(), "Sound") == 0)
+                    {
+                        if (ImGui::TreeNode(szKeyValueTypeName.c_str()))
+                        {
+
+                            for (auto iter_SoundName = iter.value().begin(); iter_SoundName != iter.value().end();)
+                            {
+                                _bool bEffectErase = false;
+
+                                szKeyValueName = iter_SoundName.value();
+                                if (ImGui::TreeNode(szKeyValueName.c_str()))
+                                {
+                                    if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
+                                    {
+                                        iter_SoundName = iter.value().erase(iter_SoundName);
+                                        bEffectErase = true;
+                                    }
+
+                                    ImGui::TreePop();
+                                }
+
+                                if (!bEffectErase)
+                                {
+                                    ++iter_SoundName;
+                                }
+                            }
+                            ImGui::TreePop();
+                        }
+                    }
+
+                    if (!bKeyEventErase)
+                    {
+                        ++iter;
+                    }
+
+                }
+                ImGui::TreePop();
+            }
+        }
     }
 
-    if (ImGui::BeginListBox("##KeyEvent List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
+    ImGui::Separator();
+
+    /*if (ImGui::BeginListBox("##KeyEvent List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
     {
         string szListText;
 
@@ -417,7 +596,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         }
 
         ImGui::EndListBox();
-    }
+    }*/
 
     ImGui::Text(m_pPreViewModel.lock()->Get_CurrentModel().lock()->Get_ModelKey());
 

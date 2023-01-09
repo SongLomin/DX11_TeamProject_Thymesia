@@ -9,6 +9,10 @@
 #include "UI_EvolveMenu_PlagueWeapon_SkillInformation.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillButton.h"
 #include "UI_Effect_MagicCircle.h"
+#include "UI_EffectGroup_SkillOpen.h"
+#include "GameManager.h"
+
+
 
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon);
 CLONE_C(CUI_EvolveMenu_PlagueWeapon, CGameObject);
@@ -48,17 +52,6 @@ void CUI_EvolveMenu_PlagueWeapon::Tick(_float fTimeDelta)
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
 	__super::Tick(fTimeDelta);
 
-
-	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-	{
-		weak_ptr<CUI_Effect_MagicCircle> pEffect = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CUI_Effect_MagicCircle>(LEVEL_STATIC);
-
-		if (!pEffect.lock())
-			pEffect = GAMEINSTANCE->Add_GameObject<CUI_Effect_MagicCircle>(LEVEL_STATIC);
-
-		pEffect.lock()->Play(false);
-
-	}
 
 
 }
@@ -153,6 +146,12 @@ void CUI_EvolveMenu_PlagueWeapon::Call_OnUnlockSkill(weak_ptr<CUI_EvolveMenu_Pla
 	m_pSkillInformation.lock()->Clear_Information();
 	m_pSkillInformation.lock()->View_Information(pSkillButton);
 	//해금 이펙트 추가
+
+	weak_ptr<CUI_EffectGroup_SkillOpen> pEffectGroup = GET_SINGLE(CGameManager)->
+		GetGameObject_SafetyUseMemoryPool< CUI_EffectGroup_SkillOpen>(LEVEL_STATIC);
+
+	pEffectGroup.lock()->Play(pSkillButton.lock()->Get_SkillName());
+
 }
 
 void CUI_EvolveMenu_PlagueWeapon::Call_OnLButtonUp(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)

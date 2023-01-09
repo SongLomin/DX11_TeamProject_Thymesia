@@ -32,7 +32,7 @@ void CUrdBossState_StepB::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_StepB|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepB::Tick(_float fTimeDelta)
@@ -58,11 +58,11 @@ void CUrdBossState_StepB::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
 
 	Rotation_TargetToLookDir();
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 4);
 	
 	
 #ifdef _DEBUG
@@ -82,7 +82,7 @@ void CUrdBossState_StepB::OnStateEnd()
 
 
 
-void CUrdBossState_StepB::Call_AnimationEnd()
+void CUrdBossState_StepB::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +92,7 @@ void CUrdBossState_StepB::Call_AnimationEnd()
 
 void CUrdBossState_StepB::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepB::Free()
@@ -106,11 +106,42 @@ _bool CUrdBossState_StepB::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	//만약 스킬그게트루인상태에서는 바로 칼꽂게
+
+	if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillStart())
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
-		return true;
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+		{
+			int iRand = rand() % 3;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_L>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_R>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			}
+			return true;
+		}
+		
 	}
+	else
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+			return true;
+		}
+	}
+
+	
 
 	return false;
 }

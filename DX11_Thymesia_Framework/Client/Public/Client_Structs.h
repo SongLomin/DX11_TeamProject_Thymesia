@@ -469,4 +469,13 @@ namespace Client
 			szOnCollisionEffectGroupName.clear();
 		}
 	};
+
+	struct WATERWAVE_DESC
+	{
+		_float2		vPosition{};
+		_float		fTimeAcc{};
+		_float		fVibrationScale{};
+		_float		fFreq{};
+		_float		fSpeed{};
+	};
 }
