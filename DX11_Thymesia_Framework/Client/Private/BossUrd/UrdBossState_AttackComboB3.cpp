@@ -63,6 +63,8 @@ void CUrdBossState_AttackComboB3::OnStateStart(const _float& In_fAnimationBlendT
 
 	m_bAttackLookAtLimit = true;
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);
+
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(3.f, 3.f, 3.f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 80);
@@ -92,7 +94,6 @@ void CUrdBossState_AttackComboB3::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 

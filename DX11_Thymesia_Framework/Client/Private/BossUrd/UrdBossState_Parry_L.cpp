@@ -52,6 +52,11 @@ void CUrdBossState_Parry_L::LateTick(_float fTimeDelta)
 
 
 
+void CUrdBossState_Parry_L::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CUrdBossState_Parry_L::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);

@@ -83,9 +83,9 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
 	{
-		m_iPhaseTwoSkillCount += 1;
+		
 
-		if (m_iPhaseTwoSkillCount >= 8)
+		if (m_iPhaseTwoSkillCount >= 13)
 		{
 			m_bSkillStart = true;
 		}
@@ -188,8 +188,19 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 
 	if (m_bSpecailAttack)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
-		return true;
+		if (m_bTurnCheck)
+		{
+			
+			TurnMechanism();
+			return true;
+
+		}
+		else
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
+			return true;
+		}
+	
 		
 	}
 	else

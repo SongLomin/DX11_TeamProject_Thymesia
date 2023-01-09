@@ -72,6 +72,10 @@ void CUrdBossState_AttackComboC2::OnStateStart(const _float& In_fAnimationBlendT
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_NoParryAttack(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);
+
 	m_bAttackLookAtLimit = true;
 	
 	
@@ -103,9 +107,6 @@ void CUrdBossState_AttackComboC2::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (m_iAnimIndex != iEndAnimIndex)
 		return;
 
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
-	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_NoParryAttack(false);
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 

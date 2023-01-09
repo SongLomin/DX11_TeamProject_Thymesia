@@ -59,8 +59,12 @@ void CUrdBossState_SPSkill01::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+
+	m_iResetWeaponNum = 0;
+
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(0);
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoJavlinCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(true);
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);

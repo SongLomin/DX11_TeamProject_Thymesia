@@ -140,6 +140,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		return false;
 
 	PxControllerFilters Filters;
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 	_matrix                    vResultOtherWorldMatrix;
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
@@ -181,7 +182,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 160 &&
 		m_bOne)
 	{
-		m_pModelCom.lock()->Set_AnimationSpeed(0.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(0.25f);
 		m_bOne = false;
 	}
 
@@ -207,6 +208,17 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		//pCurrentPlayer.lock()->Get_Transform()->LookAt2D(vMonsterMaxtrix.r[3]);
 		m_bAnimaionSpeedControl = false;
 	}
+
+	if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 218)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+			return true;
+		}
+	}
+
+
 
 	return false;
 }
