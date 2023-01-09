@@ -33,6 +33,7 @@ struct WATERWAVE_DESC
     float fVibrationScale;
     float fFreq;
     float fSpeed;
+    float2 vPadding;
 };
 
 WATERWAVE_DESC WaterWaveDescs[MAX_WATER_WAVE];

@@ -477,5 +477,6 @@ namespace Client
 		_float		fVibrationScale{};
 		_float		fFreq{};
 		_float		fSpeed{};
+		_float2		vPadding{};
 	};
 }
