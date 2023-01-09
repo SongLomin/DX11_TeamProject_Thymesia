@@ -32,7 +32,7 @@ void CCorvusState_LongHealing::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Healing_Big");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LongHealing::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LongHealing::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_LongHealing::Tick(_float fTimeDelta)
@@ -76,7 +76,7 @@ void CCorvusState_LongHealing::OnStateEnd()
 
 }
 
-void CCorvusState_LongHealing::Call_AnimationEnd()
+void CCorvusState_LongHealing::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -88,7 +88,7 @@ void CCorvusState_LongHealing::Call_AnimationEnd()
 void CCorvusState_LongHealing::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_LongHealing::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_LongHealing::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_LongHealing::Check_AndChangeNextState()

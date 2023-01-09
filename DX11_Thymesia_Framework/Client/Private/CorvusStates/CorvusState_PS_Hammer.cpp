@@ -7,9 +7,9 @@
 GAMECLASS_C(CCorvusState_PS_Hammer);
 CLONE_C(CCorvusState_PS_Hammer, CComponent)
 
-void CCorvusState_PS_Hammer::Call_AnimationEnd()
+void CCorvusState_PS_Hammer::Call_AnimationEnd(_uint iEndAnimIndex)
 {
-	__super::Call_AnimationEnd();
+	__super::Call_AnimationEnd(iEndAnimIndex);
 }
 
 void CCorvusState_PS_Hammer::Call_NextKeyFrame(const _uint& In_KeyIndex)
@@ -50,7 +50,7 @@ void CCorvusState_PS_Hammer::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Hammer_A");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Hammer::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Hammer::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_PS_Hammer::Tick(_float fTimeDelta)
@@ -93,5 +93,5 @@ void CCorvusState_PS_Hammer::Free()
 	__super::Free();
 
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Hammer::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Hammer::Call_AnimationEnd, this, placeholders::_1);
 }

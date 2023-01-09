@@ -55,7 +55,7 @@ void CVargBossState_Start::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Start::Tick(_float fTimeDelta)
@@ -100,7 +100,7 @@ void CVargBossState_Start::OnStateEnd()
 	GET_SINGLE(CGameManager)->End_Cinematic();
 }
 
-void CVargBossState_Start::Call_AnimationEnd()
+void CVargBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -119,7 +119,7 @@ void CVargBossState_Start::Call_AnimationEnd()
  
 void CVargBossState_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Start::Free()

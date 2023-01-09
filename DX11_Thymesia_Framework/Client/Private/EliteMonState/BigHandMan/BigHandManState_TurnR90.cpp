@@ -37,7 +37,7 @@ void CBigHandManState_TurnR90::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV2Villager_M.ao|LV2Villager01_M_TurnR90");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_TurnR90::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_TurnR90::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_TurnR90::Tick(_float fTimeDelta)
@@ -87,7 +87,7 @@ void CBigHandManState_TurnR90::OnStateEnd()
 
 }
 
-void CBigHandManState_TurnR90::Call_AnimationEnd()
+void CBigHandManState_TurnR90::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -97,7 +97,7 @@ void CBigHandManState_TurnR90::Call_AnimationEnd()
 
 void CBigHandManState_TurnR90::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_TurnR90::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_TurnR90::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_TurnR90::Free()

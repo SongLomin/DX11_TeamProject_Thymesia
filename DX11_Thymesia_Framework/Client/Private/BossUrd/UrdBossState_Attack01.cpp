@@ -34,7 +34,7 @@ void CUrdBossState_Attack01::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack01|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack01::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack01::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack01::Tick(_float fTimeDelta)
@@ -65,6 +65,8 @@ void CUrdBossState_Attack01::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 	for (auto& elem : pWeapons)
@@ -89,11 +91,13 @@ void CUrdBossState_Attack01::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+
 }
 
 
 
-void CUrdBossState_Attack01::Call_AnimationEnd()
+void CUrdBossState_Attack01::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -104,7 +108,7 @@ void CUrdBossState_Attack01::Call_AnimationEnd()
 
 void CUrdBossState_Attack01::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack01::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack01::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack01::Free()

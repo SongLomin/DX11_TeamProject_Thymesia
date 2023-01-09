@@ -35,7 +35,7 @@ void CVargBossState_TurnL::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TurnL90");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_TurnL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_TurnL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_TurnL::Tick(_float fTimeDelta)
@@ -79,7 +79,7 @@ void CVargBossState_TurnL::OnStateEnd()
 
 
 
-void CVargBossState_TurnL::Call_AnimationEnd()
+void CVargBossState_TurnL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -90,7 +90,7 @@ void CVargBossState_TurnL::Call_AnimationEnd()
 
 void CVargBossState_TurnL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_TurnL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_TurnL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_TurnL::Free()

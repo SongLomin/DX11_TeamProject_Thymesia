@@ -31,8 +31,8 @@ void CUrdBossState_StunEnd::Start()
 	__super::Start();
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_StunEnd|BaseLayer");
-
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StunEnd::Call_AnimationEnd, this);
+	
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StunEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StunEnd::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CUrdBossState_StunEnd::OnStateEnd()
 
 
 
-void CUrdBossState_StunEnd::Call_AnimationEnd()
+void CUrdBossState_StunEnd::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CUrdBossState_StunEnd::Call_AnimationEnd()
 
 void CUrdBossState_StunEnd::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StunEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StunEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StunEnd::Free()

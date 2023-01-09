@@ -28,7 +28,7 @@ void CCorvusState_JoggingStartEnd::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkF_REnd");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_JoggingStartEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_JoggingStartEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_JoggingStartEnd::Tick(_float fTimeDelta)
@@ -46,7 +46,7 @@ void CCorvusState_JoggingStartEnd::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_JoggingStartEnd::Call_AnimationEnd() //¾Ö´Ï¸ÞÀÌ¼Ç²÷³´À»´ë
+void CCorvusState_JoggingStartEnd::Call_AnimationEnd(_uint iEndAnimIndex) //¾Ö´Ï¸ÞÀÌ¼Ç²÷³´À»´ë
 {
 	if (!Get_Enable())
 		return;
@@ -82,7 +82,7 @@ void CCorvusState_JoggingStartEnd::OnStateEnd()
 
 void CCorvusState_JoggingStartEnd::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_JoggingStartEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_JoggingStartEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_JoggingStartEnd::Free()

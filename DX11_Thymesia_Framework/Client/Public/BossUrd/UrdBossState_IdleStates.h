@@ -27,11 +27,16 @@ public:
 	 void      Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 	 void      Set_PhaseTwoSkillCount(_int iPhaseTwoSkillCount) { m_iPhaseTwoSkillCount += iPhaseTwoSkillCount; }
 	 void      Set_ZeroPhaseTwoSkillCount(_int iPhaseTwoSkillCount) { m_iPhaseTwoSkillCount = iPhaseTwoSkillCount; }
+	 void      Set_PhaseTwoJavlinCount(_int iPhaseTwoJavlinCount) { m_iPhaseTwoJavlinCount += iPhaseTwoJavlinCount; }
+	 void      Set_ZeroPhaseTwoJavlinCount(_int iPhaseTwoJavlinCount) { m_iPhaseTwoJavlinCount = iPhaseTwoJavlinCount; }
+	 
 
 
+	 _bool     Get_SpecialAttack() { return m_bSpecailAttack; }
 	 _int      Get_PhaseTwoSkillCount() { return m_iPhaseTwoSkillCount; }
 	 _bool     Get_SkillStart() { return m_bSkillStart; }
 	const _int Get_SkillCount() { return m_iSkillCount; }
+	_bool      Get_PhaseTwoJavlinCount() { return m_iPhaseTwoJavlinCount; }
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -45,6 +50,9 @@ protected:
 	_int      m_iStepCloseCount = 0;
 	_int      m_iSkillCount = 0;
 	_int      m_iPhaseTwoSkillCount = 0;
+	_int      m_iPhaseTwoJavlinCount = 0;
+
+
 
 
 	_bool     m_bStepClose = false;
@@ -57,6 +65,8 @@ protected:
 	_bool     m_bOnce = false;
 
 
+	//TODO 
+	// ∏π¿Ã ≥Ó∂ÛºÃ¡“ ∞∆¡§∏∂ººø‰ ¥ŸπŸ≤‹∞≈ø°ø‰ §æ
 protected:
 	void Free();
 

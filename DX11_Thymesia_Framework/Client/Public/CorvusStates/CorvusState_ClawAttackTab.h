@@ -24,7 +24,7 @@ protected:
 
 
 public:
-    void Call_AnimationEnd();
+    void Call_AnimationEnd(_uint iEndAnimIndex);
     void Call_NextAnimationKey(const _uint& In_iKeyIndex);
     //void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
     void Attack();

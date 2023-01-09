@@ -180,14 +180,48 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		}
 		else
 		{
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);	
+
+
+			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 8.f)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoSkillCount(0);
+
+			}
+
+
+
+			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoJavlinCount() >= 3)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(true);
+				Get_OwnerMonster()->Change_State<CUrdBossState_Idle>();
+				return;
+			}
+
+
+
+
 		}
 
-		if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 8.f)
+		if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillStart())
 		{
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoSkillCount(0);
+			int iRand = rand() % 2;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerMonster()->Change_State<CUrdBossState_Parry_R>();
+				break;
+			case 1:
+				Get_OwnerMonster()->Change_State<CUrdBossState_Parry_L>();
+				break;
+			}
+			return;
 		}
+
+	
+
+		
 	
 	
 
@@ -212,6 +246,8 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
 								
 			}
+
+
 		}
 
 

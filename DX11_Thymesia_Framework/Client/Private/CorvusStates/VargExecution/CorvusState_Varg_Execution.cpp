@@ -33,7 +33,7 @@ void CCorvusState_Varg_Execution::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_VSVarg_Execution_Blending");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Varg_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Varg_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Varg_Execution::Tick(_float fTimeDelta)
@@ -89,7 +89,7 @@ void CCorvusState_Varg_Execution::OnStateEnd()
 	GET_SINGLE(CGameManager)->End_Cinematic();
 }
 
-void CCorvusState_Varg_Execution::Call_AnimationEnd()
+void CCorvusState_Varg_Execution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -119,7 +119,7 @@ void CCorvusState_Varg_Execution::Free()
 void CCorvusState_Varg_Execution::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Varg_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Varg_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_Varg_Execution::Check_AndChangeNextState()

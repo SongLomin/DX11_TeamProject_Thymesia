@@ -42,7 +42,7 @@ void CJokerState_RunAttackStart::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_RunAttackStart");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_RunAttackStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_RunAttackStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_RunAttackStart::Tick(_float fTimeDelta)
@@ -81,7 +81,7 @@ void CJokerState_RunAttackStart::OnStateEnd()
 		bind(&CJokerState_RunAttackStart::Call_NextKeyFrame, this, placeholders::_1);
 }
 
-void CJokerState_RunAttackStart::Call_AnimationEnd()
+void CJokerState_RunAttackStart::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -91,7 +91,7 @@ void CJokerState_RunAttackStart::Call_AnimationEnd()
 
 void CJokerState_RunAttackStart::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_RunAttackStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_RunAttackStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_RunAttackStart::Free()

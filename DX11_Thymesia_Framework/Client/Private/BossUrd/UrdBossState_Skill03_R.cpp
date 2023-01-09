@@ -35,7 +35,7 @@ void CUrdBossState_Skill03_R::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Skill03_R|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Skill03_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Skill03_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Skill03_R::Tick(_float fTimeDelta)
@@ -67,6 +67,9 @@ void CUrdBossState_Skill03_R::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
+
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoJavlinCount(1);
+
 	m_bAttackLookAtLimit = true;
 
 	m_bDisableWeaponCheck = false;
@@ -95,7 +98,7 @@ void CUrdBossState_Skill03_R::OnStateEnd()
 
 
 
-void CUrdBossState_Skill03_R::Call_AnimationEnd()
+void CUrdBossState_Skill03_R::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -116,7 +119,7 @@ void CUrdBossState_Skill03_R::Call_AnimationEnd()
 
 void CUrdBossState_Skill03_R::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Skill03_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Skill03_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Skill03_R::Free()
@@ -177,6 +180,7 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 
 
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
+	
 
 		//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();

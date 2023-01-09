@@ -29,7 +29,7 @@ protected:
     virtual void OnStateEnd() override;
 
 public:
-    void Call_AnimationEnd();
+    void Call_AnimationEnd(_uint iEndAnimIndex);
 
 private:
     _uint m_iDustEffectIndex;

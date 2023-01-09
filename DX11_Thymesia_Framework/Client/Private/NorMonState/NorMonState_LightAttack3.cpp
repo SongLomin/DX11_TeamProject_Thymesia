@@ -55,7 +55,7 @@ void CNorMonState_LightAttack3::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_LightAttack3::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_LightAttack3::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_LightAttack3::Tick(_float fTimeDelta)
@@ -191,7 +191,7 @@ void CNorMonState_LightAttack3::OnStateEnd()
 
 void CNorMonState_LightAttack3::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_LightAttack3::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_LightAttack3::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_LightAttack3::Free()
@@ -213,7 +213,7 @@ _bool CNorMonState_LightAttack3::Check_AndChangeNextState()
 	return false;
 }
 
-void CNorMonState_LightAttack3::Call_AnimationEnd()
+void CNorMonState_LightAttack3::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

@@ -37,7 +37,7 @@ void CCorvusState_RaidAttack1Hurt::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_VSVarg_TakeSPAttack");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_RaidAttack1Hurt::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_RaidAttack1Hurt::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_RaidAttack1Hurt::Tick(_float fTimeDelta)
@@ -117,7 +117,7 @@ void CCorvusState_RaidAttack1Hurt::OnStateEnd()
 
 }
 
-void CCorvusState_RaidAttack1Hurt::Call_AnimationEnd()
+void CCorvusState_RaidAttack1Hurt::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -129,7 +129,7 @@ void CCorvusState_RaidAttack1Hurt::Call_AnimationEnd()
 void CCorvusState_RaidAttack1Hurt::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_RaidAttack1Hurt::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_RaidAttack1Hurt::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_RaidAttack1Hurt::Free()

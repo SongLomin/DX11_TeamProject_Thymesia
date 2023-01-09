@@ -32,7 +32,7 @@ void CBatBossState_JumpSmash_SmarhL::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_JumpSmashL");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_JumpSmash_SmarhL::Tick(_float fTimeDelta)
@@ -96,7 +96,7 @@ void CBatBossState_JumpSmash_SmarhL::OnStateEnd()
 }
 
 
-void CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd()
+void CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -108,7 +108,7 @@ void CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd()
 
 void CBatBossState_JumpSmash_SmarhL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_JumpSmash_SmarhL::Free()

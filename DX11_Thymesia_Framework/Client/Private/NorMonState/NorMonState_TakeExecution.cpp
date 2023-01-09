@@ -59,7 +59,7 @@ void CNorMonState_TakeExecution::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TakeExecution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TakeExecution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_TakeExecution::Tick(_float fTimeDelta)
@@ -109,11 +109,11 @@ void CNorMonState_TakeExecution::OnStateEnd()
 
 void CNorMonState_TakeExecution::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_TakeExecution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_TakeExecution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 
-void CNorMonState_TakeExecution::Call_AnimationEnd()
+void CNorMonState_TakeExecution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

@@ -42,7 +42,7 @@ void CJokerState_Sp_Open::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_SP_Open");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Sp_Open::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Sp_Open::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Sp_Open::Tick(_float fTimeDelta)
@@ -79,7 +79,7 @@ void CJokerState_Sp_Open::OnStateEnd()
 	GET_SINGLE(CGameManager)->Store_EffectIndex("Joker_Passive", GET_SINGLE(CGameManager)->Use_EffectGroup("Joker_Passive", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 }
 
-void CJokerState_Sp_Open::Call_AnimationEnd()
+void CJokerState_Sp_Open::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -89,7 +89,7 @@ void CJokerState_Sp_Open::Call_AnimationEnd()
 
 void CJokerState_Sp_Open::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Sp_Open::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Sp_Open::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Sp_Open::Free()

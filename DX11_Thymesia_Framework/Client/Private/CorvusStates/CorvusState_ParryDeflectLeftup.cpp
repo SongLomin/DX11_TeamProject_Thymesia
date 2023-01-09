@@ -30,7 +30,7 @@ void CCorvusState_ParryDeflectLeftup::Start()
 
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_ParryDeflect_LUp");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ParryDeflectLeftup::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ParryDeflectLeftup::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_ParryDeflectLeftup::Tick(_float fTimeDelta)
@@ -96,7 +96,7 @@ void CCorvusState_ParryDeflectLeftup::OnStateEnd()
 	__super::OnStateEnd();
 }
 
-void CCorvusState_ParryDeflectLeftup::Call_AnimationEnd()
+void CCorvusState_ParryDeflectLeftup::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -114,7 +114,7 @@ void CCorvusState_ParryDeflectLeftup::Play_AttackWithIndex(const _tchar& In_iAtt
 void CCorvusState_ParryDeflectLeftup::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ParryDeflectLeftup::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ParryDeflectLeftup::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_ParryDeflectLeftup::Check_AndChangeNextState()

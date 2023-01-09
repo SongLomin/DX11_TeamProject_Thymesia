@@ -41,7 +41,7 @@ void CNorMonState_SpecialAttackStart::Start()
 
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SpecialAttackStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SpecialAttackStart::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -93,7 +93,7 @@ void CNorMonState_SpecialAttackStart::OnStateEnd()
 
 void CNorMonState_SpecialAttackStart::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_SpecialAttackStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_SpecialAttackStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_SpecialAttackStart::Free()
@@ -118,7 +118,7 @@ _bool CNorMonState_SpecialAttackStart::Check_AndChangeNextState()
 
 }
 
-void CNorMonState_SpecialAttackStart::Call_AnimationEnd()
+void CNorMonState_SpecialAttackStart::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

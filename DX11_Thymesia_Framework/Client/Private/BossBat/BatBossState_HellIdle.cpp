@@ -33,7 +33,7 @@ void CBatBossState_HellIdle::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Idle");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_HellIdle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_HellIdle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_HellIdle::Tick(_float fTimeDelta)
@@ -98,14 +98,14 @@ void CBatBossState_HellIdle::Free()
 
 }
 
-void CBatBossState_HellIdle::Call_AnimationEnd()
+void CBatBossState_HellIdle::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 
 }
 
 void CBatBossState_HellIdle::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_HellIdle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_HellIdle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CBatBossState_HellIdle::Check_AndChangeNextState()

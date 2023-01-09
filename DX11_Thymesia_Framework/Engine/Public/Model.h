@@ -157,7 +157,7 @@ private:
 	unordered_map<size_t, _float4>			m_DeltaBonePositions;
 
 public:
-	FDelegate<>								CallBack_AnimationEnd;
+	FDelegate<_uint>						CallBack_AnimationEnd;
 
 private:
 	mutex m_job_q_;

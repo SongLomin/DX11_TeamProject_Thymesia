@@ -33,7 +33,7 @@ void CBatBossState_JumpSmash_ForwardL::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_JumpSmashForwardL");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_JumpSmash_ForwardL::Tick(_float fTimeDelta)
@@ -99,7 +99,7 @@ void CBatBossState_JumpSmash_ForwardL::OnStateEnd()
 }
 
 
-void CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd()
+void CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -111,7 +111,7 @@ void CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd()
 
 void CBatBossState_JumpSmash_ForwardL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_JumpSmash_ForwardL::Free()

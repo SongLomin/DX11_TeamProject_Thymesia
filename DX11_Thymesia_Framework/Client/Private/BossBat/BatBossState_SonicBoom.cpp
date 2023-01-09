@@ -33,7 +33,7 @@ void CBatBossState_SonicBoom::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_SonicBoom");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_SonicBoom::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_SonicBoom::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_SonicBoom::Tick(_float fTimeDelta)
@@ -109,7 +109,7 @@ void CBatBossState_SonicBoom::OnStateEnd()
 
 
 
-void CBatBossState_SonicBoom::Call_AnimationEnd()
+void CBatBossState_SonicBoom::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -119,7 +119,7 @@ void CBatBossState_SonicBoom::Call_AnimationEnd()
 
 void CBatBossState_SonicBoom::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_SonicBoom::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_SonicBoom::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_SonicBoom::Free()

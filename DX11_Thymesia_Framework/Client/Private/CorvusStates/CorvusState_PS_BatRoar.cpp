@@ -7,9 +7,9 @@
 GAMECLASS_C(CCorvusState_PS_BatRoar);
 CLONE_C(CCorvusState_PS_BatRoar, CComponent)
 
-void CCorvusState_PS_BatRoar::Call_AnimationEnd()
+void CCorvusState_PS_BatRoar::Call_AnimationEnd(_uint iEndAnimIndex)
 {
-	__super::Call_AnimationEnd();
+	__super::Call_AnimationEnd(iEndAnimIndex);
 }
 
 void CCorvusState_PS_BatRoar::Call_NextKeyFrame(const _uint& In_KeyIndex)
@@ -60,7 +60,7 @@ void CCorvusState_PS_BatRoar::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Bat_Roar_A");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_BatRoar::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_BatRoar::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_PS_BatRoar::Tick(_float fTimeDelta)
@@ -103,5 +103,5 @@ void CCorvusState_PS_BatRoar::Free()
 	__super::Free();
 
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_BatRoar::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_BatRoar::Call_AnimationEnd, this, placeholders::_1);
 }

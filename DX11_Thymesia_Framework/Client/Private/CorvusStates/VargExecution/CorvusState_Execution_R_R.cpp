@@ -33,7 +33,7 @@ void CCorvusState_Execution_R_R::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_StunExecute_StartR_R");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Execution_R_R::Tick(_float fTimeDelta)
@@ -83,7 +83,7 @@ void CCorvusState_Execution_R_R::OnStateEnd()
 	
 }
 
-void CCorvusState_Execution_R_R::Call_AnimationEnd()
+void CCorvusState_Execution_R_R::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -113,7 +113,7 @@ void CCorvusState_Execution_R_R::Free()
 void CCorvusState_Execution_R_R::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)

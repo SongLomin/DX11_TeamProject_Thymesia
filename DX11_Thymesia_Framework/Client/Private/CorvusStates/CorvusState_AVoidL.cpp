@@ -33,7 +33,7 @@ void CCorvusState_AVoidL::Start()
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidShortMag_L");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_AVoidL::Tick(_float fTimeDelta)
@@ -95,7 +95,7 @@ void CCorvusState_AVoidL::OnStateEnd()
 
 }
 
-void CCorvusState_AVoidL::Call_AnimationEnd()
+void CCorvusState_AVoidL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -118,7 +118,7 @@ void CCorvusState_AVoidL::Free()
 void CCorvusState_AVoidL::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoidL::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoidL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_AVoidL::Check_AndChangeNextState()

@@ -32,7 +32,7 @@ void CUrdBossState_StepB::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_StepB|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepB::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CUrdBossState_StepB::OnStateEnd()
 
 
 
-void CUrdBossState_StepB::Call_AnimationEnd()
+void CUrdBossState_StepB::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +92,7 @@ void CUrdBossState_StepB::Call_AnimationEnd()
 
 void CUrdBossState_StepB::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepB::Free()
@@ -112,8 +112,22 @@ _bool CUrdBossState_StepB::Check_AndChangeNextState()
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+			int iRand = rand() % 3;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_L>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_R>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			}
 			return true;
 		}
 		

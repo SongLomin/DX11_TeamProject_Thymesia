@@ -32,7 +32,7 @@ void CUrdBossState_Dead::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Dead|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Dead::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Dead::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CUrdBossState_Dead::OnStateEnd()
 
 
 
-void CUrdBossState_Dead::Call_AnimationEnd()
+void CUrdBossState_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CUrdBossState_Dead::Call_AnimationEnd()
 
 void CUrdBossState_Dead::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Dead::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Dead::Free()

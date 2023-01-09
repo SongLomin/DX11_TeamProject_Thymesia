@@ -42,7 +42,7 @@ void CNorMonState_Idle2Fight::Start()
 			break;
 		}
 	}
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Idle2Fight::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Idle2Fight::Call_AnimationEnd, this, placeholders::_1);
 
 }
 
@@ -90,11 +90,11 @@ void CNorMonState_Idle2Fight::OnStateEnd()
 
 void CNorMonState_Idle2Fight::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Idle2Fight::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Idle2Fight::Call_AnimationEnd, this, placeholders::_1);
 }
 
 
-void CNorMonState_Idle2Fight::Call_AnimationEnd()
+void CNorMonState_Idle2Fight::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

@@ -33,7 +33,7 @@ protected:
 	void Free();
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 
 private:
 	_float m_fMaxSpeed = 4.f;

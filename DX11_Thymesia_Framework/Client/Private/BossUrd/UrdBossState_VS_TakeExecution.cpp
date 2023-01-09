@@ -36,7 +36,7 @@ void CUrdBossState_VS_TakeExecution::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_VS_TakeExecution|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_VS_TakeExecution::Tick(_float fTimeDelta)
@@ -99,7 +99,7 @@ void CUrdBossState_VS_TakeExecution::OnStateEnd()
 
 
 
-void CUrdBossState_VS_TakeExecution::Call_AnimationEnd()
+void CUrdBossState_VS_TakeExecution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -125,7 +125,7 @@ void CUrdBossState_VS_TakeExecution::Call_AnimationEnd()
 
 void CUrdBossState_VS_TakeExecution::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_VS_TakeExecution::Free()

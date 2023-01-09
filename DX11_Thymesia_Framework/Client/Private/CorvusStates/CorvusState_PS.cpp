@@ -11,7 +11,7 @@
 
 GAMECLASS_C(CCorvusState_PS);
 
-void CCorvusState_PS::Call_AnimationEnd()
+void CCorvusState_PS::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

@@ -32,7 +32,7 @@ void CUrdBossState_Parry_R::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Parry_R|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Parry_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Parry_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Parry_R::Tick(_float fTimeDelta)
@@ -84,7 +84,7 @@ void CUrdBossState_Parry_R::OnStateEnd()
 
 
 
-void CUrdBossState_Parry_R::Call_AnimationEnd()
+void CUrdBossState_Parry_R::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -96,7 +96,7 @@ void CUrdBossState_Parry_R::Call_AnimationEnd()
 
 void CUrdBossState_Parry_R::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Parry_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Parry_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Parry_R::Free()
@@ -110,7 +110,7 @@ _bool CUrdBossState_Parry_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.95f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepB>(0.05f);
 		return true;

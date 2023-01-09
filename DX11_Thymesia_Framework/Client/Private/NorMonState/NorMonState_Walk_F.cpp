@@ -62,7 +62,7 @@ void CNorMonState_Walk_F::Start()
 
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_F::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_F::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Walk_F::Tick(_float fTimeDelta)
@@ -130,7 +130,7 @@ void CNorMonState_Walk_F::OnEventMessage(_uint iArg)
 	}
 }
 
-void CNorMonState_Walk_F::Call_AnimationEnd()
+void CNorMonState_Walk_F::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -141,7 +141,7 @@ void CNorMonState_Walk_F::Call_AnimationEnd()
 
 void CNorMonState_Walk_F::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Walk_F::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Walk_F::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Walk_F::Free()

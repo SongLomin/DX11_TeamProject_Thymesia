@@ -32,7 +32,7 @@ void CUrdBossState_AttackComboB1::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack02LV2C0|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_AttackComboB1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_AttackComboB1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_AttackComboB1::Tick(_float fTimeDelta)
@@ -88,7 +88,7 @@ void CUrdBossState_AttackComboB1::OnStateEnd()
 
 
 
-void CUrdBossState_AttackComboB1::Call_AnimationEnd()
+void CUrdBossState_AttackComboB1::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -100,7 +100,7 @@ void CUrdBossState_AttackComboB1::Call_AnimationEnd()
 
 void CUrdBossState_AttackComboB1::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_AttackComboB1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_AttackComboB1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_AttackComboB1::Free()

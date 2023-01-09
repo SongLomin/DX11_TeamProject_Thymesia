@@ -79,18 +79,23 @@ HRESULT CUrd::Initialize(void* pArg)
 	Add_Component<CUrdBossState_StepB>();
 	Add_Component<CUrdBossState_StunStart>();
 	Add_Component<CUrdBossState_StunLoop>();
+	Add_Component<CUrdBossState_AttackComboC2>();
 	Add_Component<CUrdBossState_StunEnd>();
-	Add_Component<CUrdBossState_VS_TakeExecution>();
 	Add_Component<CUrdBossState_WalkB>();
 	Add_Component<CUrdBossState_WalkBL>();
 	Add_Component<CUrdBossState_WalkBR>();
 	Add_Component<CUrdBossState_WalkL>();
 	Add_Component<CUrdBossState_WalkR>();
+	Add_Component<CUrdBossState_AttackComboB2>();
 	Add_Component<CUrdBossState_WalkF>();
 	Add_Component<CUrdBossState_WalkFR>();
 	Add_Component<CUrdBossState_WalkFL>();
+	Add_Component<CUrdBossState_AttackComboB3>();
 	Add_Component<CUrdBossState_TurnL>();
 	Add_Component<CUrdBossState_TurnR>();
+	Add_Component<CUrdBossState_AttackComboB1>();
+	Add_Component<CUrdBossState_AttackComboC1>();
+	Add_Component<CUrdBossState_VS_TakeExecution>();
 
 
 
@@ -204,8 +209,11 @@ void CUrd::Init_Desc()
 	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
 
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
+	m_pJavelinWeapon.back().lock()->Set_RenderCheck(true);
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
+	m_pJavelinWeapon.back().lock()->Set_RenderCheck(true);
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
+	m_pJavelinWeapon.back().lock()->Set_RenderCheck(true);
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
@@ -257,7 +265,11 @@ void CUrd::Init_Desc()
 	INIT_STATE(CUrdBossState_StunStart);
 	INIT_STATE(CUrdBossState_StunLoop);
 	INIT_STATE(CUrdBossState_StunEnd);
-	INIT_STATE(CUrdBossState_VS_TakeExecution);
+	INIT_STATE(CUrdBossState_AttackComboB1);
+	INIT_STATE(CUrdBossState_AttackComboB2);
+	INIT_STATE(CUrdBossState_AttackComboB3);
+	INIT_STATE(CUrdBossState_AttackComboC1);
+	INIT_STATE(CUrdBossState_AttackComboC2);
 	INIT_STATE(CUrdBossState_WalkB);
 	INIT_STATE(CUrdBossState_WalkBL);
 	INIT_STATE(CUrdBossState_WalkBR);
@@ -268,6 +280,7 @@ void CUrd::Init_Desc()
 	INIT_STATE(CUrdBossState_WalkFL);
 	INIT_STATE(CUrdBossState_TurnL);
 	INIT_STATE(CUrdBossState_TurnR);
+	INIT_STATE(CUrdBossState_VS_TakeExecution);
 
 	Bind_KeyEvent("Boss_Urd");
 

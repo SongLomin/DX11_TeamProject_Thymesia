@@ -32,7 +32,7 @@ void CUrdBossState_Attack01LV2::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack01LV2|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack01LV2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack01LV2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack01LV2::Tick(_float fTimeDelta)
@@ -62,6 +62,7 @@ void CUrdBossState_Attack01LV2::OnStateStart(const _float& In_fAnimationBlendTim
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_bAttackLookAtLimit = true;
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 21);
 	
@@ -79,11 +80,12 @@ void CUrdBossState_Attack01LV2::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 
 
-void CUrdBossState_Attack01LV2::Call_AnimationEnd()
+void CUrdBossState_Attack01LV2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -93,7 +95,7 @@ void CUrdBossState_Attack01LV2::Call_AnimationEnd()
 
 void CUrdBossState_Attack01LV2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack01LV2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack01LV2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack01LV2::Free()

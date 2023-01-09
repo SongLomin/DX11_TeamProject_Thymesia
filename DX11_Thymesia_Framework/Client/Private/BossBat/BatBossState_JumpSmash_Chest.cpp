@@ -33,7 +33,7 @@ void CBatBossState_JumpSmash_Chest::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_JumpSmash_Chest");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_JumpSmash_Chest::Tick(_float fTimeDelta)
@@ -108,7 +108,7 @@ void CBatBossState_JumpSmash_Chest::OnStateEnd()
 
 
 
-void CBatBossState_JumpSmash_Chest::Call_AnimationEnd()
+void CBatBossState_JumpSmash_Chest::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -118,7 +118,7 @@ void CBatBossState_JumpSmash_Chest::Call_AnimationEnd()
 
 void CBatBossState_JumpSmash_Chest::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_JumpSmash_Chest::Free()

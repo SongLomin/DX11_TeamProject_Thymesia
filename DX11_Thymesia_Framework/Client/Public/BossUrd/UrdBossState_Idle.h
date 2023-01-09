@@ -28,6 +28,10 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	//TODO юс╫ц
+	_int        m_iCount = 0;
+
 
 protected:
 	void Free();

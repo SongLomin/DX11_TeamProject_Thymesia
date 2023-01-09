@@ -53,7 +53,7 @@ void CVargBossState_Attack3b::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack3_1");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack3b::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack3b::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Attack3b::Tick(_float fTimeDelta)
@@ -103,7 +103,7 @@ void CVargBossState_Attack3b::OnStateEnd()
 
 
 
-void CVargBossState_Attack3b::Call_AnimationEnd()
+void CVargBossState_Attack3b::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -113,7 +113,7 @@ void CVargBossState_Attack3b::Call_AnimationEnd()
 
 void CVargBossState_Attack3b::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack3b::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack3b::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Attack3b::Free()

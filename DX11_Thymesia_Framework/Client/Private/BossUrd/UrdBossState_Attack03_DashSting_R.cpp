@@ -34,7 +34,7 @@ void CUrdBossState_Attack03_DashSting_R::Start()
 	                                                          
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack04_DashSting_R|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack03_DashSting_R::Tick(_float fTimeDelta)
@@ -66,7 +66,7 @@ void CUrdBossState_Attack03_DashSting_R::OnStateStart(const _float& In_fAnimatio
 	for (auto& elem : pWeapons)
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.4f);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
 	m_bAttackLookAtLimit = true;
 
@@ -93,7 +93,7 @@ void CUrdBossState_Attack03_DashSting_R::OnStateEnd()
 
 
 
-void CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd()
+void CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -105,7 +105,7 @@ void CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd()
 
 void CUrdBossState_Attack03_DashSting_R::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack03_DashSting_R::Free()
@@ -119,7 +119,7 @@ _bool CUrdBossState_Attack03_DashSting_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
 		m_bAttackLookAtLimit = false;
 
 	return false;

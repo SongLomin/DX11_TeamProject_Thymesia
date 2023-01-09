@@ -39,7 +39,7 @@ void CJokerState_WalkR::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_WalkR");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_WalkR::Call_AnimationEnd, this);*/
+	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_WalkR::Call_AnimationEnd, this, placeholders::_1);*/
 }
 
 void CJokerState_WalkR::Tick(_float fTimeDelta)

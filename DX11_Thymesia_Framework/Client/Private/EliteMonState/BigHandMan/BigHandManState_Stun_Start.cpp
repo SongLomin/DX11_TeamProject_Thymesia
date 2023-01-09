@@ -37,7 +37,7 @@ void CBigHandManState_Stun_Start::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV2Villager_M.ao|LV2Villager01_M_Stun_Start");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_Stun_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_Stun_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_Stun_Start::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CBigHandManState_Stun_Start::OnStateEnd()
 
 }
 
-void CBigHandManState_Stun_Start::Call_AnimationEnd()
+void CBigHandManState_Stun_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +92,7 @@ void CBigHandManState_Stun_Start::Call_AnimationEnd()
 
 void CBigHandManState_Stun_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_Stun_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_Stun_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_Stun_Start::Free()

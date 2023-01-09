@@ -32,7 +32,7 @@ void CBatBossState_HurtXL_L::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_HurtXL_L");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_HurtXL_L::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_HurtXL_L::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_HurtXL_L::Tick(_float fTimeDelta)
@@ -80,7 +80,7 @@ void CBatBossState_HurtXL_L::OnStateEnd()
 
 
 
-void CBatBossState_HurtXL_L::Call_AnimationEnd()
+void CBatBossState_HurtXL_L::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -90,7 +90,7 @@ void CBatBossState_HurtXL_L::Call_AnimationEnd()
 
 void CBatBossState_HurtXL_L::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_HurtXL_L::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_HurtXL_L::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_HurtXL_L::Free()

@@ -36,7 +36,7 @@ void CBigHandManState_ComboB_End::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboB_End");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_ComboB_End::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_ComboB_End::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_ComboB_End::Tick(_float fTimeDelta)
@@ -94,7 +94,7 @@ void CBigHandManState_ComboB_End::OnStateEnd()
 
 }
 
-void CBigHandManState_ComboB_End::Call_AnimationEnd()
+void CBigHandManState_ComboB_End::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -104,7 +104,7 @@ void CBigHandManState_ComboB_End::Call_AnimationEnd()
 
 void CBigHandManState_ComboB_End::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_ComboB_End::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_ComboB_End::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_ComboB_End::Free()

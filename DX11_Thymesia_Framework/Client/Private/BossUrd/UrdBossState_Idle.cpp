@@ -77,6 +77,25 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	}
 
 	
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+
+	_uint m_i = pStatus.lock()->Get_Desc().m_iLifeCount;
+
+	if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
+	{
+		m_iPhaseTwoSkillCount += 1;
+
+		if (m_iPhaseTwoSkillCount >= 8)
+		{
+			m_bSkillStart = true;
+		}
+
+		if (m_iPhaseTwoJavlinCount >= 3)
+		{
+			m_bSpecailAttack = true;
+		}
+	}
+	
 	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,0, In_fAnimationBlendTime);
@@ -106,11 +125,54 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 
 
-	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
-	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_VS_TakeExecution>(0.05f);
-		return true;
-	}
+	//if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	//{
+	//	switch (m_iCount)
+	//	{
+	//	case 0:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboC1>(0.05f);
+	//		break;
+	//	case 1:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01LV2>(0.05f);
+	//		break;
+	//	case 2:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+	//		break;
+	//	case 3:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02LV2C0>(0.05f);
+	//		break;
+	//	case 4:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02LV2C1>(0.05f);
+	//		break;
+	//	case 5:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack05>(0.05f);
+	//		break;
+	//	case 6:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack06>(0.05f);
+	//		break;
+	//	case 7:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack07>(0.05f);
+	//		break;
+	//	case 8:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboB1>(0.05f);
+	//		break;
+	//	case 9:
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboC1>(0.05f);
+	//		break;
+	//
+	//	}
+	//	return true;
+	//}
+	//
+	//if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+	//{
+	//	m_iCount += 1;
+	//}
+	//
+	//if (KEY_INPUT(KEY::NUM4, KEY_STATE::TAP))
+	//{
+	//	m_iCount = 0;
+	//}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 0 && m_bOnce)
 	{
@@ -161,9 +223,9 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 							return true;
 						}
 					}
-
+	
 				}
-
+	
 			}
 			else
 			{
@@ -199,11 +261,11 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 								return true;
 							}
 						}
-
+	
 					}
-
+	
 				}
-
+	
 			}
 		}
 		else if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
@@ -235,9 +297,9 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 							return true;
 						}
 					}
-
+	
 				}
-
+	
 			}
 			else
 			{
@@ -273,11 +335,11 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 								return true;
 							}
 						}
-
+	
 					}
-
+	
 				}
-
+	
 			}
 		}
 		

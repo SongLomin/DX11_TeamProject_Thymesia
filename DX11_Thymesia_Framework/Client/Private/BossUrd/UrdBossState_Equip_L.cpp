@@ -35,7 +35,7 @@ void CUrdBossState_Equip_L::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Equip_L|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Equip_L::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Equip_L::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Equip_L::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CUrdBossState_Equip_L::OnStateEnd()
 
 
 
-void CUrdBossState_Equip_L::Call_AnimationEnd()
+void CUrdBossState_Equip_L::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +92,7 @@ void CUrdBossState_Equip_L::Call_AnimationEnd()
 
 void CUrdBossState_Equip_L::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Equip_L::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Equip_L::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Equip_L::Free()

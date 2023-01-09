@@ -31,7 +31,7 @@ void CCorvusState_Getup::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_GetUp");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Getup::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Getup::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Getup::Tick(_float fTimeDelta)
@@ -76,7 +76,7 @@ void CCorvusState_Getup::OnStateEnd()
 	
 }
 
-void CCorvusState_Getup::Call_AnimationEnd()
+void CCorvusState_Getup::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -93,7 +93,7 @@ void CCorvusState_Getup::Free()
 void CCorvusState_Getup::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Getup::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Getup::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_Getup::Check_AndChangeNextState()

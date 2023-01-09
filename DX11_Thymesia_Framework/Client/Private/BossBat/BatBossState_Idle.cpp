@@ -33,7 +33,7 @@ void CBatBossState_Idle::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Idle");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Idle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Idle::Tick(_float fTimeDelta)
@@ -92,14 +92,14 @@ void CBatBossState_Idle::Free()
 
 }
 
-void CBatBossState_Idle::Call_AnimationEnd()
+void CBatBossState_Idle::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 
 }
 
 void CBatBossState_Idle::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Idle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CBatBossState_Idle::Check_AndChangeNextState()

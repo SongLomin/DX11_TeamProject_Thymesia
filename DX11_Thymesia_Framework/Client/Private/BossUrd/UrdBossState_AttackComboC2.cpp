@@ -34,7 +34,7 @@ void CUrdBossState_AttackComboC2::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack06|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_AttackComboC2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_AttackComboC2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_AttackComboC2::Tick(_float fTimeDelta)
@@ -68,7 +68,7 @@ void CUrdBossState_AttackComboC2::OnStateStart(const _float& In_fAnimationBlendT
 	for (auto& elem : pWeapons)
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.1f);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(4.f, 4.f, 4.f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -95,9 +95,12 @@ void CUrdBossState_AttackComboC2::OnStateEnd()
 
 
 
-void CUrdBossState_AttackComboC2::Call_AnimationEnd()
+void CUrdBossState_AttackComboC2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
+		return;
+
+	if (m_iAnimIndex != iEndAnimIndex)
 		return;
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
@@ -108,7 +111,7 @@ void CUrdBossState_AttackComboC2::Call_AnimationEnd()
 
 void CUrdBossState_AttackComboC2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_AttackComboC2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_AttackComboC2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_AttackComboC2::Free()

@@ -32,7 +32,7 @@ void CUrdBossState_StepFL45::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_StepFL45|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepFL45::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_StepFL45::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepFL45::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CUrdBossState_StepFL45::OnStateEnd()
 
 
 
-void CUrdBossState_StepFL45::Call_AnimationEnd()
+void CUrdBossState_StepFL45::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -92,7 +92,7 @@ void CUrdBossState_StepFL45::Call_AnimationEnd()
 
 void CUrdBossState_StepFL45::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepFL45::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepFL45::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_StepFL45::Free()

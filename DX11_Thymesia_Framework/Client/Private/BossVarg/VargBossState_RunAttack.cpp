@@ -57,7 +57,7 @@ void CVargBossState_RunAttack::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack1");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_RunAttack::Tick(_float fTimeDelta)
@@ -100,7 +100,7 @@ void CVargBossState_RunAttack::OnStateEnd()
 
 
 
-void CVargBossState_RunAttack::Call_AnimationEnd()
+void CVargBossState_RunAttack::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -110,7 +110,7 @@ void CVargBossState_RunAttack::Call_AnimationEnd()
 
 void CVargBossState_RunAttack::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RunAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RunAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_RunAttack::Free() { }

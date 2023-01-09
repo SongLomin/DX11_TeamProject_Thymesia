@@ -115,7 +115,7 @@ void CCorvusState_Die::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 	// Do Nothing
 }
 
-//void CCorvusState_Die::Call_AnimationEnd()
+//void CCorvusState_Die::Call_AnimationEnd(_uint iEndAnimIndex)
 //{
 //	if (!Get_Enable())
 //		return;

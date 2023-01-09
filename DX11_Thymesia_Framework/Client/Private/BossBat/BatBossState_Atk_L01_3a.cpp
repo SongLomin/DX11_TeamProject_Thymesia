@@ -33,7 +33,7 @@ void CBatBossState_Atk_L01_3a::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_AttackL_01_3a");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_L01_3a::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_L01_3a::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Atk_L01_3a::Tick(_float fTimeDelta)
@@ -87,7 +87,7 @@ void CBatBossState_Atk_L01_3a::OnStateEnd()
 
 
 
-void CBatBossState_Atk_L01_3a::Call_AnimationEnd()
+void CBatBossState_Atk_L01_3a::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -97,7 +97,7 @@ void CBatBossState_Atk_L01_3a::Call_AnimationEnd()
 
 void CBatBossState_Atk_L01_3a::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Atk_L01_3a::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Atk_L01_3a::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Atk_L01_3a::Free()

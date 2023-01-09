@@ -33,7 +33,7 @@ void CCorvusState_Joker_Execution::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_VSJoker_Execution");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Joker_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Joker_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Joker_Execution::Tick(_float fTimeDelta)
@@ -86,7 +86,7 @@ void CCorvusState_Joker_Execution::OnStateEnd()
 	GET_SINGLE(CGameManager)->End_Cinematic();
 }
 
-void CCorvusState_Joker_Execution::Call_AnimationEnd()
+void CCorvusState_Joker_Execution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -125,7 +125,7 @@ void CCorvusState_Joker_Execution::Free()
 void CCorvusState_Joker_Execution::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Joker_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Joker_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_Joker_Execution::Check_AndChangeNextState()

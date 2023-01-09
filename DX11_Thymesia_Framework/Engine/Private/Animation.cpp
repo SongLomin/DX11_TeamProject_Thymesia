@@ -72,8 +72,8 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 			//m_Channels[i].lock()->Update_TransformationMatrices(m_fTimeAcc);
 		}
 
-		m_pModel.lock()->CallBack_AnimationEnd();
-		m_pOwner.lock()->Get_Component<CModel>().lock()->Reset_DeltaBonePositions();
+		m_pModel.lock()->CallBack_AnimationEnd(m_pModel.lock()->Get_CurrentAnimationIndex());
+		m_pModel.lock()->Reset_DeltaBonePositions();
 
 		m_fTimeAcc = 0.f;
 		return;
