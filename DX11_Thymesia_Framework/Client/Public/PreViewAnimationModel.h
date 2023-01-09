@@ -3,7 +3,6 @@
 
 BEGIN(Client)
 
-class CLuxiya;
 class CWeapon;
 class CMobWeapon;
 class CPreviewAnimationModel final :
@@ -41,10 +40,8 @@ private:
     void Release_BeforeModel();
 
 private:
-
     _int   m_iContainerIndex = 0;
 
-private:
     map<_hashcode, list<weak_ptr<CWeapon>>> m_pDebugWeapons;
     list<weak_ptr<CWeapon>>                 m_pModelWeapons;
 
@@ -54,7 +51,6 @@ private: /* For. NvCloth */
 
 private:
     void Free();
-
 };
 
 END

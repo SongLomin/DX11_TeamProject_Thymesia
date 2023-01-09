@@ -110,7 +110,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.4f)
 	{
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 		m_bAttackLookAtLimit = false;
 	}
@@ -119,7 +119,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.42f)
 	{
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.5f);
 		m_bAttackLookAtLimit = true;
 	}

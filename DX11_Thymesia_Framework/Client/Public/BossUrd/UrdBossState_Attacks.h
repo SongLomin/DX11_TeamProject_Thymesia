@@ -1,18 +1,15 @@
 #pragma once
 #include "BossUrd/UrdBossStateBase.h"
 
-BEGIN(Engine)
-class CModel;
-END
-
 BEGIN(Client)
-
-class CUrdBossState_SPSkill01 :
+class CUrdBossState_Attacks abstract :
 	public CUrdBossStateBase
 {
-	GAMECLASS_H(CUrdBossState_SPSkill01);
-	CLONE_H(CUrdBossState_SPSkill01, CComponent);
-	SHALLOW_COPY(CUrdBossState_SPSkill01);
+	GAMECLASS_H(CUrdBossState_Attacks);
+
+public:
+	virtual void Call_AnimationEnd(_uint iEndAnimIndex) = 0;
+	virtual void Call_NextKeyFrame(const _uint& In_KeyIndex) = 0;
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -21,19 +18,22 @@ protected:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void LateTick(_float fTimeDelta) override;
 
-protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
-	virtual _bool Check_AndChangeNextState() override;
 
-	_uint   m_iResetWeaponNum = 0;
+	virtual _bool Check_AndChangeNextState() = 0;
 
-private:
-	void Call_AnimationEnd(_uint iEndAnimIndex);
-protected:
+	void Set_MoveScale(const _float fRatio = 1.f);
+
+	void TurnOn_Effect(const std::string& szEffectKey);
+	void TurnOff_Effect(const std::string& szEffectKey);
+
 	virtual void OnDestroy() override;
 	void Free();
 
+protected:
+	_float m_fTurnAtkSpeedRatio = 1.f;
+	weak_ptr<CAnimation> m_pThisAnimationCom;
 };
 
 END

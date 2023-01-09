@@ -182,7 +182,7 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 		for (auto& elem : pDecoWeapons)
 		{
 			elem.lock()->Set_RenderOnOff(true);
-			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(false);
 
 		}
 

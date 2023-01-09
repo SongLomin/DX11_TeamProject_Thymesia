@@ -48,7 +48,6 @@ void CStateBase::LateTick(_float fTimeDelta)
 {
 }
 
-
 void CStateBase::Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio)
 {
 	m_iAnimIndex = In_iNumIndex;

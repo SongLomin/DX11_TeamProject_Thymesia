@@ -83,7 +83,7 @@ void CVargBossState_Attack1b::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 	for (auto& elem : pWeapons)
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.12f);
