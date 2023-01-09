@@ -99,7 +99,7 @@ public: /* For Template Function */
 	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
 	{
 		//std::lock_guard<std::mutex> lock(m_job_q_);
-		//scoped_lock lock(ObjectManager_Mutex);
+		// scoped_lock lock(ObjectManager_Mutex);
 
 		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
 

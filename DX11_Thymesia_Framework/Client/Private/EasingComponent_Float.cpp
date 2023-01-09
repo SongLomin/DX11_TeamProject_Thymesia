@@ -53,7 +53,7 @@ void CEasingComponent_Float::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    for (auto& iter = m_ConditionEventList.begin(); iter != m_ConditionEventList.end();)
+    for (auto iter = m_ConditionEventList.begin(); iter != m_ConditionEventList.end();)
     {
         if (iter->_bDelete)
         {

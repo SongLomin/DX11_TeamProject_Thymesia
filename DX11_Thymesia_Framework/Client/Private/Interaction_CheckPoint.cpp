@@ -159,10 +159,7 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _INTERACTION_EFFECT_
 		if (-1 == m_iEffectIndex)
 		{
-			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-			m_iCount++;
-
-			cout << "Chair Effect Count : " << m_iCount << endl;
+			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
 		}
 #endif // _INTERACTION_EFFECT_
 	}
@@ -173,11 +170,8 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _INTERACTION_EFFECT_
 		if (-1 != m_iEffectIndex)
 		{
-			GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iEffectIndex);
 			m_iEffectIndex = -1;
-			m_iCount--;
-
-			cout << "Chair Effect Count : " << m_iCount << endl;
 		}
 #endif // _INTERACTION_EFFECT_
 	}

@@ -38,7 +38,6 @@ namespace Engine
 	typedef XMMATRIX					_matrix;
 	typedef FXMMATRIX					_fmatrix;
 
-
 	typedef unsigned long long			_flag;
 	typedef unsigned long long			_time;
 
