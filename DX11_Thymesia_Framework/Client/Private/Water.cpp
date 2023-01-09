@@ -42,6 +42,9 @@ HRESULT CWater::Initialize(void* pArg)
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("DefaultGround");
 	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0], D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
+	m_WaterWaveDescs.vPosition.reserve(sizeof(_float2) * 128);
+	m_WaterWaveDescs.vWaveFlag.reserve(sizeof(_float4) * 128);
+
 	GET_SINGLE(CGameManager)->Register_Water(Weak_StaticCast<CWater>(m_this));
 
 	return S_OK;
@@ -108,8 +111,13 @@ HRESULT CWater::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CWater::Add_WaterWave(const _float2& In_WaterPosition, const _float4& In_vWaterFlags)
 {
-	m_WaterWaveDescs.vPosition.push_back(In_WaterPosition);
-	m_WaterWaveDescs.vWaveFlag.push_back(In_vWaterFlags);
+	if (m_iDescIndex >= 128)
+		m_iDescIndex = 0;
+
+	m_WaterWaveDescs.vPosition[m_iDescIndex] = In_WaterPosition;
+	m_WaterWaveDescs.vWaveFlag[m_iDescIndex] = In_vWaterFlags;
+
+	++m_iDescIndex;
 }
 
 void CWater::Load_FromJson(const json& In_Json)
@@ -126,10 +134,10 @@ HRESULT CWater::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
-	_matrix WorldMatrixInv = XMMatrixTranspose(XMMatrixInverse(nullptr, m_pTransformCom.lock()->Get_WorldMatrix()));
+	//_matrix WorldMatrixInv = XMMatrixTranspose(XMMatrixInverse(nullptr, m_pTransformCom.lock()->Get_WorldMatrix()));
 
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrixInv", &WorldMatrixInv, sizeof(_float4x4))))
-		return E_FAIL;
+	//if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrixInv", &WorldMatrixInv, sizeof(_float4x4))))
+	//	return E_FAIL;
 
 	_uint iWaverWaveCnt = min((_uint)m_WaterWaveDescs.vPosition.size(), 128); //Water Max Count: 128
 
@@ -143,11 +151,11 @@ HRESULT CWater::SetUp_ShaderResource()
 			DEBUG_ASSERT;
 		}*/
 
-		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vPosition", &m_WaterWaveDescs.vPosition[0], sizeof(_float2) * iWaverWaveCnt)))
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vPosition", &m_WaterWaveDescs.vPosition[0], sizeof(_float2) * 128)))
 		{
 			DEBUG_ASSERT;
 		}
-		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vWaveDesc", &m_WaterWaveDescs.vWaveFlag[0], sizeof(_float4) * iWaverWaveCnt)))
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vWaveDesc", &m_WaterWaveDescs.vWaveFlag[0], sizeof(_float4) * 128)))
 		{
 			DEBUG_ASSERT;
 		}

@@ -45,6 +45,7 @@ private:
     _float2                         m_vNoiseUV    = {0.f,0.f};
 
     WATERWAVE_DESC          m_WaterWaveDescs;
+    _uint                   m_iDescIndex = 0;
 
 public:
     void Free();
