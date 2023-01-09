@@ -171,14 +171,15 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
-		DECAL_DESC DecalDesc;
+		/*DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
 		DecalDesc.vScale = { 5.f,5.f,5.f };
 		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
 		DecalDesc.fTime = 3.f;
 
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 10.f, 2.f);
 	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{

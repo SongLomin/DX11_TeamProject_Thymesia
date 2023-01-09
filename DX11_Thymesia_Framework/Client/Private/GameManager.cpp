@@ -923,9 +923,10 @@ void  CGameManager::Activate_Fog(_uint In_iFogIndex)
 
 void CGameManager::Register_Water(weak_ptr<CWater> pWater)
 {
+	m_pWater = pWater;
 }
 
-void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq)
+void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq,const _float In_fSpeed)
 {
 	if (!m_pWater.lock())
 		return;
@@ -934,6 +935,7 @@ void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVi
 	Desc.vPosition = _float2(In_vWorldPosition.m128_f32[0], In_vWorldPosition.m128_f32[2]);
 	Desc.fVibrationScale = In_fVibrationScale;
 	Desc.fFreq = In_fFreq;
+	Desc.fSpeed = In_fSpeed;
 
 	m_pWater.lock()->Add_WaterWave(Desc);
 }

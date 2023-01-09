@@ -205,7 +205,7 @@ public:
 
 public:
     void Register_Water(weak_ptr<CWater> pWater);
-    void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fTime, const _float In_fForce);
+    void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq, const _float In_fSpeed);
 
  public:
     FDelegate<>                 CallBack_ChangePlayer;

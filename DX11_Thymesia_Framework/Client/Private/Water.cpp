@@ -65,13 +65,14 @@ void CWater::Tick(_float fTimeDelta)
 	for (auto iter = m_WaterWaveDescs.begin(); iter != m_WaterWaveDescs.end();)
 	{
 		//TODO:: (홍혜담) 삭제 조건 여기서 기입
-		if ((*iter).fVibrationScale < 0.f)
+		if ((*iter).fVibrationScale < 0.0001f)
 		{
 			iter = m_WaterWaveDescs.erase(iter);
 		}
 		else
 		{
 			(*iter).fTimeAcc += fTimeDelta;
+			(*iter).fVibrationScale *= 0.7f;
 			++iter;
 		}
 	}
@@ -117,6 +118,10 @@ HRESULT CWater::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
+	_matrix WorldMatrixInv = XMMatrixTranspose(XMMatrixInverse(nullptr, m_pTransformCom.lock()->Get_WorldMatrix()));
+
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrixInv", &WorldMatrixInv, sizeof(_float4x4))))
+		return E_FAIL;
 
 	_uint iWaverWaveCnt = min((_uint)m_WaterWaveDescs.size(), 128); //Water Max Count: 128
 
@@ -125,10 +130,10 @@ HRESULT CWater::SetUp_ShaderResource()
 	if (iWaverWaveCnt > 0)
 	{
 		// 셰이더 내부의 WATERWAVE_DESC과 프로젝트의 WATERWAVE_DESC의 바이트와 멤버 위치가 같아야됨.
-		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WaterWaveDescs", &m_WaterWaveDescs[0], sizeof(WATERWAVE_DESC) * iWaverWaveCnt)))
+		/*if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WaveDescArray", &m_WaterWaveDescs[0], sizeof(WATERWAVE_DESC) * iWaverWaveCnt)))
 		{
 			DEBUG_ASSERT;
-		}
+		}*/
 	}
 
 	// 사이즈가 0이더라도, 0이라는 것을 알려준다.
