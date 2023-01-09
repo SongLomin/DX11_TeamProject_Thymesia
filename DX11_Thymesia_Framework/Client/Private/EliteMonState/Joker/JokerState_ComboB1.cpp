@@ -68,7 +68,7 @@ void CJokerState_Combob1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 0.7f);
 

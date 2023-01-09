@@ -1,18 +1,30 @@
 #include "stdafx.h"
 #include "BossUrd/UrdBossState_Attack03_DashSting_L.h"
-#include "Model.h"
-#include "GameInstance.h"
-#include "GameObject.h"
-#include "Player.h"
-//#include "BehaviorBase.h"
-#include "Animation.h"
-#include "Character.h"
-#include "BossUrd/UrdStates.h"
-#include "Weapon.h"
+#include "BossUrd/UrdBossState_Step_Idle.h"
+#include "BossUrd/UrdBossState_Idle.h"
 #include "MobWeapon.h"
+#include "Monster.h"
+#include "Animation.h"
 
 GAMECLASS_C(CUrdBossState_Attack03_DashSting_L);
 CLONE_C(CUrdBossState_Attack03_DashSting_L, CComponent)
+
+void CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd(_uint iEndAnimIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepCloseCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepFarCount(0);
+	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+}
+
+void CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	}
+}
 
 HRESULT CUrdBossState_Attack03_DashSting_L::Initialize_Prototype()
 {
@@ -23,8 +35,6 @@ HRESULT CUrdBossState_Attack03_DashSting_L::Initialize_Prototype()
 HRESULT CUrdBossState_Attack03_DashSting_L::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -39,50 +49,42 @@ void CUrdBossState_Attack03_DashSting_L::Start()
 
 void CUrdBossState_Attack03_DashSting_L::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	CBossStateBase::Tick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 	}
 
-	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
-
 
 void CUrdBossState_Attack03_DashSting_L::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
 	Check_AndChangeNextState();
 }
-
-
 
 void CUrdBossState_Attack03_DashSting_L::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame, this, placeholders::_1);
+	}
+
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
 	for (auto& elem : pWeapons)
+	{
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.4f);
+	}
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
-
+	Set_MoveScale(2.f);
 	m_bAttackLookAtLimit = true;
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	
-	
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
 }	
 
 
@@ -90,44 +92,36 @@ void CUrdBossState_Attack03_DashSting_L::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame, this, placeholders::_1);
+	}
 
-}
-
-
-
-void CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd(_uint iEndAnimIndex)
-{
-	if (!Get_Enable())
-		return;
-
-	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepCloseCount(0);
-	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepFarCount(0);
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
-}
-
-void CUrdBossState_Attack03_DashSting_L::OnDestroy()
-{
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd, this, placeholders::_1);
-}
-
-void CUrdBossState_Attack03_DashSting_L::Free()
-{
-
+	Set_MoveScale();
 }
 
 _bool CUrdBossState_Attack03_DashSting_L::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
+	{
 		return false;
+	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		m_bAttackLookAtLimit = false;
 	}
-		
 
 	return false;
 }
 
+void CUrdBossState_Attack03_DashSting_L::OnDestroy()
+{
+	__super::OnDestroy();
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd, this, placeholders::_1);
+}
+
+void CUrdBossState_Attack03_DashSting_L::Free()
+{
+	__super::Free();
+}

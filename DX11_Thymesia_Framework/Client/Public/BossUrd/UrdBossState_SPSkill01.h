@@ -11,10 +11,8 @@ class CUrdBossState_SPSkill01 :
 	public CUrdBossStateBase
 {
 	GAMECLASS_H(CUrdBossState_SPSkill01);
-	CLONE_H(CUrdBossState_SPSkill01, CComponent)
-		SHALLOW_COPY(CUrdBossState_SPSkill01)
-
-
+	CLONE_H(CUrdBossState_SPSkill01, CComponent);
+	SHALLOW_COPY(CUrdBossState_SPSkill01);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

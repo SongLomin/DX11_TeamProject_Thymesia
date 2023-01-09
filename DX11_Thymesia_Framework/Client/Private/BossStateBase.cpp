@@ -38,7 +38,6 @@ void CBossStateBase::Start()
 void CBossStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 }
 
 void CBossStateBase::LateTick(_float fTimeDelta)
@@ -86,8 +85,6 @@ shared_ptr<CMonster> CBossStateBase::Get_OwnerMonster() const noexcept
 
 _bool CBossStateBase::Check_Requirement()
 {
-
-
 	return __super::Check_Requirement();
 }
 

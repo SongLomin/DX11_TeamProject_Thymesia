@@ -2161,6 +2161,9 @@
     <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC2.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attacks.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Level_Home.h">
       <Filter>01. ClientLevel\06. Home</Filter>
     </ClInclude>
@@ -4372,6 +4375,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC2.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attacks.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97. Tool\00. IMGUI</Filter>

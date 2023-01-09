@@ -76,7 +76,7 @@ public:
     virtual void Release_Monster();
 
 public:
-    list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
+    list<weak_ptr<CMobWeapon>>  Get_Weapons() { return m_pWeapons; }
  
 
 public:

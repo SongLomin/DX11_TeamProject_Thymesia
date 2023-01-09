@@ -6,7 +6,7 @@ BEGIN(Client)
 
 class CUI_ItemSlot;
 class CUI_ShuffleIcon;
-
+class CItem;
 
 class CInventorySorter : public CBase
 {

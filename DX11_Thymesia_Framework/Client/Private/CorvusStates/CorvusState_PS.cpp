@@ -98,10 +98,6 @@ _bool CCorvusState_PS::Check_AndChangeNextState()
 	return false;
 }
 
-void CCorvusState_PS::Free()
-{
-}
-
 void CCorvusState_PS::Set_WeaponRender(const _bool bRender)
 {
 	list<weak_ptr<CWeapon>>	pWeapons = m_pOwnerFromPlayer.lock()->Get_Weapon();
@@ -120,4 +116,8 @@ void CCorvusState_PS::TurnOn_Effect(const std::string& szPlagueWeaponName)
 void CCorvusState_PS::TurnOff_Effect(const std::string& szPlagueWeaponName)
 {
 	GET_SINGLE(CGameManager)->UnUse_EffectGroup(szPlagueWeaponName, GET_SINGLE(CGameManager)->Get_StoredEffectIndex(szPlagueWeaponName.c_str()));
+}
+
+void CCorvusState_PS::Free()
+{
 }

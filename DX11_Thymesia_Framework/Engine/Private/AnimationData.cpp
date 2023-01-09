@@ -99,6 +99,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
     SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.4f);
 
+    SET_ANIM_SPEED("Corvus_StunExecute_StartR_R", 2.f);
     SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
     SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
     SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);*/
@@ -325,7 +326,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.006f);
         SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.3f);
     //속도 0.5배더빠르게
-    SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 1.f);
+    /*SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 1.f);
     SET_ANIM_SPEED("Armature|Armature|Urd_Skill02_1|BaseLayer", 1.f);
     SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_L|BaseLayer", 1.4f);
     SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_R|BaseLayer", 1.4f);
@@ -355,10 +356,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Armature|Armature|Urd_WalkF|BaseLayer", 1.2f);
     SET_ANIM_SPEED("Armature|Armature|Urd_WalkL|BaseLayer", 1.2f);
     SET_ANIM_SPEED("Armature|Armature|Urd_WalkR|BaseLayer", 1.2f);
-
-
-
-
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C1|BaseLayer", 0.8f);*/
 
    // SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.4f);
 

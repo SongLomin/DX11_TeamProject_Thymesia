@@ -126,7 +126,7 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	{
 
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		pWeapons.front().lock()->Weapon_BoneChange(m_pModelCom, "weapon_r");
 
 

@@ -110,7 +110,7 @@ _bool CUrdBossState_Equip_R::Check_AndChangeNextState()
 	{
 
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
 		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
 

@@ -111,7 +111,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -124,7 +124,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -140,7 +140,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -153,7 +153,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -166,7 +166,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -179,7 +179,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
@@ -192,7 +192,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
-			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
 			for (auto& elem : pWeapons)
 			{
