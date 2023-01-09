@@ -99,6 +99,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
     SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.4f);
 
+    SET_ANIM_SPEED("Corvus_StunExecute_StartR_R", 2.f);
     SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
     SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
     SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);*/
