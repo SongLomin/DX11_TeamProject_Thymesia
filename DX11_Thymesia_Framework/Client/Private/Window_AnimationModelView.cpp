@@ -71,7 +71,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                 for (int i = 0; i < m_AllModelKeys.size(); i++)
                 {
                     const bool is_selected = (m_CurrentModelIndex == i);
-                    if (ImGui::Selectable(m_AllModelKeys[i].c_str(), is_selected))
+                    if (ImGui::Selectable(m_AllModelKeys[i]->c_str(), is_selected))
                         m_CurrentModelIndex = i;
 
                     // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -84,7 +84,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
             if (ImGui::Button("Load"))
             {
 
-                m_pPreviewModel.lock()->Init_EditPreviewAnimationModel(m_AllModelKeys[m_CurrentModelIndex]);
+                m_pPreviewModel.lock()->Init_EditPreviewAnimationModel(*m_AllModelKeys[m_CurrentModelIndex]);
                 Update_PreViewModel();
             }
 
@@ -168,9 +168,9 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                     auto ModelKit = m_AllNoAnimModelKeys.at(i);
                     const bool is_selected = (m_CurrentNoAnimModelIndex == i);
 
-                    if (ModelFilter.PassFilter(ModelKit.c_str()))
+                    if (ModelFilter.PassFilter(ModelKit->c_str()))
                     {
-                        std::string label = ModelKit + "##" + std::to_string(i);
+                        std::string label = *ModelKit + "##" + std::to_string(i);
 
                         if (ImGui::Selectable(label.c_str(), is_selected))
                         {
@@ -189,7 +189,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                 // TODO : comment because explode
                 m_pPreviewNoAnimModel.lock()->Get_Component<CModel>().lock()->
                     Get_Owner().lock()->
-                    Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
+                    Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex]->c_str());
 
             }
         }

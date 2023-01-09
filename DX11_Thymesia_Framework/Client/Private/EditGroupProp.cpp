@@ -673,14 +673,14 @@ _bool CEditGroupProp::RenderView_SelectModelComponent()
 
 			if (0 < strlen(szFindModelTag))
 			{
-				if (string::npos == iter.find(szFindModelTag))
+				if (string::npos == iter->find(szFindModelTag))
 				{
 					++iIndex;
 					continue;
 				}
 			}
 
-			if (ImGui::Selectable(iter.c_str(), is_selected))
+			if (ImGui::Selectable(iter->c_str(), is_selected))
 			{
 				iSelect_NonAnimModel = iIndex;
 			}
@@ -695,7 +695,7 @@ _bool CEditGroupProp::RenderView_SelectModelComponent()
 	}
 
 	if (m_bChangModel = ImGui::Button("Chage Model", ImVec2(100.f, 25.f)))
-		m_szSelectModelName = m_ModelList[iSelect_NonAnimModel];	
+		m_szSelectModelName = *m_ModelList[iSelect_NonAnimModel];	
 
 	ImGui::SameLine();
 

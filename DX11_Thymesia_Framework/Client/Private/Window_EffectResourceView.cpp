@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "Window_EffectResourceView.h"
 #include "GameInstance.h"
+#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_EffectResourceView)
 
@@ -115,13 +116,29 @@ HRESULT CWindow_EffectResourceView::Render(ID3D11DeviceContext* pDeviceContext)
 				}
 			}
 
-            //for (auto& elem : m_szEffectGroupNames)
-            //{
-            //    if (ImGui::Selectable(elem.c_str()))
-            //    {
-            //        CallBack_EffectGroupClick(elem.c_str());
-            //    }
-            //}
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("SoundFile"))
+        {
+            static ImGuiTextFilter EffectGroupFilter;
+            ImGui::Text("Search"); ImGui::SameLine();
+            EffectGroupFilter.Draw("##SoundFileSearchFilter", 340.f);
+
+            for (int i(0); i < m_szSoundNames.size(); ++i)
+            {
+                auto EffectGroupKit = m_szSoundNames.at(i);
+
+                if (EffectGroupFilter.PassFilter(EffectGroupKit->c_str()))
+                {
+                    std::string label = *EffectGroupKit + "##" + std::to_string(i);
+
+                    if (ImGui::Selectable(label.c_str()))
+                    {
+                        CallBack_SoundFileClick(EffectGroupKit->c_str());
+                    }
+                }
+            }
 
             ImGui::EndTabItem();
         }
@@ -139,6 +156,7 @@ void CWindow_EffectResourceView::Load_Resources()
     Load_EffectMesh();
     Load_Particle();
     Load_EffectGroup();
+    Load_Sound();
 }
 
 void CWindow_EffectResourceView::Load_EffectMesh()
@@ -203,9 +221,13 @@ void CWindow_EffectResourceView::Load_EffectGroup()
 
 }
 
-void CWindow_EffectResourceView::Free()
+void CWindow_EffectResourceView::Load_Sound()
 {
+    m_szSoundNames.clear();
+
+    m_szSoundNames = GAMEINSTANCE->Get_AllSoundNames();
 }
+
 
 void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path)
 {
@@ -293,4 +315,8 @@ void CWindow_EffectResourceView::Load_Particle_Recursive(const filesystem::path&
 		itr++;
 	}
 
+}
+
+void CWindow_EffectResourceView::Free()
+{
 }

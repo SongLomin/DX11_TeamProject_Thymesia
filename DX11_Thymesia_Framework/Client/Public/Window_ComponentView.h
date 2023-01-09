@@ -27,8 +27,8 @@ private:
 	void Init_Components();
 
 private:
-	void TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform);
-	void View_FreeCamera(weak_ptr<CTransform> In_pTransform);
+	void TransformComponent_PickingAction(weak_ptr<Engine::CTransform> _pTransform);
+	void View_FreeCamera(weak_ptr<Engine::CTransform> In_pTransform);
 
 private:
 	GAMEOBJECT_DESC m_tPickedGameObjectDesc;

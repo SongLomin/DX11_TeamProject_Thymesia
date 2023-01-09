@@ -21,7 +21,7 @@
 #include "PhysX_Manager.h"
 #include "Thread_Manager.h"
 #include "NvCloth_Manager.h"
-#include "COptimization_Manager.h"
+#include "Optimization_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -191,9 +191,9 @@ public: /* For.Resource_Manager */
 	
 	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
 	shared_ptr<MODEL_DATA> Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
-	vector<string> Get_AllModelKeys();
-	vector<string> Get_AllNoneAnimModelKeys();
-	vector<string> Get_AllAnimModelKeys();
+	vector<const string*> Get_AllModelKeys();
+	vector<const string*> Get_AllNoneAnimModelKeys();
+	vector<const string*> Get_AllAnimModelKeys();
 
 	HRESULT Load_Shader(const _tchar* sKey, const _tchar* sShaderFilePath);
 	ID3DX11Effect* Get_ShaderEffect(const _tchar* sKey);
@@ -234,11 +234,13 @@ public: /* For.Sound_Manager */
 	_int  BGMVolumeUp(_float _vol);
 	_int  BGMVolumeDown(_float _vol);
 	_int  Pause(CHANNELID eID);
-	_uint PlaySound(const TCHAR* pSoundKey, _uint _iIndex, _float _vol);
-	_uint PlaySound(const TCHAR* pSoundKey, _float _vol);
-	void PlayBGM(const TCHAR* pSoundKey, _float _vol);
+	_uint PlaySound(const string& In_szSoundKey, _uint _iIndex, _float _vol);
+	_uint PlaySound(const string& In_szSoundKey, _float _vol);
+	void PlayBGM(const string& In_szSoundKey, _float _vol);
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
+	void Load_SoundFileFromFolderPath(const string& In_szFolderPath);
+	vector<const string*> Get_AllSoundNames();
 
 public: /* For.PhysX_Manager */
 	void			Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer);

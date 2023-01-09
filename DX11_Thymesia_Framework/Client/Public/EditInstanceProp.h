@@ -63,7 +63,7 @@ public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
     
 private:                                                                                                                                                                                                                
-    typedef vector<string>                  RESOURCE_LIST;
+    typedef vector<const string*>                  RESOURCE_LIST;
     typedef vector<INSTANCE_MESH_DESC>      PROP_INFO;
     typedef map<string, weak_ptr<CTexture>> TEXTURE_GROUP;
 

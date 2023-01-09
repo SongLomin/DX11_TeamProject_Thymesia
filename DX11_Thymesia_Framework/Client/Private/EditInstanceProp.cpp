@@ -525,11 +525,11 @@ void CEditInstanceProp::View_SelectModelComponent()
 
 			if (0 < strlen(szFindModelTag))
 			{
-				if (string::npos == m_ModelList[i].find(szFindModelTag))
+				if (string::npos == m_ModelList[i]->find(szFindModelTag))
 					continue;
 			}
 
-			if (ImGui::Selectable(m_ModelList[i].c_str(), is_selected))
+			if (ImGui::Selectable(m_ModelList[i]->c_str(), is_selected))
 			{
 				iSelect_NonAnimModel = i;
 			}
@@ -544,7 +544,7 @@ void CEditInstanceProp::View_SelectModelComponent()
 
 	if (ImGui::Button("Select", ImVec2(100.f, 25.f)))
 	{
-		m_szSelectModelName = m_ModelList[iSelect_NonAnimModel];
+		m_szSelectModelName = *m_ModelList[iSelect_NonAnimModel];
 		m_pInstanceModelCom.lock()->Init_Model(m_szSelectModelName.c_str());
 	}
 

@@ -1,4 +1,4 @@
-#include "COptimization_Manager.h"
+﻿#include "Optimization_Manager.h"
 
 IMPLEMENT_SINGLETON(COptimization_Manager)
 
@@ -86,6 +86,10 @@ _time COptimization_Manager::Get_PerfromanceTime(const string& In_szTag)
 void COptimization_Manager::Write_Log()
 {
 #ifdef _USE_PERFROMANCE_LOG_
+
+	if (m_PerfromanceDescs.empty())
+		return;
+
 	_time CurrentTime = time(nullptr);
 
 	string Path = "..\\Bin\\PerfromanceLogs\\PerfromanceLog" + to_string(CurrentTime) + ".txt";
@@ -97,6 +101,19 @@ void COptimization_Manager::Write_Log()
 		DEBUG_ASSERT;
 		return;
 	}
+
+	fout << u8"██████╗░███████╗██████╗░███████╗██████╗░░█████╗░███╗░░░███╗░█████╗░███╗░░██╗░█████╗░███████╗" << endl;
+	fout << u8"██╔══██╗██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗░████║██╔══██╗████╗░██║██╔══██╗██╔════╝" << endl;
+	fout << u8"██████╔╝█████╗░░██████╔╝█████╗░░██████╔╝██║░░██║██╔████╔██║███████║██╔██╗██║██║░░╚═╝█████╗░░" << endl;
+	fout << u8"██╔═══╝░██╔══╝░░██╔══██╗██╔══╝░░██╔══██╗██║░░██║██║╚██╔╝██║██╔══██║██║╚████║██║░░██╗██╔══╝░░" << endl;
+	fout << u8"██║░░░░░███████╗██║░░██║██║░░░░░██║░░██║╚█████╔╝██║░╚═╝░██║██║░░██║██║░╚███║╚█████╔╝███████╗" << endl;
+	fout << u8"╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚══════╝" << endl << endl;
+	fout << u8"░█████╗░██╗░░██╗███████╗░█████╗░██╗░░██╗███████╗██████╗░" << endl;
+	fout << u8"██╔══██╗██║░░██║██╔════╝██╔══██╗██║░██╔╝██╔════╝██╔══██╗" << endl;
+	fout << u8"██║░░╚═╝███████║█████╗░░██║░░╚═╝█████═╝░█████╗░░██████╔╝" << endl;
+	fout << u8"██║░░██╗██╔══██║██╔══╝░░██║░░██╗██╔═██╗░██╔══╝░░██╔══██╗" << endl;
+	fout << u8"╚█████╔╝██║░░██║███████╗╚█████╔╝██║░╚██╗███████╗██║░░██║" << endl;
+	fout << u8"░╚════╝░╚═╝░░╚═╝╚══════╝░╚════╝░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝" << endl;
 
 	fout << "__________________________________________________" << endl;
 	fout << "For parts that require performance checks, " << endl;

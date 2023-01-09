@@ -5,11 +5,13 @@
 #include "CustomEffectMesh.h"
 #include "Window_EffectHierarchyView.h"
 #include "Window_AnimationModelView.h"
+#include "Window_EffectResourceView.h"
 #include "PreViewAnimationModel.h"
 #include "Model.h"
 #include "Window_AnimationPlayerView.h"
 #include "Effect_Rect.h"
 #include "ImGui_Manager.h"
+#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_EffectEditerView)
 
@@ -31,6 +33,9 @@ void CWindow_EffectEditerView::Start()
 {
     GET_SINGLE(CWindow_EffectHierarchyView)->CallBack_SelectEffect +=
         bind(&CWindow_EffectEditerView::Call_SetCurrentEffect, this, placeholders::_1, placeholders::_2);
+
+    GET_SINGLE(CWindow_EffectHierarchyView)->CallBack_SelectSound +=
+        bind(&CWindow_EffectEditerView::Call_SelectSoundFile, this, placeholders::_1);
 
     GET_SINGLE(CWindow_AnimationModelView)->CallBack_UpdatePreViewModel +=
         bind(&CWindow_EffectEditerView::Call_UpdatePreViewModel, this);
@@ -72,22 +77,33 @@ HRESULT CWindow_EffectEditerView::Render(ID3D11DeviceContext* pDeviceContext)
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("CWindow_EffectEditerView", tab_bar_flags))
     {
-        if (EFFECTRESOURCE_TYPE::MESH == m_eCurrentEffectType)
+        switch (m_eCurrentEffectType)
         {
+        case Client::CWindow_EffectEditerView::EFFECTRESOURCE_TYPE::MESH:
             if (ImGui::BeginTabItem("Mesh"))
             {
                 Update_MeshInfo();
                 ImGui::EndTabItem();
             }
-        }
-
-        else
-        {
+            break;
+        case Client::CWindow_EffectEditerView::EFFECTRESOURCE_TYPE::PARTICLE:
             if (ImGui::BeginTabItem("Particle"))
             {
                 Update_ParticleInfo();
                 ImGui::EndTabItem();
             }
+            break;
+        case Client::CWindow_EffectEditerView::EFFECTRESOURCE_TYPE::SOUND:
+            if (ImGui::BeginTabItem("Sound"))
+            {
+                Update_Sound();
+                ImGui::EndTabItem();
+            }
+            break;
+        case Client::CWindow_EffectEditerView::EFFECTRESOURCE_TYPE::TYPE_END:
+            break;
+        default:
+            break;
         }
 
         ImGui::EndTabBar();
@@ -126,6 +142,14 @@ void CWindow_EffectEditerView::Call_SyncAnimation()
 {
     if(m_pCurrentEffectGroup.lock())
         m_pCurrentEffectGroup.lock()->Sync_Animation();
+}
+
+void CWindow_EffectEditerView::Call_SelectSoundFile(const _char* In_szSoundFileName)
+{
+    m_eCurrentEffectType = EFFECTRESOURCE_TYPE::SOUND;
+    m_szSoundFileName = In_szSoundFileName;
+    m_fVolume = 1.f;
+
 }
 
 void CWindow_EffectEditerView::Call_UpdatePreViewModel()
@@ -222,6 +246,23 @@ void CWindow_EffectEditerView::Update_ParticleInfo()
     }
 
     m_pCurrentEffectParticle.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
+}
+
+void CWindow_EffectEditerView::Update_Sound()
+{
+    string szFrontName = "[" + m_szSoundFileName + "]";
+
+    ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), szFrontName.c_str());
+
+    if (ImGui::SliderFloat("Volume", &m_fVolume, 0.f, 2.f, "%.1f"));
+
+    if (ImGui::Button("Play"))
+    {
+        GAMEINSTANCE->PlaySoundW(m_szSoundFileName, 1.f);
+    }
+
+
+
 }
 
 

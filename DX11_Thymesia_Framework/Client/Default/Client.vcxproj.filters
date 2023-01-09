@@ -3686,9 +3686,6 @@
     <ClCompile Include="..\Private\BossBat\BatBossState_HellIdle.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Manager.cpp">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack01.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\00.Attack01</Filter>
     </ClCompile>
@@ -4313,6 +4310,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager.cpp">
+      <Filter>97. Tool\00. IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

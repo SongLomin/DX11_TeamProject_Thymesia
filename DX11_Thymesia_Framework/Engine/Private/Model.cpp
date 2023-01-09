@@ -543,6 +543,7 @@ void CModel::Reset_Model()
 	m_Materials.clear();
 	m_Animations.clear();
 	m_pBoneNodes.clear();
+	m_iCurrentAnimationIndex = 0;
 
 }
 

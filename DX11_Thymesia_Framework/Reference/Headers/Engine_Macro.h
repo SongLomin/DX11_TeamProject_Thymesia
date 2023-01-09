@@ -22,6 +22,11 @@
 	(*GET_SINGLE(CCuda_Device)->Get_CudaContext())
 
 
+#define BEGIN_PERFROMANCE_CHECK(TAG)\
+	GAMEINSTANCE->Begin_PerformanceTime(TAG);
+#define END_PERFROMANCE_CHECK(TAG)\
+	GAMEINSTANCE->End_PerformanceTime(TAG);
+
 
 #define NO_COPY(ClassType)								\
 ClassType(const ClassType&) = delete;					\

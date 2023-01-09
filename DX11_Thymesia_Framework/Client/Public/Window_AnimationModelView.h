@@ -38,8 +38,8 @@ private:
 	weak_ptr<CPreviewAnimationModel>	m_pPreviewModel;
 	// TODO : comment because explode
 	weak_ptr<CPreview_Prop>				m_pPreviewNoAnimModel;
-	vector<string>	                    m_AllModelKeys;
-	vector<string>	                    m_AllNoAnimModelKeys;
+	vector<const string*>	                    m_AllModelKeys;
+	vector<const string*>	                    m_AllNoAnimModelKeys;
 	_int			                    m_CurrentModelIndex = 0;
 	_int			                    m_CurrentNoAnimModelIndex = 0;
 

@@ -2,3 +2,12 @@ __________________________________________________
 For parts that require performance checks, 
 you can record them using GAMEINSTANCE's 'Begin_PerformanceTime' and 'End_PerformanceTime' functions.
 __________________________________________________
+Resource Rank 0.
+__________________________________________________
+CHECK NAME		: Load_All_Sound_File
+AVG TIME		: 1394300
+MIN TIME		: 1394300
+MAX TIME		: 1394300
+CALL COUNT		: 1
+__________________________________________________
+

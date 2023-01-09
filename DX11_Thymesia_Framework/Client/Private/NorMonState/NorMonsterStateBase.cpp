@@ -295,7 +295,7 @@ void CNorMonsterStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak
 
 void CNorMonsterStateBase::OnEventMessage(_uint iArg)
 {
-	GAMEINSTANCE->PlaySoundW(TEXT("Monstet1_Hit.wav"), 1.f);
+
 }
 
 void CNorMonsterStateBase::Free()

@@ -17,8 +17,8 @@ class CWindow_EffectHierarchyView final
 public:
 	enum class EFFECTRESOURCE_TYPE
 	{
-		MESH = 0,
-		PARTICLE,
+		EFFECT,
+		SOUND,
 		TYPE_END
 	};
 
@@ -39,12 +39,14 @@ public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 public:
-	FDelegate<weak_ptr<CEffectGroup>, _uint> CallBack_SelectEffect;
+	FDelegate<weak_ptr<CEffectGroup>, _uint>	CallBack_SelectEffect;
+	FDelegate<const _char*>						CallBack_SelectSound;
 
 public:
 	void Call_AddEffectMesh(const _char* In_szModelKey);
 	void Call_AddParticle(const _char* In_szName, const _char* In_szTextureKey);
 	void Call_LoadEffectGroup(const _char* In_szEffectGroupName);
+	void Call_LoadSoundFile(const _char* In_szSoundFileName);
 	void Call_RemoveCurrentIndex();
 
 public:
@@ -52,9 +54,16 @@ public:
 	void Add_EffectParticle_Internal(const _char* In_szName, const _char* In_szModelKey);
 
 private:
+	void Render_Effect();
+	void Render_Sound();
+
+
+private:
+	EFFECTRESOURCE_TYPE		m_eCurrentResourceType = EFFECTRESOURCE_TYPE::TYPE_END;
 	vector<string>			m_szEffectMeshNames;
 	vector<string>			m_szEffectParticleNames;
 	_uint					m_iCurrentEffectIndex = 0;
+	_uint					m_iCurrentSoundIndex = 0;
 
 	weak_ptr<CEffectGroup>	m_pEffectGroup;
 

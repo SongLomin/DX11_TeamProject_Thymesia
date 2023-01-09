@@ -212,6 +212,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Set_MaskingTexture("UVMask");
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Sound..."));
+	GAMEINSTANCE->Load_SoundFileFromFolderPath("../bin/Sound");
+
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 
 	m_isFinished = true;

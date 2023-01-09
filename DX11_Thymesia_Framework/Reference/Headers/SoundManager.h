@@ -10,6 +10,18 @@ class CSound_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CSound_Manager)
 
+private:
+	struct SOUND_DESC
+	{
+		string		szFileName;
+		FMOD_SOUND* pSound{};
+
+		SOUND_DESC(const string& In_szFileName, FMOD_SOUND* In_pSound)
+			: szFileName(In_szFileName), pSound(In_pSound)
+		{
+		}
+	};
+
 public:
 	void Initialize();
 	void Release();
@@ -20,14 +32,17 @@ public:
 	_int  BGMVolumeUp(_float _vol);
 	_int  BGMVolumeDown(_float _vol);
 	_int  Pause(CHANNELID eID);
-	_uint PlaySound(const TCHAR* pSoundKey, _uint _iIndex, _float _vol);
-	_uint PlaySound(const TCHAR* pSoundKey, _float _vol);
-	void PlayBGM(const TCHAR* pSoundKey, _float _vol);
+	_uint PlaySound(const string& In_szSoundKey, _uint _iIndex, _float _vol);
+	_uint PlaySound(const string& In_szSoundKey, _float _vol);
+	void PlayBGM(const string& In_szSoundKey, _float _vol);
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
 
-private:
-	void LoadSoundFile();
+	vector<const string*> Get_AllSoundNames();
+
+public:
+	//void LoadSoundFile_Legacy();
+	void LoadSoundFile(const string& In_szFile);
 
 private:
 	_float m_volume = SOUND_DEFAULT;
@@ -38,7 +53,7 @@ private:
 
 private:
 	// 사운드 리소스 정보를 갖는 객체 
-	map<tstring, FMOD_SOUND*> m_mapSound;
+	map<_hashcode, SOUND_DESC> m_mapSound;
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
 	FMOD_CHANNEL* m_pChannelArr[MAX_CHANNEL];
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
