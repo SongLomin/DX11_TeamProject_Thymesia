@@ -18,7 +18,6 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
-
 public:
     void                Reset_Scroll();
     void                SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const _float fScrollSize,
@@ -36,13 +35,17 @@ public:
 public:
         FDelegate<_float>         Callback_OnWheelMove;
 
-
 private:
     void                CreateScroll();
     void                Scrolling(_float fTimeDelta);
+    void                Up_Scroll(_float fUpAmount);
+    void                Down_Scroll(_float fDownAmount);
+
+
+
     void                CheckTrackOverHeadOrTail();
     void                CalcScrolledTrackToMaxSize();
-    _bool                CheckMoveWheelCurrentTick();
+    _bool               CheckMoveWheelCurrentTick();
 
 
 private://Scroll Drag   

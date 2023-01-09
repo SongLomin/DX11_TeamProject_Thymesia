@@ -620,6 +620,7 @@
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Option.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
@@ -642,6 +643,7 @@
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
+    <ClInclude Include="..\Public\UI_OptionItem.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Inventory.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
@@ -1255,6 +1257,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Option.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
@@ -1294,6 +1297,7 @@
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\UI_MenuText.cpp" />
     <ClCompile Include="..\Private\UI_MonsterFocus.cpp" />
+    <ClCompile Include="..\Private\UI_OptionItem.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />

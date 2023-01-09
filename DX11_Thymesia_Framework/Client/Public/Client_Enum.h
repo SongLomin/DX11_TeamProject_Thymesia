@@ -504,8 +504,6 @@ namespace Client
 		SKILLPIECE_HAMMER,
 		SKILLPIECE_BLOODSTORM,
 
-
-
 		ITEM_NAME_END
 	};
 
@@ -555,12 +553,31 @@ namespace Client
 		SKILLBUTTON_LOCK_TYPE_END
 	};
 
-	enum class SOUND_TYPE
+	enum class OPTION_TYPE
 	{
-		SOUND_TYPE_EFFECT,
-		SOUND_TYPE_BACKGROUND,
-		SOUND_TYPE_VOICE,
+		SOUND_TYPE_EFFECT = 0,			//Slider
+		SOUND_TYPE_VOICE,				//Slider
+		SSAA,							//On off
+		PARTICLE_QUALITY,				//Level
+		AMBIENT_OCCLUSION,				//On off
+		NVIDIA_IMAGE_SCALING,			//On off
+		SCALING_SHARPNESS,				//Slider
+		WATER_REFLECTION_QUALITY,		//Level
+		PBR,							//On off
+		MOTION_BLUR,					//On off
+		GODRAY,							//On off
+		CHROMATIC_ABRRATION,			//On off
+		RADIAL_BLUR,					//On off
+		DYNAMIC_SHADOW,					//On off
+		STATIC_SHADOW,					//On off
+		BRIGHTLESS,						//Slider
+		SATURATION,						//Slider
+		CONTRAST						//Slider
 	};
+
+
+
+
 }
 
 

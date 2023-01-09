@@ -2145,6 +2145,8 @@
     <ClInclude Include="..\Public\UI_Effect_Twinkl.h" />
     <ClInclude Include="..\Public\UI_CustomEffect.h" />
     <ClInclude Include="..\Public\UI_EffectGroup_SkillOpen.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Option.h" />
+    <ClInclude Include="..\Public\UI_OptionItem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4322,6 +4324,8 @@
     <ClCompile Include="..\Private\UI_Effect_Twinkl.cpp" />
     <ClCompile Include="..\Private\UI_CustomEffect.cpp" />
     <ClCompile Include="..\Private\UI_EffectGroup_SkillOpen.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Option.cpp" />
+    <ClCompile Include="..\Private\UI_OptionItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

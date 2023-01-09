@@ -21,16 +21,21 @@ void CUI_EvolveMenu_Page::Tick(_float fTimeDelta)
 
     if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
     {
-        FaderDesc tFaderDesc;
-        tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-        tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-        tFaderDesc.fFadeMaxTime = 0.2f;
-        tFaderDesc.fDelayTime = 0.f;
-        tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-        m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-        m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu_Page::Call_ExitTap, this);
+        Update_KeyInput(fTimeDelta);
     }
+}
+
+void CUI_EvolveMenu_Page::Update_KeyInput(_float fTimeDelta)
+{
+    FaderDesc tFaderDesc;
+    tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+    tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+    tFaderDesc.fFadeMaxTime = 0.2f;
+    tFaderDesc.fDelayTime = 0.f;
+    tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+    m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+    m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu_Page::Call_ExitTap, this);
 }
 
 void CUI_EvolveMenu_Page::Call_ExitTap()

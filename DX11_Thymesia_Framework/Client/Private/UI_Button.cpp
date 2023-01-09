@@ -104,7 +104,7 @@ void CUI_Button_Base::Update_LClick()
 			Callback_OnLButtonClicked();
 			OnLButtonClick();
 			m_bClickToggle = !m_bClickToggle;
-			m_eButtonState = UI_BUTTON_OUT;
+			m_eButtonState = UI_BUTTON_OVER;
 		}
 	}
 }

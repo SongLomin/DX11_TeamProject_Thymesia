@@ -14,7 +14,7 @@
 #include "UI_EvolveMenu_PlagueWeapon.h"
 #include "ClientLevel.h"
 #include "Interaction_CheckPoint.h"
-
+#include "UI_EvolveMenu_Option.h"
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -234,12 +234,12 @@ void CUI_EvolveMenu::LateTick(_float fTimeDelta)
 void CUI_EvolveMenu::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);
-
+	
 	m_bEnabledThisFrame = true;
 	SetUpFromCurrentLevel();
 	if (!m_pFadeMask.lock())
 		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
+	
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	ChangeButtonIndex();
 
@@ -286,6 +286,13 @@ void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_PlagueWeapon()
 	m_pFadeMask.lock()->Set_Enable(false);
 
 	GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu_PlagueWeapon>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+}
+void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Option()
+{
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu_Option>(LEVEL_STATIC).front().lock()->Set_Enable(true);
 }
 void CUI_EvolveMenu::Free()
 {
@@ -390,6 +397,13 @@ void CUI_EvolveMenu::SelectButton()
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_FEATHER:
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL:
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Option, this);
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME:
 	{
