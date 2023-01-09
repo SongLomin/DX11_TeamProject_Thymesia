@@ -100,7 +100,31 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 		if (m_bAttack)
 		{
 			int iRand = rand() % 3;
-			switch (iRand)
+
+
+			if (m_iPreCount == iRand)
+			{
+				switch (m_iPreCount)
+				{
+				case 0:
+					m_iPreCount = 1;
+					break;
+				case 1:
+					m_iPreCount = 2;
+					break;
+				case 2:
+					m_iPreCount = 0;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				m_iPreCount = iRand;
+			}
+
+			switch (m_iPreCount)
 			{
 			case 0:
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboC1>(0.05f);
@@ -119,7 +143,27 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 		{
 			int iRand = rand() % 2;
 
-			switch (iRand)
+
+			if (m_iPreCount == iRand)
+			{
+				switch (m_iPreCount)
+				{
+				case 0:
+					m_iPreCount = 1;
+					break;
+				case 1:
+					m_iPreCount = 0;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				m_iPreCount = iRand;
+			}
+
+			switch (m_iPreCount)
 			{
 			case 0:
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboB1>(0.05f);
@@ -137,12 +181,77 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 		// 공격패턴 -> 두번공격 찌르기세번 
 		if (m_bAttack)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack05>(0.05f);
+			int iRand = rand() % 2;
+
+			
+			if (m_iPreCount == iRand)
+			{
+				switch (m_iPreCount)
+				{
+				case 0:
+					m_iPreCount = 1;
+					break;
+				case 1:
+					m_iPreCount = 0;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				m_iPreCount = iRand;
+			}
+
+		
+
+			switch (m_iPreCount)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack05>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01>(0.05f);
+				break;
+			}
+
 			return true;
 		}
 		else
 		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01>(0.05f);
+			int iRand = rand() % 2;
+
+
+			if (m_iPreCount == iRand)
+			{
+				switch (m_iPreCount)
+				{
+				case 0:
+					m_iPreCount = 1;
+					break;
+				case 1:
+					m_iPreCount = 0;
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				m_iPreCount = iRand;
+			}
+
+
+			switch (m_iPreCount)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack05>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01>(0.05f);
+				break;
+			}
+
 			return true;
 		}
 	}

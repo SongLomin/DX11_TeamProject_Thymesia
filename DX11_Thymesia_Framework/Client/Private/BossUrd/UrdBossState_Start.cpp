@@ -93,7 +93,7 @@ void CUrdBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkF>(0.05f);
 }
 
 void CUrdBossState_Start::OnDestroy()

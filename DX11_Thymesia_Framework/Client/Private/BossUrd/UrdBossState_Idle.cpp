@@ -85,9 +85,10 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	{
 		
 
-		if (m_iPhaseTwoSkillCount >= 13)
+		if (m_iPhaseTwoSkillCount >= 8)
 		{
 			m_bSkillStart = true;
+			m_iPhaseTwoSkillCount = 0;
 		}
 
 		if (m_iPhaseTwoJavlinCount >= 3)
@@ -189,11 +190,9 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	if (m_bSpecailAttack)
 	{
 		if (m_bTurnCheck)
-		{
-			
+		{			
 			TurnMechanism();
 			return true;
-
 		}
 		else
 		{
@@ -207,7 +206,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	{
 	    if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 		{
-			if (fPToMDistance <= 4.3f)
+			if (fPToMDistance <= 4.f)
 			{
 				if (m_bTurnCheck)
 				{
@@ -281,7 +280,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 		}
 		else if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
 		{
-			if (fPToMDistance <= 4.3f)
+			if (fPToMDistance <= 4.f)
 			{
 				if (m_bTurnCheck)
 				{

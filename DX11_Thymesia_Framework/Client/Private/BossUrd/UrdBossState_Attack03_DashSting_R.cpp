@@ -119,7 +119,7 @@ _bool CUrdBossState_Attack03_DashSting_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 		m_bAttackLookAtLimit = false;
 
 	return false;

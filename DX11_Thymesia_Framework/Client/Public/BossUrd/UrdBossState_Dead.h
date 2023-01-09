@@ -24,9 +24,14 @@ protected:
 	virtual void LateTick(_float fTimeDelta) override;
 
 protected:
+	virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
+
+private:
+	_float      m_fDissolveTime;
+	_bool       m_bAnimEnd;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

@@ -60,7 +60,7 @@ void CUrdBossState_StepL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.1f, 2.1f, 2.1f));
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 4);
 	
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

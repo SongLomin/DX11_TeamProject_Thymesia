@@ -29,6 +29,9 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
+	_uint       m_iPreCount = 5;
+
+private:
 //	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	//virtual void OnDestroy() override;

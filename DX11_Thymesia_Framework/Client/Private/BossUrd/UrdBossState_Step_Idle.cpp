@@ -10,6 +10,7 @@
 #include "BossUrd/UrdStates.h"
 #include "Status_Boss.h"
 
+
 GAMECLASS_C(CUrdBossState_Step_Idle);
 CLONE_C(CUrdBossState_Step_Idle, CComponent)
 
@@ -88,6 +89,7 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		return false;
 	
 	// step FL,FL56 FR,FR45 DANCINGF,DANCINGR
+	
 
 	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 
@@ -97,7 +99,7 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		{
 			if (m_iStepCloseCount == 0) //스탭아이들에서 -> 어택아이들로 넘어가는게 맞는듯?
 			{
-				int iRand = rand() % 6;
+				int iRand = rand() % 5;
 
 				switch (iRand)
 				{
@@ -117,15 +119,26 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL>(0.05f);
 					m_iStepCloseCount = 4;
 					break;
+				
 				case 4:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
-					break;
-				case 5:
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02LV2C0>(0.05f);
+				{
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+				}
 					break;
 				}
 				return true;
+			
 			}
 			else if (m_iStepCloseCount == 1) //오른쪽
 			{
@@ -140,8 +153,18 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
 					break;
 				case 2:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
 					break;
 				}
 				return true;
@@ -158,8 +181,18 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
 					break;
 				case 2:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
 					break;
 				}
 				return true;
@@ -178,8 +211,18 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 					break;
 				case 2:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
 					break;
 				}
 				return true;
@@ -198,8 +241,18 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 					break;
 				case 2:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
 					break;
 				}
 				return true;
@@ -214,8 +267,18 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 					break;
 				case 1:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
 					break;
 				}
 				return true;
@@ -230,8 +293,18 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 					break;
 				case 1:
-					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
 					break;
 				}
 
@@ -354,7 +427,7 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 	{
 		if (m_iStepCloseCount == 0) //스탭아이들에서 -> 어택아이들로 넘어가는게 맞는듯?
 		{
-			int iRand = rand() % 6;
+			int iRand = rand() % 5;
 
 			switch (iRand)
 			{
@@ -375,11 +448,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				m_iStepCloseCount = 4;
 				break;
 			case 4:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
-				break;
-			case 5:
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboB1>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -397,8 +480,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -415,8 +511,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
 				break;
 			}
 			return true;
@@ -435,8 +544,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -455,8 +577,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -471,8 +606,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 				break;
 			case 1:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -487,8 +635,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 				break;
 			case 1:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 

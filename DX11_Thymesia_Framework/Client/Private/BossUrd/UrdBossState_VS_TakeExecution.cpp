@@ -213,7 +213,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 218)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Dead>(0.05f);
 			return true;
 		}
 	}

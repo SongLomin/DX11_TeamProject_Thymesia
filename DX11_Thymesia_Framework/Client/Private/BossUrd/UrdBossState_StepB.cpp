@@ -62,7 +62,7 @@ void CUrdBossState_StepB::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Rotation_TargetToLookDir();
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 4);
 	
 	
 #ifdef _DEBUG

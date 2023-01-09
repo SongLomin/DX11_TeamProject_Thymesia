@@ -280,13 +280,13 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= pCurrentPlayer.lock()->Get_WorldPosition().m128_f32[1] + 0.8f)
+	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= pCurrentPlayer.lock()->Get_WorldPosition().m128_f32[1] + 0.66f)
 	{
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;
 	}
 	
-	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 40.f);
+	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 100.f);
 	
 }
 

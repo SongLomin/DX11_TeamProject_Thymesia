@@ -339,6 +339,12 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Armature|Armature|Urd_StunEnd|BaseLayer", 0.65f);
     SET_ANIM_SPEED("Armature|Armature|Urd_StunLoop|BaseLayer", 0.65f);
     SET_ANIM_SPEED("Armature|Armature|Urd_StunStart|BaseLayer", 0.65f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Dead|BaseLayer", 0.5f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_WalkFL|BaseLayer", 0.75f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack01LV2|BaseLayer", 2.5f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack01|BaseLayer", 0.8f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C0|BaseLayer", 0.8f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C1|BaseLayer", 0.8f);
 
 
 
