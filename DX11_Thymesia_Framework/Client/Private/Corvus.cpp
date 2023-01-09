@@ -174,9 +174,9 @@ void CCorvus::Tick(_float fTimeDelta)
 		DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
-		XMStoreFloat4(&DecalDesc.vPosition, Get_WorldPosition()+XMVectorSet(0.f,0.1f,0.f,0.f));
-		DecalDesc.fTime = 3.f;
 		DecalDesc.vScale = { 5.f,5.f,5.f };
+		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
+		DecalDesc.fTime = 3.f;
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
 	}
