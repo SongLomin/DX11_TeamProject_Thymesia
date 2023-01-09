@@ -472,12 +472,10 @@ namespace Client
 
 	struct WATERWAVE_DESC
 	{
-		vector<_float2> vPosition;
-		vector<_float4>	vWaveFlag;
-		/*_float2		vPosition{};
+		_float2		vPosition{};
 		_float		fTimeAcc{};
 		_float		fVibrationScale{};
 		_float		fFreq{};
-		_float		fSpeed{};*/
+		_float		fSpeed{};
 	};
 }

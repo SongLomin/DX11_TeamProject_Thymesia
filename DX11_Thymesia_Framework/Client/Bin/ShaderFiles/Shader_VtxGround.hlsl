@@ -23,19 +23,20 @@ float g_fFar = 300.f;
 float2 g_vUVNoise;
 
 
-float2 g_vPosition[MAX_WATER_WAVE];
-float4 g_vWaveDesc[MAX_WATER_WAVE];
+//float2 g_vPosition[MAX_WATER_WAVE];
+//float4 g_vWaveDesc[MAX_WATER_WAVE];
 
-//float fTimeAcc;
-//float fVibrationScale;
-//float fFreq;
-//float fSpeed;
-//struct WATERWAVE_DESCS
-//{
-//    WATERWAVE_DESC WaterWaveDescs[MAX_WATER_WAVE];
-//};
+struct WATERWAVE_DESC
+{
+    float2 vPosition;
+    float fTimeAcc;
+    float fVibrationScale;
+    float fFreq;
+    float fSpeed;
+};
 
-//WATERWAVE_DESCS g_WaveDescArray;
+WATERWAVE_DESC WaterWaveDescs[MAX_WATER_WAVE];
+
 
 uint g_WaterWaveSize;
 
@@ -214,20 +215,20 @@ HS_OUT HS_Main(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int vertexIdx : SV_Out
     return output;
 }
 
-float Compute_Wave(float2 WavePosition,float4 WaveFlag, float3 vCurrentPos)
+float Compute_Wave(WATERWAVE_DESC WaterWaveDesc, float3 vCurrentPos)
 {
     float3 vNewPoint = mul(vector(vCurrentPos, 1.f), g_WorldMatrix);
     
     //float3 vWavePoint = mul(vector(WavePosition.x, 0.f, WavePosition.y, 1.f), g_WorldMatrixInv).xyz;
     /*현재 충격파를 더해줌*/   
-    float fDistance = length(vNewPoint.xz - WavePosition);
-    float fAccFreqLength = WaveFlag.x * WaveFlag.w;
+    float fDistance = length(vNewPoint.xz - WaterWaveDesc.vPosition);
+    float fAccFreqLength = WaterWaveDesc.fSpeed * WaterWaveDesc.fTimeAcc;
     
-    float fAmplitude = /*fDistance < 0.001f ? 1.f : */WaveFlag.y;
+    float fAmplitude = /*fDistance < 0.001f ? 1.f : */WaterWaveDesc.fVibrationScale;
     float fWave = 0.f;
     
     if(fDistance < fAccFreqLength)
-        fWave = fAmplitude*6.f * sin(WaveFlag.z * (fDistance - fAccFreqLength));
+        fWave = fAmplitude * 6.f * sin(WaterWaveDesc.fFreq * (fDistance - fAccFreqLength));
 
     return fWave;
 }
@@ -303,9 +304,9 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
  
     for (uint i = 0; i < g_WaterWaveSize; ++i)
     {
-        localPos.y += Compute_Wave(g_vPosition[i],g_vWaveDesc[i], localPos);
-        newPosition1.y += Compute_Wave(g_vPosition[i], g_vWaveDesc[i], newPosition1);
-        newPosition2.y += Compute_Wave(g_vPosition[i], g_vWaveDesc[i], newPosition2);
+        localPos.y += Compute_Wave(WaterWaveDescs[i], localPos);
+        newPosition1.y += Compute_Wave(WaterWaveDescs[i], newPosition1);
+        newPosition2.y += Compute_Wave(WaterWaveDescs[i], newPosition2);
     }
        
     //templocalPos. y+= (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f;
