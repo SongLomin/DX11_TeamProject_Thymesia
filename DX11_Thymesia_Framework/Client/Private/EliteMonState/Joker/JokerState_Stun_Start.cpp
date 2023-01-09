@@ -104,7 +104,11 @@ _bool CJokerState_Stun_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	if (Get_OwnerMonster()->Get_EliteExecutionStartOnOff())
+	{
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
+		return true;
+	}
 
 	return false;
 }
