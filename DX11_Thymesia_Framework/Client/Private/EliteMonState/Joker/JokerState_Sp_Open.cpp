@@ -66,13 +66,11 @@ void CJokerState_Sp_Open::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-
-
-	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
+	
 
 
 	m_bCloseStart = false;
+	m_bOnce = true;
 
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Idle -> OnStateStart" << endl;
@@ -116,6 +114,13 @@ _bool CJokerState_Sp_Open::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 10.f)
 		m_bCloseStart = true;
+
+	if (m_bCloseStart && m_bOnce)
+	{
+		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+		XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
+		m_bOnce = false;
+	}
 
 	return false;
 }
