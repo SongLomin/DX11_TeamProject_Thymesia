@@ -31,7 +31,7 @@ void CVarg_Execution::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_VSVarg_Execution");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVarg_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVarg_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVarg_Execution::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CVarg_Execution::OnStateEnd()
 	GET_SINGLE(CGameManager)->End_Cinematic();
 }
 
-void CVarg_Execution::Call_AnimationEnd()
+void CVarg_Execution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -94,7 +94,7 @@ void CVarg_Execution::Call_AnimationEnd()
 void CVarg_Execution::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVarg_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVarg_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CVarg_Execution::Check_AndChangeNextState()

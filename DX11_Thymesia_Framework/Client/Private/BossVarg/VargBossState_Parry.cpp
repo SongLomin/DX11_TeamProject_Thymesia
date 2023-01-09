@@ -35,7 +35,7 @@ void CVargBossState_Parry::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeParry_FIX");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Parry::Call_AnimationEnd, this);*/
+	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Parry::Call_AnimationEnd, this, placeholders::_1);*/
 }
 
 void CVargBossState_Parry::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CVargBossState_Parry::OnStateEnd()
 
 
 //
-//void CVargBossState_Parry::Call_AnimationEnd()
+//void CVargBossState_Parry::Call_AnimationEnd(_uint iEndAnimIndex)
 //{
 //	if (!Get_Enable())
 //		return;
@@ -93,7 +93,7 @@ void CVargBossState_Parry::OnStateEnd()
 
 //void CVargBossState_Parry::OnDestroy()
 //{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Parry::Call_AnimationEnd, this);
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Parry::Call_AnimationEnd, this, placeholders::_1);
 //}
 
 void CVargBossState_Parry::Free()

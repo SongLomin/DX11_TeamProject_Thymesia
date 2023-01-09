@@ -35,7 +35,7 @@ void CNorMonState_Stop::Start()
 	{
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_Idle1|BaseLayer|Armature|Arm");
 	}
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Stop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Stop::Call_AnimationEnd, this, placeholders::_1);
 
 }
 
@@ -83,11 +83,11 @@ void CNorMonState_Stop::OnStateEnd()
 
 void CNorMonState_Stop::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Stop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Stop::Call_AnimationEnd, this, placeholders::_1);
 }
 
 
-void CNorMonState_Stop::Call_AnimationEnd()
+void CNorMonState_Stop::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

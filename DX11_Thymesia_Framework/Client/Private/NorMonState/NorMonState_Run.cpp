@@ -66,7 +66,7 @@ void CNorMonState_Run::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Run::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Run::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Run::Tick(_float fTimeDelta)
@@ -141,7 +141,7 @@ void CNorMonState_Run::OnEventMessage(_uint iArg)
 	}
 }
 
-void CNorMonState_Run::Call_AnimationEnd()
+void CNorMonState_Run::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -152,7 +152,7 @@ void CNorMonState_Run::Call_AnimationEnd()
 
 void CNorMonState_Run::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Run::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Run::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Run::Free()

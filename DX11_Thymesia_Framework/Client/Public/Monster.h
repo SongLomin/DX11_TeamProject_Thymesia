@@ -38,6 +38,8 @@ public:
     void  Set_LinkStateDesc(const STATE_LINK_MONSTER_DESC& In_tDesc) { m_tLinkStateDesc = In_tDesc; };
     void  Set_BossExecutionStartOnOff(_bool BossExecutionStartOnOff) { m_bBossExecutionStartOnOff = BossExecutionStartOnOff; }
     _bool Get_BossExecutionStartOnOff() { return m_bBossExecutionStartOnOff; }
+    _bool Get_EliteExecutionStartOnOff() { return m_bEliteExecutionStartOnOff; }
+    void  Set_EliteExecutionStartOnOff(_bool EliteExecutionStartOnOff) { m_bBossExecutionStartOnOff = EliteExecutionStartOnOff; }
     weak_ptr<CCharacter> Get_TargetCharacter() const;
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
@@ -107,6 +109,7 @@ private:
     _float      m_fTimeAcc = 0.f;
 protected:
     _bool       m_bBossExecutionStartOnOff = false;
+    _bool       m_bEliteExecutionStartOnOff = false;
 
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;

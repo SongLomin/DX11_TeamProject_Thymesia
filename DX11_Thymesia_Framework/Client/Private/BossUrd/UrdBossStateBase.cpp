@@ -150,22 +150,79 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		//1,2 ,3 패턴
 		//보스1페이지랑 2페이지 달르게
 		
-		if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 0)
+		_uint iLifeCount = pStatus.lock()->Get_Desc().m_iLifeCount;
+
+		_float	fGreenRatio = 0.f;
+		_uint	iSkillCount = Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount();
+
+		if (iLifeCount == 2)
 		{
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(1);
+			fGreenRatio = pStatus.lock()->Get_GreenRatio();
+
+
+
+			if (fGreenRatio <= 0.75f && iSkillCount == 0)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(1);
+			}
+			else if (fGreenRatio <= 0.5f && iSkillCount == 1)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(2);
+			}
+			else if (fGreenRatio <= 0.25f && iSkillCount == 2)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(3);
+			}
+
 		}
-		else if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1000.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 1)
+		else
 		{
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(2);
-		}
-		else if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 2)
-		{
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
-			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(3);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);	
+
+
+			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 8)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoSkillCount(0);
+
+			}
+
+
+
+			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoJavlinCount() >= 3)
+			{
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(true);
+				Get_OwnerMonster()->Change_State<CUrdBossState_Idle>();
+				return;
+			}
+
+
+
+
 		}
 
+		if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillStart())
+		{
+			int iRand = rand() % 2;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerMonster()->Change_State<CUrdBossState_Parry_R>();
+				break;
+			case 1:
+				Get_OwnerMonster()->Change_State<CUrdBossState_Parry_L>();
+				break;
+			}
+			return;
+		}
+
+	
+
+		
+	
 	
 
 		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CUrdBossState_StunStart>().lock() &&
@@ -181,29 +238,16 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			//이떄 플레이어한테 이벤트를 던져줍시다
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{
-				pStatus.lock()->Minus_LifePoint(1);
+				
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
-
-				//Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);
-				//Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
-
 			}
-			//else
-			//{
-			//	pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);	
-			//
-			//
-			//	_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-			//	vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
-			//	pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-			//		vResultOtherWorldMatrix.r[3],
-			//		GAMEINSTANCE->Get_DeltaTime(),
-			//		Filters);
-			//
-			//	Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
-			//	Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(false);
-			//
-			//}
+			else
+			{
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
+								
+			}
+
+
 		}
 
 

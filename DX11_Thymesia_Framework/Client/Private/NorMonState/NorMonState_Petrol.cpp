@@ -71,7 +71,7 @@ void CNorMonState_Petrol::Start()
 
 	}
 
-	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Petrol::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Petrol::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Petrol::Tick(_float fTimeDelta)
@@ -156,7 +156,7 @@ _float CNorMonState_Petrol::Cul_DotResult()
 	return fDot;
 }
 
-//void CNorMonState_Petrol::Call_AnimationEnd()
+//void CNorMonState_Petrol::Call_AnimationEnd(_uint iEndAnimIndex)
 //{
 //	if (!Get_Enable())
 //		return;
@@ -167,7 +167,7 @@ _float CNorMonState_Petrol::Cul_DotResult()
 //
 //void CNorMonState_Petrol::OnDestroy()
 //{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Petrol::Call_AnimationEnd, this);
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Petrol::Call_AnimationEnd, this, placeholders::_1);
 //}
 
 void CNorMonState_Petrol::Free()

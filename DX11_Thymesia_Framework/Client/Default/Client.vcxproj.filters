@@ -2140,6 +2140,21 @@
     <ClInclude Include="..\Public\Preset_NvClothCollider.h">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB3.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\02.ComboB3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\01.ComboB2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboB1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\00.ComboB1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\00.ComboC1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_AttackComboC2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Level_Home.h">
       <Filter>01. ClientLevel\06. Home</Filter>
     </ClInclude>
@@ -4331,6 +4346,21 @@
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB3.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\02.ComboB3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\01.ComboB2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboB1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\00.ComboB1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\00.ComboC1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_AttackComboC2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97. Tool\00. IMGUI</Filter>
     </ClCompile>
@@ -6428,6 +6458,27 @@
     </Filter>
     <Filter Include="06. DataPreset\08. Preset_NvClothCollider">
       <UniqueIdentifier>{cd9d80f9-8542-4254-8cd4-7e04db9ea860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB">
+      <UniqueIdentifier>{c89cce93-e59f-4c0f-bbab-6675fc7b3766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\00.ComboB1">
+      <UniqueIdentifier>{71cfa768-de41-4e2a-a8f6-4127e8e3d2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\01.ComboB2">
+      <UniqueIdentifier>{25daec0f-2b35-484f-b072-7073039c5045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\10.ComboB\02.ComboB3">
+      <UniqueIdentifier>{820ec911-c3bd-4fa4-961c-fd3418ab79bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC">
+      <UniqueIdentifier>{42867c24-39cb-43db-a8f2-c6b855ca12fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\00.ComboC1">
+      <UniqueIdentifier>{7ca4610c-d0a2-4695-b48a-ab172f77c249}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\11.ComboC\01.ComboC2">
+      <UniqueIdentifier>{1d74ec4a-70f6-4196-aeae-7f29f23c5033}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle">
       <UniqueIdentifier>{eb3eb2c3-da78-44ed-927c-98aca6faf564}</UniqueIdentifier>

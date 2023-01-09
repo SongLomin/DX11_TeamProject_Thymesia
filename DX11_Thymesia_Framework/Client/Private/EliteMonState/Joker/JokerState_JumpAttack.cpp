@@ -45,7 +45,7 @@ void CJokerState_JumpAttack::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_JumpAttack");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_JumpAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_JumpAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_JumpAttack::Tick(_float fTimeDelta)
@@ -87,7 +87,7 @@ void CJokerState_JumpAttack::OnStateEnd()
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CJokerState_JumpAttack::Call_NextKeyFrame, this, placeholders::_1);
 }
 
-void CJokerState_JumpAttack::Call_AnimationEnd()
+void CJokerState_JumpAttack::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -97,7 +97,7 @@ void CJokerState_JumpAttack::Call_AnimationEnd()
 
 void CJokerState_JumpAttack::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_JumpAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_JumpAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_JumpAttack::Free()

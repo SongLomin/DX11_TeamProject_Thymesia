@@ -40,7 +40,7 @@ void CNorMonState_Parry::Start()
 
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Parry::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Parry::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -97,7 +97,7 @@ void CNorMonState_Parry::OnStateEnd()
 
 void CNorMonState_Parry::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Parry::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Parry::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Parry::Free()
@@ -120,7 +120,7 @@ _bool CNorMonState_Parry::Check_AndChangeNextState()
 
 }
 
-void CNorMonState_Parry::Call_AnimationEnd()
+void CNorMonState_Parry::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

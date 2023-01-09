@@ -33,7 +33,7 @@ void CBatBossState_BackJump::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Storm_1");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_BackJump::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_BackJump::Call_AnimationEnd, this, placeholders::_1);
 
 	
 }
@@ -93,7 +93,7 @@ void CBatBossState_BackJump::OnStateStart(const _float& In_fAnimationBlendTime)
 }	
 
 
-void CBatBossState_BackJump::Call_AnimationEnd()
+void CBatBossState_BackJump::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -133,7 +133,7 @@ void CBatBossState_BackJump::OnStateEnd()
 
 void CBatBossState_BackJump::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_BackJump::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_BackJump::Call_AnimationEnd, this, placeholders::_1);
 }
 
 

@@ -34,7 +34,7 @@ void CCorvusState_Idle::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkIdle");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Idle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Idle::Tick(_float fTimeDelta)
@@ -50,7 +50,7 @@ void CCorvusState_Idle::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Idle::Call_AnimationEnd()
+void CCorvusState_Idle::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 }
 
@@ -340,7 +340,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 void CCorvusState_Idle::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Idle::Call_AnimationEnd, this, placeholders::_1);
 }
 
 

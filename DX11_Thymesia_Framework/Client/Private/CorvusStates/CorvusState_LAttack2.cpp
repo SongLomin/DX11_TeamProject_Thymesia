@@ -32,7 +32,7 @@ void CCorvusState_LAttack2::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_LAttack2");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LAttack2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LAttack2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_LAttack2::Tick(_float fTimeDelta)
@@ -53,7 +53,7 @@ void CCorvusState_LAttack2::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_LAttack2::Call_AnimationEnd()
+void CCorvusState_LAttack2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -187,7 +187,7 @@ void CCorvusState_LAttack2::OnEventMessage(_uint iArg)
 
 void CCorvusState_LAttack2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_LAttack2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_LAttack2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_LAttack2::Free()

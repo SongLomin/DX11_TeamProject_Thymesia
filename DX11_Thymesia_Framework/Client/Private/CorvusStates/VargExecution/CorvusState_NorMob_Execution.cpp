@@ -33,7 +33,7 @@ void CCorvusState_NorMob_Execution::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_StunExecute_StartL_L");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_NorMob_Execution::Tick(_float fTimeDelta)
@@ -81,7 +81,7 @@ void CCorvusState_NorMob_Execution::OnStateEnd()
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
 }
 
-void CCorvusState_NorMob_Execution::Call_AnimationEnd()
+void CCorvusState_NorMob_Execution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -105,7 +105,7 @@ void CCorvusState_NorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 void CCorvusState_NorMob_Execution::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_NorMob_Execution::Check_AndChangeNextState()

@@ -32,7 +32,7 @@ void CBatBossState_Hellscream::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Hellscream");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Hellscream::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Hellscream::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Hellscream::Tick(_float fTimeDelta)
@@ -86,7 +86,7 @@ void CBatBossState_Hellscream::OnStateEnd()
 
 
 
-void CBatBossState_Hellscream::Call_AnimationEnd()
+void CBatBossState_Hellscream::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -97,7 +97,7 @@ void CBatBossState_Hellscream::Call_AnimationEnd()
 
 void CBatBossState_Hellscream::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Hellscream::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Hellscream::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Hellscream::Free()

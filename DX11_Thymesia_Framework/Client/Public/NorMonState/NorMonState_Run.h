@@ -48,7 +48,7 @@ private:
 	_bool m_bClosePlayer = true;
 private:
 	virtual void OnEventMessage(_uint iArg) override;
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

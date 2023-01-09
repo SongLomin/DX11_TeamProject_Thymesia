@@ -42,7 +42,7 @@ private:
 	_float m_fCurrentSpeed = 1.2f;
 	_float m_fAccel = 0.f;
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

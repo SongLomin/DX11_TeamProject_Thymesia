@@ -36,7 +36,7 @@ private:
 	_uint  m_iParryCount = 0;
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

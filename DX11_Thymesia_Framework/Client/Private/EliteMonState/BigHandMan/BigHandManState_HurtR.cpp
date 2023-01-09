@@ -36,7 +36,7 @@ void CBigHandManState_HurtR::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV2Villager_M.ao|LV2Villager01_M_HurtR");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_HurtR::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBigHandManState_HurtR::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_HurtR::Tick(_float fTimeDelta)
@@ -81,7 +81,7 @@ void CBigHandManState_HurtR::OnStateEnd()
 
 }
 
-void CBigHandManState_HurtR::Call_AnimationEnd()
+void CBigHandManState_HurtR::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -91,7 +91,7 @@ void CBigHandManState_HurtR::Call_AnimationEnd()
 
 void CBigHandManState_HurtR::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_HurtR::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBigHandManState_HurtR::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBigHandManState_HurtR::Free()

@@ -35,7 +35,7 @@ void CUrdBossState_SPSkill01::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_SPSkill01|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_SPSkill01::Tick(_float fTimeDelta)
@@ -59,6 +59,17 @@ void CUrdBossState_SPSkill01::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+
+	m_iResetWeaponNum = 0;
+
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoJavlinCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(true);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_WalkStart(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -80,19 +91,25 @@ void CUrdBossState_SPSkill01::OnStateEnd()
 
 
 
-void CUrdBossState_SPSkill01::Call_AnimationEnd()
+void CUrdBossState_SPSkill01::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(0);
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(false);
+	if (m_iAnimIndex != iEndAnimIndex)
+		return;
+
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+}
+
+void CUrdBossState_SPSkill01::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 void CUrdBossState_SPSkill01::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_SPSkill01::Free()
@@ -106,23 +123,80 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 250)
-	{
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWepons();
+	list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
 
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
-		list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 250 &&
+		m_iResetWeaponNum == 0)
+	{
+		m_iResetWeaponNum = 1;
 			
-		for (auto& elem : pDecoWeapons)
+		for (auto& elem : pJavelinWeapons)
 		{
-			elem.lock()->Set_RenderOnOff(true);
-			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+			if (elem.lock()->Get_RenderCheck())
+			{
+				elem.lock()->Set_RenderCheck(false);
+				elem.lock()->Set_Enable(false);
+				break;
+			}
+		
+		}	
+		
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 275 &&
+		m_iResetWeaponNum == 1)
+	{
+		m_iResetWeaponNum = 2;
+
+		for (auto& elem : pJavelinWeapons)
+		{
+			if (elem.lock()->Get_RenderCheck())
+			{
+				elem.lock()->Set_RenderCheck(false);
+				elem.lock()->Set_Enable(false);
+				break;
+			}
+		
+		}
+
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 300 &&
+		m_iResetWeaponNum == 2)
+	{
+		m_iResetWeaponNum = 3;
+
+		for (auto& elem : pJavelinWeapons)
+		{
+			if (elem.lock()->Get_RenderCheck())
+			{
+				elem.lock()->Set_RenderCheck(false);
+				elem.lock()->Set_Enable(false);
+				break;
+			}
 			
 		}
 
-		pUrd.lock()->Reset_JavelinWeapon();
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 360 &&
+		m_iResetWeaponNum == 3)
+	{
+		
+
+		for (auto& elem : pDecoWeapons)
+		{
+			elem.lock()->Set_RenderOnOff(true);
+			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(false);
+
+		}
 
 	}
+
+
 
 	return false;
 }

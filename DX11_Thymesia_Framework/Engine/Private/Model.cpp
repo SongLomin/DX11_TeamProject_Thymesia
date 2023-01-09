@@ -54,7 +54,7 @@ void CModel::Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex, _float
 	m_fMaxBlendTime = fBlendTime + m_fStartBlendTime;
 	m_fCurrentBlendTime = m_fStartBlendTime;
 
-	m_isBlend = m_fMaxBlendTime > DBL_EPSILON;
+	m_isBlend = true;
 
 
 	for (size_t i = 0; i < m_pBoneNodes.size(); i++)

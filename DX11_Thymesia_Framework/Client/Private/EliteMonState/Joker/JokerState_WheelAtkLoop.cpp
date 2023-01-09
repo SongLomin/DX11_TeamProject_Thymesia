@@ -39,7 +39,7 @@ void CJokerState_WheelAtkLoop::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_WheelAttackLoop");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_WheelAtkLoop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_WheelAtkLoop::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_WheelAtkLoop::Tick(_float fTimeDelta)
@@ -91,7 +91,7 @@ void CJokerState_WheelAtkLoop::OnStateEnd()
 
 }
 
-void CJokerState_WheelAtkLoop::Call_AnimationEnd()
+void CJokerState_WheelAtkLoop::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -109,7 +109,7 @@ void CJokerState_WheelAtkLoop::Call_AnimationEnd()
 
 void CJokerState_WheelAtkLoop::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_WheelAtkLoop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_WheelAtkLoop::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_WheelAtkLoop::Free()

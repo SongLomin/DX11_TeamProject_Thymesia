@@ -55,7 +55,6 @@
 /////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 #ifdef NDEBUG
 
-
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
@@ -82,10 +81,12 @@
 #define _PROP_EFFECT_
 #undef _EFFECT_TOOL_
 #undef _DAGGER_TRAIL_
+#define _PROP_EFFECT_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
-#define	_BAT_EFFECT_
-#define _INTERACTION_EFFECT_
+#define	_BAT_EFFECT
+#define _URD_EFFECT_
+#undef _INTERACTION_EFFECT_
 #pragma endregion // Effects
 
 #endif // NDEBUG
@@ -119,7 +120,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+#undef _MAP_TOOL_
 // #define _CORVUS_MODEL_
 #define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_

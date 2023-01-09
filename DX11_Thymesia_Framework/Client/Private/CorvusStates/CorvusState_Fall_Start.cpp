@@ -29,7 +29,7 @@ void CCorvusState_Fall_Start::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Fall_Start");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Fall_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Fall_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Fall_Start::Tick(_float fTimeDelta)
@@ -46,7 +46,7 @@ void CCorvusState_Fall_Start::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Fall_Start::Call_AnimationEnd()
+void CCorvusState_Fall_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -84,7 +84,7 @@ void CCorvusState_Fall_Start::OnStateEnd()
 
 void CCorvusState_Fall_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Fall_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Fall_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Fall_Start::Free()

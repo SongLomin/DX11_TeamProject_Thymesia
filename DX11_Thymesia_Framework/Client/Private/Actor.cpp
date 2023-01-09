@@ -26,8 +26,8 @@ HRESULT CActor::Initialize(void* pArg)
 
 
 #ifdef _USE_THREAD_
-    Use_Thread(THREAD_TYPE::PRE_TICK);
     Use_Thread(THREAD_TYPE::PRE_LATETICK);
+    Use_Thread(THREAD_TYPE::PRE_RENDER);
 #endif // _USE_THREAD_
 
 
@@ -69,7 +69,7 @@ void CActor::Before_Render(_float fTimeDelta)
 
 }
 
-void CActor::Thread_PreTick(_float fTimeDelta)
+void CActor::Thread_PreRender(_float fTimeDelta)
 {
     if (!Get_Enable())
         return;

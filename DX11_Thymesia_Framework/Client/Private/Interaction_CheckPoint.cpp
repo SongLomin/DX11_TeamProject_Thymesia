@@ -63,6 +63,7 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
     m_pDeco.lock()->Set_OffsetMatrix(DecoMatrix);
     m_pDeco.lock()->Set_Offset(XMVectorSet(0.05f, 0.f, 0.f, 0.f));
 
+
 #ifdef _USE_THREAD_
     Use_Thread(THREAD_TYPE::PRE_TICK);
 #endif // _USE_THREAD_

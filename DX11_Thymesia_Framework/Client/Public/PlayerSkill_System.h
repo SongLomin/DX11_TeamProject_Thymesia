@@ -19,8 +19,8 @@ public:
 
 public:
 	GAMECLASS_H(CPlayerSkill_System);
-	CLONE_H(CPlayerSkill_System, CComponent)
-
+	CLONE_H(CPlayerSkill_System, CComponent);
+	SHALLOW_COPY(CPlayerSkill_System);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -79,6 +79,7 @@ private:
 	map<SKILL_NAME, weak_ptr<CSkill_Base>>	m_SkillNameMap;
 
 public:
+	void Free();
 	
 };
 

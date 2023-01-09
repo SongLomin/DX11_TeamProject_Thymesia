@@ -32,7 +32,7 @@ void CUrdBossState_HurtM_FR::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_HurtM_FR|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_HurtM_FR::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_HurtM_FR::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_HurtM_FR::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CUrdBossState_HurtM_FR::OnStateEnd()
 
 
 
-void CUrdBossState_HurtM_FR::Call_AnimationEnd()
+void CUrdBossState_HurtM_FR::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CUrdBossState_HurtM_FR::Call_AnimationEnd()
 
 void CUrdBossState_HurtM_FR::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_HurtM_FR::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_HurtM_FR::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_HurtM_FR::Free()

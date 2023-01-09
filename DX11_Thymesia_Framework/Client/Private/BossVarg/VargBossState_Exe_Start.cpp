@@ -37,7 +37,7 @@ void CVargBossState_Exe_Start::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Exe_Start::Tick(_float fTimeDelta)
@@ -98,7 +98,7 @@ void CVargBossState_Exe_Start::OnStateEnd()
 
 
 
-void CVargBossState_Exe_Start::Call_AnimationEnd()
+void CVargBossState_Exe_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -119,7 +119,7 @@ void CVargBossState_Exe_Start::OnEventMessage(_uint iArg)
 
 void CVargBossState_Exe_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Exe_Start::Free()

@@ -32,12 +32,17 @@ void CUrdBossState_Attack07::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack07|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack07::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack07::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack07::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -56,7 +61,11 @@ void CUrdBossState_Attack07::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_bAttackLookAtLimit = true;
+
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
+
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,47);
 	
 	
 #ifdef _DEBUG
@@ -73,21 +82,26 @@ void CUrdBossState_Attack07::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+
 }
 
 
 
-void CUrdBossState_Attack07::Call_AnimationEnd()
+void CUrdBossState_Attack07::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_WalkStart(true);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_NoParryAttack(false);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
 void CUrdBossState_Attack07::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack07::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Attack07::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack07::Free()
@@ -101,6 +115,11 @@ _bool CUrdBossState_Attack07::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		m_bAttackLookAtLimit = false;
+
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+		Rotation_TargetToLookDir();
 
 
 	return false;

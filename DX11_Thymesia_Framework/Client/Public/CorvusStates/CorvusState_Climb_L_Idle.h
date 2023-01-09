@@ -22,7 +22,7 @@ protected:
     virtual void LateTick(_float fTimeDelta) override;
 
 public:
-   // void Call_AnimationEnd();
+   // void Call_AnimationEnd(_uint iEndAnimIndex);
 
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;

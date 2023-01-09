@@ -29,7 +29,7 @@ void CCorvusState_ClawAttackAway::Start()
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Raven_ClawLong_ChargeFull");
 	
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this, placeholders::_1);
 
 	m_fDissolveAmountArm = 0.f;
 	m_fDissolveAmountClaw = 0.f;
@@ -93,7 +93,7 @@ void CCorvusState_ClawAttackAway::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_ClawAttackAway::Call_AnimationEnd()
+void CCorvusState_ClawAttackAway::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -237,7 +237,7 @@ void CCorvusState_ClawAttackAway::OnEventMessage(_uint iArg)
 
 void CCorvusState_ClawAttackAway::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_ClawAttackAway::Free()

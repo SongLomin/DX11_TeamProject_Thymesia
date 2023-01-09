@@ -35,7 +35,7 @@ void CVargBossState_Stun_End::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_StunEnd");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_End::Call_AnimationEnd, this);*/
+	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_End::Call_AnimationEnd, this, placeholders::_1);*/
 }
 
 void CVargBossState_Stun_End::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CVargBossState_Stun_End::OnStateEnd()
 
 
 //
-//void CVargBossState_Stun_End::Call_AnimationEnd()
+//void CVargBossState_Stun_End::Call_AnimationEnd(_uint iEndAnimIndex)
 //{
 //	if (!Get_Enable())
 //		return;
@@ -93,7 +93,7 @@ void CVargBossState_Stun_End::OnStateEnd()
 
 //void CVargBossState_Stun_End::OnDestroy()
 //{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_End::Call_AnimationEnd, this);
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_End::Call_AnimationEnd, this, placeholders::_1);
 //}
 
 void CVargBossState_Stun_End::Free()

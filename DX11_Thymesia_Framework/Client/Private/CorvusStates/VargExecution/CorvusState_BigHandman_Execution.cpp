@@ -33,7 +33,7 @@ void CCorvusState_BigHandman_Execution::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_VSLV2Villager01_M_Execution");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_BigHandman_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_BigHandman_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_BigHandman_Execution::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CCorvusState_BigHandman_Execution::OnStateEnd()
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_BigHandman_Execution::Call_NextAnimationKey, this, placeholders::_1);
 }
 
-void CCorvusState_BigHandman_Execution::Call_AnimationEnd()
+void CCorvusState_BigHandman_Execution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -106,7 +106,7 @@ void CCorvusState_BigHandman_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 void CCorvusState_BigHandman_Execution::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_BigHandman_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_BigHandman_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_BigHandman_Execution::Check_AndChangeNextState()

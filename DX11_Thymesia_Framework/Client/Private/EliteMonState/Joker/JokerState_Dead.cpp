@@ -38,7 +38,7 @@ void CJokerState_Dead::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_Dead");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Dead::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Dead::Tick(_float fTimeDelta)
@@ -78,13 +78,13 @@ void CJokerState_Dead::OnStateEnd()
 	__super::OnStateEnd();
 }
 
-void CJokerState_Dead::Call_AnimationEnd()
+void CJokerState_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 }
 
 void CJokerState_Dead::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Dead::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Dead::Free()

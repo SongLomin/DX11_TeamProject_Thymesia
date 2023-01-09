@@ -34,7 +34,7 @@ protected:
 	void Free();
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 
 private:
 	_bool    m_bTurnCheck = false;

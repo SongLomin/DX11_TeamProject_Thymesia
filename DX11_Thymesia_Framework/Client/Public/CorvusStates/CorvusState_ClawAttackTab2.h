@@ -23,7 +23,7 @@ protected:
     virtual void LateTick(_float fTimeDelta) override;
 
 public:
-    void Call_AnimationEnd();
+    void Call_AnimationEnd(_uint iEndAnimIndex);
     
     void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
     void Attack();

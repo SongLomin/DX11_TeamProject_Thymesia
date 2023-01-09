@@ -35,7 +35,7 @@ void CUrdBossState_Skill02_1::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Skill02_1|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Skill02_1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Skill02_1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Skill02_1::Tick(_float fTimeDelta)
@@ -64,7 +64,9 @@ void CUrdBossState_Skill02_1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
+
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoJavlinCount(1);
 
 	m_bOne = true;
 
@@ -94,18 +96,26 @@ void CUrdBossState_Skill02_1::OnStateEnd()
 
 
 
-void CUrdBossState_Skill02_1::Call_AnimationEnd()
+void CUrdBossState_Skill02_1::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
+		return;
+
+	if (m_iAnimIndex != iEndAnimIndex)
 		return;
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
+void CUrdBossState_Skill02_1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CUrdBossState_Skill02_1::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Skill02_1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Skill02_1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Skill02_1::Free()
@@ -126,7 +136,7 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 		m_bAttackLookAtLimit = false;
 
-	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+	if (ComputeAngleWithPlayer() > 0.96f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
@@ -157,6 +167,7 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::BIND_HAND);
 		pJavelinWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 		pJavelinWeapon.lock()->Set_Enable(true);
+		pJavelinWeapon.lock()->Set_RenderCheck(true);
 		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.0f));
 
 	}
@@ -192,14 +203,6 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 	
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-		m_bAttackLookAtLimit = false;
-
-	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
-	{
-		Rotation_TargetToLookDir();
-		m_bAttackLookAtLimit = false;
-	}
 
 	return false;
 }

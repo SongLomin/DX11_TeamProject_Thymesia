@@ -34,7 +34,7 @@ void CCorvusState_HurtFallDownEnd::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtFallDown_End");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtFallDownEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtFallDownEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_HurtFallDownEnd::Tick(_float fTimeDelta)
@@ -78,7 +78,7 @@ void CCorvusState_HurtFallDownEnd::OnStateEnd()
 	
 }
 
-void CCorvusState_HurtFallDownEnd::Call_AnimationEnd()
+void CCorvusState_HurtFallDownEnd::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -93,7 +93,7 @@ void CCorvusState_HurtFallDownEnd::Call_AnimationEnd()
 void CCorvusState_HurtFallDownEnd::OnDestroy()
 {
 
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtFallDownEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtFallDownEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_HurtFallDownEnd::Free()

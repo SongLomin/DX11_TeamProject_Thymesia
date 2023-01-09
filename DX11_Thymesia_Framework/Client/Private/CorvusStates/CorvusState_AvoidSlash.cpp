@@ -33,7 +33,7 @@ void CCorvusState_AVoidSalsh::Start()
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidAttack_D");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidSalsh::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidSalsh::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_AVoidSalsh::Tick(_float fTimeDelta)
@@ -84,7 +84,7 @@ void CCorvusState_AVoidSalsh::OnStateEnd()
 	__super::OnStateEnd();
 }
 
-void CCorvusState_AVoidSalsh::Call_AnimationEnd()
+void CCorvusState_AVoidSalsh::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -102,7 +102,7 @@ void CCorvusState_AVoidSalsh::Play_AttackWithIndex(const _tchar& In_iAttackIndex
 void CCorvusState_AVoidSalsh::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoidSalsh::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoidSalsh::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_AVoidSalsh::Check_AndChangeNextState()

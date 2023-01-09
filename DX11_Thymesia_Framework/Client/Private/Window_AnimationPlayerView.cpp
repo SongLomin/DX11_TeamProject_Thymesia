@@ -39,8 +39,6 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
-
     if (!m_bStop)
     {
         if (!m_pPreViewModel.lock())

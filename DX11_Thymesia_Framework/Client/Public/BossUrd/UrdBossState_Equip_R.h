@@ -31,7 +31,7 @@ protected:
 private:
 	_bool   m_bDisableWeaponCheck = false;
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

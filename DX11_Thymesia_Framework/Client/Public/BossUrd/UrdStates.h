@@ -57,4 +57,9 @@
 #include "BossUrd/UrdBossState_WalkF.h"
 #include "BossUrd/UrdBossState_WalkFL.h"
 #include "BossUrd/UrdBossState_WalkFR.h"
+#include "BossUrd/UrdBossState_AttackComboB1.h"
+#include "BossUrd/UrdBossState_AttackComboB2.h"
+#include "BossUrd/UrdBossState_AttackComboB3.h"
+#include "BossUrd/UrdBossState_AttackComboC1.h"
+#include "BossUrd/UrdBossState_AttackComboC2.h"
 
