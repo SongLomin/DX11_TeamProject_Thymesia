@@ -179,7 +179,7 @@ void CCorvus::Tick(_float fTimeDelta)
 		DecalDesc.fTime = 3.f;
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 10.f, 2.f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
 	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{

@@ -61,19 +61,26 @@ void CWater::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_vNoiseUV.x += fTimeDelta;
+	
+	_int a = 0;
 
-	for (auto iter = m_WaterWaveDescs.begin(); iter != m_WaterWaveDescs.end();)
+	auto PositionIter = m_WaterWaveDescs.vPosition.begin();
+	for (auto iter = m_WaterWaveDescs.vWaveFlag.begin(); iter != m_WaterWaveDescs.vWaveFlag.end(); )
 	{
-		//TODO:: (홍혜담) 삭제 조건 여기서 기입
-		if ((*iter).fVibrationScale < 0.0001f)
+		if ((*iter).y < 0.001f)
 		{
-			iter = m_WaterWaveDescs.erase(iter);
+			iter = m_WaterWaveDescs.vWaveFlag.erase(iter);
+			PositionIter = m_WaterWaveDescs.vPosition.erase(PositionIter);
 		}
 		else
 		{
-			(*iter).fTimeAcc += fTimeDelta;
-			(*iter).fVibrationScale *= 0.7f;
+			(*iter).x += fTimeDelta;
+			(*iter).y *= 0.9f;
+			cout << a++ << ". : ";
+			Print_Vector(XMLoadFloat2(&(*PositionIter)));
+			Print_Vector(XMLoadFloat4(&(*iter)));
 			++iter;
+			++PositionIter;
 		}
 	}
 
@@ -99,9 +106,10 @@ HRESULT CWater::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
-void CWater::Add_WaterWave(const WATERWAVE_DESC& In_WaterWaveDesc)
+void CWater::Add_WaterWave(const _float2& In_WaterPosition, const _float4& In_vWaterFlags)
 {
-	m_WaterWaveDescs.emplace_back(In_WaterWaveDesc);
+	m_WaterWaveDescs.vPosition.push_back(In_WaterPosition);
+	m_WaterWaveDescs.vWaveFlag.push_back(In_vWaterFlags);
 }
 
 void CWater::Load_FromJson(const json& In_Json)
@@ -123,7 +131,7 @@ HRESULT CWater::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrixInv", &WorldMatrixInv, sizeof(_float4x4))))
 		return E_FAIL;
 
-	_uint iWaverWaveCnt = min((_uint)m_WaterWaveDescs.size(), 128); //Water Max Count: 128
+	_uint iWaverWaveCnt = min((_uint)m_WaterWaveDescs.vPosition.size(), 128); //Water Max Count: 128
 
 	// WaterWaveDesc을 배열 크기(최대 128개)만큼 던진다.
 	// 배열이 있을때만 던진다.
@@ -134,6 +142,15 @@ HRESULT CWater::SetUp_ShaderResource()
 		{
 			DEBUG_ASSERT;
 		}*/
+
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vPosition", &m_WaterWaveDescs.vPosition[0], sizeof(_float2) * iWaverWaveCnt)))
+		{
+			DEBUG_ASSERT;
+		}
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vWaveDesc", &m_WaterWaveDescs.vWaveFlag[0], sizeof(_float4) * iWaverWaveCnt)))
+		{
+			DEBUG_ASSERT;
+		}
 	}
 
 	// 사이즈가 0이더라도, 0이라는 것을 알려준다.

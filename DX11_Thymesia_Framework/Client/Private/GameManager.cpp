@@ -931,13 +931,8 @@ void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVi
 	if (!m_pWater.lock())
 		return;
 
-	WATERWAVE_DESC Desc;
-	Desc.vPosition = _float2(In_vWorldPosition.m128_f32[0], In_vWorldPosition.m128_f32[2]);
-	Desc.fVibrationScale = In_fVibrationScale;
-	Desc.fFreq = In_fFreq;
-	Desc.fSpeed = In_fSpeed;
-
-	m_pWater.lock()->Add_WaterWave(Desc);
+	m_pWater.lock()->Add_WaterWave(_float2(In_vWorldPosition.m128_f32[0], In_vWorldPosition.m128_f32[2]),
+		_float4(0.f, In_fVibrationScale, In_fFreq, In_fSpeed));
 }
 
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)
