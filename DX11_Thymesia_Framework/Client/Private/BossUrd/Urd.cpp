@@ -269,7 +269,9 @@ void CUrd::Init_Desc()
 	INIT_STATE(CUrdBossState_TurnL);
 	INIT_STATE(CUrdBossState_TurnR);
 
+#ifdef _URD_EFFECT_
 	Bind_KeyEvent("Boss_Urd");
+#endif // _URD_EFFECT_
 
 	m_pPhysXControllerCom.lock()->Init_Controller(
 		Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
