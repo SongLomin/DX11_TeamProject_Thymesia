@@ -96,7 +96,15 @@ void CUrdBossState_SPSkill01::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
+	if (m_iAnimIndex != iEndAnimIndex)
+		return;
+
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+}
+
+void CUrdBossState_SPSkill01::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 void CUrdBossState_SPSkill01::OnDestroy()
@@ -174,7 +182,7 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 368 &&
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 360 &&
 		m_iResetWeaponNum == 3)
 	{
 		
@@ -182,7 +190,7 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 		for (auto& elem : pDecoWeapons)
 		{
 			elem.lock()->Set_RenderOnOff(true);
-			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
+			Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(false);
 
 		}
 

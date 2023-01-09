@@ -131,13 +131,13 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	//	switch (m_iCount)
 	//	{
 	//	case 0:
-	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboC1>(0.05f);
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkF>(0.05f);
 	//		break;
 	//	case 1:
-	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01LV2>(0.05f);
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkL>(0.05f);
 	//		break;
 	//	case 2:
-	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkR>(0.05f);
 	//		break;
 	//	case 3:
 	//		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02LV2C0>(0.05f);

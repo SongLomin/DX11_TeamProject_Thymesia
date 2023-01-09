@@ -62,13 +62,14 @@ public:
     void  Set_RenderOnOff(_bool RenderOnOff) { m_bWeaponRenderOnOff = RenderOnOff; }
     void  Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
     void  Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
+    void  LookAt_Player();
 
 private:
     void Update_Matrix_Hand();
     void Update_Matrix_Throw(_float fTimeDelta);
     void Update_Matrix_Stake();
 
-    void LookAt_Player();
+   
 
 
 public:

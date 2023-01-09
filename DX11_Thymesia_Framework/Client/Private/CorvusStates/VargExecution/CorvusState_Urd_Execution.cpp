@@ -75,7 +75,7 @@ void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTi
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,52);
 
-	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.3f, 1.3f, 1.3f));
 
 
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();

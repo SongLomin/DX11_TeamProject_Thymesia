@@ -107,6 +107,7 @@ private:
     _float      m_fTimeAcc = 0.f;
 protected:
     _bool       m_bBossExecutionStartOnOff = false;
+    _bool       m_bEliteExecutionStartOnOff = false;
 
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;

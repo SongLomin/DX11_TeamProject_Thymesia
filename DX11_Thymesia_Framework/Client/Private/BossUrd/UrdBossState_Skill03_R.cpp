@@ -102,6 +102,9 @@ void CUrdBossState_Skill03_R::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
+
+	if (m_iAnimIndex != iEndAnimIndex)
+		return;
 	
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
 	
@@ -115,6 +118,11 @@ void CUrdBossState_Skill03_R::Call_AnimationEnd(_uint iEndAnimIndex)
 		break;
 	}
 
+}
+
+void CUrdBossState_Skill03_R::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 void CUrdBossState_Skill03_R::OnDestroy()
@@ -180,6 +188,8 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 
 
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
+		m_bDisableWeaponCheck = false; 
+		//pJavelinWeapon.lock()->LookAt_Player();
 	
 
 		//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
@@ -199,15 +209,12 @@ _bool CUrdBossState_Skill03_R::Check_AndChangeNextState()
 				{
 				case 1:
 					m_eReuslt = RESULTR_RIGHT;
-					m_bDisableWeaponCheck = false;
 					break;
 				case 2:
 					m_eReuslt = RESULT_LEFT;
-					m_bDisableWeaponCheck = false;
 					break;
 				case 3:
 					m_eReuslt = RESULT_LEFT;
-					m_bDisableWeaponCheck = false;
 					break;
 				}
 				break;

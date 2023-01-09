@@ -101,8 +101,16 @@ void CUrdBossState_Skill03_L::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
+	if (m_iAnimIndex != iEndAnimIndex)
+		return;
+
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+}
+
+void CUrdBossState_Skill03_L::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 void CUrdBossState_Skill03_L::OnDestroy()
@@ -168,6 +176,7 @@ _bool CUrdBossState_Skill03_L::Check_AndChangeNextState()
 		}
 
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
+		//pJavelinWeapon.lock()->LookAt_Player();
 			
 		//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();

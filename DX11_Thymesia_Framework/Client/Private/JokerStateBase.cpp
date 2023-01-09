@@ -193,7 +193,7 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 		{
 			pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTION);
 			_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, -0.4f, 0.f));
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 1.f, 0.f));
 			pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),

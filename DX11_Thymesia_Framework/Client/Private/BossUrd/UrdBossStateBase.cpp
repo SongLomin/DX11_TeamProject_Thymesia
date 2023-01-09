@@ -183,7 +183,7 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);	
 
 
-			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 13.f)
+			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 8)
 			{
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoSkillCount(0);

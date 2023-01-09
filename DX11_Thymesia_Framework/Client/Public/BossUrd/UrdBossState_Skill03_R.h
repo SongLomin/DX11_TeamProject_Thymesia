@@ -39,6 +39,7 @@ private:
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
+	virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 	virtual void OnDestroy() override;
 	void Free();
 

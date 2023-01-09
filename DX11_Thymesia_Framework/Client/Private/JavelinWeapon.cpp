@@ -4,7 +4,7 @@
 #include "GameManager.h"
 #include "Character.h"
 #include "JavelinWeapon.h"
-
+#include "BossUrd/Urd.h"
 
 GAMECLASS_C(CJavelinWeapon);
 CLONE_C(CJavelinWeapon, CGameObject);
@@ -20,6 +20,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::THROW:
 		m_pCurrentModelCom = m_pModelCom;
+		cout << Weak_Cast<CUrd>( m_pParentTransformCom.lock()->Get_Owner()).lock()->Get_CurState().lock()->Get_StateIndex() << endl;
 		LookAt_Player();
 		break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
@@ -280,13 +281,13 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= pCurrentPlayer.lock()->Get_WorldPosition().m128_f32[1] + 0.66f)
+	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= pCurrentPlayer.lock()->Get_WorldPosition().m128_f32[1] + 0.56f)
 	{
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;
 	}
 	
-	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 100.f);
+	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 60.f);
 	
 }
 

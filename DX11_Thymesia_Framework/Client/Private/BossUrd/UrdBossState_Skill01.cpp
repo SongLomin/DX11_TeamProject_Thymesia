@@ -74,7 +74,7 @@ void CUrdBossState_Skill01::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoJavlinCount(1);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(4.f, 4.f, 4.f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
@@ -103,8 +103,16 @@ void CUrdBossState_Skill01::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
+	if (m_iAnimIndex != iEndAnimIndex)
+		return;
+
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+}
+
+void CUrdBossState_Skill01::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 void CUrdBossState_Skill01::OnDestroy()
