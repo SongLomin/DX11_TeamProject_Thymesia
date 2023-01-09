@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Collider.h"
+
 #include "ActorDecor.h"
 #include "UI_Landing.h"
 #include "UIManager.h"
@@ -64,7 +65,6 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
 
 #ifdef _USE_THREAD_
     Use_Thread(THREAD_TYPE::PRE_TICK);
-    // Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
 
     return S_OK;
@@ -472,7 +472,6 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
         {
             m_pAnimModelCom.lock()->Set_CurrentAnimation(EQUIP_LOOP);
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.f);
-            m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
         }
         break;
 

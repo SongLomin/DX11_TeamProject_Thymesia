@@ -37,6 +37,8 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::CAMERA);
 
+	GET_SINGLE(CGameManager)->Registration_Camera("Camera_Target", Weak_Cast<CCamera>(m_this));
+
 	return S_OK;
 }
 
@@ -56,7 +58,6 @@ HRESULT CCamera_Target::Start()
 	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("GlobalDust", m_pTransformCom);
-	GET_SINGLE(CGameManager)->Registration_Camera("Camera_Target", Weak_Cast<CCamera>(m_this));
 
 	return S_OK;
 }

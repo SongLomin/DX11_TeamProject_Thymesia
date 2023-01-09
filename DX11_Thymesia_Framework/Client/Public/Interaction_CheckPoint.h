@@ -5,10 +5,12 @@
 
 
 BEGIN(Engine)
+
 class CCollider;
 class CModel;
 class CActorDecor;
 class CTransform;
+
 END
 
 BEGIN(Client)
@@ -66,8 +68,9 @@ private:
     weak_ptr<CModel>        m_pAnimModelCom;
     weak_ptr<CShader>       m_pAnimShader;
     weak_ptr<CTexture>      m_pTextureCom;
-    weak_ptr<CActorDecor>   m_pDeco;
     weak_ptr<CTransform>    m_pChairTransfromCom;
+
+    weak_ptr<CActorDecor>   m_pDeco;
 
     _int                    m_iTexPass      = 84;
     _float2                 m_vAddSpeed     = { -0.2f, 0.2f };
@@ -76,7 +79,7 @@ private:
     _int                    m_iAnimIndex    = 0;
 
     _int                    m_iCheckIndex   = 0;
-    _int                    m_iEffectIndex   = -1;
+    _int                    m_iEffectIndex  = -1;
     LIGHTDESC               m_tLightDesc;   
     _float2                 m_vAddUVPos     = { 0.f, 0.f };
 
@@ -85,8 +88,6 @@ private:
     ANIM_EVENT              m_eAnimEvent    = ANIM_EVENT::NONE;
     _bool                   m_bAnimEnd      = false;
     _bool                   m_bInteraction  = false;
-
-    _int    m_iCount = 0;
 
 private:
     virtual void OnDestroy() override;

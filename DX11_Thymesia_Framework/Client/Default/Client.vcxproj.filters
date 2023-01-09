@@ -1478,7 +1478,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\InventorySorter.h" />
     <ClInclude Include="..\Public\UIManager.h" />
-    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
     <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
@@ -2122,7 +2121,7 @@
       <Filter>02. GameObject\00. Camera\NewFilter1</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\InteriorProp.h">
-      <Filter>02. GameObject\04. Prop\NewFilter1</Filter>
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
@@ -2140,6 +2139,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\Preset_NvClothCollider.h">
       <Filter>06. DataPreset\08. Preset_NvClothCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Home.h">
+      <Filter>01. ClientLevel\06. Home</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PreView_InteriorProp.h">
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_MapTable.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Chair.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXColliderObject_Interior.h">
+      <Filter>02. GameObject\12. PhysXColliderObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Static_InteriorProp.h">
+      <Filter>02. GameObject\04. Prop\01. Static_Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_InteriorActivate.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3648,9 +3671,6 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
-    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -4277,7 +4297,7 @@
       <Filter>02. GameObject\00. Camera\NewFilter1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\InteriorProp.cpp">
-      <Filter>02. GameObject\04. Prop\NewFilter1</Filter>
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\06.PS_BatRoar\Upgrade</Filter>
@@ -4313,6 +4333,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97. Tool\00. IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Home.cpp">
+      <Filter>01. ClientLevel\06. Home</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PreView_InteriorProp.cpp">
+      <Filter>02. GameObject\04. Prop\Interior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_MapTable.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Chair.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp">
+      <Filter>02. GameObject\12. PhysXColliderObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Static_InteriorProp.cpp">
+      <Filter>02. GameObject\04. Prop\01. Static_Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_InteriorActivate.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -6373,9 +6417,6 @@
     <Filter Include="02. GameObject\00. Camera\NewFilter1">
       <UniqueIdentifier>{86b93e9a-0b38-4da4-898b-87c9eb745011}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\NewFilter1">
-      <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\08. Effect\Effect_Decal">
       <UniqueIdentifier>{6f06b722-2574-49ba-893c-70a489bf0f23}</UniqueIdentifier>
     </Filter>
@@ -6390,6 +6431,12 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle">
       <UniqueIdentifier>{eb3eb2c3-da78-44ed-927c-98aca6faf564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ClientLevel\06. Home">
+      <UniqueIdentifier>{215264ff-3fd9-440f-8179-6710e4628f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\Interior">
+      <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

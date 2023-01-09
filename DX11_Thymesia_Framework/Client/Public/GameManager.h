@@ -33,6 +33,7 @@ class CItemPopup_Queue;
 class CInteraction_DeadSpot;
 class CSection_Eventer;
 class CFog;
+class CInteriorProp;
 class CWater;
 
 class CGameManager :
@@ -240,6 +241,7 @@ private:
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
     weak_ptr<CWater>                    m_pWater;
+    weak_ptr<CInteriorProp>             m_pInterior;
     _uint                               m_iPreEventSection;  
 
 private:

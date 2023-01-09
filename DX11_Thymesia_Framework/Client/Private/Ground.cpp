@@ -74,12 +74,7 @@ HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 	__super::Render(pDeviceContext);
 
 	if (FAILED(SetUp_ShaderResource()))
-		DEBUG_ASSERT;
-	//displacement ¿Í normalÀ» °°ÀÌ ¾¸
-	//m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture1", 678);
-	//m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture2", 679);
-
-	//m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
+		return E_FAIL;
 
 	m_pShaderCom.lock()->Begin(m_iShaderPath, pDeviceContext);
 	m_pVIBufferCom.lock()->Render(pDeviceContext);
@@ -173,6 +168,17 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
+	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
+
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
+		return E_FAIL;
+
+	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
+	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
+
+	if (2 == m_iShaderPath)
+		return S_OK;
+	
 	for (auto& iter : m_pTextureDescs)
 	{
 		string szDiffTextureName = iter.first + "_Diff";
@@ -190,14 +196,6 @@ HRESULT CGround::SetUp_ShaderResource()
 	}
 
 	m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0);
-
-	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
-
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
-		DEBUG_ASSERT;
-
-	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
-	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
 
 	return S_OK;
 }

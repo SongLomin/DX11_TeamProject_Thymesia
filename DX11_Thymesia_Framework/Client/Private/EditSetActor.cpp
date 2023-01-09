@@ -198,7 +198,9 @@ void CEditSetActor::View_CreateActor()
 	static _int		iSelect_BossActionList = 0;
 	static _int		iSelect_MonsterSection = 0;
 	static _bool	bRenderActor = false;
+	static _bool	bPatrol = false;
 	_bool			bNorMonsterCreate = true;
+
 
 	if (ImGui::Checkbox("Render Actor", &bRenderActor))
 	{
@@ -239,6 +241,7 @@ void CEditSetActor::View_CreateActor()
 	}
 
 	ImGui::InputInt("Section Index", &iSelect_MonsterSection);
+	ImGui::Checkbox("Patrol", &bPatrol);
 
 	RAY MouseRayInWorldSpace;
 
@@ -252,6 +255,7 @@ void CEditSetActor::View_CreateActor()
 	tMonsterDesc.eNorMonIdleType = (bNorMonsterCreate) ? ((NORMONSTERIDLETYPE)iSelect_MonsterActionList) : (NORMONSTERIDLETYPE::IDLEEND);
 	tMonsterDesc.eMonType = (MONSTERTYPE)((iSelect_ActorList + iSelect_ActorTypeList * (_int)MONSTERTYPE::START_ELITE_MONSTER) + 1);
 	tMonsterDesc.iSectionIndex = iSelect_MonsterSection;
+	tMonsterDesc.bPatrol = bPatrol;
 	memcpy(&tMonsterDesc.m_fStartPositon, m_PickingDesc.m[3], sizeof(_float4));
 
 	switch (iSelect_ActorTypeList)

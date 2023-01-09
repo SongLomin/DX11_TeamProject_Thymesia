@@ -72,8 +72,6 @@ HRESULT CInteraction_Aisemy::Start()
     }
 
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-    //SetAnimState
-
 
     return S_OK;
 }
@@ -209,6 +207,10 @@ void CInteraction_Aisemy::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom,
 
     In_pColldierCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     In_pColldierCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_Aisemy::SetAnimState(const ANIM_INDEX _eAnimIndex)
+{
 }
 
 void CInteraction_Aisemy::Free()

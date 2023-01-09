@@ -235,6 +235,24 @@ _bool CVIBuffer_Ground::Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _floa
 	return false;
 }
 
+_bool CVIBuffer_Ground::Compute_IsInTerrain(_uint _iNumVertexX, _uint _iNumVertexZ, _float _fInterval, _fvector _vTargetPos, _fmatrix _WorldMatrix)
+{
+	_float vRangeX = _iNumVertexX * _fInterval;
+	_float vRangeZ = _iNumVertexZ * _fInterval;
+
+	_matrix WorldMatrixInv(XMMatrixInverse(nullptr, _WorldMatrix));
+	_float3 vLocalPos;
+	XMStoreFloat3(&vLocalPos, XMVector3TransformCoord(_vTargetPos, WorldMatrixInv));
+
+	if ((0.f < vLocalPos.x && vRangeX > vLocalPos.x) &&
+		(0.f < vLocalPos.z && vRangeZ > vLocalPos.z))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, D3D11_PRIMITIVE_TOPOLOGY In_eToplogy)
 {
 	m_iStride			= sizeof(VTXGROUND);

@@ -32,6 +32,8 @@ static const char* items_FindType[] =
 	"CInteraction_Elevator",
 	"CInteraction_Ladder",
 	"CInteraction_Item",
+	"Interaction_Aisemy",
+	"Interaction_InteriorActivate",
 	"CProp_Fence",
 	"CSection_Eventer"
 };
@@ -246,7 +248,8 @@ void CEditGroupProp::View_CreateProp()
 		"NextPoint",
 		"CastleGate",
 		"Item",
-		"Interaction_Aisemy"
+		"Interaction_Aisemy",
+		"Interaction_InteriorActivate"
 	};
 
 	static const char* items_Event_Prop[] =
@@ -364,7 +367,7 @@ void CEditGroupProp::View_CreateProp()
 
 			case 7:
 			{
-				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
 					return;
 
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(LEVEL::LEVEL_EDIT);
@@ -375,12 +378,23 @@ void CEditGroupProp::View_CreateProp()
 
 			case 8 :
 			{
-				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
 					return;
 
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Aisemy>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode = typeid(CInteraction_Aisemy).hash_code();
 				tObjDesc.TypeName = typeid(CInteraction_Aisemy).name();
+			}
+			break;
+
+			case 9 :
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_InteriorActivate>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode = typeid(CInteraction_InteriorActivate).hash_code();
+				tObjDesc.TypeName = typeid(CInteraction_InteriorActivate).name();
 			}
 			break;
 		}
@@ -582,9 +596,11 @@ void    CEditGroupProp::View_PickProp()
 		weak_ptr<CModel>     pModel     = iter.pInstance.lock()->Get_Component<CModel>();
 		weak_ptr<CCollider>  pCollider  = iter.pInstance.lock()->Get_Component<CCollider>();
 
-		if (pModel.lock() && pModel.lock()->Get_ModelData().lock())
+		if (!pModel.lock() && typeid(CLight_Prop).hash_code() == iter.HashCode)
 		{
-			MESH_VTX_INFO	VtxInfo = pModel.lock()->Get_MeshVertexInfo();
+			MESH_VTX_INFO	VtxInfo;
+			VtxInfo.vMin = { -2.f, -2.f, -2.f };
+			VtxInfo.vMax = {  2.f,  2.f,  2.f };
 
 			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, pTransform.lock()->Get_WorldMatrix()))
 			{
@@ -600,7 +616,7 @@ void    CEditGroupProp::View_PickProp()
 			}
 		}
 
-		else if (typeid(CLight_Prop).hash_code() == iter.HashCode)
+		else if (pModel.lock() && typeid(CInteraction_InteriorActivate).hash_code() == iter.HashCode)
 		{
 			MESH_VTX_INFO	VtxInfo;
 			VtxInfo.vMin = { -2.f, -2.f, -2.f };
@@ -614,6 +630,24 @@ void    CEditGroupProp::View_PickProp()
 				{
 					fDistance         = fLength;
 					m_iPickingIndex   = iIndex;
+					m_tPickingVtxInfo = VtxInfo;
+					XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
+				}
+			}
+		}
+
+		else if (pModel.lock() && pModel.lock()->Get_ModelData().lock())
+		{
+			MESH_VTX_INFO	VtxInfo = pModel.lock()->Get_MeshVertexInfo();
+
+			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, pTransform.lock()->Get_WorldMatrix()))
+			{
+				_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION)));
+
+				if (fLength < fDistance)
+				{
+					fDistance = fLength;
+					m_iPickingIndex = iIndex;
 					m_tPickingVtxInfo = VtxInfo;
 					XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
 				}

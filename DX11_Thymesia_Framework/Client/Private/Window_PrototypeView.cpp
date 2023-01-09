@@ -149,6 +149,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_CastleGate);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CWater);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CFog);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteriorProp);
 
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGroupProp);
