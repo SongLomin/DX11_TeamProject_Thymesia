@@ -9,7 +9,7 @@
 GAMECLASS_C(CCorvusState_PS_CaneSword_Start);
 CLONE_C(CCorvusState_PS_CaneSword_Start, CComponent)
 
-void CCorvusState_PS_CaneSword_Start::Call_AnimationEnd()
+void CCorvusState_PS_CaneSword_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -37,7 +37,7 @@ void CCorvusState_PS_CaneSword_Start::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_CaneSword_Fast");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_CaneSword_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_CaneSword_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_PS_CaneSword_Start::Tick(_float fTimeDelta)
@@ -88,5 +88,5 @@ void CCorvusState_PS_CaneSword_Start::Free()
 	__super::Free();
 
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_CaneSword_Start::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_CaneSword_Start::Call_AnimationEnd, this, placeholders::_1);
 }

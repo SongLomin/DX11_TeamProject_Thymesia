@@ -31,7 +31,7 @@ private:
 	_int  m_iPreCount = 4;
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

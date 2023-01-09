@@ -55,7 +55,7 @@ void CNorMonState_HeavyAttack3::Start()
 
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack3::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack3::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -150,7 +150,7 @@ void CNorMonState_HeavyAttack3::OnStateEnd()
 
 void CNorMonState_HeavyAttack3::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_HeavyAttack3::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_HeavyAttack3::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_HeavyAttack3::Free()
@@ -173,7 +173,7 @@ _bool CNorMonState_HeavyAttack3::Check_AndChangeNextState()
 
 }
 
-void CNorMonState_HeavyAttack3::Call_AnimationEnd()
+void CNorMonState_HeavyAttack3::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

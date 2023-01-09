@@ -33,7 +33,7 @@ void CCorvusState_Urd_Execution::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_VSUrd_Execution");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Urd_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Urd_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Urd_Execution::Tick(_float fTimeDelta)
@@ -98,7 +98,7 @@ void CCorvusState_Urd_Execution::OnStateEnd()
 	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
-void CCorvusState_Urd_Execution::Call_AnimationEnd()
+void CCorvusState_Urd_Execution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -141,7 +141,7 @@ void CCorvusState_Urd_Execution::Free()
 void CCorvusState_Urd_Execution::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Urd_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Urd_Execution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_Urd_Execution::Check_AndChangeNextState()

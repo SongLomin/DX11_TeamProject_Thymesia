@@ -8,7 +8,7 @@ class CCorvusState_PS abstract :
 	GAMECLASS_H(CCorvusState_PS);
 
 public:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 	virtual void Call_NextKeyFrame(const _uint& In_KeyIndex) = 0;
 
 protected:

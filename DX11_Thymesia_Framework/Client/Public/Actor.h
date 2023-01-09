@@ -29,7 +29,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
-    virtual void Thread_PreTick(_float fTimeDelta) override;
+    virtual void Thread_PreRender(_float fTimeDelta) override;
     virtual void Thread_PreLateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 

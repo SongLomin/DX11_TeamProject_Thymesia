@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "Status_Boss.h"
+
 
 GAMECLASS_C(CUrdBossState_Step_Idle);
 CLONE_C(CUrdBossState_Step_Idle, CComponent)
@@ -87,13 +89,345 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		return false;
 	
 	// step FL,FL56 FR,FR45 DANCINGF,DANCINGR
+	
+
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+
+	if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
+	{
+		if (m_bStepClose) //가까울떄
+		{
+			if (m_iStepCloseCount == 0) //스탭아이들에서 -> 어택아이들로 넘어가는게 맞는듯?
+			{
+				int iRand = rand() % 5;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
+					m_iStepCloseCount = 1;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
+					m_iStepCloseCount = 2;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR>(0.05f);
+					m_iStepCloseCount = 3;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL>(0.05f);
+					m_iStepCloseCount = 4;
+					break;
+				
+				case 4:
+				{
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+				}
+					break;
+				}
+				return true;
+			
+			}
+			else if (m_iStepCloseCount == 1) //오른쪽
+			{
+				//둘중에하나 왼쪽공격 또는 왼쪽
+				int iRand = rand() % 3;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
+					break;
+				case 2:
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepCloseCount == 2) //왼쪽
+			{
+				int iRand = rand() % 3;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
+					break;
+				case 2:
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepCloseCount == 3) //오른쪽앞
+			{
+				int iRand = rand() % 3;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
+					m_iStepCloseCount = 5;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+					break;
+				case 2:
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepCloseCount == 4) //왼쪽앞
+			{
+				int iRand = rand() % 3;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
+					m_iStepCloseCount = 6;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
+					break;
+				case 2:
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepCloseCount == 5) // 왼쪽
+			{
+				int iRand = rand() % 2;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
+					break;
+				case 1:
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepCloseCount == 6) // 오른쪽
+			{
+				int iRand = rand() % 2;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+					break;
+				case 1:
+					int iRand = rand() % 2;
+					switch (iRand)
+					{
+					case 0:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					case 1:
+						Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+						break;
+					}
+					break;
+				}
+
+				return true;
+			}
 
 
+
+
+		}
+		else //디폴트값 멀떄
+		{
+			if (m_iStepFarCount == 0) //
+			{
+				int iRand = rand() % 4;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR>(0.05f);
+					m_iStepCloseCount = 6;
+					m_iStepFarCount = 2;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR45>(0.05f);
+					m_iStepCloseCount = 6;
+					m_iStepFarCount = 2;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL>(0.05f);
+					m_iStepCloseCount = 5;
+					m_iStepFarCount = 1;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL45>(0.05f);
+					m_iStepCloseCount = 5;
+					m_iStepFarCount = 1;
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepFarCount == 1) // 스탭이 외쪽일때 -> 오른쪽으로
+			{
+				int iRand = rand() % 3;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR>(0.05f);
+					m_iStepCloseCount = 6;
+					m_iStepFarCount = 4;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR45>(0.05f);
+					m_iStepCloseCount = 6;
+					m_iStepFarCount = 4;
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepFarCount == 2)  //스탭이 오른쪽일떄 -> 왼쪽으로
+			{
+				int iRand = rand() % 3;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL>(0.05f);
+					m_iStepCloseCount = 5;
+					m_iStepFarCount = 3;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL45>(0.05f);
+					m_iStepCloseCount = 5;
+					m_iStepFarCount = 3;
+					break;
+				}
+				return true;
+			}
+			else if (m_iStepFarCount == 3) //  스탭이 왼쪽일떄
+			{
+				if (m_bNoParryAttack)
+				{
+					// 이떄 아이들한테 다음공격떄 파란색공격하게 하며될듯?초기화	
+					Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+					return true;
+				}
+				else
+				{
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
+					m_bNoParryAttack = true;
+					return true;
+				}
+
+			}
+			else if (m_iStepFarCount == 4) // 스탭이 오른쪽일때
+			{
+				if (m_bNoParryAttack)
+				{
+					// 이떄 아이들한테 다음공격떄 파란색공격하게 하며될듯? 이떄초기화해줘야함
+					Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+					return true;
+				}
+				else
+				{
+					//이떄초기화해줘야함 어서함? 대쉬에서함
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+					m_bNoParryAttack = true;
+					return true;
+				}
+			}
+
+		}
+	}
+	else // 이떄가 그거임///////////////////////////////////////////////////////////////////////////////////////
+	{
 	if (m_bStepClose) //가까울떄
 	{
 		if (m_iStepCloseCount == 0) //스탭아이들에서 -> 어택아이들로 넘어가는게 맞는듯?
 		{
-			int iRand = rand() % 6;
+			int iRand = rand() % 5;
 
 			switch (iRand)
 			{
@@ -114,11 +448,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				m_iStepCloseCount = 4;
 				break;
 			case 4:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
-				break;
-			case 5:
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02LV2C0>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -136,8 +480,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -154,8 +511,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
 				break;
 			}
 			return true;
@@ -174,8 +544,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -194,8 +577,21 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 				break;
 			case 2:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
@@ -203,39 +599,65 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		else if (m_iStepCloseCount == 5) // 왼쪽
 		{
 			int iRand = rand() % 2;
-			
+
 			switch (iRand)
 			{
 			case 0:
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 				break;
 			case 1:
-				Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
 				break;
 			}
 			return true;
 		}
 		else if (m_iStepCloseCount == 6) // 오른쪽
 		{
-		int iRand = rand() % 2;
+			int iRand = rand() % 2;
 
-		switch (iRand)
-		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
-			break;
-		case 1:
-			Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
-			break;
-		}
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+				break;
+			case 1:
+			{
+				int iRand = rand() % 2;
+				switch (iRand)
+				{
+				case 0:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(true);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				case 1:
+					Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_Attack(false);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
+					break;
+				}
+			}
+				
+				break;
+			}
 
 			return true;
 		}
-		
-		
-		
+
+
+
 
 	}
 	else //디폴트값 멀떄
@@ -313,7 +735,7 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 			{
 				// 이떄 아이들한테 다음공격떄 파란색공격하게 하며될듯?초기화	
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboC1>(0.05f);
 				return true;
 			}
 			else
@@ -330,7 +752,7 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 			{
 				// 이떄 아이들한테 다음공격떄 파란색공격하게 하며될듯? 이떄초기화해줘야함
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(true);
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboB1>(0.05f);
 				return true;
 			}
 			else
@@ -343,6 +765,9 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		}
 
 	}
+	}
+
+
 
 	
 	

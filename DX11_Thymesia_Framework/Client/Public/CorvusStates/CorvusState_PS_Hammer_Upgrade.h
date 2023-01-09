@@ -11,7 +11,7 @@ class CCorvusState_PS_Hammer_Upgrade final :
     SHALLOW_COPY(CCorvusState_PS_Hammer_Upgrade);
 
 public:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 	virtual void Call_NextKeyFrame(const _uint& In_KeyIndex) override;
 
 private:

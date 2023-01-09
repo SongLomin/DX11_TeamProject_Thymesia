@@ -11,6 +11,7 @@
 #include "PhysXController.h"
 #include "PhysXCharacterController.h"
 #include "Status_Boss.h"
+#include "Status_Monster.h"
 
 GAMECLASS_C(CUrdBossState_VS_TakeExecution);
 CLONE_C(CUrdBossState_VS_TakeExecution, CComponent)
@@ -35,7 +36,7 @@ void CUrdBossState_VS_TakeExecution::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_VS_TakeExecution|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_VS_TakeExecution::Tick(_float fTimeDelta)
@@ -61,11 +62,11 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	//if (Check_RequirementIsTargeted())
-	//	GET_SINGLE(CGameManager)->Release_Focus();
+	if (Check_RequirementIsTargeted())
+		GET_SINGLE(CGameManager)->Release_Focus();
 
-	//GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
-	//GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,49);
@@ -98,20 +99,33 @@ void CUrdBossState_VS_TakeExecution::OnStateEnd()
 
 
 
-void CUrdBossState_VS_TakeExecution::Call_AnimationEnd()
+void CUrdBossState_VS_TakeExecution::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
 
-	//GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
-	//m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
+ 
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+
+	if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
+	{
+		m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
+	}
+	
+	//Rotation_TargetToLookRevirseDir();
+
+	//m_pTransformCom.lock()->Set_Look2D(-m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
+	//PxControllerFilters Filters;
+	//m_pPhysXControllerCom.lock()->Move(XMVectorSet(-1.4064102f, 0.f, -1.2742195f, 0.f), 0.f, 0.001f, Filters);
+
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(true);
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.f);
 }
 
 void CUrdBossState_VS_TakeExecution::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_VS_TakeExecution::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_VS_TakeExecution::Free()
@@ -126,6 +140,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		return false;
 
 	PxControllerFilters Filters;
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 	_matrix                    vResultOtherWorldMatrix;
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
@@ -167,7 +182,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 160 &&
 		m_bOne)
 	{
-		m_pModelCom.lock()->Set_AnimationSpeed(0.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(0.25f);
 		m_bOne = false;
 	}
 
@@ -190,10 +205,20 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		m_bAnimaionSpeedControl)
 	{		
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-		Rotation_TargetToLookDir();
 		//pCurrentPlayer.lock()->Get_Transform()->LookAt2D(vMonsterMaxtrix.r[3]);
 		m_bAnimaionSpeedControl = false;
 	}
+
+	if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 218)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Dead>(0.05f);
+			return true;
+		}
+	}
+
+
 
 	return false;
 }

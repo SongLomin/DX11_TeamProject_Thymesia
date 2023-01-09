@@ -34,7 +34,7 @@ private:
 	_float   m_fSinematic = 0.f;
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

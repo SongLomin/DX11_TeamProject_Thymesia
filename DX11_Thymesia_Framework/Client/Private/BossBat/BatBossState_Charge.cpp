@@ -32,7 +32,7 @@ void CBatBossState_Charge::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Charge");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Charge::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Charge::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Charge::Tick(_float fTimeDelta)
@@ -83,7 +83,7 @@ void CBatBossState_Charge::OnStateEnd()
 
 
 
-void CBatBossState_Charge::Call_AnimationEnd()
+void CBatBossState_Charge::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -96,7 +96,7 @@ void CBatBossState_Charge::Call_AnimationEnd()
 
 void CBatBossState_Charge::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Charge::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Charge::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Charge::Free()

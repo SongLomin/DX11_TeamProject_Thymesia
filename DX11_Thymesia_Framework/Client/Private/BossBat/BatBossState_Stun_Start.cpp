@@ -32,7 +32,7 @@ void CBatBossState_Stun_Start::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_StunStart");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Stun_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Stun_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Stun_Start::Tick(_float fTimeDelta)
@@ -66,7 +66,7 @@ void CBatBossState_Stun_Start::OnStateEnd()
 	__super::OnStateEnd();
 }
 
-void CBatBossState_Stun_Start::Call_AnimationEnd()
+void CBatBossState_Stun_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -76,7 +76,7 @@ void CBatBossState_Stun_Start::Call_AnimationEnd()
 
 void CBatBossState_Stun_Start::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Stun_Start::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Stun_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Stun_Start::Free()

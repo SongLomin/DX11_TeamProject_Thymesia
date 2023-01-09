@@ -36,7 +36,7 @@ void CVargBossState_WalkB::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_WalkB");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_WalkB::Tick(_float fTimeDelta)
@@ -92,7 +92,7 @@ void CVargBossState_WalkB::OnStateEnd()
 
 
 
-void CVargBossState_WalkB::Call_AnimationEnd()
+void CVargBossState_WalkB::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -105,7 +105,7 @@ void CVargBossState_WalkB::Call_AnimationEnd()
 
 void CVargBossState_WalkB::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_WalkB::Free()

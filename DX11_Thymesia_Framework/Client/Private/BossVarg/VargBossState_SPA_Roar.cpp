@@ -36,7 +36,7 @@ void CVargBossState_SPA_Roar::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Roar");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Roar::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Roar::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_SPA_Roar::Tick(_float fTimeDelta)
@@ -97,7 +97,7 @@ void CVargBossState_SPA_Roar::OnStateEnd()
 
 
 
-void CVargBossState_SPA_Roar::Call_AnimationEnd()
+void CVargBossState_SPA_Roar::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -125,7 +125,7 @@ void CVargBossState_SPA_Roar::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 void CVargBossState_SPA_Roar::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Roar::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Roar::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_SPA_Roar::Free()

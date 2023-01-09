@@ -107,8 +107,7 @@ HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Lig
 
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
-
-    m_pModelCom.lock()->Update_BoneMatrices();
+     
 
     _uint iNumMeshContainers(m_pModelCom.lock()->Get_NumMeshContainers());
     for (_uint i(0); i < iNumMeshContainers; ++i)

@@ -62,7 +62,7 @@ void CNorMonState_Walk_BL::Start()
 
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_BL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_BL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 
@@ -119,7 +119,7 @@ void CNorMonState_Walk_BL::OnStateEnd()
 
 
 
-void CNorMonState_Walk_BL::Call_AnimationEnd()
+void CNorMonState_Walk_BL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -130,7 +130,7 @@ void CNorMonState_Walk_BL::Call_AnimationEnd()
 
 void CNorMonState_Walk_BL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Walk_BL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Walk_BL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_Walk_BL::Free()

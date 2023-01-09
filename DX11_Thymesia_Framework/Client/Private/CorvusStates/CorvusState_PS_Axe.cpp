@@ -7,9 +7,9 @@
 GAMECLASS_C(CCorvusState_PS_Axe);
 CLONE_C(CCorvusState_PS_Axe, CComponent)
 
-void CCorvusState_PS_Axe::Call_AnimationEnd()
+void CCorvusState_PS_Axe::Call_AnimationEnd(_uint iEndAnimIndex)
 {
-	__super::Call_AnimationEnd();
+	__super::Call_AnimationEnd(iEndAnimIndex);
 }
 
 void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
@@ -50,7 +50,7 @@ void CCorvusState_PS_Axe::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Axe");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_PS_Axe::Tick(_float fTimeDelta)
@@ -93,5 +93,5 @@ void CCorvusState_PS_Axe::Free()
 	__super::Free();
 
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this, placeholders::_1);
 }

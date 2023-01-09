@@ -34,7 +34,7 @@ void CCorvusState_Short_Claw_Atk2::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Raven_ClawShortV2_Fast02");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Short_Claw_Atk2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Short_Claw_Atk2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Short_Claw_Atk2::Tick(_float fTimeDelta)
@@ -58,7 +58,7 @@ void CCorvusState_Short_Claw_Atk2::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Short_Claw_Atk2::Call_AnimationEnd()
+void CCorvusState_Short_Claw_Atk2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -172,7 +172,7 @@ void CCorvusState_Short_Claw_Atk2::OnEventMessage(_uint iArg)
 
 void CCorvusState_Short_Claw_Atk2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Short_Claw_Atk2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Short_Claw_Atk2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Short_Claw_Atk2::Free()

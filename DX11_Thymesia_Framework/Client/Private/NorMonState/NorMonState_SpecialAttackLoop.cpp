@@ -41,7 +41,7 @@ void CNorMonState_SpecialAttackLoop::Start()
 	}
 
 
-	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SpecialAttackLoop::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SpecialAttackLoop::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -99,7 +99,7 @@ void CNorMonState_SpecialAttackLoop::OnStateEnd()
 
 //void CNorMonState_SpecialAttackLoop::OnDestroy()
 //{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_SpecialAttackLoop::Call_AnimationEnd, this);
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_SpecialAttackLoop::Call_AnimationEnd, this, placeholders::_1);
 //}
 
 void CNorMonState_SpecialAttackLoop::Free()
@@ -108,7 +108,7 @@ void CNorMonState_SpecialAttackLoop::Free()
 }
 
 
-//void CNorMonState_SpecialAttackLoop::Call_AnimationEnd()
+//void CNorMonState_SpecialAttackLoop::Call_AnimationEnd(_uint iEndAnimIndex)
 //{
 //	if (!Get_Enable())
 //		return;

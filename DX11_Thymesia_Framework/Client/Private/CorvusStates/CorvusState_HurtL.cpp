@@ -31,7 +31,7 @@ void CCorvusState_HurtL::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtMFL");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_HurtL::Tick(_float fTimeDelta)
@@ -78,7 +78,7 @@ void CCorvusState_HurtL::OnStateEnd()
 	__super::OnStateEnd();
 }
 
-void CCorvusState_HurtL::Call_AnimationEnd()
+void CCorvusState_HurtL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -90,7 +90,7 @@ void CCorvusState_HurtL::Call_AnimationEnd()
 void CCorvusState_HurtL::OnDestroy()
 {
 
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_HurtL::Free()

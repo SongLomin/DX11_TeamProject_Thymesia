@@ -32,7 +32,7 @@ void CUrdBossState_WalkB::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_WalkB|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_WalkB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_WalkB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_WalkB::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CUrdBossState_WalkB::OnStateEnd()
 
 
 
-void CUrdBossState_WalkB::Call_AnimationEnd()
+void CUrdBossState_WalkB::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CUrdBossState_WalkB::Call_AnimationEnd()
 
 void CUrdBossState_WalkB::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_WalkB::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_WalkB::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_WalkB::Free()

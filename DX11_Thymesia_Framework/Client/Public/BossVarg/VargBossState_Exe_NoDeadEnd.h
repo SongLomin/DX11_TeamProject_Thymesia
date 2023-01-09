@@ -34,7 +34,7 @@ public:
 private:
 	_bool  m_bDeadChoice = false;
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 	virtual void OnEventMessage(_uint iArg) override;
 protected:
 	virtual void OnDestroy() override;

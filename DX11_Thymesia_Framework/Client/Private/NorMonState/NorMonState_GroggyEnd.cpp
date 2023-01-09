@@ -59,7 +59,7 @@ void CNorMonState_GroggyEnd::Start()
 		break;
 	}
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_GroggyEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_GroggyEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_GroggyEnd::Tick(_float fTimeDelta)
@@ -109,11 +109,11 @@ void CNorMonState_GroggyEnd::OnStateEnd()
 
 void CNorMonState_GroggyEnd::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_GroggyEnd::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_GroggyEnd::Call_AnimationEnd, this, placeholders::_1);
 }
 
 
-void CNorMonState_GroggyEnd::Call_AnimationEnd()
+void CNorMonState_GroggyEnd::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

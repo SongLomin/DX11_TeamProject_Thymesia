@@ -32,7 +32,7 @@ void CUrdBossState_FightStart::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_FightStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_FightStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_FightStart::Tick(_float fTimeDelta)
@@ -77,7 +77,7 @@ void CUrdBossState_FightStart::OnStateEnd()
 
 
 
-void CUrdBossState_FightStart::Call_AnimationEnd()
+void CUrdBossState_FightStart::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -87,7 +87,7 @@ void CUrdBossState_FightStart::Call_AnimationEnd()
 
 void CUrdBossState_FightStart::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_FightStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_FightStart::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_FightStart::Free()

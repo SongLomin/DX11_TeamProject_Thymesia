@@ -33,7 +33,7 @@ void CBatBossState_FTurnL::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_FTurn_L");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_FTurnL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_FTurnL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_FTurnL::Tick(_float fTimeDelta)
@@ -99,7 +99,7 @@ void CBatBossState_FTurnL::OnStateEnd()
 
 
 
-void CBatBossState_FTurnL::Call_AnimationEnd()
+void CBatBossState_FTurnL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -109,7 +109,7 @@ void CBatBossState_FTurnL::Call_AnimationEnd()
 
 void CBatBossState_FTurnL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_FTurnL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_FTurnL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 

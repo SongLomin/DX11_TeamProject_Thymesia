@@ -31,7 +31,7 @@ void CCorvusState_FeatherAttack::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_TD2Thorw2");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_FeatherAttack::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_FeatherAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_FeatherAttack::Tick(_float fTimeDelta)
@@ -76,7 +76,7 @@ void CCorvusState_FeatherAttack::OnStateEnd()
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
-void CCorvusState_FeatherAttack::Call_AnimationEnd()
+void CCorvusState_FeatherAttack::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -93,7 +93,7 @@ void CCorvusState_FeatherAttack::Free()
 void CCorvusState_FeatherAttack::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_FeatherAttack::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_FeatherAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 
 _bool CCorvusState_FeatherAttack::Check_AndChangeNextState()

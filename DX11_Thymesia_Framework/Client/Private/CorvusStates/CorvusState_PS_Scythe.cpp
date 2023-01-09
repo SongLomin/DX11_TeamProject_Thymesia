@@ -7,9 +7,9 @@
 GAMECLASS_C(CCorvusState_PS_Scythe);
 CLONE_C(CCorvusState_PS_Scythe, CComponent)
 
-void CCorvusState_PS_Scythe::Call_AnimationEnd()
+void CCorvusState_PS_Scythe::Call_AnimationEnd(_uint iEndAnimIndex)
 {
-	__super::Call_AnimationEnd();
+	__super::Call_AnimationEnd(iEndAnimIndex);
 }
 
 void CCorvusState_PS_Scythe::Call_NextKeyFrame(const _uint& In_KeyIndex)
@@ -44,7 +44,7 @@ void CCorvusState_PS_Scythe::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Scythe");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Scythe::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Scythe::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_PS_Scythe::Tick(_float fTimeDelta)
@@ -87,5 +87,5 @@ void CCorvusState_PS_Scythe::Free()
 	__super::Free();
 
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Scythe::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Scythe::Call_AnimationEnd, this, placeholders::_1);
 }

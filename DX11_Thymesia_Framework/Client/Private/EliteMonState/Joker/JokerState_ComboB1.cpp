@@ -39,7 +39,7 @@ void CJokerState_Combob1::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_ComboB01");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Combob1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Combob1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Combob1::Tick(_float fTimeDelta)
@@ -92,7 +92,7 @@ void CJokerState_Combob1::OnStateEnd()
 
 }
 
-void CJokerState_Combob1::Call_AnimationEnd()
+void CJokerState_Combob1::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -102,7 +102,7 @@ void CJokerState_Combob1::Call_AnimationEnd()
 
 void CJokerState_Combob1::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Combob1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Combob1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CJokerState_Combob1::Free()

@@ -35,7 +35,7 @@ private:
 	_bool    m_bSinematicStart = false;
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
 	void Free();

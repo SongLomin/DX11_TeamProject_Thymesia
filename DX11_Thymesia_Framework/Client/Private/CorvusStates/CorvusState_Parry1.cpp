@@ -35,7 +35,7 @@ void CCorvusState_Parry1::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_ParryL_NEW");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Parry1::Tick(_float fTimeDelta)
@@ -58,7 +58,7 @@ void CCorvusState_Parry1::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Parry1::Call_AnimationEnd()
+void CCorvusState_Parry1::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -344,7 +344,7 @@ void CCorvusState_Parry1::OnEventMessage(_uint iArg)
 
 void CCorvusState_Parry1::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Parry1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Parry1::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Parry1::Free()

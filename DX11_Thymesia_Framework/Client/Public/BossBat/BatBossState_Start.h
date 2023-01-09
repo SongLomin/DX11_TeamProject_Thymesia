@@ -35,7 +35,7 @@ private:
 	_bool    m_bFirstFoot = true;
 
 private:
-	void Call_AnimationEnd();
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 
 
 protected:

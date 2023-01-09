@@ -35,7 +35,7 @@ void CVargBossState_Exe_SitLoop::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Loop");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_SitLoop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_SitLoop::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Exe_SitLoop::Tick(_float fTimeDelta)
@@ -82,7 +82,7 @@ void CVargBossState_Exe_SitLoop::OnStateEnd()
 
 
 
-void CVargBossState_Exe_SitLoop::Call_AnimationEnd()
+void CVargBossState_Exe_SitLoop::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -93,7 +93,7 @@ void CVargBossState_Exe_SitLoop::Call_AnimationEnd()
 
 void CVargBossState_Exe_SitLoop::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_SitLoop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_SitLoop::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Exe_SitLoop::Free()

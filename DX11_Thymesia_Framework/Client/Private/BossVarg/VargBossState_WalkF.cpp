@@ -36,7 +36,7 @@ void CVargBossState_WalkF::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_WalkF");
 
-	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkF::Call_AnimationEnd, this, placeholders::_1);
 
 }
 
@@ -92,7 +92,7 @@ void CVargBossState_WalkF::OnStateEnd()
 	m_bOneCheck = false;
 }
 
-//void CVargBossState_WalkF::Call_AnimationEnd()
+//void CVargBossState_WalkF::Call_AnimationEnd(_uint iEndAnimIndex)
 //{
 //	if (!Get_Enable())
 //		return;
@@ -106,7 +106,7 @@ void CVargBossState_WalkF::OnStateEnd()
 //
 //void CVargBossState_WalkF::OnDestroy()
 //{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkF::Call_AnimationEnd, this, placeholders::_1);
 //}
 
 void CVargBossState_WalkF::OnEventMessage(_uint iArg)

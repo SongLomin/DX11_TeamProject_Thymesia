@@ -58,7 +58,7 @@ void CNorMonState_LightAttack2::Start()
 
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_LightAttack2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_LightAttack2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_LightAttack2::Tick(_float fTimeDelta)
@@ -208,7 +208,7 @@ void CNorMonState_LightAttack2::OnStateEnd()
 
 void CNorMonState_LightAttack2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_LightAttack2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_LightAttack2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_LightAttack2::Free()
@@ -237,7 +237,7 @@ _bool CNorMonState_LightAttack2::Check_AndChangeNextState()
 
 }
 
-void CNorMonState_LightAttack2::Call_AnimationEnd()
+void CNorMonState_LightAttack2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;

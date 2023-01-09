@@ -33,7 +33,7 @@ void CBatBossState_Start_Loop::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Seq_BossFightStart_Loop");
 
-	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Start_Loop::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Start_Loop::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CBatBossState_Start_Loop::Tick(_float fTimeDelta)

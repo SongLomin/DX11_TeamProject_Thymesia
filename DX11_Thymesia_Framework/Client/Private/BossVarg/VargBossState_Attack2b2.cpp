@@ -57,7 +57,7 @@ void CVargBossState_Attack2b2::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_2b");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2b2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2b2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Attack2b2::Tick(_float fTimeDelta)
@@ -104,7 +104,7 @@ void CVargBossState_Attack2b2::OnStateEnd()
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CVargBossState_Attack2b2::Call_OtherControllerHit, this, placeholders::_1);
 }
 
-void CVargBossState_Attack2b2::Call_AnimationEnd()
+void CVargBossState_Attack2b2::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -114,7 +114,7 @@ void CVargBossState_Attack2b2::Call_AnimationEnd()
 
 void CVargBossState_Attack2b2::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack2b2::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack2b2::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CVargBossState_Attack2b2::Free()

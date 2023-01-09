@@ -29,7 +29,7 @@ void CCorvusState_Climb_R_UP::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_R_UP");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Climb_R_UP::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Climb_R_UP::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Climb_R_UP::Tick(_float fTimeDelta)
@@ -48,7 +48,7 @@ void CCorvusState_Climb_R_UP::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Climb_R_UP::Call_AnimationEnd()
+void CCorvusState_Climb_R_UP::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
@@ -117,7 +117,7 @@ void CCorvusState_Climb_R_UP::OnStateEnd()
 
 void CCorvusState_Climb_R_UP::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Climb_R_UP::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Climb_R_UP::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CCorvusState_Climb_R_UP::Free()

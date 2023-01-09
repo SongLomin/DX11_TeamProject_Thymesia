@@ -60,7 +60,7 @@ void CNorMonState_HurtL::Start()
 
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HurtL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HurtL::Call_AnimationEnd, this, placeholders::_1);
 
 
 }
@@ -132,7 +132,7 @@ void CNorMonState_HurtL::OnStateEnd()
 
 void CNorMonState_HurtL::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_HurtL::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_HurtL::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CNorMonState_HurtL::Free()
@@ -174,7 +174,7 @@ _bool CNorMonState_HurtL::Check_AndChangeNextState()
 
 }
 
-void CNorMonState_HurtL::Call_AnimationEnd()
+void CNorMonState_HurtL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
