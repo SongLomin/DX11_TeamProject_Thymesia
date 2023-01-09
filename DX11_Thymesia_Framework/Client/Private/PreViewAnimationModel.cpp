@@ -347,6 +347,10 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
 #endif // _ANIMATION_TOOL_WEAPON_
 	}
 }
