@@ -921,6 +921,23 @@ void  CGameManager::Activate_Fog(_uint In_iFogIndex)
 	m_FogObject.lock()->Activate_Fog(In_iFogIndex);
 }
 
+void CGameManager::Register_Water(weak_ptr<CWater> pWater)
+{
+}
+
+void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq)
+{
+	if (!m_pWater.lock())
+		return;
+
+	WATERWAVE_DESC Desc;
+	Desc.vPosition = _float2(In_vWorldPosition.m128_f32[0], In_vWorldPosition.m128_f32[2]);
+	Desc.fVibrationScale = In_fVibrationScale;
+	Desc.fFreq = In_fFreq;
+
+	m_pWater.lock()->Add_WaterWave(Desc);
+}
+
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)
 //{
 //	//타겟 카메라 객체가 없는데 타겟을 넘겨주려고 함.

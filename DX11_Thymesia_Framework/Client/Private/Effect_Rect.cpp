@@ -12,9 +12,15 @@
 #include "Level.h"
 
 #include "GameManager.h"
+#include "update_Particle.cuh"
+
+
 
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
+
+
+//extern void CudaMain_UpdateParticle(float fTimeDelta, _matrix BoneMatrix, PARTICLE_DESC* input, PARTICLE_DESC* output, _int size);
 
 const _char* CEffect_Rect::Get_EffectName() const
 {
@@ -126,9 +132,6 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 #ifndef _USE_THREAD_
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, DEVICECONTEXT, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 #endif // _USE_THREAD_
-
-
-	m_pTransformCom.lock();
 
 	__super::LateTick(fTimeDelta);
 
@@ -959,6 +962,12 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
 }
 
+
+__global__ void EKernel(int size)
+{
+
+}
+
 void CEffect_Rect::Play(_float fTimeDelta)
 {
 	if (0.f < m_fCurrentInitTime)
@@ -1030,11 +1039,35 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		}
 
 
+		
+
 		for (_int x(0); x < iTickCount; ++x)
 		{
 			Play_Internal(i, HZ_144, BoneMatrix);
 		}
 	}
+
+	//PARTICLE_DESC* pInputParticleDescToCuda;
+	//PARTICLE_DESC* pOutputParticleDescToCuda;
+
+	//_size_t Size = sizeof(PARTICLE_DESC) * m_tEffectParticleDesc.iMaxInstance;
+
+	//cudaMalloc((void**)&pInputParticleDescToCuda, Size);
+	//cudaMalloc((void**)&pOutputParticleDescToCuda, Size);
+
+	//cudaMemcpy(pInputParticleDescToCuda, &m_tParticleDescs[0], Size, cudaMemcpyHostToDevice);
+
+	//CudaMain_UpdateParticle(HZ_144, BoneMatrix,
+	//	pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);
+
+	///*kernel_UpdateParticle<<<1, m_tEffectParticleDesc.iMaxInstance>>>(HZ_144, BoneMatrix, 
+	//	pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);*/
+	////EKernel<<<1, 10>>>(10);
+
+	////cudaMemcpy(&m_tParticleDescs[0], pOutputParticleDescToCuda, Size, cudaMemcpyDeviceToHost);
+
+	//cudaFree(pInputParticleDescToCuda);
+	//cudaFree(pOutputParticleDescToCuda);
 
 	for (_int x(0); x < iTickCount; ++x)
 	{
@@ -1224,6 +1257,8 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 	return true;
 }
+
+
 
 void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta, _matrix BoneMatrix)
 {

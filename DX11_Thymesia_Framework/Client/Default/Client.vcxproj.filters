@@ -6388,6 +6388,9 @@
     <Filter Include="06. DataPreset\08. Preset_NvClothCollider">
       <UniqueIdentifier>{cd9d80f9-8542-4254-8cd4-7e04db9ea860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle">
+      <UniqueIdentifier>{eb3eb2c3-da78-44ed-927c-98aca6faf564}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -6460,5 +6463,13 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Private\Update_Particle.cu">
+      <Filter>02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle</Filter>
+    </None>
+    <None Include="..\Public\Update_Particle.cuh">
+      <Filter>02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle</Filter>
+    </None>
   </ItemGroup>
 </Project>

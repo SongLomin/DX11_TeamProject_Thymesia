@@ -41,6 +41,8 @@ using namespace DirectX;
 
 // CUDA 12.0
 #include <cuda.h>
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
 
 // Assimp
