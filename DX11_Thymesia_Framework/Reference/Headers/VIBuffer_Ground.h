@@ -30,6 +30,7 @@ public:
 	void			Update(_vector _vMousePos, _float _fRadious, _float _fPower, _uint _iMode);
 	_bool			Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3* pOut);
 	_bool			Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _float2* pOut);
+	_bool			Compute_IsInTerrain(_uint _iNumVertexX, _uint _iNumVertexZ, _float _fInterval, _fvector _vTargetPos, _fmatrix _WorldMatrix);
 
 	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData, D3D11_PRIMITIVE_TOPOLOGY In_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData, _uint _iNumVerticesX, _uint _iNumVerticesZ, _float _fInterval);

@@ -7,9 +7,12 @@ class CShader;
 class CTexture;
 class CRenderer;
 class CVIBuffer_Ground;
+class CTransform;
 END
 
 BEGIN(Client)
+
+class CPreView_InteriorProp;
 
 class CInteriorProp :
     public CGameObject
@@ -18,11 +21,22 @@ class CInteriorProp :
     CLONE_H(CInteriorProp, CGameObject);
      
 private:
-    enum PROP_ID 
+    enum class PROP_ID 
     {
-        PID_ALCHEMY,
-        SKILL_TABLE,
-        ABILITY_TABLE
+        STATIC_FLOWERPOT,
+        STATIC_TABLE_01,
+        STATIC_STATIS_04,
+        STATIC_BARREL_CLOSED,
+        STATIC_BARREL_BIG,
+        STATIC_SHELF,
+
+        INTERACTION_CHAIR,
+        INTERACTION_MAP,
+        INTERACTION_STAT,
+        INTERACTION_SKILL,
+        INTERACTION_ABILITY,
+
+        ID_END
     };
 
 public:
@@ -33,20 +47,45 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
+public:
+    virtual void OnEventMessage(_uint iArg) override;
+
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
+
 private:
     virtual HRESULT SetUp_ShaderResource();
 
+    void Select_Props();
+    void Rotation_Prop();
     void Edit_Props();
+
+    void Create_Prop(PROP_ID _eItemID, _fmatrix _WorldMatrix);
+    void SetUp_PreviewPropMesh(PROP_ID _eItemID);
+    _bool Compute_IsInTerrain(_fvector _vPos);
+    void LoadJson_PropS();
+    void SaveJson_PropS();
+    void SaveJson_SingleProp(weak_ptr<CGameObject> _pObj, string _szTypeName, _hashcode _hashcode);
+    void RotationProp(weak_ptr<CTransform> _pTargetTransfomCom);
 
 private:
     weak_ptr<CShader>               m_pShaderCom;
     weak_ptr<CRenderer>             m_pRendererCom;
     weak_ptr<CVIBuffer_Ground>      m_pVIBufferCom;
 
-private:
-    RENDERGROUP m_eRenderGroup          = RENDERGROUP::RENDER_NONALPHABLEND;
+    _float                          m_vMaxRangeX    = 0.f;
+    _float                          m_vMaxRangeZ    = 0.f;
+    _float                          m_fRotationY    = 0.f;
+    _float                          m_fOffsetLength = 2.f;
+    PROP_ID                         m_ePropID       = PROP_ID::STATIC_FLOWERPOT;
 
-protected:
+    RENDERGROUP                     m_eRenderGroup  = RENDERGROUP::RENDER_NONALPHABLEND;
+
+    list<json>                      m_PropSaveInfo;
+    weak_ptr<CPreView_InteriorProp> m_pPreviewProp;
+
+private:
+    void OnDestroy() override;
     void Free();
 };
 

@@ -21,6 +21,7 @@ namespace Client
 		LEVEL_STAGE4,
 		LEVEL_EDIT,
 		LEVEL_TEST,
+		LEVEL_HOME,
 		LEVEL_END
 	};
 	enum class TIMER { TIMER_DEFAULT, TIMER_FRAME, TIMER_HYPERSPACE, TIMER_END };
@@ -166,6 +167,7 @@ namespace Client
 		DYNAMIC_PEICE,
 		GROUND,
 		CAMERA,
+		INTERIOR,
 		LAYER_END
 	};
 

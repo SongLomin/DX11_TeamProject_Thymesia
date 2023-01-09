@@ -4,7 +4,9 @@
 
 #include "PhysXColliderObject.h"
 #include "Window_HierarchyView.h"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+#include "imgui.h"
+#include "SMath.h"                                                            
+
 GAMECLASS_C(CEditMapCollider)
 CLONE_C(CEditMapCollider, CGameObject)
 

@@ -33,6 +33,7 @@ public:
 	HRESULT Loading_ForGamePlayLevel();
 	HRESULT Loading_ForStage2Level();
 	HRESULT Loading_ForStage3Level();
+	HRESULT Loading_ForHomeLevel();
 	HRESULT Loading_ForEditLevel();
 	HRESULT Loading_ForTestLevel();
 
@@ -58,6 +59,7 @@ private:
 	void    Load_RareMobModel();
 	void    Load_EliteMobModel();
 	void	Load_BossMobModel();
+	void	Load_AllMapModel();
 
 private:
 	LEVEL					m_eNextLevel = LEVEL_END;

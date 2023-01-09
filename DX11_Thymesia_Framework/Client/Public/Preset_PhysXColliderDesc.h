@@ -22,5 +22,6 @@ namespace Preset
 		void DynamicPieceSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void StaticInstancingPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void StaticBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
+		void StaticInteriorBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform, MESH_VTX_INFO& MeshData, _float* _pOut);
 	}
 }
