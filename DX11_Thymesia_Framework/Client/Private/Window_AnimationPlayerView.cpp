@@ -38,8 +38,6 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
-
     if (!m_bStop)
     {
         if (!m_pPreViewModel.lock())
@@ -391,7 +389,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         m_bStop = !m_bStop;
     }
 
-    if (ImGui::BeginListBox("##KeyEvent List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
+    if (ImGui::BeginListBox("##KeyEvent List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
     {
         string szListText;
 
