@@ -119,7 +119,7 @@ void CUI_EvolveMenu_Option::Init_OptionItem()
     weak_ptr<CUI_OptionItem> pItem;
 
   
-    for (_uint i = 0; i < (_uint); i++)
+    for (_uint i = 0; i < (_uint)OPTION_TYPE::OPTION_TYPE_END; i++)
     {
         pItem = GAMEINSTANCE->Add_GameObject<CUI_OptionItem>(LEVEL_STATIC);
      
