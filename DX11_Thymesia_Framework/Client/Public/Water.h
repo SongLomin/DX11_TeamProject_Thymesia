@@ -27,7 +27,7 @@ private:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
-    void Add_WaterWave(const WATERWAVE_DESC& In_WaterWaveDesc);
+    void Add_WaterWave(const WATERWAVE_DESC& In_WaterDesc);
 
 public:
     virtual void Load_FromJson(const json& In_Json) override;
@@ -45,6 +45,7 @@ private:
     _float2                         m_vNoiseUV    = {0.f,0.f};
 
     vector<WATERWAVE_DESC>          m_WaterWaveDescs;
+    _uint                   m_iDescCount = 0;
 
 public:
     void Free();

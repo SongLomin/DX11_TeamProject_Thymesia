@@ -79,6 +79,8 @@ public:
 
 	HRESULT Set_Sharpness(const _float In_fSharpness);
 
+	HRESULT Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio);
+
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_ShadowDepth();
@@ -212,6 +214,9 @@ private:
 	_float3		m_vIrradianceColorScale{1.f, 1.f, 1.f};
 	
 	_float		m_fGodRayScale = 1.f;
+
+	_float		m_fInversionRatio = 1.f;
+	_float		m_fInversionStrength = 1.f;
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];

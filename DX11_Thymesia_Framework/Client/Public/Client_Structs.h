@@ -476,5 +476,6 @@ namespace Client
 		_float		fTimeAcc{};
 		_float		fVibrationScale{};
 		_float		fFreq{};
+		_float		fSpeed{};
 	};
 }

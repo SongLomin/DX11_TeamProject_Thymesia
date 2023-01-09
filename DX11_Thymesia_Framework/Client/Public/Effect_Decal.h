@@ -29,6 +29,7 @@ private:
 private:
     weak_ptr<CVIBuffer_Cube> m_pVIBuffer;
     DECAL_DESC               m_DecalDesc;
+    _float                   m_fTimeAcc = 0.f;
 
 private:
     void Free();

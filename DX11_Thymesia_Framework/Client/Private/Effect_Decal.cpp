@@ -32,6 +32,8 @@ HRESULT CEffect_Decal::Initialize(void* pArg)
 	m_pTransformCom.lock()->Set_Position(XMLoadFloat4(&m_DecalDesc.vPosition));
 	m_pTransformCom.lock()->Set_Scaled(m_DecalDesc.vScale);
 
+	m_fTimeAcc = m_DecalDesc.fTime;
+
 	return S_OK;
 }
 
@@ -76,6 +78,8 @@ void CEffect_Decal::SetUp_ShaderResource()
 	_float4x4		ViewMatrixInv, ProjMatrixInv;
 	_matrix		ViewMatrix, ProjMatrix;
 
+	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
+
 	ViewMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW);
 	ProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
 
@@ -84,6 +88,7 @@ void CEffect_Decal::SetUp_ShaderResource()
 
 	m_pShaderCom.lock()->Set_RawValue("g_InvViewMatrix", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_InvProjMatrix", &ProjMatrixInv, sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
 
 	_matrix TempMatrix = XMMatrixTranspose(ViewMatrix);
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&TempMatrix, sizeof(_matrix));
@@ -96,9 +101,15 @@ void CEffect_Decal::SetUp_ShaderResource()
 	TempMatrix = XMMatrixTranspose(WorldInvMatrix);
 	m_pShaderCom.lock()->Set_RawValue("g_InvWorldMatrix", (void*)&TempMatrix, sizeof(_matrix));
 
+	_float fAlphaRatio = m_DecalDesc.fTime / m_fTimeAcc;
+
+	m_pShaderCom.lock()->Set_RawValue("g_fAlphaValue", &fAlphaRatio, sizeof(_float));
+
 	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture",0);
 	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture",1);
 	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_ORMTexture",2);
+	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture1", 3);
+	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture2", 4);
 
 	m_pShaderCom.lock()->Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
 		

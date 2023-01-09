@@ -5,9 +5,16 @@ matrix g_WorldMatrix, g_InvWorldMatrix;
 matrix g_ViewMatrix, g_ProjMatrix;
 matrix g_InvViewMatrix, g_InvProjMatrix;
 
+float g_fAlphaValue = 1.f;
+   
+vector g_vColor = vector(0.f,1.f,0.7f,1.f);
+      
 texture2D	g_DiffuseTexture;
 texture2D	g_NormalTexture;
 texture2D	g_ORMTexture;
+texture2D   g_EmissiveTexture1;
+texture2D   g_EmissiveTexture2;
+
 texture2D	g_DepthTexture;
 
 float g_fFar = 300.f;
@@ -97,21 +104,66 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
     vDecalUV.y = 0.5f - vDecalUV.y ;
     
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, vDecalUV);
-    Out.vNormal = mul(vector(g_NormalTexture.Sample(DefaultSampler, vDecalUV).xyz, 0.f), g_WorldMatrix);
+    Out.vDiffuse.a = 1.f;
+    Out.vDiffuse.a *= g_fAlphaValue;
+    clip(Out.vDiffuse.a - 0.01f);
+
+    Out.vNormal = normalize(mul(vector(g_NormalTexture.Sample(DefaultSampler, vDecalUV).xyz, 0.f), g_WorldMatrix));
+    Out.vNormal.a = 1.f;
+    Out.vNormal.a*= g_fAlphaValue;
+    Out.vNormal.xyz = Out.vNormal.xyz *0.5f + 0.5f;
+          
     Out.vORM = g_ORMTexture.Sample(DefaultSampler, vDecalUV);
-    Out.vShaderFlag - 0.f;//일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
-    Out.vExtractBloom = 0.f;
-	
+    Out.vORM *= g_fAlphaValue;
+      
+    Out.vShaderFlag = 0.f;
+    Out.vShaderFlag.b = 0.f < g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r + g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r; //일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
+    Out.vExtractBloom = g_vColor;
+    Out.vExtractBloom.a = (g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r+ g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r) * g_fAlphaValue;
+	    
     return Out;
 }
-  
-technique11 DefaultTechnique
+      
+DepthStencilState DSS_DecalDepthStencil
+{//스텐실 테스트는 깊이 테스트를 활성화 해야 됨
+    DepthEnable = true;
+    DepthWriteMask = zero;
+    DepthFunc = always;
+
+    StencilEnable = true;
+    StencilReadMask = 0xff;
+      
+    BackFaceStencilFunc = equal;
+    BackFaceStencilPass = keep;
+    BackFaceStencilFail = keep;
+};
+BlendState BS_DecalBlending
 {
-	pass Sky
-	{
-        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
-        SetRasterizerState(RS_Default);
+    BlendEnable[0] = true;
+    BlendEnable[1] = true;
+    BlendEnable[2] = true;
+
+    SrcBlend[0] = SRC_ALPHA;
+    DestBlend[0] = INV_SRC_ALPHA;
+    BlendOp[0] = add;
+
+    SrcBlend[1] = SRC_ALPHA;
+    DestBlend[1] = INV_SRC_ALPHA;
+    BlendOp[1] = add;
+
+    SrcBlend[2] = SRC_ALPHA;
+    DestBlend[2] = INV_SRC_ALPHA;
+    BlendOp[2] = add;
+
+};
+
+technique11 DefaultTechnique
+{  
+	pass Decal
+	{      
+        SetBlendState(BS_DecalBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DecalDepthStencil, 0);
+        SetRasterizerState(RS_Sky);
 
         VertexShader = compile vs_5_0 VS_MAIN_DECAL();
         HullShader = NULL;

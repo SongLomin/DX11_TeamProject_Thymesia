@@ -635,7 +635,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
     }
 
-    pass Pass12_Normal_Dissolve
+    pass Pass12_Normal_Dissolve//12
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -647,6 +647,30 @@ technique11 DefaultTechnique
         GeometryShader  = NULL;
         PixelShader     = compile ps_5_0 PS_MAIN_DISSOLVE();
     }
+    
+    pass Character_Weapon_PBR//13
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
+        SetRasterizerState(RS_NonCulling);
 
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_PBR();
+    }
 
+    pass Character_Weapon //14
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
+    }
 }

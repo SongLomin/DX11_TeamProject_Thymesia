@@ -601,11 +601,11 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NONE_DEFERRED_RIM_LIGHT();
     }
-
+     
     pass Default_Normal //4
-    {
+    {   
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -618,7 +618,7 @@ technique11 DefaultTechnique
     pass Default_Normal_Specular //5
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -631,7 +631,7 @@ technique11 DefaultTechnique
     pass Directional_Dissolve //6
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -644,7 +644,7 @@ technique11 DefaultTechnique
     pass Normal_Dissolve//7
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -657,7 +657,7 @@ technique11 DefaultTechnique
     pass Default_Normal_Specular_NonCulling //8
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_NonCulling );
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -670,7 +670,7 @@ technique11 DefaultTechnique
     pass Default_Normal_Specular_NonCulling_NonBoneMatrix //9
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL_NONBONEMATRIX();
@@ -679,11 +679,11 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
     }
-
+      
     pass Pass10_Aisemy_MoveUV
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
         SetRasterizerState(RS_NonCulling);
 
         VertexShader    = compile vs_5_0 VS_MAIN_NORMAL();
