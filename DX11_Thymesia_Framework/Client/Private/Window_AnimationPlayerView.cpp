@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Animation.h"
 #include "EffectGroup.h"
+#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_AnimationPlayerView)
 
@@ -170,14 +171,14 @@ void CWindow_AnimationPlayerView::Save_KeyEvent()
 
 HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
 {
-    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
+    m_pCurrentModelCom = m_pPreViewModel.lock()->Get_CurrentModel();
 
     string szPath = "../Bin/KeyEventData/";
 
     if (0 < m_strKeyEventFileName.size())
         szPath += m_strKeyEventFileName;
     else
-        szPath += pCurrentModel.lock()->Get_ModelKey();
+        szPath += m_pCurrentModelCom.lock()->Get_ModelKey();
 
     szPath += ".json";
 
@@ -199,7 +200,7 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
         }
     }
 
-    json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
+    json& KeyJson = m_KeyEventJson["AnimationIndex"][m_pCurrentModelCom.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
         return E_FAIL;
@@ -391,7 +392,71 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         m_bStop = !m_bStop;
     }
 
-    if (ImGui::BeginListBox("##KeyEvent List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
+
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader("KeyEvent List"))
+    {
+        json& KeyJson = m_KeyEventJson["AnimationIndex"][m_pCurrentModelCom.lock()->Get_CurrentAnimationIndex()];
+
+        string szKeyFrameName;
+        string szKeyValueTypeName;
+        string szKeyValueName;
+
+        for (_size_t i = 0; i < KeyJson.size(); ++i)
+        {
+            if (KeyJson[i].empty())
+            {
+                continue;
+            }
+
+            szKeyFrameName = "KeyFrame " + to_string(i) + ". ";
+
+            
+            if (ImGui::TreeNode(szKeyFrameName.c_str()))
+            {
+                for (auto iter = KeyJson[i].begin(); iter != KeyJson[i].end();)
+                {
+                    szKeyValueTypeName = iter.key();
+
+                    //for(auto iter_EffectName = iter.value().begin();)
+
+                    if (ImGui::TreeNode(szKeyValueTypeName.c_str()))
+                    {
+                        if (strcmp(szKeyValueTypeName.c_str(), "EffectName") == 0)
+                        {
+                            for (auto iter_EffectName = iter.value().begin(); iter_EffectName != iter.value().end();)
+                            {
+                                szKeyValueName = iter_EffectName.value();
+                                if (ImGui::TreeNode(szKeyValueName.c_str()))
+                                {
+
+
+                                    ImGui::TreePop();
+                                }
+
+                                ++iter_EffectName;
+                            }
+                        }
+
+                        if (strcmp(szKeyValueTypeName.c_str(), "Enable_Weapon") == 0)
+                        {
+                            
+                        }
+
+
+                        ImGui::TreePop();
+                    }
+
+                    ++iter;
+                }
+                ImGui::TreePop();
+            }
+        }
+    }
+
+    ImGui::Separator();
+
+    /*if (ImGui::BeginListBox("##KeyEvent List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
     {
         string szListText;
 
@@ -417,7 +482,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         }
 
         ImGui::EndListBox();
-    }
+    }*/
 
     ImGui::Text(m_pPreViewModel.lock()->Get_CurrentModel().lock()->Get_ModelKey());
 
