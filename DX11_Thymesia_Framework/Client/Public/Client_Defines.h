@@ -124,6 +124,7 @@
 #undef _MAP_TOOL_
 #define _CORVUS_MODEL_
 #define _BOSS_MODEL_
+#define _URD_SKILL_WEAPON_ROTATION_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
 #define _ANIMATION_TOOL_WEAPON_
