@@ -281,8 +281,12 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= pCurrentPlayer.lock()->Get_WorldPosition().m128_f32[1] + 0.56f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= XMVectorGetY(pCurrentPlayer.lock()->Get_WorldPosition()) + 0.56f)
 	{
+		m_pForEffectTransform = Add_Component<CTransform>();
+		m_pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
+
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", m_pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;
 	}

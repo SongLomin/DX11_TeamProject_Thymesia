@@ -86,6 +86,8 @@ protected:
     
     weak_ptr<CBoneNode> m_pTargetBoneNode;
 
+    weak_ptr<CTransform> m_pForEffectTransform;
+
     WEAPON_DESC             m_tWeaponDesc;
 
     _float4x4				m_WorldMatrix;
