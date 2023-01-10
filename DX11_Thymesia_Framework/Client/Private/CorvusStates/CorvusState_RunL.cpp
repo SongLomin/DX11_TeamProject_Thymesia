@@ -35,6 +35,7 @@ HRESULT CCorvusState_RunL::Initialize(void* pArg)
 void CCorvusState_RunL::Start()
 {
 	__super::Start();
+
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunL");
 }
@@ -42,6 +43,13 @@ void CCorvusState_RunL::Start()
 void CCorvusState_RunL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	m_fTimeAcc += fTimeDelta;
+	if (0.5f < m_fTimeAcc)
+	{
+		GET_SINGLE(CGameManager)->Add_WaterWave(m_pOwnerFromPlayer.lock()->Get_WorldPosition(), 0.1f, 9.f, 3.f);
+		m_fTimeAcc = 0.f;
+	}
 
 	//Turn_Transform(fTimeDelta);
 
