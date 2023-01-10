@@ -183,13 +183,11 @@ void CInteriorProp::Rotation_Prop()
 	if (KEY_INPUT(KEY::UP, KEY_STATE::HOLD))
 	{
 		m_fRotationY += 0.1f;
-		//m_pPreviewProp.lock()->Get_Transform().get()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fRotationY);
 	}
 
 	else if (KEY_INPUT(KEY::DOWN, KEY_STATE::HOLD))
 	{
 		m_fRotationY -= 0.1f;
-		//m_pPreviewProp.lock()->Get_Transform().get()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fRotationY);
 	}
 
 	RotationProp(m_pPreviewProp.lock()->Get_Transform());
@@ -203,25 +201,35 @@ void CInteriorProp::Edit_Props()
 		return;
 
 	_vector vCreatePos = pPlayer.lock()->Get_Transform().get()->Get_Position();
-	_vector vOffset    = XMVector3Normalize(XMVectorSetY(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2], 0.f)) * m_fOffsetLength;
-	vCreatePos        += vOffset;
+	_vector vOffset = XMVector3Normalize(XMVectorSetY(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2], 0.f)) * m_fOffsetLength;
+	vCreatePos += vOffset;
 	m_pPreviewProp.lock()->Set_Offset(vOffset);
 
-	if (!m_pPreviewProp.lock()->Get_CheckBuild() || !Compute_IsInTerrain(vCreatePos))
+
+	_bool IsInTerrin = Compute_IsInTerrain(vCreatePos);
+
+	if (m_pPreviewProp.lock()->Get_CheckBuild() && IsInTerrin)
+	{
+		m_pPreviewProp.lock()->Set_Color(XMVectorSet(0.f, 1.f, 0.f, 1.f));
+
+		if (!KEY_INPUT(KEY::Z, KEY_STATE::TAP))
+			return;
+
+		Create_Prop(m_ePropID, m_pPreviewProp.lock()->Get_Transform()->Get_WorldMatrix());
+	}
+	else if (!m_pPreviewProp.lock()->Get_CheckBuild() && IsInTerrin)
 	{
 		m_pPreviewProp.lock()->Set_Color(XMVectorSet(1.f, 0.f, 0.f, 1.f));
 
-		return;
+		if (!KEY_INPUT(KEY::X, KEY_STATE::TAP))
+			return;
+
+		Delete_Prop(m_pPreviewProp.lock()->Get_CollisionObject());
 	}
 	else
 	{
-		m_pPreviewProp.lock()->Set_Color(XMVectorSet(0.f, 1.f, 0.f, 1.f));
+		m_pPreviewProp.lock()->Set_Color(XMVectorSet(1.f, 0.f, 0.f, 1.f));
 	}
-
-	if (!KEY_INPUT(KEY::Z, KEY_STATE::TAP))
-		return;
-
-	Create_Prop(m_ePropID, m_pPreviewProp.lock()->Get_Transform()->Get_WorldMatrix());
 }
 
 void CInteriorProp::Create_Prop(PROP_ID _eItemID, _fmatrix _WorldMatrix)
@@ -325,6 +333,27 @@ void CInteriorProp::Create_Prop(PROP_ID _eItemID, _fmatrix _WorldMatrix)
 		}
 		break;
 	}
+}
+
+void CInteriorProp::Delete_Prop(weak_ptr<CGameObject> _pCollisionObject)
+{
+	if (!_pCollisionObject.lock())
+		return;
+
+	string szModelKey = _pCollisionObject.lock()->Get_Component<CModel>().lock()->Get_ModelKey();
+	_pCollisionObject.lock()->Set_Dead();
+
+	     if ("SM_flowerpot_02"     == szModelKey) m_ePropID = PROP_ID::STATIC_FLOWERPOT;
+	else if ("SM_table_01"         == szModelKey) m_ePropID = PROP_ID::STATIC_TABLE_01;
+	else if ("SM_statue_04"        == szModelKey) m_ePropID = PROP_ID::STATIC_STATIS_04;
+	else if ("SM_Barrel_Closed"    == szModelKey) m_ePropID = PROP_ID::STATIC_BARREL_CLOSED;
+	else if ("SM_Barrel_Big"       == szModelKey) m_ePropID = PROP_ID::STATIC_BARREL_BIG;
+	else if ("P_ArchiveChair01"    == szModelKey) m_ePropID = PROP_ID::STATIC_SHELF;
+	else if ("SM_ToolRackArranged" == szModelKey) m_ePropID = PROP_ID::INTERACTION_CHAIR;
+	else 
+		return;
+
+	SetUp_PreviewPropMesh(m_ePropID);
 }
 
 void CInteriorProp::SetUp_PreviewPropMesh(PROP_ID _eItemID)
@@ -431,6 +460,9 @@ _bool CInteriorProp::Compute_IsInTerrain(_fvector _vPos)
 
 void CInteriorProp::LoadJson_PropS()
 {
+	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+		return;
+
 	json LoadedJson;
 	
 	if (FAILED(CJson_Utility::Load_Json("../Bin/LevelData/HomeSave/HomeStagePropInfo.json", LoadedJson)))

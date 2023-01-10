@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include "PhysXCollider.h"
+#include "Collider.h"
 
 #include "GameManager.h"
 
@@ -22,6 +23,7 @@ HRESULT CPreView_InteriorProp::Initialize(void* pArg)
     __super::Initialize(pArg);
 
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+    m_pColliderCom      = Add_Component<CCollider>();
 
     m_pShaderCom.lock()->Set_ShaderInfo
     (
@@ -45,6 +47,7 @@ void CPreView_InteriorProp::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 
     m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CPreView_InteriorProp::LateTick(_float fTimeDelta)
@@ -63,7 +66,7 @@ HRESULT CPreView_InteriorProp::Render(ID3D11DeviceContext* pDeviceContext)
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
 
-		m_pShaderCom.lock()->Begin(13, pDeviceContext);
+		m_pShaderCom.lock()->Begin(15, pDeviceContext);
 		m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
@@ -72,19 +75,23 @@ HRESULT CPreView_InteriorProp::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
-void CPreView_InteriorProp::PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider)
+void CPreView_InteriorProp::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+    m_bCheckBuild = false;
+
+    m_pCollisionObject = pOtherCollider.lock()->Get_Owner();
+}
+
+void CPreView_InteriorProp::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     m_bCheckBuild = false;
 }
 
-void CPreView_InteriorProp::PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider)
-{
-    m_bCheckBuild = false;
-}
-
-void CPreView_InteriorProp::PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider)
+void CPreView_InteriorProp::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     m_bCheckBuild = true;
+
+    m_pCollisionObject = weak_ptr<CGameObject>();
 }
 
 void CPreView_InteriorProp::Set_Offset(_vector _vOffset)
@@ -110,6 +117,9 @@ void CPreView_InteriorProp::Set_Model(string _szModelKey)
     if (!m_pModelCom.lock()->Get_ModelData().lock())
         return;
 
+    Remove_Components<CPhysXCollider>();
+    m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+
     MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_MeshVertexInfo();
 
     PHYSXCOLLIDERDESC tDesc;
@@ -117,6 +127,20 @@ void CPreView_InteriorProp::Set_Model(string _szModelKey)
     m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
     m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
+
+    Remove_Components<CCollider>();
+    m_pColliderCom = Add_Component<CCollider>();
+
+    COLLIDERDESC			ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::INTERIOR;
+    ColliderDesc.vScale       = _float3((tInfo.vMax.x - tInfo.vMin.x), (tInfo.vMax.y - tInfo.vMin.y), (tInfo.vMax.z - tInfo.vMin.z));
+    ColliderDesc.vRotation    = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(0.f, tInfo.vCenter.y, 0.f);
+
+    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::OBB, ColliderDesc);
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 HRESULT CPreView_InteriorProp::SetUp_ShaderResource()

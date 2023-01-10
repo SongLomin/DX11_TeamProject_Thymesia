@@ -37,6 +37,7 @@ private:
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
+    weak_ptr<CCollider>     m_pInteractionColliderCom;
 
 private:
     virtual void OnDestroy() override;

@@ -152,6 +152,7 @@ namespace Client
 		ITEM,
 		ONLY_VIEW,
 		CHECK_DIR,
+		INTERIOR,
 
 		LAYER_END
 	};

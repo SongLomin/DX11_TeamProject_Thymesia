@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include "PhysXCollider.h"
+#include "Collider.h"
 
 #include "Client_Presets.h"
 #include "imgui.h"
@@ -23,6 +24,7 @@ HRESULT CStatic_InteriorProp::Initialize(void* pArg)
     __super::Initialize(pArg);
 
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+    m_pColliderCom      = Add_Component<CCollider>();
 
     m_pShaderCom.lock()->Set_ShaderInfo
     (
@@ -51,6 +53,17 @@ HRESULT CStatic_InteriorProp::Start()
     m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
     m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
+
+    COLLIDERDESC			ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::INTERIOR;
+    ColliderDesc.vScale       = _float3((tInfo.vMax.x - tInfo.vMin.x), (tInfo.vMax.y - tInfo.vMin.y), (tInfo.vMax.z - tInfo.vMin.z));
+    ColliderDesc.vRotation    = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(0.f, tInfo.vCenter.y, 0.f);
+
+    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::OBB, ColliderDesc);
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
     return S_OK;
 }

@@ -249,7 +249,6 @@ void CCollider::OnCollision(weak_ptr<CCollider> pOtherCollider)
 		{
 			if (!pOtherCollider.lock().get() || !pPreOtherCollider.lock().get())
 			{
-				DEBUG_ASSERT;
 				return false;
 			}
 

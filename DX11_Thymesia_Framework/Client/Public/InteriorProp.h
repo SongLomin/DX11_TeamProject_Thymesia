@@ -61,6 +61,7 @@ private:
     void Edit_Props();
 
     void Create_Prop(PROP_ID _eItemID, _fmatrix _WorldMatrix);
+    void Delete_Prop(weak_ptr<CGameObject> _pCollisionObject);
     void SetUp_PreviewPropMesh(PROP_ID _eItemID);
     _bool Compute_IsInTerrain(_fvector _vPos);
     void LoadJson_PropS();
