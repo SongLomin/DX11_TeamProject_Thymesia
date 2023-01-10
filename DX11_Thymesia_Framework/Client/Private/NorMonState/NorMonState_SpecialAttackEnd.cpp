@@ -37,6 +37,12 @@ void CNorMonState_SpecialAttackEnd::Start()
 	case Client::MONSTERTYPE::SKULLSHIELDMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Attack01_End");
 		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Attack01_End");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_SP_Attack01_End");
+		break;
 	}
 
 

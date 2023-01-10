@@ -160,7 +160,9 @@ void CEditSetActor::View_CreateActor()
 		"Balloon",
 		"Enhance_Gardener",
 		"Skull_Shield",
-		"Skull_Spear"
+		"Skull_Spear",
+		"Armor_Shield",
+		"WeakArmor_Shield"
 	};
 
 	static const char* ActorList_Elite[] =

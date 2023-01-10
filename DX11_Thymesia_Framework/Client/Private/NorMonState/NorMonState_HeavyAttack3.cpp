@@ -51,6 +51,12 @@ void CNorMonState_HeavyAttack3::Start()
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack06|BaseLayer|Arm");
 		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Attack02_3");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_Attack02_3");
+		break;
 	}
 
 
@@ -133,6 +139,32 @@ void CNorMonState_HeavyAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
+		case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::UPPER_HIT, 1.5f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
+		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::UPPER_HIT, 1.3f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
 		}
 
 
@@ -169,11 +201,13 @@ _bool CNorMonState_HeavyAttack3::Check_AndChangeNextState()
 		m_bAttackLookAtLimit = false;
 	}
 
+
+
 	return false;
 
 }
 
-void CNorMonState_HeavyAttack3::Call_AnimationEnd(_uint iEndAnimIndex)
+void CNorMonState_HeavyAttack3::Call_AnimationEnd(_uint iEndAnmIndex)
 {
 	if (!Get_Enable())
 		return;

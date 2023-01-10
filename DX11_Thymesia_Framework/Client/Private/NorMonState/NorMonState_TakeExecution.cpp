@@ -52,10 +52,10 @@ void CNorMonState_TakeExecution::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunEnd|BaseLayer|");
 		break;
 	case Client::MONSTERTYPE::SKULLSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtStunEnd");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_VS_TakeExecution_01");
 		break;
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtStunEnd");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_VS_TakeExecution_01");
 		break;
 	}
 

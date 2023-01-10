@@ -160,27 +160,49 @@ void CNorMonState_Idle::Start()
 
 	}
 
-	//if (m_eMonType == MONSTERTYPE::ARMORSHIELDMAN)
-	//{
-	//	switch (m_eNorMonIdleType)
-	//	{
-	//	case Client::NORMONSTERIDLETYPE::NORIDLE:
-	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Idle");
-	//		break;
-	//	case Client::NORMONSTERIDLETYPE::SITIDLE:
-	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Sit_Idle");
-	//		break;
-	//	case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Idle2");
-	//		break;
-	//	case Client::NORMONSTERIDLETYPE::SPIDLE:
-	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Idle1");
-	//		break;
-	//	case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
-	//		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_IdleN");
-	//		break;
-	//	}
-	//}
+	if (m_eMonType == MONSTERTYPE::ARMORSHIELDMAN)
+	{
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Sit_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Idle2");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_SP_Idle1");
+			break;
+		case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_IdleN");
+			break;
+		}
+	}
+
+	if (m_eMonType == MONSTERTYPE::WEAKARMORSHIELDMAN)
+	{
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_Sit_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_SP_Idle2");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_SP_Idle1");
+			break;
+		case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_IdleN");
+			break;
+		}
+	}
 }
 
 
@@ -381,6 +403,47 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 					break;
 				}
 				break;
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+				switch (m_eNorMonIdleType)
+				{
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
+					break;
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::SPIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SpecialAttackStart>(0.05f);
+					break;
+				}
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+				switch (m_eNorMonIdleType)
+				{
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
+					break;
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::SPIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::RUNATTACKIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SpecialAttackStart>(0.05f);
+					break;
+				}
+				break;
+
 			}
 			m_iIdleType = 1;
 			m_bCloseToRun = true;
@@ -418,6 +481,12 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				TurnMechanism();
 				break;
 			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 				TurnMechanism();
 				break;
 
@@ -592,6 +661,50 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 					}
 				}
 				break;
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
 			}
 
 			return true;
@@ -674,6 +787,28 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				}
 				break;
 			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+				break;
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 				switch (iRunORWalk)
 				{
 				case 0:

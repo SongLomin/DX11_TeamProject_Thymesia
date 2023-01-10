@@ -56,6 +56,12 @@ void CNorMonState_HurtR::Start()
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtM_FR");
 		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_HurtM_FR");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_HurtM_FR");
+		break;
 		
 	}
 
@@ -107,7 +113,24 @@ void CNorMonState_HurtR::OnStateStart(const _float& In_fAnimationBlendTime)
 		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
 	}
 	break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
+		
 	}
+	break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
+	
+	}
+	break;
+	}
+
 
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -159,6 +182,16 @@ _bool CNorMonState_HurtR::Check_AndChangeNextState()
 			case Client::MONSTERTYPE::SHIELDAXEMAN:
 				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Parry>(0.05f);
+				m_iParryCount = 0;
+				break;
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+				m_iParryCount = 0;
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
 				m_iParryCount = 0;
 				break;
 

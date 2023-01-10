@@ -1391,7 +1391,7 @@ void CLoader::Load_NormalMobModel()
 	GAMEINSTANCE->Load_Model("Armorman", "../Bin/Resources/Meshes/NorMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Shieldman", "../Bin/Resources/Meshes/NorMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Model("WeakArmorMan", "../Bin/Resources/Meshes/NorMonster/WeakArmorMan/WeakArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Skullman", "../Bin/Resources/Meshes/NorMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);

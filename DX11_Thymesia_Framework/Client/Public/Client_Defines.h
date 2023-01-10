@@ -47,7 +47,7 @@
 #define _VARG_EFFECT_
 #define	_BAT_EFFECT
 #define _URD_EFFECT_
-#define _INTERACTION_EFFECT_
+//#define _INTERACTION_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
