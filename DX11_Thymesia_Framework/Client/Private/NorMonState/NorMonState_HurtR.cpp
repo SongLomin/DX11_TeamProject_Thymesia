@@ -62,6 +62,12 @@ void CNorMonState_HurtR::Start()
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_HurtM_FR");
 		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_HurtM_FR");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_HurtM_FR");
+		break;
 		
 	}
 
@@ -129,6 +135,22 @@ void CNorMonState_HurtR::OnStateStart(const _float& In_fAnimationBlendTime)
 	
 	}
 	break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
+
+	}
+	break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN :
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
+
+	}
+	break;
 	}
 
 
@@ -192,6 +214,16 @@ _bool CNorMonState_HurtR::Check_AndChangeNextState()
 			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+				m_iParryCount = 0;
+				break;
+			case Client::MONSTERTYPE::ARMORSPEARMAN:
+				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+				m_iParryCount = 0;
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
 				m_iParryCount = 0;
 				break;
 

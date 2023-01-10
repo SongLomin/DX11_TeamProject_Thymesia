@@ -14,6 +14,8 @@
 #include "NorMonState/NorMonState_HeavyAttack1.h"
 #include "NorMonState/NorMonState_HeavyAttack2.h"
 #include "NorMonState/NorMonState_HeavyAttack3.h"
+#include "NorMonState/NorMonState_HeavyAttack4.h"
+#include "NorMonState/NorMonState_HeavyAttack5.h"
 #include "NorMonState/NorMonState_HurtL.h"
 #include "NorMonState/NorMonState_HurtR.h"
 #include "NorMonState/NorMonState_Idle.h"

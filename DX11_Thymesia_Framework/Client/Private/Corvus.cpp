@@ -438,6 +438,19 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
+	if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_HurtL>();
+	}
+
+	if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_HurtR>();
+	}
+
+
+
+
 }
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

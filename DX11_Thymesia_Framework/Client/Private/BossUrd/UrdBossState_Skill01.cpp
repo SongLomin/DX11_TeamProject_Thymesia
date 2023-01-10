@@ -74,7 +74,7 @@ void CUrdBossState_Skill01::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoJavlinCount(1);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	

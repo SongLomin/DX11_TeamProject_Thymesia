@@ -63,6 +63,12 @@ void CNorMonState_TurnL90::Start()
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_WalkF");
 		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_TurnL90");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_TurnL90");
+		break;
 	}
 
 

@@ -226,8 +226,8 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
 				|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
 			{
-				if (m_eMonType != MONSTERTYPE::ARMORSHIELDMAN || m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN ||
-					m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN || m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
+				if (m_eMonType != MONSTERTYPE::ARMORSHIELDMAN && m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN &&
+					m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN && m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
 				{
 					Get_OwnerMonster()->Change_State<CNorMonState_Die>();
 				}		    

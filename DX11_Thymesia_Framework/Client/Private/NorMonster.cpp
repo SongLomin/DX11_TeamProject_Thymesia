@@ -49,6 +49,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_HeavyAttack1>();
 	Add_Component<CNorMonState_HeavyAttack2>();
 	Add_Component<CNorMonState_HeavyAttack3>();
+	Add_Component<CNorMonState_HeavyAttack4>();
+	Add_Component<CNorMonState_HeavyAttack5>();
 	Add_Component<CNorMonState_Walk_F>();
 	Add_Component<CNorMonState_Walk_FR>();
 	Add_Component<CNorMonState_Walk_FL>();
@@ -346,6 +348,8 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_LightAttack1);
 	INIT_STATE(CNorMonState_LightAttack2);
 	INIT_STATE(CNorMonState_LightAttack3);
+	INIT_STATE(CNorMonState_HeavyAttack4);
+	INIT_STATE(CNorMonState_HeavyAttack5);
 	INIT_STATE(CNorMonState_Run);
 	INIT_STATE(CNorMonState_TurnL90);
 	INIT_STATE(CNorMonState_TurnR90);
@@ -411,9 +415,9 @@ HRESULT CNorMonster::Render(ID3D11DeviceContext* pDeviceContext)
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (m_tLinkStateDesc.eMonType != MONSTERTYPE::ARMORSPEARMAN ||
-			m_tLinkStateDesc.eMonType != MONSTERTYPE::ARMORSPEARMAN ||
-			m_tLinkStateDesc.eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN ||
+		if (m_tLinkStateDesc.eMonType != MONSTERTYPE::ARMORSPEARMAN &&
+			m_tLinkStateDesc.eMonType != MONSTERTYPE::ARMORSHIELDMAN &&
+			m_tLinkStateDesc.eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN &&
 			m_tLinkStateDesc.eMonType != MONSTERTYPE::WEAKARMORSPEARMAN)
 		{
 			if (i == 2 || i == 3)

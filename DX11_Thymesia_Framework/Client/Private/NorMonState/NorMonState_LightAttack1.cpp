@@ -59,6 +59,12 @@ void CNorMonState_LightAttack1::Start()
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_Attack01");
 		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_ComboB01");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_ComboB01");
+		break;
 	}
 
 	
@@ -221,6 +227,32 @@ void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 		break;
 		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
+		case Client::MONSTERTYPE::ARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
+		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		{
 			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 

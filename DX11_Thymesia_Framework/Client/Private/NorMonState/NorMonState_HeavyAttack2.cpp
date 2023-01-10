@@ -58,6 +58,12 @@ void CNorMonState_HeavyAttack2::Start()
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_Attack02_2");
 		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_ComboA03");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_ComboA03");
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this, placeholders::_1);
@@ -202,6 +208,32 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		}
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
+		case Client::MONSTERTYPE::ARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+		break;
+		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		break;
 		}
 
 		m_bAttackLookAtLimit = true;
@@ -318,6 +350,8 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 			Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
 			return true;
 		}
+		break;
+	default:
 		break;
 	}
 

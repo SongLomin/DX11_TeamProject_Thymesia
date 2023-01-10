@@ -211,9 +211,12 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			{
 			case 0:
 				Get_OwnerMonster()->Change_State<CUrdBossState_Parry_R>();
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_PARRYRIGHT);
+
 				break;
 			case 1:
 				Get_OwnerMonster()->Change_State<CUrdBossState_Parry_L>();
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_PARRYLEFT);
 				break;
 			}
 			return;

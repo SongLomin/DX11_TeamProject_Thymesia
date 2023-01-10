@@ -90,6 +90,11 @@ void CUrdBossState_StepB::Call_AnimationEnd(_uint iEndAnimIndex)
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
+void CUrdBossState_StepB::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CUrdBossState_StepB::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_StepB::Call_AnimationEnd, this, placeholders::_1);

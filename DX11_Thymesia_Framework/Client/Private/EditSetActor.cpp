@@ -162,7 +162,9 @@ void CEditSetActor::View_CreateActor()
 		"Skull_Shield",
 		"Skull_Spear",
 		"Armor_Shield",
-		"WeakArmor_Shield"
+		"WeakArmor_Shield",
+		"Armor_Spearman",
+		"WeakArmor_Spearman"
 	};
 
 	static const char* ActorList_Elite[] =

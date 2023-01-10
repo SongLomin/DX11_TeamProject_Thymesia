@@ -88,6 +88,28 @@ void CNorMonState_Awake::Start()
 			break;
 		}
 		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmor_Halberds_SP_Idle2_End");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmor_Halberds_SP_Idle1_End");
+			break;
+		}
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmor_Halberds_SP_Idle2_End");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmor_Halberds_SP_Idle1_End");
+			break;
+		}
+		break;
 
 	}
 
