@@ -155,9 +155,9 @@ PxControllerCollisionFlags CPhysXCameraController::Set_Position(_fvector In_vPos
 	return  __super::Set_Position(In_vPosition, elapsedTime, filters);
 }
 
-PxControllerCollisionFlags CPhysXCameraController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXCameraController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform, const _flag In_RootFlag)
 {
-	return  __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform);
+	return  __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform, In_RootFlag);
 }
 
 PxControllerCollisionFlags CPhysXCameraController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)

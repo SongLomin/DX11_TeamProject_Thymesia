@@ -63,7 +63,7 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 
 	//Turn_Transform(fTimeDelta);
 	switch (m_eMonType)

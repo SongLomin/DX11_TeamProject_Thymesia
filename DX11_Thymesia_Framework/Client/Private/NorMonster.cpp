@@ -445,23 +445,25 @@ void CNorMonster::Move_RootMotion_Internal()
 	{
 	case  MONSTERTYPE::AXEMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+
+		//Print_Vector(vMoveDir);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::KNIFEWOMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::GARDENER:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case MONSTERTYPE::ENHANCE_GARDENER:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::SHIELDAXEMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case MONSTERTYPE::BALLOON:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
@@ -469,19 +471,19 @@ void CNorMonster::Move_RootMotion_Internal()
 		break;
 	case  MONSTERTYPE::SKULLSHIELDMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case MONSTERTYPE::SKULLSPEARMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::ARMORSHIELDMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::ARMORSPEARMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	//case MONSTERTYPE::SKULLSHIELDMAN:
 	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));

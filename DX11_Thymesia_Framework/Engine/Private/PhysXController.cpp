@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "ModelData.h"
 #include "VIBuffer_Model_Instance.h"
+#include "Model.h"
 
 GAMECLASS_C(CPhysXController);
 IMPLEMENT_CLONABLE(CPhysXController, CComponent);
@@ -172,7 +173,7 @@ void CPhysXController::Enable_Gravity(const _bool In_bGravity)
 	m_bEnableGravity = In_bGravity;
 }
 
-PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform, const _flag In_RootFlag)
 {
 	if (!Get_Enable())
 		return PxControllerCollisionFlags();
@@ -192,6 +193,21 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF
 
 	if (DBL_EPSILON < vRotatedPositionFromPx.y || DBL_EPSILON < vRotatedPosition.m128_f32[1])
 		int a = 0;
+
+	if (!(In_RootFlag & (_byte)ROOTNODE_FLAG::X))
+	{
+		vRotatedPositionFromPx.x = 0.f;
+	}
+
+	if (!(In_RootFlag & (_byte)ROOTNODE_FLAG::Y))
+	{
+		vRotatedPositionFromPx.y = 0.f;
+	}
+
+	if (!(In_RootFlag & (_byte)ROOTNODE_FLAG::Z))
+	{
+		vRotatedPositionFromPx.z = 0.f;
+	}
 
 	auto Result = m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
 

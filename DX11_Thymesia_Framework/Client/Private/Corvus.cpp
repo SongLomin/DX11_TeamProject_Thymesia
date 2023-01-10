@@ -152,6 +152,15 @@ void CCorvus::Tick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 
+
+	/*PxControllerFilters Filters;
+	m_LastCollisionFlags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta, Filters);
+
+	if (m_LastCollisionFlags & PxControllerCollisionFlag::eCOLLISION_DOWN)
+	{
+		m_pPhysXControllerCom.lock()->Reset_Gravity();
+	}*/
+
 	__super::Tick(fTimeDelta);
 
 	// TODO : get rid of this

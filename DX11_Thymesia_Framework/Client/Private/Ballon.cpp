@@ -153,7 +153,7 @@ void CBallon::SetUp_ShaderResource()
 
 void CBallon::Move_RootMotion_Internal()
 {
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
 	switch (m_tLinkStateDesc.eMonType)

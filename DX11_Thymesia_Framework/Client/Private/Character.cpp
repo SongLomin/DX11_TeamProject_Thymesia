@@ -128,6 +128,8 @@ void CCharacter::LateTick(_float fTimeDelta)
 #endif
 
 	
+
+	
 }
 
 void CCharacter::Before_Render(_float fTimeDelta)

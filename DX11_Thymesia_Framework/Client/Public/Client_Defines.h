@@ -31,7 +31,7 @@
 #pragma region Map
 //#define _BRIGHT_LIGHT_
 //#define _GENERATE_PROP_COLLIDER_ true
-//#define _TEST_DYNAMIC_PROPS_
+#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
@@ -47,7 +47,7 @@
 #define _VARG_EFFECT_
 #define	_BAT_EFFECT
 #define _URD_EFFECT_
-#define _INTERACTION_EFFECT_
+//#define _INTERACTION_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG

@@ -65,6 +65,7 @@ public:
 	
 
 	_vector Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset = false , _fmatrix In_OffsetMatrix = XMMatrixIdentity());
+	_flag	Get_RootBoneFlag(const char* In_szBoneName);
 	//_vector Get_DeltaBonePitchYawRoll(const char* In_szBoneName);
 
 	_uint Get_CurrentAnimationKeyIndex() const;

@@ -141,6 +141,26 @@ void CInteraction_CheckPoint::Thread_PreTick(_float fTimeDelta)
 
     if (m_bRendering && m_bAisemyRender)
         m_pAnimModelCom.lock()->Update_BoneMatrices();
+
+
+#ifdef _INTERACTION_EFFECT_
+    if (m_bRendering)
+    {
+        if (-1 == m_iEffectIndex)
+        {
+            m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+        }
+    }
+    else
+    {
+        if (-1 != m_iEffectIndex)
+        {
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iEffectIndex);
+            m_iEffectIndex = -1;
+        }
+    }
+
+#endif // _INTERACTION_EFFECT_
 }
 
 void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
@@ -157,10 +177,7 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 		m_bRendering = true;
 
 #ifdef _INTERACTION_EFFECT_
-		if (-1 == m_iEffectIndex)
-		{
-			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-		}
+		
 #endif // _INTERACTION_EFFECT_
 	}
 	else
@@ -168,11 +185,7 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 		m_bRendering = false;
 
 #ifdef _INTERACTION_EFFECT_
-		if (-1 != m_iEffectIndex)
-		{
-			GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iEffectIndex);
-			m_iEffectIndex = -1;
-		}
+		
 #endif // _INTERACTION_EFFECT_
 	}
 #else

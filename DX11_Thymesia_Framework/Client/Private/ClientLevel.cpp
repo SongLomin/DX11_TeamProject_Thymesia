@@ -92,8 +92,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 	std::copy(fs::directory_iterator(dir_path), fs::directory_iterator(), std::back_inserter(entries));
 	fs::directory_iterator itr(dir_path);
 	std::filesystem::directory_iterator end;
-	 
-	BEGIN_PERFROMANCE_CHECK("LOAD_ALL_EFFECT_GROUP");
 
 	/*for_each_n(std::execution::par, entries.begin(), entries.size(), [In_LevelIndex](const std::filesystem::directory_entry& entry)
 		{
@@ -115,7 +113,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 
 		itr++;
 	}
-	END_PERFROMANCE_CHECK("LOAD_ALL_EFFECT_GROUP");
 }
 
 void CClientLevel::Tick(_float fTimeDelta)

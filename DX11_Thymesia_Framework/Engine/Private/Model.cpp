@@ -181,6 +181,13 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 	return vCurrentBonePosition;
 }
 
+_flag CModel::Get_RootBoneFlag(const char* In_szBoneName)
+{
+	weak_ptr<CBoneNode> CurrentBoneNode = Find_BoneNode(In_szBoneName);
+
+	return CurrentBoneNode.lock()->Get_RootNodeFlags();
+}
+
 //_vector CModel::Get_DeltaBonePitchYawRoll(const char* In_szBoneName)
 //{
 //	if (m_isBlend)

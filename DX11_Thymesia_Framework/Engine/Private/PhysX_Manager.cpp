@@ -79,17 +79,17 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	PxCudaContextManagerDesc tCudaDesc;
 	tCudaDesc.graphicsDevice = DEVICE;
 	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
-	tCudaDesc.ctx;
+	tCudaDesc.ctx = GET_SINGLE(CCuda_Device)->Get_CudaContext();
 
-	//m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
 
 	if (m_pCudaContextManager)
 	{
 		if (!m_pCudaContextManager->contextIsValid())
 		{
-			/*if(m_pCudaContextManager)
+			if(m_pCudaContextManager)
 				m_pCudaContextManager->release();
-			m_pCudaContextManager = nullptr;*/
+			m_pCudaContextManager = nullptr;
 			exit(0);
 		}
 	}
@@ -230,12 +230,7 @@ _uint CPhysX_Manager::Get_PhysXFilterGroup(const _uint In_iIndex)
 }
 
 
-PxFilterFlags CollisionFilterShader(
-	PxFilterObjectAttributes attributes0, PxFilterData filterData0,
-	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
-	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
-{
-	//// let triggers through
+//// let triggers through
 	//if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
 	//{
 	//	pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
@@ -284,10 +279,16 @@ PxFilterFlags CollisionFilterShader(
 
 	// trigger the contact callback for pairs (A,B) where 
 	// the filtermask of A contains the ID of B and vice versa.
+
+PxFilterFlags CollisionFilterShader(
+	PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
 	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 	{
 
-		PxPairFlag::eDETECT_DISCRETE_CONTACT;
+		pairFlags |= PxPairFlag::eDETECT_DISCRETE_CONTACT;
 		pairFlags |= PxPairFlag::eCONTACT_DEFAULT;
 		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
 		return PxFilterFlag::eDEFAULT;
