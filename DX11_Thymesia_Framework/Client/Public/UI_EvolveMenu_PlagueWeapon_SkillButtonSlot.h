@@ -8,7 +8,7 @@ class CEasingComponent_Alpha;
 class CCustomUI;
 
 class CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot :
-    public CUI_Button_Base
+    public CUI_Button
 {
 public:
     GAMECLASS_H(CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot)

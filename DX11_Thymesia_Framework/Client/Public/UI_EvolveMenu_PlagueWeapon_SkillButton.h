@@ -9,7 +9,7 @@ class CUI_EvolveMenu_SKillIcon;
 class CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot;
 
 
-class CUI_EvolveMenu_PlagueWeapon_SkillButton : public CUI_Button_Base
+class CUI_EvolveMenu_PlagueWeapon_SkillButton : public CUI_Button
 {
 public:
 	GAMECLASS_H(CUI_EvolveMenu_PlagueWeapon_SkillButton)

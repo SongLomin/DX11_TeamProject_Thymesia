@@ -1364,6 +1364,21 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_BGHead"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Head.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_BGBody"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Body.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_BGBottom"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Bottom.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_On"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/OnOff/On.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_Off"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/OnOff/Off.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_TypeText"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/OptionTypeText/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Option_Quality"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Quality/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("UI_Slider_BG"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SliderBG.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("UI_Slider_Fill"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SliderFill.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("UI_Slider_Track"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/TexUI_SliderBarThumb_Hover.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 #endif // _EFFECT_TOOL_

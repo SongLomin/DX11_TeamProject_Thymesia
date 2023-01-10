@@ -3,8 +3,12 @@
 #include "UI_Container.h"
 BEGIN(Client)
 
-class CUI_Button_Base abstract : public CCustomUI
+class CUI_Button : public CCustomUI
 {
+public:
+	GAMECLASS_H(CUI_Button)
+	CLONE_H(CUI_Button, CGameObject)
+
 public:
 	enum UI_BUTTON_STATE
 	{
@@ -34,7 +38,6 @@ public:
 	FDelegate<>		Callback_OnMouseOver;
 	FDelegate<>		Callback_OnMouseOut;
 	FDelegate<>		Callback_OnLButtonDown;
-
 
 
 protected:

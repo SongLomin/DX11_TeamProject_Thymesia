@@ -9,7 +9,7 @@ class CEasingComponent_Alpha;
 class CUI_EvolveMenu_PlagueWeapon_SkillButton;
 class CUI_EvolveTalent_Active;
 
-class CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot : public CUI_Button_Base
+class CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot : public CUI_Button
 {
 public:
 	GAMECLASS_H(CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot)

@@ -3,7 +3,10 @@
 
 BEGIN(Client)
 
-class CUI_OptionItem :  public CUI_Button_Base
+class CCustomUI;
+class CUI_OptionElementBase;
+
+class CUI_OptionItem :  public CUI_Button
 {
 public:
 	GAMECLASS_H(CUI_OptionItem)
@@ -22,13 +25,26 @@ public:
 	void			ResetPos();
 
 
+public:
+	void			Create_Element(OPTION_TYPE eOptionType);
+
+public:
+	FDelegate<OPTION_TYPE, _uint> Callback_OnChangeOption;
+	void			Call_OnChangeOption(_int iAmount);
+
 
 protected:
 	virtual void	OnMouseOver() override;
 	virtual void	OnMouseOut() override;
 
+private:
+	weak_ptr<CCustomUI>			m_pOptionName;
+
+	weak_ptr<CUI_OptionElementBase> m_pElement;
+
 
 private:
+	OPTION_TYPE				m_eOptionType;
 	_float					m_fScrollOffsetY = 0.f;
 	_float2					m_fOriginCenterPos = { 0.f,0.f };
 };

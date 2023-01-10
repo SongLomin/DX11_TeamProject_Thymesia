@@ -146,8 +146,10 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
         m_pLandingBG.lock()->Set_UIDesc(LandingBG_Desc);
         m_pLandingBG.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
 
-        m_pEasingBlurAmount.lock()->Set_Lerp(0.3f, 0.0f, 1.f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, true);
-
+        if (eLandingType == LANDING_BECONFOUND)
+        {
+            m_pEasingBlurAmount.lock()->Set_Lerp(0.3f, 0.0f, 1.f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, true);
+        }
     }
     else//스테이지에 따라 나와야함.GetCurrentLevel이나 머시기...그런걸로
     {
@@ -190,8 +192,11 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType, _float fCallTime)
 {
     m_ePreCalledLanding = eLandingType;
 
-    m_pEasingFloat.lock()->Set_Lerp(0.f, 1.f, fCallTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
-    m_pEasingBlurAmount.lock()->Callback_LerpEnd += bind(&CUI_Landing::Call_TimerEnd, this);
+    if (m_ePreCalledLanding == LANDING_BECONFOUND)
+    {
+        m_pEasingFloat.lock()->Set_Lerp(0.f, 1.f, fCallTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
+        m_pEasingBlurAmount.lock()->Callback_LerpEnd += bind(&CUI_Landing::Call_TimerEnd, this);
+    }
 }
 
 void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
