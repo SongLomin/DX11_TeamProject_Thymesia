@@ -69,6 +69,10 @@ private:
 
 private:
 	FDelegate<_float, _bool&> CallBack_ColorInversion;
+	FDelegate< _float, _bool&> CallBack_LightEvent;
+
+private:
+	void TurnOn_Lignt(_float fTimeDelta, _bool& Out_End);
 
 private:
 	virtual void OnEnable(void* pArg) override;

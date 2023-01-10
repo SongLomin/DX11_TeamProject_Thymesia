@@ -98,7 +98,7 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	if (!Get_Enable())
 		return;
-
+	
 	switch (In_KeyIndex)
 	{
 	case 34:
@@ -109,11 +109,14 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_GodRayScale(0.f);
 		m_bShakingCamera = true;
 		break;
-	case 97:
+	case 97: 
 		m_bShakingCamera = false;
 		break;
+	case 138:
+		//Α¶Έν ²τ±β
+		GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
+		break;
 	}
-
 }
 
 

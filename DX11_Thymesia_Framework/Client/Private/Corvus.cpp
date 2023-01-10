@@ -230,6 +230,11 @@ void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
 }
 
+void CCorvus::TurnOn_Lignt(_float fTimeDelta, _bool& Out_End)
+{
+
+}
+
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 {
 	__super::Thread_PreBeforeRender(fTimeDelta);
@@ -394,6 +399,7 @@ void CCorvus::OnDisable()
 	__super::OnDisable();
 }
 
+
 void CCorvus::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
@@ -403,7 +409,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
+	else if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
 	}
@@ -413,29 +419,40 @@ void CCorvus::OnEventMessage(_uint iArg)
 	//	Change_State<CCorvusState_Joker_Execution>();
 	//}
 
-	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
+	else if ((_uint)EVENT_TYPE::ON_DIE == iArg)
 	{
 		Change_State<CCorvusState_Die>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
+	else if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
 	{
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
-	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_ClawPlunderAttack>();
 	}
 
-	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if (EVENT_TYPE::ON_JOKEREXECUTION == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_JOKEREXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
+	{
+		m_LightDesc.bEnable = false;
+		m_LightDesc.fIntensity = 0.f;
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	}
+	else if (EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == (EVENT_TYPE)iArg)
+	{
+
 	}
 
 }

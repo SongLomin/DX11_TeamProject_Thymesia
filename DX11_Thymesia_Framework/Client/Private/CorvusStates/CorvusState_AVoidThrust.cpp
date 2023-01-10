@@ -10,7 +10,7 @@
 #include "GameManager.h"
 
 GAMECLASS_C(CCorvusState_AVoidThrust);
-CLONE_C(CCorvusState_AVoidThrust, CComponent)
+CLONE_C(CCorvusState_AVoidThrust, CComponent)	
 
 HRESULT CCorvusState_AVoidThrust::Initialize_Prototype()
 {
@@ -73,7 +73,7 @@ void CCorvusState_AVoidThrust::OnStateStart(const _float& In_fAnimationBlendTime
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
+#ifdef _DEBUG 
 	#ifdef _DEBUG_COUT_
 		
 #endif

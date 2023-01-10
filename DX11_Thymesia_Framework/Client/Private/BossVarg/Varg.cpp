@@ -115,6 +115,27 @@ HRESULT CVarg::Initialize(void* pArg)
 	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 
+	LIGHTDESC LightDesc;
+
+	LightDesc.eActorType = LIGHTDESC::TYPE_SPOTLIGHT;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 10.f;
+	LightDesc.fRange = 10.f;
+	LightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
+	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(50.f));
+	_vector vOwnerPos = m_pTransformCom.lock()->Get_Position();
+
+	_vector vLightPos = vOwnerPos + XMVectorSet(0.f, 5.f, 0.f, 0.f);
+	_vector vLightLook = XMVectorSet(0.f,1.f,0.f,0.f);
+
+	XMStoreFloat4(&LightDesc.vPosition, vLightPos);
+	XMStoreFloat4(&LightDesc.vDirection, vLightLook);
+
+	LightDesc.bEnable = false;
+
+	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
 	return S_OK;
 }
@@ -151,7 +172,14 @@ void CVarg::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	
+	_bool bEnd = false;
+
+	CallBack_LightEvent(fTimeDelta, bEnd);
+	if (bEnd)
+	{
+		CallBack_LightEvent.Clear();
+	}
+
 }
 
 void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
@@ -421,6 +449,17 @@ void CVarg::Move_RootMotion_Internal()
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 }
 
+void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
+{
+	m_LightDesc.fIntensity -= fTimeDelta;
+
+	if (0.f > m_LightDesc.fIntensity)
+	{
+		m_LightDesc.bEnable = false;
+		In_bEnd = true;
+	}
+}
+
 void CVarg::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
@@ -476,6 +515,18 @@ void CVarg::OnEventMessage(_uint iArg)
 		m_pStatus.lock()->Full_Recovery();
 
 	}
+	//켜지는 조건
+	if ((_uint)EVENT_TYPE::ON_VARGTURNONSPOTLIGHT == iArg)
+	{
+		m_LightDesc.bEnable = true;
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	}
+	//꺼지는 조건
+	if ((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == iArg)
+	{
+		CallBack_LightEvent+= bind(&CVarg::TurnOff_Light, this, placeholders::_1, placeholders::_2);
+	}
+
 }
 
 void CVarg::OnEnable(void* _Arg)

@@ -78,7 +78,7 @@ HRESULT CNvClothCollider::Update_Colliders(_fmatrix In_WorldMatrix)
             _matrix ResultMatrix = elem.pBoneNode.lock()->Get_CombinedMatrix() * ModelTransformToMatrix * In_WorldMatrix;
             _vector vPos = XMLoadFloat3(&elem.vOffset);
             vPos = XMVector3TransformCoord(vPos, ResultMatrix);
-            m_ColliderResults[iIndex] = PxVec4(SMath::Convert_PxVec3(vPos), elem.fScale);
+            m_ColliderResults[iIndex++] = PxVec4(SMath::Convert_PxVec3(vPos), elem.fScale);
         });
    
 

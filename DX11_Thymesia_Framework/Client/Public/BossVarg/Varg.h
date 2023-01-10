@@ -39,6 +39,14 @@ private:
 
     _float4x4                     m_TransformationMatrix;
 
+    LIGHTDESC                     m_LightDesc;
+
+private:
+    FDelegate<_float, _bool&>    CallBack_LightEvent;
+
+private:
+    void TurnOff_Light(_float fTimeDelta, _bool& In_bEnd);
+
 private:
     virtual void Move_RootMotion_Internal() override;
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
