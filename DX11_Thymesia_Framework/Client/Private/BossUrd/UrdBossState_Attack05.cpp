@@ -20,6 +20,12 @@ void CUrdBossState_Attack05::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 90:
+		TurnOn_Effect("Urd_WeaponShine");
+		return;
+	case 149:
+		TurnOff_Effect("Urd_WeaponShine");
+		return;
 	}
 }
 
@@ -58,11 +64,6 @@ void CUrdBossState_Attack05::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (m_pThisAnimationCom.lock())
-	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CUrdBossState_Attack05::Call_NextKeyFrame, this, placeholders::_1);
-	}
-
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
@@ -73,6 +74,12 @@ void CUrdBossState_Attack05::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Set_MoveScale(2.f);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+			bind(&CUrdBossState_Attack05::Call_NextKeyFrame, this, placeholders::_1);
+	}
 	m_bAttackLookAtLimit = true;
 }
 
@@ -82,7 +89,8 @@ void CUrdBossState_Attack05::OnStateEnd()
 
 	if (m_pThisAnimationCom.lock())
 	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CUrdBossState_Attack05::Call_NextKeyFrame, this, placeholders::_1);
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+			bind(&CUrdBossState_Attack05::Call_NextKeyFrame, this, placeholders::_1);
 	}
 
 	Set_MoveScale();

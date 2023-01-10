@@ -42,7 +42,6 @@ void CUrdBossState_Attacks::LateTick(_float fTimeDelta)
 void CUrdBossState_Attacks::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 }
 
 void CUrdBossState_Attacks::OnStateEnd()

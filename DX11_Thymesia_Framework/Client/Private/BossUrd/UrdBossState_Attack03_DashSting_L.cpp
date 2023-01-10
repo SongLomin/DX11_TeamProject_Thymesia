@@ -50,7 +50,8 @@ void CUrdBossState_Attack03_DashSting_L::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack03_DashSting_L|BaseLayer");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd, this, placeholders::_1);
+	m_pModelCom.lock()->CallBack_AnimationEnd +=
+		bind(&CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack03_DashSting_L::Tick(_float fTimeDelta)
@@ -75,11 +76,6 @@ void CUrdBossState_Attack03_DashSting_L::OnStateStart(const _float& In_fAnimatio
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (m_pThisAnimationCom.lock())
-	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame, this, placeholders::_1);
-	}
-
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
@@ -91,6 +87,12 @@ void CUrdBossState_Attack03_DashSting_L::OnStateStart(const _float& In_fAnimatio
 	Set_MoveScale(2.f);
 	m_bAttackLookAtLimit = true;
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+			bind(&CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame, this, placeholders::_1);
+	}
 }	
 
 
@@ -100,7 +102,8 @@ void CUrdBossState_Attack03_DashSting_L::OnStateEnd()
 
 	if (m_pThisAnimationCom.lock())
 	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame, this, placeholders::_1);
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+			bind(&CUrdBossState_Attack03_DashSting_L::Call_NextKeyFrame, this, placeholders::_1);
 	}
 
 	Set_MoveScale();

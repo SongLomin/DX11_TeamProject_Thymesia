@@ -608,7 +608,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	m_isFinished = true;
-
 	return S_OK;
 }
 

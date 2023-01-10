@@ -49,7 +49,8 @@ void CUrdBossState_Attack02::Start()
 	__super::Start();
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack02|BaseLayer");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack02::Call_AnimationEnd, this, placeholders::_1);
+	m_pModelCom.lock()->CallBack_AnimationEnd +=
+		bind(&CUrdBossState_Attack02::Call_AnimationEnd, this, placeholders::_1);
 }
 
 void CUrdBossState_Attack02::Tick(_float fTimeDelta)
@@ -67,17 +68,17 @@ void CUrdBossState_Attack02::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (m_pThisAnimationCom.lock())
-	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CUrdBossState_Attack02::Call_NextKeyFrame, this, placeholders::_1);
-	}
-
 	m_bAttackLookAtLimit = true;
 	Set_MoveScale(2.f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-}	
-
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+			bind(&CUrdBossState_Attack02::Call_NextKeyFrame, this, placeholders::_1);
+	}
+}
 
 void CUrdBossState_Attack02::OnStateEnd()
 {
@@ -85,7 +86,8 @@ void CUrdBossState_Attack02::OnStateEnd()
 
 	if (m_pThisAnimationCom.lock())
 	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CUrdBossState_Attack02::Call_NextKeyFrame, this, placeholders::_1);
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+			bind(&CUrdBossState_Attack02::Call_NextKeyFrame, this, placeholders::_1);
 	}
 
 	Set_MoveScale();
