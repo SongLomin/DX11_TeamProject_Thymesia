@@ -56,16 +56,6 @@ void CNorMonState_TakeExecution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_bForceMonving)
-	{
-		m_fCurrentSpeed += m_fAccel * fTimeDelta;
-		m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
-
-		PxControllerFilters  Filters;
-		m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
-	}
-	
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -91,18 +81,15 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 	{
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
 		m_pPhysXControllerCom.lock()->Set_Enable(false);
-		m_bForceMonving = false;
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		m_pPhysXControllerCom.lock()->Set_Enable(false);
-		m_bForceMonving = false;
 		break;
 	default:
 		break;
 	}
 
 	
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->Restart();
@@ -147,34 +134,10 @@ _bool CNorMonState_TakeExecution::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.7f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.5f)
 	{
 		m_pPhysXControllerCom.lock()->Set_Enable(true);
 	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >=28 && 
-		(m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 34))
-	{
-
-		switch (m_eMonType)
-		{
-		case Client::MONSTERTYPE::ARMORSPEARMAN:
- 			m_bForceMonving = true;
-			break;
-		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-			m_bForceMonving = true;
-			break;
-		default:
-			break;
-		}
-		
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 34)
-	{
-		m_bForceMonving = false;
-	}
-
 
 
 	return false;

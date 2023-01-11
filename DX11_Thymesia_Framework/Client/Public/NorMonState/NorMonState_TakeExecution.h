@@ -26,11 +26,6 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-private:
-	_float m_fMaxSpeed = 50.f;
-	_float m_fCurrentSpeed = 50.f;
-	_float m_fAccel = 0.f;
-	_bool  m_bForceMonving = false;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
