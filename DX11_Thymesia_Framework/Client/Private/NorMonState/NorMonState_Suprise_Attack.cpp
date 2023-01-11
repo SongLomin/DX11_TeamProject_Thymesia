@@ -196,11 +196,10 @@ _bool CNorMonState_Suprise_Attack::Check_AndChangeNextState()
 			break;
 
 		}
+		
 		return true;
 	}
-
-
-
+	Get_OwnerCharacter().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
 	return false;
 }
 
