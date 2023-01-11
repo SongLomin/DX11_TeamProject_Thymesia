@@ -30,9 +30,6 @@ protected:
     _matrix Get_LeftHandCombinedWorldMatrix();
     _matrix Get_RightHandCombinedWorldMatrix();
 
-    _matrix Get_LeftHandCombinedWorldMatrix();
-    _matrix Get_RightHandCombinedWorldMatrix();
-
 protected:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 
