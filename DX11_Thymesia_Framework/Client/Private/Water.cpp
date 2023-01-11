@@ -70,16 +70,9 @@ void CWater::Tick(_float fTimeDelta)
 
 	m_iDescCount = 0;
 
-	m_fTimeAcc += fTimeDelta;
-	while (m_fTimeAcc >= m_fTimeInterval)
-	{
-		++m_iPowCount;
-		m_fTimeAcc -= m_fTimeInterval;
-	}
-
 	for (_uint i = 0; i < m_WaterWaveDescs.size(); ++i)
 	{
- 		m_WaterWaveDescs[i].fVibrationScale *= pow(0.9f, m_iPowCount);
+		m_WaterWaveDescs[i].fVibrationScale *= 0.99f;
 		m_WaterWaveDescs[i].fTimeAcc += fTimeDelta;
 
 		if (m_WaterWaveDescs[i].fVibrationScale > 0.001f)
@@ -88,7 +81,6 @@ void CWater::Tick(_float fTimeDelta)
 		}
 			
 	}
-	m_iPowCount = 0;
 	
 }
 

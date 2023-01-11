@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CModel;
 class CAnimation;
+class CBoneNode;
 END
 
 BEGIN(Client)
@@ -35,7 +36,8 @@ public:
 
 private:
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
-
+	weak_ptr<CBoneNode> m_pLeftHandBoneNode;
+	weak_ptr<CBoneNode> m_pRightHandBoneNode;
 protected:
 
 	void Free();

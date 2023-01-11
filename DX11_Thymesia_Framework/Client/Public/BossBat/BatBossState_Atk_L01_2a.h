@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CModel;
 class CAnimation;
+class CBoneNode;
 END
 
 BEGIN(Client)
@@ -36,7 +37,8 @@ private:
 	_bool   m_bTurnTuning = false;
 
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
-
+	weak_ptr<CBoneNode> m_pLeftHandBoneNode;
+	weak_ptr<CBoneNode> m_pRightHandBoneNode;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
