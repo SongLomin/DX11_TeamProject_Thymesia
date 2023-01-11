@@ -72,8 +72,7 @@ void CWater::Tick(_float fTimeDelta)
 
 	for (_uint i = 0; i < m_WaterWaveDescs.size(); ++i)
 	{
-		
-		m_WaterWaveDescs[i].fVibrationScale *= 0.9f;
+		m_WaterWaveDescs[i].fVibrationScale *= 0.99f;
 		m_WaterWaveDescs[i].fTimeAcc += fTimeDelta;
 
 		if (m_WaterWaveDescs[i].fVibrationScale > 0.001f)

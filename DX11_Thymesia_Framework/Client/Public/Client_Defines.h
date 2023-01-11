@@ -58,7 +58,7 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-#define _RENDER_FPS_
+// #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
 #undef _LOAD_CAPTURED_RESOURCE_
@@ -82,7 +82,7 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
-#define	_BAT_EFFECT
+#define	_BAT_EFFECT_
 #define _URD_EFFECT_
 #define _INTERACTION_EFFECT_
 #pragma endregion // Effects

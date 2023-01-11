@@ -65,8 +65,10 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 	case 92:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -76,8 +78,10 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 93:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -86,8 +90,10 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 330:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -97,8 +103,10 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 	case 410:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());

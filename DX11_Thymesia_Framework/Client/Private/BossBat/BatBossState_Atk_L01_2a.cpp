@@ -84,8 +84,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 	case 184:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -94,8 +96,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 185:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -104,8 +108,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 186:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -114,8 +120,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 187:
 	{		
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -124,8 +132,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 188:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -134,8 +144,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 189:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -146,8 +158,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	case 191:
 	case 192:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -156,8 +170,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 193:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -166,8 +182,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 194:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -176,8 +194,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 195:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -186,8 +206,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 196:	
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -196,8 +218,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 197:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -206,8 +230,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 198:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -217,8 +243,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 	case 199:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -227,8 +255,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 201:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -237,8 +267,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 260:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
@@ -247,8 +279,10 @@ void CBatBossState_Atk_L01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 283:
 	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
 		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* XMLoadFloat4x4(&TempMatrix)
 			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
