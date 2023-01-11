@@ -305,6 +305,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_SD_HurtMFR",2.f);
     SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.006f);
     SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.3f);
+    //SET_ANIM_SPEED("Armature|Armature|Urd_Dead|BaseLayer", 0.67f);
     //�ӵ� 0.5���������
 
        /*

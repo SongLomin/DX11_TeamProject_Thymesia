@@ -206,7 +206,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	{
 	    if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 		{
-			if (fPToMDistance <= 4.f)
+			if (fPToMDistance <= 4.5f)
 			{
 				if (m_bTurnCheck)
 				{
@@ -280,7 +280,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 		}
 		else if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
 		{
-			if (fPToMDistance <= 4.f)
+			if (fPToMDistance <= 4.5f)
 			{
 				if (m_bTurnCheck)
 				{
