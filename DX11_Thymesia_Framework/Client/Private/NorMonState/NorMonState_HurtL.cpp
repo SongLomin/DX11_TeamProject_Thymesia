@@ -110,12 +110,23 @@ void CNorMonState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
+
+#ifdef _DEBUG
+	#ifdef _DEBUG_COUT_
+		
+#endif
+#endif
+
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+
 	m_bAttackLookAtLimit = false;
 }
 
 void CNorMonState_HurtL::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 

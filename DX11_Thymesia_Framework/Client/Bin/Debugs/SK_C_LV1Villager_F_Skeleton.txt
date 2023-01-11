@@ -210,5 +210,5 @@ AnimTargetPoint_end
 camera
 camera_end
 SK_C_LV0Villager_F.mo
-0[SK_C_LV0Villager_F.md]. 80205
-1[SK_C_LV0Villager_F.md]. 144
+0[SK_C_LV0Villager_F.md]. 14995
+1[SK_C_LV0Villager_F.md]. 35

@@ -12,7 +12,7 @@ class CNorMonState_LightAttack2 :
 {
 	GAMECLASS_H(CNorMonState_LightAttack2);
 	CLONE_H(CNorMonState_LightAttack2, CComponent)
-	SHALLOW_COPY(CNorMonState_LightAttack2)
+		SHALLOW_COPY(CNorMonState_LightAttack2)
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -20,6 +20,8 @@ protected:
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void LateTick(_float fTimeDelta) override;
+
+
 
 protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;

@@ -108,12 +108,26 @@ void CNorMonState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+#ifdef _DEBUG
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunRUNRUNRUNRUN -> RunRUNRUNRUN" << endl;
+#endif
+#endif
+		if(m_eMonType == MONSTERTYPE::KNIFEWOMAN)
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+
 }
 
 void CNorMonState_Run::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
 }
+
+
 
 void CNorMonState_Run::OnEventMessage(_uint iArg)
 {

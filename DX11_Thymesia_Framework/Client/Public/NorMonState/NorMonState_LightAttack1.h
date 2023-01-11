@@ -6,6 +6,7 @@ class CModel;
 END
 
 BEGIN(Client)
+
 class CNorMonState_LightAttack1 :
 	public CNorMonsterStateBase
 {

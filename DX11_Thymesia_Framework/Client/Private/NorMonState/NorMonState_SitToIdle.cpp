@@ -9,6 +9,7 @@
 #include "NorMonStateS.h"
 #include "Character.h"
 
+
 GAMECLASS_C(CNorMonState_SitToIdle);
 CLONE_C(CNorMonState_SitToIdle, CComponent)
 
@@ -21,12 +22,16 @@ HRESULT CNorMonState_SitToIdle::Initialize_Prototype()
 HRESULT CNorMonState_SitToIdle::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
+
 	return S_OK;
 }
 
 void CNorMonState_SitToIdle::Start()
 {
 	__super::Start();
+
+
 
 	switch (m_eMonType)
 	{
@@ -50,6 +55,8 @@ void CNorMonState_SitToIdle::Start()
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_SitToIdle::Call_AnimationEnd, this, placeholders::_1);
+
+
 }
 
 void CNorMonState_SitToIdle::Tick(_float fTimeDelta)
@@ -65,19 +72,35 @@ void CNorMonState_SitToIdle::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
+
+
 }
+
+
 
 void CNorMonState_SitToIdle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+#ifdef _DEBUG
+	#ifdef _DEBUG_COUT_
+		
+#endif
+#endif
+
+
 }
 
 void CNorMonState_SitToIdle::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	
+
 }
+
 
 void CNorMonState_SitToIdle::Call_AnimationEnd(_uint iEndAnimIndex)
 {
@@ -101,8 +124,11 @@ void CNorMonState_SitToIdle::Free()
 
 _bool CNorMonState_SitToIdle::Check_AndChangeNextState()
 {
+
 	if (!Check_Requirement())
 		return false;
+
+
 
 	return false;
 }

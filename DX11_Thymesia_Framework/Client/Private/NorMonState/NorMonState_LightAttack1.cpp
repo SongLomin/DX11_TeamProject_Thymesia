@@ -94,102 +94,114 @@ void CNorMonState_LightAttack1::Call_AnimationEnd(_uint iEndAnimIndex)
 
 void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
+
 	__super::OnStateStart(In_fAnimationBlendTime);
-	
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	switch (m_eMonType)
-	{
-	case Client::MONSTERTYPE::AXEMAN:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+#ifdef _DEBUG
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Attack1 -> OnStateStart" << endl;
+#endif
+#endif
 
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
+		switch (m_eMonType)
 		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
-		}
-	}
-	break;
-	case Client::MONSTERTYPE::KNIFEWOMAN:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
+		case Client::MONSTERTYPE::AXEMAN:
 		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
 		}
-	}
-	break;
-	case Client::MONSTERTYPE::SKULL:
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);		
+			break;
+		case Client::MONSTERTYPE::KNIFEWOMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+			
+			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			break;
+		case Client::MONSTERTYPE::SKULL:
+			break;
+		case Client::MONSTERTYPE::GARDENER:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+			
+			break;
+		case Client::MONSTERTYPE::SHIELDAXEMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+			break;
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 		break;
-	case Client::MONSTERTYPE::GARDENER:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
+		case Client::MONSTERTYPE::SKULLSHIELDMAN:
 		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
 		}
-	}
-
-	break;
-	case Client::MONSTERTYPE::SHIELDAXEMAN:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
+		case Client::MONSTERTYPE::SKULLSPEARMAN:
 		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
 		}
-	}
-	break;
-	case Client::MONSTERTYPE::ENHANCE_GARDENER:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
-		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		break;
 		}
-	}
-	break;
-	case Client::MONSTERTYPE::SKULLSHIELDMAN:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
-		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
-		}
-	}
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-	break;
-	case Client::MONSTERTYPE::SKULLSPEARMAN:
-	{
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-
-		for (auto& elem : pWeapons)
-		{
-			elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
-		}
-	}
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
-	break;
-	}
 
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
