@@ -656,6 +656,30 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT(PS_IN_SOFT_DIRECTIONAL_DISSOLVE 
 	return Out;
 }
 
+struct PS_STENCIL_OUT
+{
+	vector vColor : SV_TARGET0;
+};
+
+PS_STENCIL_OUT PS_ONLY_STENCIL(PS_IN In)
+{
+	PS_STENCIL_OUT Out = (PS_STENCIL_OUT)0;
+	return Out;
+}
+
+DepthStencilState DSS_OnlyStencil
+{//스텐실 테스트는 깊이 테스트를 활성화 해야 됨
+	DepthEnable = true;
+	DepthWriteMask = zero;
+	DepthFunc = always;
+
+	StencilEnable = true;
+	StencilWriteMask = 0xff;
+
+	BackFaceStencilFunc = always;
+	BackFaceStencilPass = replace;
+	BackFaceStencilFail = keep;
+};
 
 // Shader Passes //
 technique11 DefaultTechnique
@@ -764,6 +788,20 @@ technique11 DefaultTechnique
 		DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT();
+	}
+
+
+	pass Only_Write_Stencil // 8
+	{
+		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_OnlyStencil, 4);
+		SetRasterizerState(RS_NonCulling);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_ONLY_STENCIL();
 	}
 }
 // Shader Passes //

@@ -157,9 +157,9 @@ PS_OUT PS_MAIN_COLOR_INVERSION(PS_IN In)
     
     float3 vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV).xyz;
     
-    float3 vInversedColor = (1.f - vColor) * g_fInversionStrength;
+    float3 vInversedColor = (1.f - vColor) * 1.f/*g_fInversionStrength*/;
     
-    Out.vColor.rgb = lerp(vInversedColor, vColor, g_fInversionRatio);
+    Out.vColor.rgb = lerp(vInversedColor, vColor,0.f /*g_fInversionRatio*/);
     Out.vColor.a = 1.f;
     
     return Out;
@@ -344,7 +344,19 @@ DepthStencilState DSS_None_ZTestWrite_True_StencilTest
     FrontFaceStencilPass = keep;
     FrontFaceStencilFail = keep;
 };
+DepthStencilState DSS_OnlyStencil
+{//스텐실 테스트는 깊이 테스트를 활성화 해야 됨
+	DepthEnable = true;
+	DepthWriteMask = zero;
+    DepthFunc = always;
 
+	StencilEnable = true;
+    StencilReadMask = 0xff;
+
+	FrontFaceStencilFunc = equal;
+	FrontFaceStencilPass = keep;
+	FrontFaceStencilFail = keep;
+};
 
 technique11 DefaultTechnique
 {
@@ -363,7 +375,7 @@ technique11 DefaultTechnique
     pass Color_Inversion//1
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetDepthStencilState(DSS_OnlyStencil, 4);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();

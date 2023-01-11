@@ -594,7 +594,9 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_NormalMobModel();
 #endif // _EFFECT_TOOL_
 
+#ifdef _MAP_TOOL_
 	Load_AllMapModel();
+#endif // _MAP_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;

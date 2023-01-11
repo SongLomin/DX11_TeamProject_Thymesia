@@ -238,7 +238,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 	SET_ANIM_SPEED("Armature|Armature|Urd_Parry_L|BaseLayer", 1.5f);
 	SET_ANIM_SPEED("Armature|Armature|Urd_Parry_R|BaseLayer", 1.5f);
 	SET_ANIM_SPEED("Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer", 4.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);*/
+    SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);*/
 #pragma endregion // Urd
 
 
