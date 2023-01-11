@@ -124,7 +124,7 @@ _bool CCorvusState_ParryDeflectLeft::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.17f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.1f)
 	{
 		if (Check_RequirementParryState())
 		{

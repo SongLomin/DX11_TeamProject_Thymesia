@@ -242,97 +242,113 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 				vHitPos, ATTACK_OPTION::PARRY);
 		}
 		_vector vShakingOffsetToVector;
-		switch (m_eParryType)
+		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
+
+		switch (eAttackOption)
 		{
-
-		case Client::PARRY_TYPE::PERFECT:
-			//퍼펙트는 몬스터 게이지 많이깍고 플레이어피를채워\준다 상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
-			switch (ParryType)
-			{
-			case Client::PARRY_SUCCESS::LEFT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
-
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
-
-				break;
-			case Client::PARRY_SUCCESS::LEFTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
-				break;
-			case Client::PARRY_SUCCESS::RIGHT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
-				break;
-			case Client::PARRY_SUCCESS::RIGHTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				pStatus.lock()->Heal_Player(30.f);
-				break;
-			case Client::PARRY_SUCCESS::FAIL:
-				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
-				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
-				break;
-			}
-
-			vShakingOffsetToVector = XMLoadFloat3(&m_vShakingOffSet);
-
-			GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.2f, 0.7f, 9.f, 0.5f);
-			GAMEINSTANCE->Set_MotionBlur(0.05f);
-
-			break;
-		case Client::PARRY_TYPE::NORMAL:
-			//퍼펙트는 몬스터 게이지 적게깍고 플레이어피는안달고  상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
-			switch (ParryType)
-			{
-			case Client::PARRY_SUCCESS::LEFT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
-				break;
-			case Client::PARRY_SUCCESS::LEFTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
-				break;
-			case Client::PARRY_SUCCESS::RIGHT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
-				break;
-			case Client::PARRY_SUCCESS::RIGHTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
-				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
-				break;
-			case Client::PARRY_SUCCESS::FAIL:
-				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
-				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
-				break;
-			}
-
-			vShakingOffsetToVector = XMLoadFloat3(&m_vShakingOffSet);
-			GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.15f, 0.7f, 9.f, 0.5f);//일반 공격
-			GAMEINSTANCE->Set_MotionBlur(0.05f);
-
-			break;
-		case Client::PARRY_TYPE::FAIL:
+		case Client::ATTACK_OPTION::NOPARRYATTACK:
+		{
 			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+		}
+			break;
+		default:
+		{
+			switch (m_eParryType)
+			{
+
+			case Client::PARRY_TYPE::PERFECT:
+				//퍼펙트는 몬스터 게이지 많이깍고 플레이어피를채워\준다 상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
+				switch (ParryType)
+				{
+				case Client::PARRY_SUCCESS::LEFT:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					pStatus.lock()->Heal_Player(30.f);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
+
+					break;
+				case Client::PARRY_SUCCESS::LEFTUP:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					pStatus.lock()->Heal_Player(30.f);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
+					break;
+				case Client::PARRY_SUCCESS::RIGHT:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					pStatus.lock()->Heal_Player(30.f);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
+					break;
+				case Client::PARRY_SUCCESS::RIGHTUP:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					pStatus.lock()->Heal_Player(30.f);
+					break;
+				case Client::PARRY_SUCCESS::FAIL:
+					Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+					pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+					break;
+				}
+
+				vShakingOffsetToVector = XMLoadFloat3(&m_vShakingOffSet);
+
+				GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.2f, 0.7f, 9.f, 0.5f);
+				GAMEINSTANCE->Set_MotionBlur(0.05f);
+
+				break;
+			case Client::PARRY_TYPE::NORMAL:
+				//퍼펙트는 몬스터 게이지 적게깍고 플레이어피는안달고  상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
+				switch (ParryType)
+				{
+				case Client::PARRY_SUCCESS::LEFT:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
+					break;
+				case Client::PARRY_SUCCESS::LEFTUP:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
+					break;
+				case Client::PARRY_SUCCESS::RIGHT:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
+					break;
+				case Client::PARRY_SUCCESS::RIGHTUP:
+					pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+					GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+					Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
+					break;
+				case Client::PARRY_SUCCESS::FAIL:
+					Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+					pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+					break;
+				}
+
+				vShakingOffsetToVector = XMLoadFloat3(&m_vShakingOffSet);
+				GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.15f, 0.7f, 9.f, 0.5f);//일반 공격
+				GAMEINSTANCE->Set_MotionBlur(0.05f);
+
+				break;
+			case Client::PARRY_TYPE::FAIL:
+				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+				break;
+			}
+
+			_bool bGroggy = pMonsterStatusCom.lock()->Is_Groggy();
+
+			if (bGroggy)
+			{
+				pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_GROGGY);
+			}
+		}
 			break;
 		}
-
-		_bool bGroggy = pMonsterStatusCom.lock()->Is_Groggy();
-
-		if (bGroggy)
-		{
-			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_GROGGY);
-		}
+		
 
 	}
 }

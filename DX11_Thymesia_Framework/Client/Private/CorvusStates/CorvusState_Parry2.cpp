@@ -254,6 +254,22 @@ void CCorvusState_Parry2::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 
 		_vector vShakingOffsetToVector;
 
+		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
+
+		switch (eAttackOption)
+		{
+		case Client::ATTACK_OPTION::NOPARRYATTACK:
+		{
+
+		}
+			break;
+		default:
+		{
+
+		}
+			break;
+		}
+
 		switch (m_eParryType)
 		{
 		case Client::PARRY_TYPE::PERFECT:
