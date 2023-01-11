@@ -44,7 +44,6 @@ void CVargBossState_SPA_Roar_Getup::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
 	if (m_bShakingCamera)
 	{
 		_float3 vPosition;

@@ -13,11 +13,6 @@ HRESULT CLevel_Edit::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	/*GAMEINSTANCE->Clear_Lights();*/
-
-	SetWindowText(g_hWnd, TEXT("Loading All Effect Group..."));
-	//Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
-
 	m_pImGui_Manager = CImGui_Manager::Create_Instance();
 	m_pImGui_Manager->Initialize();
 #ifdef _SKYBOX_
@@ -34,7 +29,6 @@ HRESULT CLevel_Edit::Initialize()
 #endif // _RENDER_FPS_
 
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
-
 	return S_OK;
 }
 
