@@ -71,8 +71,6 @@ void CGround::LateTick(_float fTimeDelta)
 
 HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	return S_OK;
-
 	__super::Render(pDeviceContext);
 
 	if (FAILED(SetUp_ShaderResource()))

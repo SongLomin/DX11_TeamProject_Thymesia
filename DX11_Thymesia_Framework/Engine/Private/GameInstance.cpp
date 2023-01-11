@@ -76,7 +76,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager->Initialize();
 
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
-	m_pThread_Manager->Initialize(8);
+	m_pThread_Manager->Initialize(20);
 
 	m_pNvCloth_Manager->Initialize();
 
