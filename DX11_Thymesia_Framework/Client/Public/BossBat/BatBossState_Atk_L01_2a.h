@@ -4,7 +4,6 @@
 BEGIN(Engine)
 class CModel;
 class CAnimation;
-class CBoneNode;
 END
 
 BEGIN(Client)
