@@ -128,7 +128,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	_vector vOwnerPos = m_pTransformCom.lock()->Get_Position();
 
 	_vector vLightPos = vOwnerPos + XMVectorSet(0.f, 5.f, 0.f, 0.f);
-	_vector vLightLook = XMVectorSet(0.f,1.f,0.f,0.f);
+	_vector vLightLook = XMVectorSet(0.f,-1.f,0.f,0.f);
 
 	XMStoreFloat4(&LightDesc.vPosition, vLightPos);
 	XMStoreFloat4(&LightDesc.vDirection, vLightLook);
@@ -449,6 +449,18 @@ void CVarg::Move_RootMotion_Internal()
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 }
 
+void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
+{
+	_vector vOwnerPos = m_pTransformCom.lock()->Get_Position();
+
+	_vector vLightPos = vOwnerPos + XMVectorSet(0.f, 5.f, 0.f, 0.f);
+	_vector vLightLook = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
+	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
+
+}
+
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
 {
 	m_LightDesc.fIntensity -= fTimeDelta;
@@ -520,10 +532,12 @@ void CVarg::OnEventMessage(_uint iArg)
 	{
 		m_LightDesc.bEnable = true;
 		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+		CallBack_LightEvent+=bind(&CVarg::TurnOn_Light,this, placeholders::_1, placeholders::_2);
 	}
 	//²¨Áö´Â Á¶°Ç
 	if ((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == iArg)
 	{
+		CallBack_LightEvent.Clear();
 		CallBack_LightEvent+= bind(&CVarg::TurnOff_Light, this, placeholders::_1, placeholders::_2);
 	}
 

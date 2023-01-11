@@ -46,6 +46,7 @@ private:
 
 private:
     void TurnOff_Light(_float fTimeDelta, _bool& In_bEnd);
+    void TurnOn_Light(_float fTimeDetla, _bool& In_bEnd);
 
 private:
     virtual void Move_RootMotion_Internal() override;

@@ -206,11 +206,12 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 	__super::LateTick(fTimeDelta);
-
+	
+	_bool bEnd = false;
+	////////colorInversion
 	if (CallBack_ColorInversion.empty())
 		return;
 
-	_bool bEnd = false;
 
 	CallBack_ColorInversion(fTimeDelta, bEnd);
 	if (bEnd)
@@ -218,6 +219,18 @@ void CCorvus::LateTick(_float fTimeDelta)
 		CallBack_ColorInversion.Clear();
 		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
 	}
+	//////////////
+	if (CallBack_LightEvent.empty())
+		return;
+
+	bEnd = false;
+	
+	CallBack_LightEvent(fTimeDelta, bEnd);
+	if (bEnd)
+	{
+		CallBack_LightEvent.Clear();
+	}
+	
 }
 
 void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
@@ -234,9 +247,14 @@ void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
 }
 
-void CCorvus::TurnOn_Lignt(_float fTimeDelta, _bool& Out_End)
+void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 {
+	m_LightDesc.fIntensity += fTimeDelta*0.4f;
 
+	if (0.4f < m_LightDesc.fIntensity)
+	{
+		Out_End = true;
+	}
 }
 
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
@@ -456,7 +474,8 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 	else if (EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == (EVENT_TYPE)iArg)
 	{
-
+		m_LightDesc.bEnable = true;
+		CallBack_LightEvent += bind(&CCorvus::TurnOn_Light, this, placeholders::_1, placeholders::_2);
 	}
 
 }

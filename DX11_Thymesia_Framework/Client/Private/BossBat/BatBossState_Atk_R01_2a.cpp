@@ -6,6 +6,7 @@
 #include "Player.h"
 //#include "BehaviorBase.h"
 #include "Animation.h"
+#include "BoneNode.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
 #include "MobWeapon.h"
@@ -33,6 +34,9 @@ void CBatBossState_Atk_R01_2a::Start()
 	__super::Start();
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_AttackR_01_2a");
+
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_R01_2a::Call_AnimationEnd, this, placeholders::_1);
 }
@@ -71,7 +75,177 @@ void CBatBossState_Atk_R01_2a::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
 
+	if(In_iKeyIndex >= 167 && In_iKeyIndex <= 186)
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		return;
+	}
+	switch (In_iKeyIndex)
+	{
+	case 187:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
+		break;
+	}	
+	case 188:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.12f, 9.f, 3.f);
+		break;
+	}	
+	case 189:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
+		break;
+	}	
+	case 190:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.15f, 9.f, 3.f);
+		break;
+	}
+	case 191:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.16f, 9.f, 3.f);
+		break;
+	}
+	case 192:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.19f, 9.f, 3.f);
+		break;
+	}
+	case 193:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
+		break;
+	}
+
+	case 194:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.19f, 9.f, 3.f);
+		break;
+	}
+	case 195:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.18f, 9.f, 3.f);
+		break;
+	}
+	case 196:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 9.f, 3.f);
+		break;
+	}
+	case 197:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.15f, 9.f, 3.f);
+		break;
+	}
+	case 198:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
+		break;
+	}
+	case 199:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
+		break;
+	}
+	case 200:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
+		break;
+	}
+	case 201:
+	{
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_pModelCom.lock()->Get_TransformationMatrix())
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
+		break;
+	}
+	}
+
+}
 
 void CBatBossState_Atk_R01_2a::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -95,6 +269,10 @@ void CBatBossState_Atk_R01_2a::OnStateStart(const _float& In_fAnimationBlendTime
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_Atk_R01_2a::Call_NextAnimationKey, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;
@@ -107,6 +285,9 @@ void CBatBossState_Atk_R01_2a::OnStateStart(const _float& In_fAnimationBlendTime
 void CBatBossState_Atk_R01_2a::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_Atk_R01_2a::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 
