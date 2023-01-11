@@ -291,7 +291,7 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     
     float2 newPos1UV = float2(newPosition1.x * 2.f / 127.f, newPosition1.z * 2.f / 127.f);
     float2 newPos2UV = float2(newPosition2.x * 2.f / 127.f, newPosition2.z * 2.f / 127.f);
-      
+        
     //float fDisplacement = (g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 0.8f + g_vUVNoise * 0.005f, 0).r) * 0.35f;
     ////물결 충격 계산 Compute_Wave()
     
@@ -492,7 +492,7 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     Out.vDiffuse = 0.9f * vector(0.4f, 0.f, 0.015f, 1.f)/*vector(0.f, 0.5f, 0.7f, 1.f)*/;
       
     Out.vDiffuse.a = 1.f;
- 
+        
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;

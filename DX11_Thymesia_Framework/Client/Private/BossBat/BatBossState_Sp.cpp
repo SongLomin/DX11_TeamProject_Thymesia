@@ -33,6 +33,9 @@ void CBatBossState_Sp::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_SP01");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Sp::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -62,7 +65,54 @@ void CBatBossState_Sp::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_Sp::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
+	switch (In_iKeyIndex)
+	{
+	case 36:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 365:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 370:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 461:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 489:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	}
+}
 
 void CBatBossState_Sp::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -71,6 +121,10 @@ void CBatBossState_Sp::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_Sp::Call_NextAnimationKey, this, placeholders::_1);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -86,6 +140,8 @@ void CBatBossState_Sp::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_Sp::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 

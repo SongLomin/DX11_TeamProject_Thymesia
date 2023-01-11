@@ -32,6 +32,9 @@ void CBatBossState_JumpSmash_SmarhL::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_JumpSmashL");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -65,6 +68,53 @@ void CBatBossState_JumpSmash_SmarhL::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_JumpSmash_SmarhL::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_iKeyIndex)
+	{
+	case 62:
+	{
+		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
+		break;
+	}
+	case 172:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.25f, 9.f, 3.f);
+		break;
+	}
+	case 182:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.25f, 9.f, 3.f);
+		break;
+	}
+	case 412:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 511:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	}
+}
 
 void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -81,6 +131,10 @@ void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBle
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_JumpSmash_SmarhL::Call_NextAnimationKey, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;
@@ -92,6 +146,9 @@ void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBle
 void CBatBossState_JumpSmash_SmarhL::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_JumpSmash_SmarhL::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 

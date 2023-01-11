@@ -84,131 +84,17 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.05f, 9.f, 3.f);
 		return;
 	}
-	switch (In_iKeyIndex)
-	{
-	case 187:
+
+	else if (187 <= In_iKeyIndex && 201 >= In_iKeyIndex)
 	{
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
-		break;
-	}	
-	case 188:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.12f, 9.f, 3.f);
-		break;
-	}	
-	case 189:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
-		break;
-	}	
-	case 190:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.15f, 9.f, 3.f);
-		break;
-	}
-	case 191:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.16f, 9.f, 3.f);
-		break;
-	}
-	case 192:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.19f, 9.f, 3.f);
-		break;
-	}
-	case 193:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
-		break;
-	}
-
-	case 194:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.19f, 9.f, 3.f);
-		break;
-	}
-	case 195:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.18f, 9.f, 3.f);
-		break;
-	}
-	case 196:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 9.f, 3.f);
-		break;
-	}
-	case 197:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.15f, 9.f, 3.f);
-		break;
-	}
-	case 198:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
-		break;
-	}
-	case 199:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
-		break;
-	}
-	case 200:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
-		break;
-	}
-	case 201:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
-		break;
-	}
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+		return;
 	}
 
 }

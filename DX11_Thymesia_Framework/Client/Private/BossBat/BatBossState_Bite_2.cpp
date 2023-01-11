@@ -34,6 +34,9 @@ void CBatBossState_Bite_2::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Bite_2");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Bite_2::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -66,7 +69,30 @@ void CBatBossState_Bite_2::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_Bite_2::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
 
+	if (In_iKeyIndex >= 175 && In_iKeyIndex <= 207)
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+
+		CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+
+		vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+
+	}
+
+}
 
 void CBatBossState_Bite_2::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -97,6 +123,10 @@ void CBatBossState_Bite_2::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
 
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_Bite_2::Call_NextAnimationKey, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;
@@ -111,6 +141,8 @@ void CBatBossState_Bite_2::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_Bite_2::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 

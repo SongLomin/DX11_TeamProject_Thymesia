@@ -33,6 +33,9 @@ void CBatBossState_TakeExecution_Start::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_TakeExecution_Start01");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_TakeExecution_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -53,7 +56,46 @@ void CBatBossState_TakeExecution_Start::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_TakeExecution_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
 
+	if (In_iKeyIndex >= 203 && In_iKeyIndex <= 248)
+	{
+	
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		
+		CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+
+	}
+
+	switch (In_iKeyIndex)
+	{
+	case 35:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 57:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	}
+}
 
 void CBatBossState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -61,6 +103,10 @@ void CBatBossState_TakeExecution_Start::OnStateStart(const _float& In_fAnimation
 
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_TakeExecution_Start::Call_NextAnimationKey, this, placeholders::_1);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -81,6 +127,9 @@ void CBatBossState_TakeExecution_Start::OnStateStart(const _float& In_fAnimation
 void CBatBossState_TakeExecution_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_TakeExecution_Start::Call_NextAnimationKey, this, placeholders::_1);
 
 
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);

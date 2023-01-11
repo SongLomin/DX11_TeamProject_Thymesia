@@ -33,6 +33,8 @@ void CBatBossState_Storm::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Storm_1");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
 	
 }
 
@@ -63,7 +65,6 @@ void CBatBossState_Storm::LateTick(_float fTimeDelta)
 
 	Check_AndChangeNextState();
 }
-
 
 
 void CBatBossState_Storm::OnStateStart(const _float& In_fAnimationBlendTime)
