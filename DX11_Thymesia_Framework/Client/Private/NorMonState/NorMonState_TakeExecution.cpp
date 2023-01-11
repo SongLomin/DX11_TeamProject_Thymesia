@@ -91,15 +91,17 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 	{
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
 		m_pPhysXControllerCom.lock()->Set_Enable(false);
+		m_bForceMonving = false;
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		m_pPhysXControllerCom.lock()->Set_Enable(false);
+		m_bForceMonving = false;
 		break;
 	default:
 		break;
 	}
 
-
+	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
