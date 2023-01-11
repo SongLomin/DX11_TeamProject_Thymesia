@@ -283,10 +283,15 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 
 	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= XMVectorGetY(pCurrentPlayer.lock()->Get_WorldPosition()) + 0.56f)
 	{
-		m_pForEffectTransform = Add_Component<CTransform>();
-		m_pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
+#ifdef _URD_EFFECT_
+		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
+		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
+		pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
 
-		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", m_pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+#endif // _URD_EFFECT_
+
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;
 	}
