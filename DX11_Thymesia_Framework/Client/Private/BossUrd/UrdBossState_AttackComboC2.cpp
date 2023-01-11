@@ -66,7 +66,7 @@ void CUrdBossState_AttackComboC2::OnStateStart(const _float& In_fAnimationBlendT
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 	for (auto& elem : pWeapons)
-		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.1f);
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.1f);
 
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(4.f, 4.f, 4.f));
 
