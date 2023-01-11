@@ -104,14 +104,7 @@ void CNorMonState_TurnL90::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: TurnLllllll -> Trurnllllll" << endl;
-#endif
-#endif
-
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-
 }
 
 void CNorMonState_TurnL90::OnStateEnd()

@@ -304,7 +304,6 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 	if (!strcmp(In_szModelKey.c_str(), "Corvus"))
 	{
-		
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
@@ -367,6 +366,42 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
+#endif // _ANIMATION_TOOL_WEAPON_
+	}
+
+	if (!strcmp(In_szModelKey.c_str(), "Mon_AxeMan"))
+	{
+#ifdef _ANIMATION_TOOL_WEAPON_
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+#endif // _ANIMATION_TOOL_WEAPON_
+	}
+
+	if (!strcmp(In_szModelKey.c_str(), "Mon_KnifeWoman"))
+	{
+#ifdef _ANIMATION_TOOL_WEAPON_
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Mon_Weapon_Knife", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+#endif // _ANIMATION_TOOL_WEAPON_
+	}
+
+	if (!strcmp(In_szModelKey.c_str(), "Mon_Gardner"))
+	{
+#ifdef _ANIMATION_TOOL_WEAPON_
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Mon_Weapon_Scythe", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+#endif // _ANIMATION_TOOL_WEAPON_
+	}
+
+	if (!strcmp(In_szModelKey.c_str(), "Skullman"))
+	{
+#ifdef _ANIMATION_TOOL_WEAPON_
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Mon_Weapon_Spear", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 #endif // _ANIMATION_TOOL_WEAPON_
 	}
 }

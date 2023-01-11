@@ -98,23 +98,11 @@ void CNorMonState_Walk_F::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
-#ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: RunStart -> Walk_F" << endl;
-#endif
-#endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-
-	
 }
 
 void CNorMonState_Walk_F::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 

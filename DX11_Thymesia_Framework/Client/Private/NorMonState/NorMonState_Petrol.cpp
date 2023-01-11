@@ -112,32 +112,16 @@ void CNorMonState_Petrol::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
-#ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: RunStart -> Walk_F" << endl;
-#endif
-#endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-
-	
 }
 
 void CNorMonState_Petrol::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
-
-
 
 void CNorMonState_Petrol::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
-
-
 }
 
 _float CNorMonState_Petrol::Cul_DotResult()

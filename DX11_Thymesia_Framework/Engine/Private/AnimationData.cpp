@@ -206,45 +206,99 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);*/
 #pragma endregion // Joker
 #pragma region Urd
-	/*SET_ANIM_SPEED("Armature|Armature|Urd_Attack01LV2|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack01|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C0|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C1|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack02|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack03_DashSting_L|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack04_DashSting_R|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack05|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack06|BaseLayer", 2.5f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Attack07|BaseLayer", 2.5f);
+    /*SET_ANIM_SPEED("Armature|Armature|Urd_Attack01LV2|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack01|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C0|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C1|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack02|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack03_DashSting_L|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack04_DashSting_R|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack05|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack06|BaseLayer", 2.5f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Attack07|BaseLayer", 2.5f);
 
-	SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 1.25f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Skill02_1|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Skill02_1|BaseLayer", 1.25f);
 
-	SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_L|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_R|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_L|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_R|BaseLayer", 2.f);
 
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepB|BaseLayer", 1.25f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepFL45|BaseLayer", 1.25f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepFL|BaseLayer", 1.25f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepFR45|BaseLayer", 1.25f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepFR|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepB|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepFL45|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepFL|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepFR45|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepFR|BaseLayer", 1.25f);
 
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepL|BaseLayer", 1.25f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_StepR|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepL|BaseLayer", 1.25f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_StepR|BaseLayer", 1.25f);
 
-	SET_ANIM_SPEED("Armature|Armature|Urd_Dead|BaseLayer", 1.5f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_HurtS_FR|BaseLayerL", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Idle|BaseLayer", 2.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Parry_L|BaseLayer", 1.5f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Parry_R|BaseLayer", 1.5f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer", 4.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);*/
+    SET_ANIM_SPEED("Armature|Armature|Urd_Dead|BaseLayer", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_HurtS_FR|BaseLayerL", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Idle|BaseLayer", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Parry_L|BaseLayer", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Parry_R|BaseLayer", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer", 4.f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);*/
 #pragma endregion // Urd
 
-
 #pragma region Mon_AxeMan
-    /*SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);*/
+    /*SET_ANIM_SPEED("Armature|Armature|Armature|Armature|DemoM02_RunF1|BaseLayer|Armature|Arm", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Attack01|BaseLayer|Arm", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Attack02|BaseLayer|Arm", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Attack03|BaseLayer|Arm", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Attack04|BaseLayer|Arm", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Attack05|BaseLayer|Arm", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Attack06|BaseLayer|Arm", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Die01|BaseLayer|Armatu", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtCounter|BaseLayer|", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtL_F|BaseLayer|Arma", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtLieGetup_FaceDown|", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtLieGetup_FaceUp|Ba", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtLieLoop_FaceDown|B", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtLieLoop_FaceUp|Bas", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FL|BaseLayer|Arm", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FR|BaseLayer|Arm", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunEnd|BaseLayer|", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunLoop|BaseLayer", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_IdleGeneral|BaseLayer|", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Sit_cough|BaseLayer|Ar", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_Sit_Idle|BaseLayer|Arm", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_SitToIdle|BaseLayer|Ar", 1.5);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_SP01_Attack01|BaseLaye", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_SP01|BaseLayer|Armatur", 2);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_SP_Idle1_End|BaseLayer", 1.25);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_SP_Idle1|BaseLayer|Arm", 1.25);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|DemoM02_RunF1|BaseLayer|Armature|Arm", 2.f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
+
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkBL|BaseLayer|Armat", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkB|BaseLayer|Armatu", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkFL|BaseLayer|Armat", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkFR|BaseLayer|Armat", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkF|BaseLayer|Armatu", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkL|BaseLayer|Armatu", 1.5f);
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_WalkR|BaseLayer|Armatu", 1.5f);*/
 #pragma endregion // Mon_AxeMan
+#pragma region Mon_KnifeWoman
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack05", 2.f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_Die01", 2.f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_Die02", 2.f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_Run_N", 2.f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_SP03", 2.f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_SP_Idle1", 2.f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_WalkB", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_WalkF", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_WalkL", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV1Villager_F_WalkR", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_HurtCounter", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_HurtS_FL", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_HurtS_FR", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_Walk_B", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_Walk_F", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_Walk_L", 1.5f);
+ //   SET_ANIM_SPEED("SK_C_LV0Villager_F.ao|LV2Villager01_F_Walk_R", 1.5f);
+#pragma endregion // Mon_KnifeWoman
+
 
 #undef SET_ANIM_SPEED
 

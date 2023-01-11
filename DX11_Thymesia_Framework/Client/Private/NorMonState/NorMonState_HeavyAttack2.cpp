@@ -138,7 +138,6 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
 		{
@@ -150,7 +149,6 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 			{
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
-			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 		}
 			
 			m_bAttackLookAtLimit = true;
@@ -194,7 +192,6 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		}
 
@@ -206,7 +203,6 @@ void CNorMonState_HeavyAttack2::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
@@ -223,7 +219,6 @@ void CNorMonState_HeavyAttack2::Free()
 
 _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
 

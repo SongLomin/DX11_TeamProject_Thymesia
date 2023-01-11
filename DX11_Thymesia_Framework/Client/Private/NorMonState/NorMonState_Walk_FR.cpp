@@ -96,23 +96,12 @@ void CNorMonState_Walk_FR::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		
-#endif
-#endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-
 	m_bAttackLookAtLimit = true;
-
 }
 
 void CNorMonState_Walk_FR::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 

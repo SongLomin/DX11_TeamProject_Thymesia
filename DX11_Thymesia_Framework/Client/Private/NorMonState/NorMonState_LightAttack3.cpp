@@ -104,7 +104,6 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
 		{
@@ -117,7 +116,6 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 			break;
 		case Client::MONSTERTYPE::SKULL:
 			break;
@@ -134,7 +132,6 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 		}			
 			break;
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
-			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		{

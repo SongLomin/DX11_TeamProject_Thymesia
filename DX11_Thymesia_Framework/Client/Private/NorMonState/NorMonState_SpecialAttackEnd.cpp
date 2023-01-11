@@ -77,14 +77,7 @@ void CNorMonState_SpecialAttackEnd::OnStateStart(const _float& In_fAnimationBlen
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-
-#endif
-#endif
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-
-
 	m_bAttackLookAtLimit = true;
 }
 
