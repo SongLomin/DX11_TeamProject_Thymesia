@@ -56,7 +56,7 @@ void CUI_EvolveMenu_Option::LateTick(_float fTimeDelta)
 
 void CUI_EvolveMenu_Option::Call_OnChangeOption(OPTION_TYPE eOption, _uint iAmount)
 {
-    Call_OnChangeOption(eOption, iAmount);
+    Callback_OnChangeOption(eOption, iAmount);
 }
 
 void CUI_EvolveMenu_Option::Call_OnWheelMove(_float fScrollOffsetY)

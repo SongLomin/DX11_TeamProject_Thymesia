@@ -670,7 +670,9 @@ void CPhysXCollider::Add_PhysXActorAtSceneWithOption(const PxVec3& In_MassSpaceI
 	else
 	{
 		// 생성된 PhysXActor가 없음. Create부터 할 것.
-		DEBUG_ASSERT;
+#ifdef _DEBUG
+		cout << "No Actor was created." << endl;
+#endif // _DEBUG
 	}
 
 	for (auto& elem : m_pGeometry)
@@ -701,7 +703,10 @@ void CPhysXCollider::Add_PhysXActorAtScene()
 	else
 	{
 		// 생성된 PhysXActor가 없음. Create부터 할 것.
-		DEBUG_ASSERT;
+#ifdef _DEBUG
+		cout << "No Actor was created." << endl;
+#endif // _DEBUG
+
 	}
 
 	for (auto& elem : m_pGeometry)

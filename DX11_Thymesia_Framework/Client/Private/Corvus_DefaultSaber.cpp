@@ -27,7 +27,7 @@ HRESULT CCorvus_DefaultSaber::Initialize(void* pArg)
 
 	m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(PhysXDesc);
-	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+	
 
 	return S_OK;
 }
@@ -35,6 +35,8 @@ HRESULT CCorvus_DefaultSaber::Initialize(void* pArg)
 HRESULT CCorvus_DefaultSaber::Start()
 {
 	__super::Start();
+
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 
 	return S_OK;
 }

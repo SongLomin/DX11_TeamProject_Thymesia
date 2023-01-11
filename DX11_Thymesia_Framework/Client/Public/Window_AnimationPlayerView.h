@@ -47,6 +47,9 @@ private:
 	void Draw_AnimationList();
 
 public:
+	void OnUpdateSoundFile(const string& In_szFileName);
+
+public:
 	_bool								m_bKeyEventEditer = false;
 
 private:

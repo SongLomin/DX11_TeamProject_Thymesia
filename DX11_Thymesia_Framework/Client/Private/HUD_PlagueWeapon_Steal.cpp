@@ -75,7 +75,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_tFaderDesc.vFadeColor = _float4(0, 0, 0, 0.7f);
 
 
-    Bind_Player();
+    
 
 
     return S_OK;
@@ -84,7 +84,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
 HRESULT CHUD_PlagueWeapon_Steal::Start()
 {
     __super::Start();
-
+    Bind_Player();
 
     return S_OK;
 }

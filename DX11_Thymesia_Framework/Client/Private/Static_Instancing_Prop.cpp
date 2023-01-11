@@ -55,6 +55,13 @@ HRESULT CStatic_Instancing_Prop::Start()
 {
     __super::Start();
 
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+
+	for (auto& elem : m_pDynamicColliderComs)
+	{
+		elem.lock()->Add_PhysXActorAtScene();
+	}
+
     return S_OK;
 }
 
@@ -483,7 +490,7 @@ void CStatic_Instancing_Prop::Bake_PhysXColliderCom()
 			PhysXColliderDesc tDesc;
 			Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 			m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-			m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+			
 		}
 		break;
 
@@ -511,7 +518,6 @@ void CStatic_Instancing_Prop::Bake_DynamicColliderComs()
 		pDynamicPhysXColliderCom.lock()->Init_ModelCollider(pModelData, true);
 		Preset::PhysXColliderDesc::DynamicBottleSetting(tDesc, elem.Get_Matrix());
 		pDynamicPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-		pDynamicPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 		pDynamicPhysXColliderCom.lock()->PutToSleep();
 		m_pDynamicColliderComs.push_back(pDynamicPhysXColliderCom);
 	}

@@ -66,6 +66,8 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 		//DEBUG_ASSERT;
 	}
 
+	BEGIN_PERFROMANCE_CHECK("LOAD_FROM_JSON_ADD_GAMEOBJECT"); 
+
 	for (auto& Elem_GameObjects : LoadedJson["GameObject"])
 	{
 		weak_ptr<CGameObject> pGameObjectInstance = GAMEINSTANCE->Add_GameObject(Elem_GameObjects["Hash"], (_uint)In_eLevel);
@@ -82,7 +84,10 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 			pGameObjectInstance.lock()->Set_Enable(Elem_GameObjects["Setting"]["Enable"]);
 			pGameObjectInstance.lock()->Load_FromJson(Elem_GameObjects);
 		}
+		
 	}
+
+	END_PERFROMANCE_CHECK("LOAD_FROM_JSON_ADD_GAMEOBJECT");
 }
 
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
@@ -93,26 +98,36 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 	fs::directory_iterator itr(dir_path);
 	std::filesystem::directory_iterator end;
 
-	/*for_each_n(std::execution::par, entries.begin(), entries.size(), [In_LevelIndex](const std::filesystem::directory_entry& entry)
-		{
-			weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-			cout << entry.path().filename() << std::endl;
-		});*/
+	BEGIN_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
+
+	//for_each_n(entries.begin(), entries.size(), [In_LevelIndex](const std::filesystem::directory_entry& entry)
+	//	{
+	//		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+	//		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+	//		//cout << entry.path().filename() << std::endl;
+	//	});
 
 	
 
 	while (itr != fs::end(itr)) {
 		const fs::directory_entry& entry = *itr;
 
-		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+		GET_SINGLE(CThread_Manager)->Enqueue_Job(bind([entry, In_LevelIndex]() {
+			weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+			//cout << entry.path().filename() << std::endl;
+			}));
+
+		
 #ifdef _DEBUG_COUT_
-		cout << entry.path().filename() << std::endl;
+		
 #endif
 
 		itr++;
 	}
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+
+	END_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 }
 
 void CClientLevel::Tick(_float fTimeDelta)

@@ -135,6 +135,7 @@ void CWindow_EffectEditerView::Call_SetCurrentEffect(weak_ptr<CEffectGroup> pEff
         m_pCurrentEffectParticle = m_pCurrentEffectGroup.lock()->Get_Particle(iIndex - _uint(m_pCurrentEffectGroup.lock()->Get_EffectMeshSize()));
     }
 
+    GET_SINGLE(CWindow_AnimationPlayerView)->OnUpdateSoundFile("");
 }
 
 
@@ -150,6 +151,7 @@ void CWindow_EffectEditerView::Call_SelectSoundFile(const _char* In_szSoundFileN
     m_szSoundFileName = In_szSoundFileName;
     m_fVolume = 1.f;
 
+    GET_SINGLE(CWindow_AnimationPlayerView)->OnUpdateSoundFile(m_szSoundFileName);
 }
 
 void CWindow_EffectEditerView::Call_UpdatePreViewModel()

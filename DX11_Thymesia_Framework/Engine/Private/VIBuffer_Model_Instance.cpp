@@ -384,8 +384,11 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 		return;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
+
+	pDeviceContext->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 	
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
@@ -397,7 +400,9 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vTranslation, XMVectorSetW(XMLoadFloat3(&In_ParticleDescs[i].vTarnslation), 1.f));
 	}
 
-	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+	pDeviceContext->Unmap(m_pVBInstance.Get(), 0);
+
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeviceContext);
 }
 
 void CVIBuffer_Model_Instance::Update_VisibleInstance(ID3D11DeviceContext* pDeviceContext)
