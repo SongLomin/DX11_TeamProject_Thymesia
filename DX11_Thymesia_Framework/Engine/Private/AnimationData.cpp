@@ -303,7 +303,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 #pragma endregion // BigHandMan
 
     //SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 0.5f);
-    SET_ANIM_SPEED("Corvus_VSUrd_Execution",0.9f);
+    SET_ANIM_SPEED("Corvus_VSUrd_Execution",1.f);
     SET_ANIM_SPEED("Corvus_SD_HurtMFL",2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtMFR",2.f);
     SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.006f);

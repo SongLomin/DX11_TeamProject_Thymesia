@@ -138,7 +138,22 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 				Rotation_TargetToLookDir();
 
 			m_IsAgainAvoid = false;
-			Get_OwnerPlayer()->Change_State<CCorvusState_Long_AvoidF>();
+
+			_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
+
+			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::LONG_AVOID_LV1)
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Long_AvoidF>();
+				return true;
+			}
+			else if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::SHORT_AVOID_LV1)
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Short_AvoidF>();
+				return true;
+			}
+			
+			//¿©±â¼­ ¶ì¶ì¶ìÇØÁà¾ßÇÔ
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return false;
 		}
 	}
