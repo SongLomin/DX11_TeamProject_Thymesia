@@ -6,7 +6,6 @@
 #include "Player.h"
 //#include "BehaviorBase.h"
 #include "Animation.h"
-#include "BoneNode.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
 #include "MobWeapon.h"
@@ -80,13 +79,9 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	if (!Get_Enable())
 		return;
 
-	if (In_iKeyIndex >= 167 && In_iKeyIndex <= 186)
+	if(In_iKeyIndex >= 167 && In_iKeyIndex <= 186)
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
@@ -96,47 +91,31 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 	case 187:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
 		break;
-	}
+	}	
 	case 188:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.12f, 9.f, 3.f);
 		break;
-	}
+	}	
 	case 189:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
 		break;
-	}
+	}	
 	case 190:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.15f, 9.f, 3.f);
@@ -144,11 +123,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 191:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.16f, 9.f, 3.f);
@@ -156,11 +131,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 192:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.19f, 9.f, 3.f);
@@ -168,11 +139,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 193:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
@@ -181,11 +148,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 	case 194:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.19f, 9.f, 3.f);
@@ -193,11 +156,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 195:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.18f, 9.f, 3.f);
@@ -205,11 +164,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 196:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 9.f, 3.f);
@@ -217,11 +172,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 197:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.15f, 9.f, 3.f);
@@ -229,11 +180,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 198:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
@@ -241,11 +188,7 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 199:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
@@ -253,23 +196,14 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 200:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);
 		break;
 	}
 	case 201:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.11f, 9.f, 3.f);

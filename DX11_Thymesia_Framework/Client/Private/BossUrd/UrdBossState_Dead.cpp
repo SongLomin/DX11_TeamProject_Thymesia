@@ -82,6 +82,8 @@ void CUrdBossState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bOnce = true;
 
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	

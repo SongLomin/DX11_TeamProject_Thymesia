@@ -48,10 +48,10 @@ void CVargBossState_Start::Start()
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart|SK_C_");
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_BossFightStart");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_Seq_BossFightStart|SK_C_Varg.ao|");
 		break;
 	}
 

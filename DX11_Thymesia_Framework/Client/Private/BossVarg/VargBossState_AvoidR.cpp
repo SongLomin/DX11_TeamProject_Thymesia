@@ -32,7 +32,7 @@ void CVargBossState_AvoidR::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_AvoidR");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_AvoidR|SK_C_Varg.ao|Varg_AvoidR");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidR::Call_AnimationEnd, this, placeholders::_1);
 }

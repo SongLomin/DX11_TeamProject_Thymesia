@@ -37,7 +37,7 @@ void CVargBossState_Exe_Dead::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Dead");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_TakeExecution_Dead|SK_C_Varg.ao|");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
 

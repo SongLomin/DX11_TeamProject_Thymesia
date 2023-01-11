@@ -477,14 +477,18 @@ void CCorvus::OnEventMessage(_uint iArg)
 
 	if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
 	{
-		Change_State<CCorvusState_HurtL>();
+		Change_State<CCorvusState_ParryDeflectLeftup>();
 	}
 
 	if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
 	{
-		Change_State<CCorvusState_HurtR>();
+		Change_State<CCorvusState_ParryDeflectRightup>();
 	}
 
+	if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
 
 
 

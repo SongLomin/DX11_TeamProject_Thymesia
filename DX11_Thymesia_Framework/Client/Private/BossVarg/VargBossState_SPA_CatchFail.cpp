@@ -32,7 +32,7 @@ void CVargBossState_SPA_CatchFail::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Fail");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_SPAttack1_Fail|SK_C_Varg.ao|Varg");
 
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_CatchFail::Call_AnimationEnd, this, placeholders::_1);

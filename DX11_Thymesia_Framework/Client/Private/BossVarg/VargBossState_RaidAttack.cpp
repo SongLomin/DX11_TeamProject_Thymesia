@@ -53,7 +53,7 @@ HRESULT CVargBossState_RaidAttack::Initialize(void* pArg)
 void CVargBossState_RaidAttack::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack2");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_RaidAttack2|SK_C_Varg.ao|Varg_Ra");
 	m_bAttackLookAtLimit = true;
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this, placeholders::_1);
 }

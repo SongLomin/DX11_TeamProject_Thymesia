@@ -89,6 +89,23 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
 
+	if (m_iAttackCount == 0)
+	{
+		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	}
+	else if (m_iAttackCount == 1)
+	{
+		m_pModelCom.lock()->Set_AnimationSpeed(1.15f);
+	}
+	else if (m_iAttackCount == 2)
+	{
+		m_pModelCom.lock()->Set_AnimationSpeed(1.3f);
+	}
+	else if (m_iAttackCount == 3)
+	{
+		m_pModelCom.lock()->Set_AnimationSpeed(1.45f);
+	}
+
 	
 
 #ifdef _DEBUG
@@ -103,7 +120,7 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 void CBigHandManState_ComboB_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
@@ -173,6 +190,7 @@ _bool CBigHandManState_ComboB_Start::Check_AndChangeNextState()
 			{
 				Get_OwnerCharacter().lock()->Change_State<CBigHandManState_ComboB_Start>(0.05f);
 				m_iAttackCount++;
+				m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 				m_bFourAttackEnd = false;
 				return true;
 			}

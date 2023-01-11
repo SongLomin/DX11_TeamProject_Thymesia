@@ -6,7 +6,6 @@
 #include "Player.h"
 //#include "BehaviorBase.h"
 #include "Animation.h"
-#include "BoneNode.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
 #include "MobWeapon.h"
@@ -65,11 +64,7 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 	case 92:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
@@ -78,11 +73,7 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 93:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.3f, 9.f, 3.f);
@@ -90,11 +81,7 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 330:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
@@ -103,11 +90,7 @@ void CBatBossState_Atk_L01_3a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 	case 410:
 	{
-		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
-
-		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
-			* XMLoadFloat4x4(&TempMatrix)
-			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
