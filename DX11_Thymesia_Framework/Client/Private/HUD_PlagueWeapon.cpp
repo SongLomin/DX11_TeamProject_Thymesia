@@ -59,6 +59,7 @@ HRESULT CHUD_PlagueWeapon::Start()
 	m_pMainSkill.lock()->Bind_Player_FromSocketType((_uint)CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
 	m_pSubSkill.lock()->Bind_Player_FromSocketType((_uint)CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 
+
 	return S_OK;
 }
 

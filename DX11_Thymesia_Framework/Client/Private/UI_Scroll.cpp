@@ -146,7 +146,7 @@ void CUI_Scroll::CalcScrolledTrackToMaxSize()
 
 _bool CUI_Scroll::CheckMoveWheelCurrentTick()
 {
-    _long  fWheelMovement =  abs(GAMEINSTANCE->Get_DIMouseMoveState(MMS_WHEEL));
+    _long  fWheelMovement = abs(GAMEINSTANCE->Get_DIMouseMoveState(MMS_WHEEL)) * 7;
 
     if (fWheelMovement > 0)
     {
@@ -175,7 +175,7 @@ void CUI_Scroll::ScrollingToDrag()
 {
     POINT   tMousePt = GET_SINGLE(CUIManager)->Get_MousePoint();
 
-    m_pScrollTrack.lock()->Set_Y((_float)tMousePt.y - m_pScrollTrack.lock()->Get_SizeY() * 0.5f);
+    m_pScrollTrack.lock()->Set_Y((_float)tMousePt.y);
 
 }
 
@@ -188,9 +188,9 @@ void CUI_Scroll::Reset_Scroll()
     Callback_OnWheelMove(m_fMaxSize * m_fProgressRatio);
 }
 
-void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const _float fScrollSize, const _float fStartSize, const _float fMaxSize)
+void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, _float fSizeX, const _float fScrollSize, const _float fStartSize, const _float fMaxSize)
 {
-    m_pDecorationHead.lock()->Set_UIPosition(fX, fY, 11.f, 5.f, CUI::ALIGN_LEFTTOP);
+    m_pDecorationHead.lock()->Set_UIPosition(fX, fY, fSizeX, 5.f, CUI::ALIGN_LEFTTOP);
 
     _float2  fHeadLeftBottomPos = m_pDecorationHead.lock()->Get_Point(CUI::UI_POINT::LEFT_BOTTOM);
 
@@ -204,7 +204,7 @@ void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const
     (
         fX,
         fHeadLeftBottomPos.y,
-        11.f,
+        fSizeX,
         fScrollSize,
         CUI::ALIGN_LEFTTOP
     );
@@ -213,21 +213,21 @@ void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const
     (
         fX,
         fHeadLeftBottomPos.y,
-        11.f,
+        fSizeX,
         fTrackSize,
         CUI::ALIGN_LEFTTOP
     );
 
     m_pDecorationTail.lock()->Set_UIPosition
-    (fX,
+    (   fX,
         m_pScrollBoder.lock()->Get_Point(CUI::UI_POINT::LEFT_BOTTOM).y,
-        11.f,
+        fSizeX,
         5.f,
         CUI::ALIGN_LEFTTOP
     );
 
     m_tUIDesc = m_pScrollBoder.lock()->Get_UIDESC();
-    m_tUIDesc.fSizeX = 20.f;
+    m_tUIDesc.fSizeX = fSizeX;
 }
 
 void CUI_Scroll::Set_Depth(_float fDepth)

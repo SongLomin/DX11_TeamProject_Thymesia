@@ -7,7 +7,7 @@ BEGIN(Client)
 
 class CCustomUI;
 
-class CUI_Scroll : public CUI_Button_Base
+class CUI_Scroll : public CUI_Button
 {
 	GAMECLASS_H(CUI_Scroll)
 	CLONE_H(CUI_Scroll, CGameObject)
@@ -20,7 +20,7 @@ public:
 
 public:
     void                Reset_Scroll();
-    void                SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const _float fScrollSize,
+    void                SetUp_ScrollFromLeftTop(const _float fX, const _float fY, _float fSizeX, const _float fScrollSize,
         const _float fStartSize, const _float fMaxSize);
 
     virtual void        Set_Depth(_float fDepth) override;

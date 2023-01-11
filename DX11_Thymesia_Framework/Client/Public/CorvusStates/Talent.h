@@ -12,7 +12,7 @@ class CTalent_Effect;
 class CCustomUI;
 class CUI_EvolveTalent_Active;
 class CTalent :
-    public CUI_Button_Base
+    public CUI_Button
 {
     GAMECLASS_H(CTalent)
         CLONE_H(CTalent, CGameObject)

@@ -265,7 +265,7 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnEnable(void* pArg)
     }
     else if (!Check_UnLocked())
     {
-        m_pIcon.lock()->Set_AlphaColor(0.5f);
+        m_pIcon.lock()->Set_AlphaColor(0.2f);
     }
 }
 

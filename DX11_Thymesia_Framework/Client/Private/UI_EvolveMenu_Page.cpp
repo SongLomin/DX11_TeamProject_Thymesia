@@ -2,6 +2,8 @@
 #include "UI_EvolveMenu_Page.h"
 #include "FadeMask.h"
 #include "UI_EvolveMenu.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CUI_EvolveMenu_Page)
 CLONE_C(CUI_EvolveMenu_Page, CGameObject)
@@ -43,5 +45,20 @@ void CUI_EvolveMenu_Page::Call_ExitTap()
     Set_Enable(false);
     m_pFadeMask.lock()->Set_Enable(false);
     GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+
+}
+
+void CUI_EvolveMenu_Page::OnEnable(void* pArg)
+{
+    __super::OnEnable(pArg);
+
+    GET_SINGLE(CUIManager)->Set_OpenedMenu(true);
+}
+
+void CUI_EvolveMenu_Page::OnDisable()
+{
+    __super::OnDisable();
+
+    GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
 
 }

@@ -897,6 +897,10 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_Fortress_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/Fortress_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 #endif // _EFFECT_TOOL_
 
+	LOAD_TEXTURES_USE_THREAD(("Loading_Font_SeaOfTrees_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SeaOfTrees_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Loading_Font_SeaOfTrees_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SeaOfTrees_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_RoyalGarden_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1082,6 +1086,10 @@ void CLoader::Load_UIResource()
 	//EvolveMenu RightBG
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_RightBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveRightBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_MapImage_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_Garden"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Garden.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Fortress.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 	//Quest
@@ -1415,6 +1423,21 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_Defualt"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SettingBox_Long.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_Select"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SettingBox_HighLight_Long.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_BGHead"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Head.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_BGBody"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Body.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_BGBottom"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Bottom.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_On"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/OnOff/On.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_Off"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/OnOff/Off.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_TypeText"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/OptionTypeText/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_Quality"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Quality/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	LOAD_TEXTURES_USE_THREAD(("UI_Slider_BG"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SliderBG.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("UI_Slider_Fill"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SliderFill.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("UI_Slider_Track"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/TexUI_SliderBarThumb_Hover.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_BGHead"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Head.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_BGBody"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/Background_Body.dds"), MEMORY_TYPE::MEMORY_STATIC);

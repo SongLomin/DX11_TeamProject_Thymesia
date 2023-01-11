@@ -3,7 +3,10 @@
 #include "GameManager.h"
 #include "UIManager.h"
 
-HRESULT CUI_Button_Base::Initialize(void* pArg)
+GAMECLASS_C(CUI_Button)
+CLONE_C(CUI_Button, CGameObject)
+
+HRESULT CUI_Button::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
@@ -13,14 +16,14 @@ HRESULT CUI_Button_Base::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT CUI_Button_Base::Start()
+HRESULT CUI_Button::Start()
 {
     __super::Start();
 
     return S_OK;
 }
 
-void CUI_Button_Base::Tick(_float fTimeDelta)
+void CUI_Button::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
@@ -39,19 +42,18 @@ void CUI_Button_Base::Tick(_float fTimeDelta)
 	Update_LClick();
 }
 
-void CUI_Button_Base::LateTick(_float fTimeDelta)
+void CUI_Button::LateTick(_float fTimeDelta)
 {
-    
     __super::LateTick(fTimeDelta);
 	
 }
 
-void CUI_Button_Base::Set_ButtonLevel(BUTTON_LEVEL eButtonLevel)
+void CUI_Button::Set_ButtonLevel(BUTTON_LEVEL eButtonLevel)
 {
 	m_eButtonLevel = eButtonLevel;
 }
 
-void CUI_Button_Base::Update_MouseOver()
+void CUI_Button::Update_MouseOver()
 {
 	POINT		pt;
 
@@ -81,7 +83,7 @@ void CUI_Button_Base::Update_MouseOver()
 	}
 }
 
-void CUI_Button_Base::Update_LButtonDown()
+void CUI_Button::Update_LButtonDown()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{
@@ -94,7 +96,7 @@ void CUI_Button_Base::Update_LButtonDown()
 	}
 }
 
-void CUI_Button_Base::Update_LClick()
+void CUI_Button::Update_LClick()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::AWAY))
 	{
@@ -109,57 +111,57 @@ void CUI_Button_Base::Update_LClick()
 	}
 }
 
-void CUI_Button_Base::OnMouseOver()
+void CUI_Button::OnMouseOver()
 {
 }
 
-void CUI_Button_Base::OnMouseOut()
+void CUI_Button::OnMouseOut()
 {
 }
 
-void CUI_Button_Base::OnLButtonDown()
+void CUI_Button::OnLButtonDown()
 {
 }
 
-void CUI_Button_Base::OnLButtonUp()
+void CUI_Button::OnLButtonUp()
 {
 
 }
 
 
-void CUI_Button_Base::OnLButtonClick()
+void CUI_Button::OnLButtonClick()
 {
 }
 
-void CUI_Button_Base::CheckMouseOver()
+void CUI_Button::CheckMouseOver()
 {
 }
 
-void CUI_Button_Base::CheckMouseOut()
+void CUI_Button::CheckMouseOut()
 {
 }
 
-void CUI_Button_Base::CheckLButtonDown()
+void CUI_Button::CheckLButtonDown()
 {
 }
 
-void CUI_Button_Base::CheckLButtonClick()
+void CUI_Button::CheckLButtonClick()
 {
 }
 
-void CUI_Button_Base::UnCheckMouseOver()
+void CUI_Button::UnCheckMouseOver()
 {
 }
 
-void CUI_Button_Base::UnCheckMouseOut()
+void CUI_Button::UnCheckMouseOut()
 {
 }
 
-void CUI_Button_Base::UnCheckLButtonDown()
+void CUI_Button::UnCheckLButtonDown()
 {
 }
 
-void CUI_Button_Base::UnCheckLButtonClick()
+void CUI_Button::UnCheckLButtonClick()
 {
 }
 

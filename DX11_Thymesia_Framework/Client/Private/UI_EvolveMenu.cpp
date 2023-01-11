@@ -15,6 +15,8 @@
 #include "ClientLevel.h"
 #include "Interaction_CheckPoint.h"
 #include "UI_EvolveMenu_Option.h"
+#include "UI_EvolveMenu.h"
+
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -340,6 +342,16 @@ void CUI_EvolveMenu::SetUpFromCurrentLevel()
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
 		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
 		break;
+	case Client::LEVEL_STAGE2:
+		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
+		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_Garden");
+		break;
+	case Client::LEVEL_STAGE3:
+		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
+		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_HermesFortress");
+		break;
 	default:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
@@ -407,13 +419,15 @@ void CUI_EvolveMenu::SelectButton()
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME:
 	{
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 0.3f;
-		tFaderDesc.fDelayTime = 0.f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu, this);
+		//tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		//tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		//tFaderDesc.fFadeMaxTime = 0.3f;
+		//tFaderDesc.fDelayTime = 0.f;
+		//tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		//m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		//m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu, this);
+
+		GET_SINGLE(CUIManager)->OnExitEvolveMenu();
 
 		weak_ptr<CClientLevel> pClientLevel = Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel());
 		LEVEL eCurrentLevel = pClientLevel.lock()->Get_MyLevel();

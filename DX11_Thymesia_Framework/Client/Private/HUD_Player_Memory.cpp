@@ -98,7 +98,6 @@ HRESULT CHUD_Player_Memory::Render(ID3D11DeviceContext* pDeviceContext)
 {
   //  __super::Render(pDeviceContext);
 
-
     return S_OK;
 }
 

@@ -48,7 +48,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 		LEVEL::LEVEL_TEST       != m_eNextLevel)
 	{
 		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
-		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_GAMEPLAY);
+		m_pUILoading.lock()->SetUp_LoadingUI(m_eNextLevel);
 	}
 
 	m_pLoader = CLoader::Create(eNextLevel);

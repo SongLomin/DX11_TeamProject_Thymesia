@@ -6,7 +6,7 @@ BEGIN(Client)
 class CCustomUI;
 class CEasingComponent_Alpha;
 
-class CUI_InventoryConfirmWindowButton : public CUI_Button_Base
+class CUI_InventoryConfirmWindowButton : public CUI_Button
 {	
 public:
 	GAMECLASS_H(CUI_InventoryConfirmWindowButton)

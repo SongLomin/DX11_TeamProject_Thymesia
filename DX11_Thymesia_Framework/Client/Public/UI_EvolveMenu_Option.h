@@ -40,14 +40,13 @@ private:
 private:
     weak_ptr<CCustomUI>     m_pBackground_Head;
     weak_ptr<CCustomUI>     m_pBackground_Body;
+    weak_ptr<CCustomUI>     m_pBackground_Bottom;
 
 
     weak_ptr<CUI_Scroll>    m_pScroll;
     weak_ptr<CEasingComponent_Alpha>    m_pEasingAlpha;
 
     vector <weak_ptr<CUI_OptionItem>> m_vecOptionItem;
-
-
 
 
 private:

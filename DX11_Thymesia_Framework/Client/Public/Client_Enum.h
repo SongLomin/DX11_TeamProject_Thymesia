@@ -572,8 +572,8 @@ namespace Client
 	*/
 	enum class OPTION_TYPE
 	{
-		SOUND_TYPE_EFFECT = 0,			//Slider
-		SOUND_TYPE_VOICE,				//Slider
+		SOUND_TYPE_BG	= 0,			//Slider
+		SOUND_TYPE_EFFECT,				//Slider
 		SSAA,							//On off
 		PARTICLE_QUALITY,				//Level 
 		AMBIENT_OCCLUSION,				//On off

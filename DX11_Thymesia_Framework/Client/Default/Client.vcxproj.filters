@@ -2188,6 +2188,13 @@
     <ClInclude Include="..\Public\Interaction_CheckPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_OptionElementBase.h" />
+    <ClInclude Include="..\Public\UI_OptionElement_OnOff.h" />
+    <ClInclude Include="..\Public\UI_OptionElement_Quality.h" />
+    <ClInclude Include="..\Public\UI_OptionElement_Slider.h" />
+    <ClInclude Include="..\Public\UI_Slider.h" />
+    <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
+    <ClInclude Include="..\Public\UI_FadeMask.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4406,6 +4413,13 @@
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_OptionElement_OnOff.cpp" />
+    <ClCompile Include="..\Private\UI_OptionElement_Quality.cpp" />
+    <ClCompile Include="..\Private\UI_OptionElement_Slider.cpp" />
+    <ClCompile Include="..\Private\UI_OptionElementBase.cpp" />
+    <ClCompile Include="..\Private\UI_Slider.cpp" />
+    <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
+    <ClCompile Include="..\Private\UI_FadeMask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
