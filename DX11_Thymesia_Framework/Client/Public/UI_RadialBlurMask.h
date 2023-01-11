@@ -20,7 +20,7 @@ public:
 
 
 public:
-    void                                    Set_Radial(_float fStart, _float fTarget, _float fTime);
+    void                                    Set_Radial(_float fStart, _float fTarget, _float fTime, EASING_TYPE eType = EASING_TYPE::LINEAR);
 
 public:
     FDelegate<>                             Callback_OnEndLerp;

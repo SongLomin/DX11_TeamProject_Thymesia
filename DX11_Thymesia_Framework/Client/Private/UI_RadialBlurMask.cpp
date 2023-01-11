@@ -51,9 +51,9 @@ void CUI_RadialBlurMask::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-void CUI_RadialBlurMask::Set_Radial(_float fStart, _float fTarget, _float fTime)
+void CUI_RadialBlurMask::Set_Radial(_float fStart, _float fTarget, _float fTime, EASING_TYPE eType)
 {
-    m_pEasingFloat.lock()->Set_Lerp(fStart, fTarget, fTime, EASING_TYPE::LINEAR, CEasingComponent::ONCE);
+    m_pEasingFloat.lock()->Set_Lerp(fStart, fTarget, fTime, eType, CEasingComponent::ONCE);
     m_pEasingFloat.lock()->Callback_LerpEnd += bind(&CUI_RadialBlurMask::Call_OnEndLerp, this);
 }
 

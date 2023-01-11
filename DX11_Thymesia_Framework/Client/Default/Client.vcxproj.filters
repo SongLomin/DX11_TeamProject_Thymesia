@@ -2194,6 +2194,7 @@
     <ClInclude Include="..\Public\UI_OptionElement_Slider.h" />
     <ClInclude Include="..\Public\UI_Slider.h" />
     <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
+    <ClInclude Include="..\Public\UI_FadeMask.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4418,6 +4419,7 @@
     <ClCompile Include="..\Private\UI_OptionElementBase.cpp" />
     <ClCompile Include="..\Private\UI_Slider.cpp" />
     <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
+    <ClCompile Include="..\Private\UI_FadeMask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

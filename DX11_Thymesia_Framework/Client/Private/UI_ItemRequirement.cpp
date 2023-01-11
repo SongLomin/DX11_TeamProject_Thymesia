@@ -102,23 +102,22 @@ void CUI_ItemRequirement::Start_UI()
 
     Set_Enable(true);
     m_bIsAnimation = true;
-    m_pEasingAlpha.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, false);
+    m_pEasingAlpha.lock()->Set_Lerp(0.f, 0.9f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, false);
     m_pEasingAlpha.lock()->Callback_LerpEnd += bind(&CUI_ItemRequirement::Call_EndFadeIn, this);
 }
 
 void CUI_ItemRequirement::Call_EndFadeIn()
 {
-    m_pEasingFloat.lock()->Set_Lerp(0.f, 1.f, 2.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
+    m_pEasingFloat.lock()->Set_Lerp(0.f, 0.9f, 2.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
     m_pEasingFloat.lock()->Callback_LerpEnd += bind(&CUI_ItemRequirement::Call_EndTimeOut, this);
 }
 
 void CUI_ItemRequirement::Call_EndTimeOut()
 {
-    m_pEasingAlpha.lock()->Set_Lerp(1.f, 0.f, 1.f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, false);
+    m_pEasingAlpha.lock()->Set_Lerp(0.9f, 0.f, 1.f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, false);
     m_pEasingAlpha.lock()->Callback_LerpEnd += bind(&CUI_ItemRequirement::Call_EndLerp, this);
 
 }
-
 
 
 void CUI_ItemRequirement::SetUp_Component()

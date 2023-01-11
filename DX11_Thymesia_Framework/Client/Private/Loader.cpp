@@ -843,6 +843,10 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Loading_Font_Fortress_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/Fortress_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 #endif // _EFFECT_TOOL_
 
+	GAMEINSTANCE->Load_Textures(("Loading_Font_SeaOfTrees_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SeaOfTrees_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Loading_Font_SeaOfTrees_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SeaOfTrees_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1022,12 +1026,15 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_ResumeGame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/ResumeGame.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_SelectHighlight"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight_02.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//EvolveMenu RightBG
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_RightBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveRightBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_Garden"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Garden.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Fortress.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 	//Quest

@@ -39,8 +39,6 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 	tIconDesc.fSizeX = 51.f;
 	tIconDesc.fSizeY = 145.f;
 	
-
-
 	FaderDesc faderDesc;
 	faderDesc.eFaderType = FADER_INOUTLOOPING;
 	faderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
@@ -138,7 +136,9 @@ void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 	case Client::LEVEL_LOBBY:
 		break;
 	case Client::LEVEL_GAMEPLAY:
-		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+		m_pLoadingBG.lock()->Set_Texture("Loading_SeaOfTrees");
+		m_pStageTitle.lock()->Set_Texture("Loading_Font_SeaOfTrees_Title");
+		m_pStageDesc.lock()->Set_Texture("Loading_Font_SeaOfTrees_Desc");
 		break;
 	case Client::LEVEL_STAGE2:
 		m_pLoadingBG.lock()->Set_Texture("Loading_OceanOfMemories");
@@ -147,10 +147,15 @@ void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 		break;
 	case Client::LEVEL_STAGE3:
 		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+		m_pStageTitle.lock()->Set_Texture("Loading_Font_Fortress_Title");
+		m_pStageDesc.lock()->Set_Texture("Loading_Font_Fortress_Desc");
 		break;
 	case Client::LEVEL_EDIT:
 		break;
 	case Client::LEVEL_END:
+		m_pLoadingBG.lock()->Set_Texture("Loading_OceanOfMemories");
+		m_pStageTitle.lock()->Set_Texture("Loading_Font_Fortress_Title");
+		m_pStageDesc.lock()->Set_Texture("Loading_Font_Fortress_Desc");
 		break;
 	default:
 		break;

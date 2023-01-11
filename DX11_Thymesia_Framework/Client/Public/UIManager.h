@@ -42,6 +42,8 @@ public:
 
 public:
     void               OnEnterEvolveMenu();
+    void               OnExitEvolveMenu();
+
 
 
 public:

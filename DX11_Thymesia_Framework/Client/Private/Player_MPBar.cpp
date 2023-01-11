@@ -31,14 +31,14 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
 		bind(&CPlayer_MPBar::Bind_Player, this);
 
-
-	Bind_Player();
 	return S_OK;
 }
 
 HRESULT CPlayer_MPBar::Start()
 {
 	__super::Start();
+
+	Bind_Player();
 
 	return S_OK;
 }

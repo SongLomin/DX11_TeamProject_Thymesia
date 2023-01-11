@@ -644,6 +644,7 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
+    <ClInclude Include="..\Public\UI_FadeMask.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
     <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h" />
@@ -1300,6 +1301,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Page.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
+    <ClCompile Include="..\Private\UI_FadeMask.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
     <ClCompile Include="..\Private\UI_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_InventoryConfirmWindow.cpp" />
