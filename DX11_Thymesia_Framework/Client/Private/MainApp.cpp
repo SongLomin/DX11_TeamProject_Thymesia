@@ -43,8 +43,6 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::Create_Instance();
 	CGameManager::Create_Instance();
 	CUIManager::Create_Instance();
-	
-
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
 		return E_FAIL;	
@@ -62,6 +60,7 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::CHECKPOINT    , (_uint)COLLISION_LAYER::PLAYER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER       , (_uint)COLLISION_LAYER::PLAYER_BATCOL);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::CHECK_DIR     , (_uint)COLLISION_LAYER::PLAYER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::INTERIOR      , (_uint)COLLISION_LAYER::INTERIOR);
 
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE, (_uint)PHYSX_COLLISION_LAYER::GROUND);
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE, (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE);
@@ -78,12 +77,12 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::CAMERA		, (_uint)PHYSX_COLLISION_LAYER::GROUND);
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PROP , (_uint)PHYSX_COLLISION_LAYER::GROUND);
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PROP , (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP);
-	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::INTERIOR		, (_uint)PHYSX_COLLISION_LAYER::INTERIOR);
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Add_SingleGameObject<CFadeMask>(LEVEL_STATIC);
 
-	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Corvus");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
 	
 #ifdef _BAKE_MIPMAPS_
 	Bake_MipMaps();

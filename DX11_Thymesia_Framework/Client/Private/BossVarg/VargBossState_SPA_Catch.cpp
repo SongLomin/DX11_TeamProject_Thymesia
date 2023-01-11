@@ -74,6 +74,8 @@ void CVargBossState_SPA_Catch::OnStateStart(const _float& In_fAnimationBlendTime
 	__super::OnStateStart(In_fAnimationBlendTime);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pOwner.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNONSPOTLIGHT);
+
 #ifdef _DEBUG_COUT_
 	cout << "VargState: SPA_Catch -> OnStateStart" << endl;
 #endif // _DEBUG_COUT_

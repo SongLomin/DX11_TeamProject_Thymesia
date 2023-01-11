@@ -29,6 +29,9 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
+	_bool       m_bNextAttackOnOff = false;
+
+private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;

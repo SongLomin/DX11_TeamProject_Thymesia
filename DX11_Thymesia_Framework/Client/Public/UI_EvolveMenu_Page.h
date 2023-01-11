@@ -23,6 +23,9 @@ protected:
 protected:
 	weak_ptr<CFadeMask>	m_pFadeMask;
 
+protected:
+	void			OnEnable(void* pArg);
+	void			OnDisable();
 private:
 	void			Free() { };
 

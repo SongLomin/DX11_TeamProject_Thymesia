@@ -9,7 +9,7 @@ class CItem;
 class CEasingComponent_Transform;
 
 
-class CUI_ItemSlot : public CUI_Button_Base
+class CUI_ItemSlot : public CUI_Button
 {
 public:
 	GAMECLASS_H(CUI_ItemSlot)

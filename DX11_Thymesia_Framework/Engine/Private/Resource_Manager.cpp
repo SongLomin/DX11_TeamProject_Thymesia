@@ -5,8 +5,13 @@
 
 IMPLEMENT_SINGLETON(CResource_Manager)
 
+static ::recursive_mutex Load_texture_Mutex;
+static ::recursive_mutex Load_Model_Mutex;
+
 HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType)
 {
+	unique_lock<::recursive_mutex> lock(Load_texture_Mutex);
+
 	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
 
 	_hashcode KeyToHash = hash<string>()(_strKey);
@@ -16,6 +21,8 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 
 	if (m_SRVs[(_uint)eMemType].end() != iter)
 		return S_OK;
+
+	
 
 	HRESULT hr(0);
 	_tchar szExt[MAX_PATH] = TEXT("");
@@ -40,8 +47,6 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 		if (!lstrcmp(szExt, TEXT(".dds")))
 		{
 			hr = CreateDDSTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
-			//LoadFromDDSFile(szTextureFilePath, DDS_FLAGS_NONE, nullptr, TextureImage);
-			//hr = CreateShaderResourceView(DEVICE, TextureImage.GetImages(), TextureImage.GetImageCount(), TextureImage.GetMetadata(), pSRV.GetAddressOf());
 
 
 		}
@@ -49,8 +54,6 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 		{
 			hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
 
-			//LoadFromWICFile(szTextureFilePath, WIC_FLAGS_NONE, nullptr, TextureImage);
-			//hr = CreateShaderResourceView(DEVICE, TextureImage.GetImages(), TextureImage.GetImageCount(), TextureImage.GetMetadata(), pSRV.GetAddressOf());
 		}
 		if (FAILED(hr))
 		{
@@ -457,6 +460,7 @@ HRESULT CResource_Manager::Generate_MipMap(const _tchar* pTextureFilePath, const
 
 vector<ComPtr<ID3D11ShaderResourceView>> CResource_Manager::Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType)
 {
+
 	_hashcode KeyToHash = hash<string>()(_Str_Key);
 
 	if (MEMORY_TYPE::MEMORY_END == _eType)
@@ -619,22 +623,28 @@ void CResource_Manager::Load_TextureResourcesFromJson(json& In_TextureJson, cons
 
 HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool bAnimZero)
 {
-
-
 	shared_ptr<MODEL_DATA> TempModel = make_shared<MODEL_DATA>();
 
-	char			szFullPath[MAX_PATH] = "";
-	strcpy_s(szFullPath, sModelFilePath);
+	/*char			szFullPath[MAX_PATH] = "";
+	strcpy_s(szFullPath, sModelFilePath);*/
+
+
+
+	if (FAILED(TempModel->Make_ModelData(sModelFilePath, eModelType, In_TransformMatrix, bAnimZero)))
+	{
+		return E_FAIL;
+	}
+
+	
+	unique_lock<::recursive_mutex> lock(Load_Model_Mutex);
+	
 
 	auto iter = m_pScenes[(_uint)eMemType].find(sKey);
 	//기존에 이미 같은 키로 등록된 모델이 있음.
 	if (m_pScenes[(_uint)eMemType].end() != iter)
 		return E_FAIL;
 
-	if (FAILED(TempModel->Make_ModelData(szFullPath, eModelType, In_TransformMatrix, bAnimZero)))
-	{
-		return E_FAIL;
-	}
+	
 
 	m_pScenes[(_uint)eMemType].emplace(sKey, TempModel);
 

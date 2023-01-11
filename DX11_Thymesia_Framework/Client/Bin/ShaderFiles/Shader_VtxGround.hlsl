@@ -3,7 +3,7 @@
 #define PATCH_SIZE 3
 #define MAX_WATER_WAVE 128
 
-matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix,g_WorldMatrixInv;
+matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4 g_vShaderFlag;
 
 texture2D g_Texture_Sorc_Diff, g_Texture_Sorc_Norm;
@@ -33,13 +33,12 @@ struct WATERWAVE_DESC
     float fVibrationScale;
     float fFreq;
     float fSpeed;
+    float2 vPadding;
 };
 
 WATERWAVE_DESC WaterWaveDescs[MAX_WATER_WAVE];
 
-
 uint g_WaterWaveSize;
-
 
 /* ---------------------------------------------------------- */
 
@@ -218,17 +217,14 @@ HS_OUT HS_Main(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int vertexIdx : SV_Out
 float Compute_Wave(WATERWAVE_DESC WaterWaveDesc, float3 vCurrentPos)
 {
     float3 vNewPoint = mul(vector(vCurrentPos, 1.f), g_WorldMatrix);
-    
-    //float3 vWavePoint = mul(vector(WavePosition.x, 0.f, WavePosition.y, 1.f), g_WorldMatrixInv).xyz;
-    /*현재 충격파를 더해줌*/   
+
     float fDistance = length(vNewPoint.xz - WaterWaveDesc.vPosition);
     float fAccFreqLength = WaterWaveDesc.fSpeed * WaterWaveDesc.fTimeAcc;
     
-    float fAmplitude = /*fDistance < 0.001f ? 1.f : */WaterWaveDesc.fVibrationScale;
     float fWave = 0.f;
     
     if(fDistance < fAccFreqLength)
-        fWave = fAmplitude * 6.f * sin(WaterWaveDesc.fFreq * (fDistance - fAccFreqLength));
+        fWave = WaterWaveDesc.fVibrationScale * sin(WaterWaveDesc.fFreq * (fDistance - fAccFreqLength));
 
     return fWave;
 }

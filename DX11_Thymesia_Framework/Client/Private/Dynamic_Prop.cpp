@@ -37,21 +37,21 @@ HRESULT CDynamic_Prop::Initialize(void* pArg)
 
 HRESULT CDynamic_Prop::Start()
 {
+    COLLISION_LAYER CollisionLayer = COLLISION_LAYER::DYNAMIC_PROP;
+
     if (!m_pModelCom.lock()->Get_ModelData().lock() && (_uint)LEVEL_EDIT != m_CreatedLevel)
     {
         m_pModelCom.lock()->Init_Model("ColumnDamage08_Origin");
+        m_pTransformCom.lock()->Set_Scaled({ 0.5f, 0.5f, 0.5f });
         m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
         Preset::Dynamic_Prop::GateWay_DynamicPropSetting(m_pModelCom.lock()->Get_ModelKey(), m_CreatedLevel, m_pPieces);
     }
-
-    __super::Start();
-
-    COLLISION_LAYER CollisionLayer = COLLISION_LAYER::DYNAMIC_PROP;
-
-    if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+    else if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
     {
         CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
     }
+
+    __super::Start();
 
     COLLIDERDESC tColliderDesc;
     tColliderDesc.iLayer = (_uint)CollisionLayer;

@@ -49,7 +49,7 @@ void CCorvusState_Urd_Execution::Tick(_float fTimeDelta)
 	{
 		m_fCurrentSpeed += m_fAccel * fTimeDelta;
 		m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
-		PxControllerFilters Filters = Filters;
+		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 	}
 

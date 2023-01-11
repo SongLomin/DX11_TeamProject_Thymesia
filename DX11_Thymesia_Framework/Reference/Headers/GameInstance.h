@@ -191,6 +191,7 @@ public: /* For.Resource_Manager */
 	vector<ComPtr<ID3D11ShaderResourceView>> Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	
 	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
+	void Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
 	shared_ptr<MODEL_DATA> Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	vector<const string*> Get_AllModelKeys();
 	vector<const string*> Get_AllNoneAnimModelKeys();
@@ -259,12 +260,14 @@ public: /* For.PhysX_Manager */
 	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
 
 public: /* For. Thread_Manager */
-	template <class F, class... Args>
+	/*template <class F, class... Args>
 	std::future<typename std::result_of<F(Args...)>::type> Enqueue_Job(
 		F&& f, Args&&... args) 
 	{
 		return m_pThread_Manager->Enqueue_Job(f, args);
 	}
+
+	void Wait_JobDone(const _char* In_szConsoleText = nullptr);*/
 
 public: /* For. RenderTarget_Manager */
 	list<const _tchar*> Get_AllSRVNames();

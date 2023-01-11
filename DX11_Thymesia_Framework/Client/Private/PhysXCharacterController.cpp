@@ -147,7 +147,7 @@ PxControllerCollisionFlags CPhysXCharacterController::Set_Position(_fvector In_v
 	return  __super::Set_Position(In_vPosition, elapsedTime, filters);
 }
 
-PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform, const _flag In_RootFlag)
 {
 	filters.mFilterCallback = this;
 
@@ -173,7 +173,7 @@ PxControllerCollisionFlags CPhysXCharacterController::MoveGravity(const _float f
 
 	PxControllerCollisionFlags ResultFlags = __super::MoveGravity(fDeltaTime, filters);
 
-	if (!(ResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+	/*if (!(ResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN))
 	{
 		PxControllerCollisionFlags FootChecker;
 
@@ -186,7 +186,7 @@ PxControllerCollisionFlags CPhysXCharacterController::MoveGravity(const _float f
 		}
 
 		this->Move(XMVectorSet(0.f, 1.f, 0.f, 1.f), 0.f, fDeltaTime, filters);
-	}
+	}*/
 
 
 	/*if (Move_FootOffset(fDeltaTime))

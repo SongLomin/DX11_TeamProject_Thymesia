@@ -5,6 +5,7 @@
 #include "MobWeapon.h"
 #include "Monster.h"
 #include "Animation.h"
+#include "Character.h"
 
 GAMECLASS_C(CUrdBossState_Attack03_DashSting_R);
 CLONE_C(CUrdBossState_Attack03_DashSting_R, CComponent)
@@ -23,8 +24,19 @@ void CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd(_uint iEndAnimIndex)
 
 void CUrdBossState_Attack03_DashSting_R::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
+	if (!Get_Enable())
+	{
+		return;
+	}
+
 	switch (In_KeyIndex)
 	{
+	case 48:
+		TurnOn_Effect("Urd_WeaponShine");
+		return;
+	case 107:
+		TurnOff_Effect("Urd_WeaponShine");
+		return;
 	}
 }
 
@@ -71,11 +83,6 @@ void CUrdBossState_Attack03_DashSting_R::OnStateStart(const _float& In_fAnimatio
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (m_pThisAnimationCom.lock())
-	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CUrdBossState_Attack03_DashSting_R::Call_NextKeyFrame, this, placeholders::_1);
-	}
-
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 
@@ -87,6 +94,12 @@ void CUrdBossState_Attack03_DashSting_R::OnStateStart(const _float& In_fAnimatio
 	Set_MoveScale(2.f);
 	m_bAttackLookAtLimit = true;
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+			bind(&CUrdBossState_Attack03_DashSting_R::Call_NextKeyFrame, this, placeholders::_1);
+	}
 }	
 
 
@@ -96,7 +109,8 @@ void CUrdBossState_Attack03_DashSting_R::OnStateEnd()
 
 	if (m_pThisAnimationCom.lock())
 	{
-		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CUrdBossState_Attack03_DashSting_R::Call_NextKeyFrame, this, placeholders::_1);
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+			bind(&CUrdBossState_Attack03_DashSting_R::Call_NextKeyFrame, this, placeholders::_1);
 	}
 
 	Set_MoveScale();

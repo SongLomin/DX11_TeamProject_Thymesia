@@ -70,7 +70,7 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 		PxControllerFilters Filters;
 		_matrix                    vDoorOpenPlayerMatrix = Get_Owner().lock()->Get_Component<CJokerState_Sp_Open>().lock()->Get_PlayerTransform();
 		m_pPhysXControllerCom.lock()->Set_Position(
-			XMVectorSet(41.5f, 0.09f, 40.05f, 1.f),
+			XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f),
 			GAMEINSTANCE->Get_DeltaTime(),
 			Filters);
 		Get_OwnerCharacter().lock()->Get_Transform()->Set_Look2D(-vDoorOpenPlayerMatrix.r[2]);
@@ -80,9 +80,9 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 
 
 		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-		vOtherWorldMatrix.r[3] = XMVectorSet(41.5f, 0.09f, 40.05f, 1.f);
+		vOtherWorldMatrix.r[3] = XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f);
 		_matrix                    vResultOtherWorldMatrix;
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 1.1f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.f, 0.f));
 		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),

@@ -670,7 +670,9 @@ void CPhysXCollider::Add_PhysXActorAtSceneWithOption(const PxVec3& In_MassSpaceI
 	else
 	{
 		// 생성된 PhysXActor가 없음. Create부터 할 것.
-		DEBUG_ASSERT;
+#ifdef _DEBUG
+		cout << "No Actor was created." << endl;
+#endif // _DEBUG
 	}
 
 	for (auto& elem : m_pGeometry)
@@ -701,7 +703,10 @@ void CPhysXCollider::Add_PhysXActorAtScene()
 	else
 	{
 		// 생성된 PhysXActor가 없음. Create부터 할 것.
-		DEBUG_ASSERT;
+#ifdef _DEBUG
+		cout << "No Actor was created." << endl;
+#endif // _DEBUG
+
 	}
 
 	for (auto& elem : m_pGeometry)
@@ -889,6 +894,74 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, P
 
 		m_pShape.push_back(pShape);
 	}
+}
+
+
+void CPhysXCollider::OnCollision(weak_ptr<CPhysXCollider> pOtherCollider)
+{
+	m_isColl = true;
+
+	list<weak_ptr<CPhysXCollider>>::iterator iter = find_if(m_pPreOtherColliders.begin(),
+		m_pPreOtherColliders.end(),
+		[&](weak_ptr<CPhysXCollider> pPreOtherCollider)
+		{
+			if (!pOtherCollider.lock().get() || !pPreOtherCollider.lock().get())
+			{
+				DEBUG_ASSERT;
+				return false;
+			}
+
+			return pPreOtherCollider.lock()->Get_PColliderIndex() == pOtherCollider.lock()->Get_PColliderIndex();
+		});
+
+	if (m_pPreOtherColliders.end() == iter)
+	{
+		PhysXCollisionEnter(pOtherCollider);
+	}
+	else
+	{
+		PhysXCollisionStay(pOtherCollider);
+	}
+
+	m_pOtherColliders.push_back(pOtherCollider);
+}
+
+void CPhysXCollider::End_CollisionCheck()
+{
+	if (m_pOtherColliders.empty())
+		m_isColl = false;
+
+
+
+	_bool isErase = false;
+
+	for (auto iter = m_pPreOtherColliders.begin(); iter != m_pPreOtherColliders.end();)
+	{
+		isErase = false;
+
+		for (auto& elem : m_pOtherColliders)
+		{
+			if ((*iter).lock() == elem.lock())
+			{
+				iter = m_pPreOtherColliders.erase(iter);
+				isErase = true;
+				break;
+			}
+		}
+
+		if (!isErase)
+			iter++;
+	}
+
+	// 이전에 들어왔지만, 이번 프레임에 안들어온 충돌체.
+	// Exit를 호출한다. 
+	for (auto& elem : m_pPreOtherColliders)
+	{
+		PhysXCollisionExit(elem);
+	}
+
+	m_pPreOtherColliders = m_pOtherColliders;
+	m_pOtherColliders.clear();
 }
 
 void CPhysXCollider::PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider)

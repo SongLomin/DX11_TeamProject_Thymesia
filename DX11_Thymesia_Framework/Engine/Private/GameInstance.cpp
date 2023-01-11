@@ -76,7 +76,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager->Initialize();
 
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
-	m_pThread_Manager->Initialize(8);
+	m_pThread_Manager->Initialize(20);
 
 	m_pNvCloth_Manager->Initialize();
 
@@ -609,6 +609,11 @@ HRESULT CGameInstance::Load_Model(const _char* sKey, const _char* sModelFilePath
 	return m_pResource_Manager->Load_Model(sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
 }
 
+void CGameInstance::Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, const _bool Is_bAnimZero)
+{
+	m_pThread_Manager->Enqueue_Job(&CResource_Manager::Load_Model, m_pResource_Manager, sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
+}
+
 shared_ptr<MODEL_DATA> CGameInstance::Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType)
 {
 	return m_pResource_Manager->Get_ModelFromKey(_sKey, _eType);
@@ -834,6 +839,11 @@ _uint CGameInstance::Get_PhysXFilterGroup(const _uint In_iIndex)
 {
 	return m_pPhysX_Manager->Get_PhysXFilterGroup(In_iIndex);
 }
+
+//void CGameInstance::Wait_JobDone(const _char* In_szConsoleText)
+//{
+//	m_pThread_Manager->Wait_JobDone(In_szConsoleText);
+//}
 
 list<const _tchar*> CGameInstance::Get_AllSRVNames()
 {

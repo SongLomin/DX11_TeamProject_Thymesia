@@ -226,7 +226,11 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
 				|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
 			{
-				Get_OwnerMonster()->Change_State<CNorMonState_Die>();
+				if (m_eMonType != MONSTERTYPE::ARMORSHIELDMAN && m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN &&
+					m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN && m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
+				{
+					Get_OwnerMonster()->Change_State<CNorMonState_Die>();
+				}		    
 			}
 			else if (m_pStatusCom.lock()->Is_Dead())
 			{
@@ -254,9 +258,6 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 				{
 					GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
-
-				
-
 					Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
 				}
 			}

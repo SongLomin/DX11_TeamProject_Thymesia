@@ -138,6 +138,7 @@ void COptimization_Manager::Write_Log()
 		fout << "AVG TIME		: " << elem.second.AvgTime <<endl;
 		fout << "MIN TIME		: " << elem.second.MinTime <<endl;
 		fout << "MAX TIME		: " << elem.second.MaxTime <<endl;
+		fout << "ACC TIME		: " << elem.second.AccTime <<endl;
 		fout << "CALL COUNT		: " << elem.second.CallCount <<endl;
 		fout << "__________________________________________________" << endl << endl;
 		

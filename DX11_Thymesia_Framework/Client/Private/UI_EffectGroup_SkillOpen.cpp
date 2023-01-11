@@ -152,8 +152,8 @@ void CUI_EffectGroup_SkillOpen::Call_OnEasingFloatConditionEvent(_uint iEventNum
     if (iEventNumber == 1)
     {
         m_pSkillName.lock()->Set_Enable(true);
-        m_pSkillName.lock()->Set_LerpAlpha(0.1f, 1.f, 0.3f, EASING_TYPE::QUAD_OUT);
-        m_pSkillName.lock()->Set_LerpTransform(_float2(800.f, 420.f), _float2(800.f, 461.f), 0.3f, EASING_TYPE::QUAD_OUT);
+        m_pSkillName.lock()->Set_LerpAlpha(0.1f, 1.f, 0.2f, EASING_TYPE::QUAD_OUT);
+        m_pSkillName.lock()->Set_LerpTransform(_float2(800.f, 420.f), _float2(800.f, 461.f), 0.2f, EASING_TYPE::QUAD_OUT);
 
       //  m_pTitleBG.lock()->Set_LerpTransform(_float2(800.f, 450.f), _float2(800.f, 330.f), 0.2, EASING_TYPE::LINEAR);
        // m_pTitleText.lock()->Set_LerpTransform(m_pTitleText.lock()->GetPos(), _float2(800.f, 300.f), 0.2, EASING_TYPE::LINEAR);

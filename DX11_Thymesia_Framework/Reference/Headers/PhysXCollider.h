@@ -109,6 +109,11 @@ private:
 	vector<PxShape*>		m_pShape;
 	PxFilterData			m_FilterData;
 
+private: /* For. Collision */
+	_bool										m_isColl = false;
+	list<weak_ptr<CPhysXCollider>>				m_pPreOtherColliders;
+	list<weak_ptr<CPhysXCollider>>				m_pOtherColliders;
+
 public:
 	void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);
 	void		Add_PhysXActorAtSceneWithOption(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f }, const PxReal In_fMass = 0.f);
@@ -120,6 +125,8 @@ private:
 	void		Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 
 public:
+	void OnCollision(weak_ptr<CPhysXCollider> pOtherCollider);
+	void End_CollisionCheck();
 	void PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider);
 	void PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider);
 	void PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider);

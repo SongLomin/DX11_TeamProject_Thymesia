@@ -2188,6 +2188,22 @@
     <ClInclude Include="..\Public\Interaction_CheckPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack4.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-1 HeavyAttack4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack5.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-2 HeavyAttack5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Suprise_Attack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_OptionElementBase.h" />
+    <ClInclude Include="..\Public\UI_OptionElement_OnOff.h" />
+    <ClInclude Include="..\Public\UI_OptionElement_Quality.h" />
+    <ClInclude Include="..\Public\UI_OptionElement_Slider.h" />
+    <ClInclude Include="..\Public\UI_Slider.h" />
+    <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
+    <ClInclude Include="..\Public\UI_FadeMask.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4406,6 +4422,22 @@
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack4.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-1 HeavyAttack4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack5.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-2 HeavyAttack5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Suprise_Attack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_OptionElement_OnOff.cpp" />
+    <ClCompile Include="..\Private\UI_OptionElement_Quality.cpp" />
+    <ClCompile Include="..\Private\UI_OptionElement_Slider.cpp" />
+    <ClCompile Include="..\Private\UI_OptionElementBase.cpp" />
+    <ClCompile Include="..\Private\UI_Slider.cpp" />
+    <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
+    <ClCompile Include="..\Private\UI_FadeMask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5285,9 +5317,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\24.Walk_L">
       <UniqueIdentifier>{085611db-3707-474e-91a2-e7eee4703b4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\25.Walk_R">
-      <UniqueIdentifier>{84522801-e86c-46c2-8259-89ab8ecabd87}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\26.Walk_B">
       <UniqueIdentifier>{45280aef-b9fc-4efc-a773-70bc15d83ae0}</UniqueIdentifier>
@@ -6506,6 +6535,18 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\Interior">
       <UniqueIdentifier>{e4f00616-2907-433a-bece-fd85b5f1695c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-1 HeavyAttack4">
+      <UniqueIdentifier>{b48f5316-d594-40a7-afd2-1f812d6eeb5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-2 HeavyAttack5">
+      <UniqueIdentifier>{0ea46f8d-1acb-4437-995b-83d68f32b877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\25.Walk_R">
+      <UniqueIdentifier>{84522801-e86c-46c2-8259-89ab8ecabd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack">
+      <UniqueIdentifier>{a4061e50-d0c7-46ef-b9f7-fc00596c90b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

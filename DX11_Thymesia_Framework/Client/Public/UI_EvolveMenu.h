@@ -66,9 +66,6 @@ private: //Left UI
     weak_ptr< CUI_EvolveMenu_SelectDecoration> m_pLeftSelectDecoration;
 
 
-
-
-
 private://Right UI
     weak_ptr<CCustomUI> m_pRightBG;
     weak_ptr<CCustomUI> m_pRightTitle;

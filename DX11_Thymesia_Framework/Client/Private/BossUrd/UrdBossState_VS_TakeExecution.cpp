@@ -182,7 +182,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 160 &&
 		m_bOne)
 	{
-		m_pModelCom.lock()->Set_AnimationSpeed(0.25f);
+		m_pModelCom.lock()->Set_AnimationSpeed(0.2f);
 		m_bOne = false;
 	}
 
@@ -204,7 +204,7 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 366 && 
 		m_bAnimaionSpeedControl)
 	{		
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+
 		//pCurrentPlayer.lock()->Get_Transform()->LookAt2D(vMonsterMaxtrix.r[3]);
 		m_bAnimaionSpeedControl = false;
 	}

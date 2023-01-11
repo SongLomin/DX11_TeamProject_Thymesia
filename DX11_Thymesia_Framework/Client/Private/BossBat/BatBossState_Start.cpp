@@ -6,6 +6,7 @@
 #include "Player.h"
 //#include "BehaviorBase.h"
 #include "Animation.h"
+#include "BoneNode.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
 #include "PhysXCharacterController.h"
@@ -33,6 +34,9 @@ void CBatBossState_Start::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Seq_BossFightStart_V1");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -43,7 +47,7 @@ void CBatBossState_Start::Tick(_float fTimeDelta)
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 	
 	_matrix LocalMat = XMMatrixIdentity();
@@ -63,7 +67,61 @@ void CBatBossState_Start::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
+	
+	switch (In_iKeyIndex)
+	{
+	case 1436:
+	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
 
+		_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&TempMatrix)
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.4f, 9.f, 3.f);
+		Print_Vector(vPosition);
+
+		break;
+	}
+
+	case 1439:
+	{
+		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.5f, 9.f, 3.f);
+		Print_Vector(vPosition);
+		break;
+	}
+	case 1442:
+	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&TempMatrix)
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.5f, 9.f, 3.f);
+		break;
+	}
+	case 1745:
+	{
+		_float4x4 TempMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+		_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&TempMatrix)
+			* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.3f, 9.f, 3.f);
+		break;
+	}
+	}
+}
 
 
 void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
@@ -74,6 +132,11 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,500);
+
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_Start::Call_NextAnimationKey, this, placeholders::_1);
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -88,7 +151,8 @@ void CBatBossState_Start::OnStateEnd()
 	__super::OnStateEnd();
 	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X |  (_byte)ROOTNODE_FLAG::Z);
 
-	
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_Start::Call_NextAnimationKey, this, placeholders::_1);
 	
 }
 

@@ -59,6 +59,18 @@ void CNorMonState_Walk_F::Start()
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkF");
 		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_WalkF");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_WalkF");
+		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_WalkF");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_WalkF");
+		break;
 
 	}
 
@@ -77,7 +89,7 @@ void CNorMonState_Walk_F::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }
 
@@ -303,6 +315,86 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					break;
 				}
 				break;
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+			{
+				int iRand = rand() % 2;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				}
+			}
+				 
+				break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+				{
+				int iRand = rand() % 2;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				}
+			}
+				 
+				break;
+			case Client::MONSTERTYPE::ARMORSPEARMAN:
+			{
+				int iRand = rand() % 2;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				}
+			}
+
+			break;
+			case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+			{
+				int iRand = rand() % 2;
+
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+					m_bWalkCheck = true;
+					break;
+				}
+			}
+
+			break;
 			}
 			return true;
 	
@@ -500,7 +592,117 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				break;
 			}
 			break;
-
+			case Client::MONSTERTYPE::ARMORSHIELDMAN:
+			{
+				int iRand = rand() % 4;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				}
+				break;
+			}
+			break;
+			case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+			{
+				int iRand = rand() % 4;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				}
+				break;
+			}
+			break;
+			case Client::MONSTERTYPE::ARMORSPEARMAN:
+			{
+				int iRand = rand() % 4;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				}
+				break;
+			}
+			break;
+			case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+			{
+				int iRand = rand() % 3;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
+					m_bWalkCheck = false;
+					break;
+				}
+				break;
+			}
+			break;
 			}
 			return true;
 		}

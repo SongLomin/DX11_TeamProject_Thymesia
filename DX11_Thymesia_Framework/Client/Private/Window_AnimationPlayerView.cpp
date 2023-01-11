@@ -4,6 +4,7 @@
 #include "Window_AnimationModelView.h"
 #include "PreViewAnimationModel.h"
 #include "Window_EffectHierarchyView.h"
+#include "Window_EffectEditerView.h"
 #include "Model.h"
 #include "Animation.h"
 #include "EffectGroup.h"
@@ -161,6 +162,23 @@ void CWindow_AnimationPlayerView::Add_SoundKeyEvent()
     weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
 
     _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
+
+    
+
+    m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["Sound"].push_back({});
+
+    json& KeySoundJson = m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["Sound"].back();
+
+    KeySoundJson["SoundName"] = m_strSoundFileName;
+    KeySoundJson["Volume"] = m_strSoundFileName;
+
+    /*m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["Sound"].back()["Volume"] = GET_SINGLE(CWindow_EffectEditerView)->Get_SoundVolume();*/
 
     /*m_KeyEventJson["AnimationIndex"]
         [to_string(pCurrentModel.lock()->Get_CurrentAnimationIndex())].emplace_back();*/
@@ -531,17 +549,18 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
                     {
                         if (ImGui::TreeNode(szKeyValueTypeName.c_str()))
                         {
+                            json& SoundJson = iter.value();
 
-                            for (auto iter_SoundName = iter.value().begin(); iter_SoundName != iter.value().end();)
+                            for (auto iter_Sound = SoundJson.begin(); iter_Sound != SoundJson.end();)
                             {
                                 _bool bEffectErase = false;
 
-                                szKeyValueName = iter_SoundName.value();
-                                if (ImGui::TreeNode(szKeyValueName.c_str()))
+                                if (ImGui::TreeNode(iter_Sound.value()["SoundName"].get<string>().c_str()))
                                 {
+
                                     if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
                                     {
-                                        iter_SoundName = iter.value().erase(iter_SoundName);
+                                        iter_Sound = SoundJson.erase(iter_Sound);
                                         bEffectErase = true;
                                     }
 
@@ -550,9 +569,10 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
                                 if (!bEffectErase)
                                 {
-                                    ++iter_SoundName;
+                                    ++iter_Sound;
                                 }
                             }
+                            
                             ImGui::TreePop();
                         }
                     }
@@ -703,6 +723,11 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
             ImGui::EndListBox();
         }
     }
+}
+
+void CWindow_AnimationPlayerView::OnUpdateSoundFile(const string& In_szFileName)
+{
+    m_strSoundFileName = In_szFileName;
 }
 
 

@@ -46,6 +46,7 @@ private:
 public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
 private:
+	//TODO: Test For Color Inversion
 	void Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd);
 
 private:
@@ -69,6 +70,10 @@ private:
 
 private:
 	FDelegate<_float, _bool&> CallBack_ColorInversion;
+	FDelegate< _float, _bool&> CallBack_LightEvent;
+
+private:
+	void TurnOn_Light(_float fTimeDelta, _bool& Out_End);
 
 private:
 	virtual void OnEnable(void* pArg) override;

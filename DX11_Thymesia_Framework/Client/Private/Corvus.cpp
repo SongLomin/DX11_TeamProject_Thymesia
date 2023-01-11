@@ -152,25 +152,38 @@ void CCorvus::Tick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 
+
+	/*PxControllerFilters Filters;
+	m_LastCollisionFlags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta, Filters);
+
+	if (m_LastCollisionFlags & PxControllerCollisionFlag::eCOLLISION_DOWN)
+	{
+		m_pPhysXControllerCom.lock()->Reset_Gravity();
+	}*/
+
 	__super::Tick(fTimeDelta);
 
 	// TODO : get rid of this
 	m_pSkillSystem.lock()->Tick(fTimeDelta);
 	m_pStatus.lock()->Tick(fTimeDelta);
 
-	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
-	_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	if (m_LightDesc.bEnable)
+	{
+		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+		_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
-	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 1.5f, 0.f, 0.f) - vPlayerLook * 0.5f;
-	_vector vLightLook = XMVector3Normalize(vPlayerPos - vLightPos + vPlayerLook * 0.5f);
+		_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 1.5f, 0.f, 0.f) - vPlayerLook * 0.5f;
+		_vector vLightLook = XMVector3Normalize(vPlayerPos - vLightPos + vPlayerLook * 0.5f);
 
-	XMStoreFloat4(&m_LightDesc.vPosition,vLightPos);
-	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
+		XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
+		XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
 
-	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	}
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
+		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
 		/*DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
@@ -202,11 +215,12 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 	__super::LateTick(fTimeDelta);
-
+	
+	_bool bEnd = false;
+	////////colorInversion
 	if (CallBack_ColorInversion.empty())
 		return;
 
-	_bool bEnd = false;
 
 	CallBack_ColorInversion(fTimeDelta, bEnd);
 	if (bEnd)
@@ -214,6 +228,18 @@ void CCorvus::LateTick(_float fTimeDelta)
 		CallBack_ColorInversion.Clear();
 		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
 	}
+	//////////////
+	if (CallBack_LightEvent.empty())
+		return;
+
+	bEnd = false;
+	
+	CallBack_LightEvent(fTimeDelta, bEnd);
+	if (bEnd)
+	{
+		CallBack_LightEvent.Clear();
+	}
+	
 }
 
 void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
@@ -228,6 +254,16 @@ void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 		In_bEnd = true;
 
 	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
+}
+
+void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
+{
+	m_LightDesc.fIntensity += fTimeDelta*0.4f;
+
+	if (0.4f < m_LightDesc.fIntensity)
+	{
+		Out_End = true;
+	}
 }
 
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
@@ -394,6 +430,7 @@ void CCorvus::OnDisable()
 	__super::OnDisable();
 }
 
+
 void CCorvus::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
@@ -403,7 +440,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
+	else if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
 	}
@@ -413,29 +450,54 @@ void CCorvus::OnEventMessage(_uint iArg)
 	//	Change_State<CCorvusState_Joker_Execution>();
 	//}
 
-	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
+	else if ((_uint)EVENT_TYPE::ON_DIE == iArg)
 	{
 		Change_State<CCorvusState_Die>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
+	else if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
 	{
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
-	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_ClawPlunderAttack>();
 	}
 
-	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if (EVENT_TYPE::ON_JOKEREXECUTION == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_JOKEREXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_HurtL>();
+	}
+
+	if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_HurtR>();
+	}
+
+
+
+
+	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
+	{
+		m_LightDesc.bEnable = false;
+		m_LightDesc.fIntensity = 0.f;
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	}
+	else if (EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == (EVENT_TYPE)iArg)
+	{
+		m_LightDesc.bEnable = true;
+		CallBack_LightEvent += bind(&CCorvus::TurnOn_Light, this, placeholders::_1, placeholders::_2);
 	}
 
 }
@@ -576,13 +638,12 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 
 		CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
 
-
 		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
 	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(
-			CUI_Landing::LANDING_ENTER_STAGE);	
+			CUI_Landing::LANDING_KILL_BOSS, 1.f);	
 	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{

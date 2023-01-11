@@ -100,7 +100,6 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 
 	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);
-	GET_SINGLE(CGameManager)->Activate_SectionLight(1, EVENT_TYPE::ON_EXIT_SECTION);
 }
 
 void CVargBossState_Exe_Dead::OnDestroy()
@@ -115,11 +114,8 @@ void CVargBossState_Exe_Dead::Free()
 
 _bool CVargBossState_Exe_Dead::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
-
-
 
 	return false;
 }

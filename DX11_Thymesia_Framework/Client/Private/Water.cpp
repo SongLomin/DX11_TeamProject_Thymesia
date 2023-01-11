@@ -72,8 +72,7 @@ void CWater::Tick(_float fTimeDelta)
 
 	for (_uint i = 0; i < m_WaterWaveDescs.size(); ++i)
 	{
-		
-		m_WaterWaveDescs[i].fVibrationScale *= 0.9f;
+		m_WaterWaveDescs[i].fVibrationScale *= 0.99f;
 		m_WaterWaveDescs[i].fTimeAcc += fTimeDelta;
 
 		if (m_WaterWaveDescs[i].fVibrationScale > 0.001f)
@@ -139,6 +138,32 @@ HRESULT CWater::SetUp_ShaderResource()
 
 	//if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrixInv", &WorldMatrixInv, sizeof(_float4x4))))
 	//	return E_FAIL;
+
+	//D3D11_BUFFER_DESC cbDesc;
+	//cbDesc.ByteWidth = sizeof(WATERWAVE_DESC);
+	//cbDesc.Usage = D3D11_USAGE_DEFAULT;
+	//cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	//cbDesc.CPUAccessFlags = 0;
+	//cbDesc.MiscFlags = 0;
+	//cbDesc.StructureByteStride = 0;
+
+	//ID3D11Buffer* pCB = NULL;
+	//HRESULT hr = DEVICE->CreateBuffer(&cbDesc, NULL, &pCB);
+
+	//// Fill the constant buffer with data.
+	//D3D11_MAPPED_SUBRESOURCE MappedResource;
+	//DEVICECONTEXT->Map(pCB, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedResource);
+
+	//WATERWAVE_DESC* pCBuffer = (WATERWAVE_DESC*)MappedResource.pData;
+
+	//// Set the values for the element at index 5 in the structure array.
+	//pCBuffer->g_array[5].position = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	//pCBuffer->g_array[5].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	//DEVICECONTEXT->Unmap(pCB, 0);
+
+	//// Bind the constant buffer to the pipeline.
+	//pImmediateContext->VSSetConstantBuffers(0, 1, &pCB);
 
 
 	// WaterWaveDesc을 배열 크기(최대 128개)만큼 던진다.

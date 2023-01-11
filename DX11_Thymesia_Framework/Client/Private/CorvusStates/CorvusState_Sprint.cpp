@@ -36,6 +36,7 @@ HRESULT CCorvusState_Sprint::Initialize(void* pArg)
 void CCorvusState_Sprint::Start()
 {
 	__super::Start();
+
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_Sprint");
 	m_pTransform = m_pOwner.lock()->Get_Component<CTransform>();
@@ -47,13 +48,20 @@ void CCorvusState_Sprint::Tick(_float fTimeDelta)
 
 	Turn_Transform(fTimeDelta);
 
+	m_fTimeAcc += fTimeDelta;
+	if (0.5f < m_fTimeAcc)
+	{
+		GET_SINGLE(CGameManager)->Add_WaterWave(m_pOwnerFromPlayer.lock()->Get_WorldPosition(), 0.15f, 9.f, 3.f);
+		m_fTimeAcc = 0.f;
+	}
+
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta * 1.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 
 	//m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 1.75f, m_pNaviCom);

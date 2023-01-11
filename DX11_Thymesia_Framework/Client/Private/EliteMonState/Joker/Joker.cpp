@@ -243,9 +243,10 @@ void CJoker::OnEventMessage(_uint iArg)
 		Set_Enable(false);
 		m_pStatus.lock()->Full_Recovery();
 	}
+
 	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTIONSTART == iArg)
 	{
-		m_bBossExecutionStartOnOff = true;
+		m_bEliteExecutionStartOnOff = true;
 	}
 
 }

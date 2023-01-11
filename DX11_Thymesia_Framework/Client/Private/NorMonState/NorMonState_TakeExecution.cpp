@@ -9,6 +9,7 @@
 #include "NorMonStateS.h"
 #include "Character.h"
 #include "Status_Monster.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CNorMonState_TakeExecution);
@@ -34,28 +35,17 @@ void CNorMonState_TakeExecution::Start()
 
 	switch (m_eMonType)
 	{
-	case Client::MONSTERTYPE::AXEMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunEnd|BaseLayer|");
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_VS_TakeExecution_02");
 		break;
-	case Client::MONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV2Villager01_F_HurtStunEnd");
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_VS_TakeExecution");
 		break;
-	case Client::MONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_VS_TakeExecution_01");
 		break;
-	case Client::MONSTERTYPE::GARDENER:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunEnd");
-		break;
-	case Client::MONSTERTYPE::ENHANCE_GARDENER:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunEnd");
-		break;
-	case Client::MONSTERTYPE::SHIELDAXEMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunEnd|BaseLayer|");
-		break;
-	case Client::MONSTERTYPE::SKULLSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtStunEnd");
-		break;
-	case Client::MONSTERTYPE::SKULLSPEARMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtStunEnd");
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_VS_TakeExecution");
 		break;
 	}
 
@@ -66,7 +56,7 @@ void CNorMonState_TakeExecution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	//Turn_Transform(fTimeDelta);
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -85,6 +75,21 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 
 	GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 
+	//Rotation_TargetToLookDir();
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_pPhysXControllerCom.lock()->Set_Enable(false);
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_pPhysXControllerCom.lock()->Set_Enable(false);
+		break;
+	default:
+		break;
+	}
+
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->Restart();
@@ -129,6 +134,10 @@ _bool CNorMonState_TakeExecution::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.5f)
+	{
+		m_pPhysXControllerCom.lock()->Set_Enable(true);
+	}
 
 
 	return false;

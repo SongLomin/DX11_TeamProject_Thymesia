@@ -32,6 +32,7 @@ public:
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
+	_float Get_SoundVolume() { return m_fVolume; }
 
 public:
 	FDelegate<> CallBack_RemoveCurrentEffect;

@@ -45,7 +45,7 @@ void CBatBossState_JumpSmash_Chest::Tick(_float fTimeDelta)
 		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
-		PxControllerFilters Filters = Filters;
+		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 	}
 	

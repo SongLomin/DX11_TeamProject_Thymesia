@@ -9,6 +9,8 @@
 #include "Model.h"
 #include "Renderer.h"
 
+#include "Monster.h"
+
 #include "PhysXColliderObject.h"
 #include "Window_HierarchyView.h"
 #include "SMath.h"
@@ -160,7 +162,11 @@ void CEditSetActor::View_CreateActor()
 		"Balloon",
 		"Enhance_Gardener",
 		"Skull_Shield",
-		"Skull_Spear"
+		"Skull_Spear",
+		"Armor_Shield",
+		"WeakArmor_Shield",
+		"Armor_Spearman",
+		"WeakArmor_Spearman"
 	};
 
 	static const char* ActorList_Elite[] =
@@ -183,7 +189,8 @@ void CEditSetActor::View_CreateActor()
 		"Sit",
 		"Fidget",
 		"Spidle",
-		"RunAttackIdle"
+		"RunAttackIdle",
+		"SupriseAttack"
 	};
 
 	static const char* BossActionList[] =
@@ -386,6 +393,7 @@ void CEditSetActor::View_Picking_Actor()
 		m_iPickingIndex = -1;
 	}
 }
+
 void CEditSetActor::View_Picking_List()
 {
 	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
@@ -447,6 +455,16 @@ void CEditSetActor::View_SelectTransformInfo()
 
 	if (iter_collider->second.size() <= m_iPickingIndex)
 		return;
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(iter_collider->second[m_iPickingIndex].pInstance);
+
+	if (pMonster.lock())
+	{
+		CMonster::STATE_LINK_MONSTER_DESC Desc = pMonster.lock()->Get_LinkStateDesc();
+
+		if (ImGui::Checkbox("Select Desc.bPatrol", &Desc.bPatrol))
+			pMonster.lock()->Set_LinkStateDesc(Desc);
+	}
 
 	weak_ptr<CTransform> pTransformCom = iter_collider->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
 

@@ -43,6 +43,10 @@ public:
         return (_uint)m_eAttackCollisionLayer;
     };
 
+    void Set_AttackCollisionLayer(const COLLISION_LAYER eCollisionLayer) {
+        m_eAttackCollisionLayer = eCollisionLayer;
+    }
+
     void Set_SuperArmor(const _bool In_bSuperArmor) { m_bSuperArmor = In_bSuperArmor; }
     _bool Get_SuperArmor() const { return m_bSuperArmor; }
     void Set_PassIndex(const _uint In_iPassIndex) { m_iPassIndex = In_iPassIndex; }
@@ -92,6 +96,8 @@ protected:
 private:
     _bool m_isEdit = false;
     _bool     m_bSuperArmor = false;
+
+protected:
     PxControllerCollisionFlags m_LastCollisionFlags;
 
 

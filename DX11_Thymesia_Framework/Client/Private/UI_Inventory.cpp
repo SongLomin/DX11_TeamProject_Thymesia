@@ -122,8 +122,7 @@ void CUI_Inventory::Create_Scroll()
 {
     m_pScroll = GAMEINSTANCE->Add_GameObject<CUI_Scroll>(LEVEL_STATIC);
     
-    
-    m_pScroll.lock()->SetUp_ScrollFromLeftTop(650.f, 179.f, 500.f, 600.f, 1806.f);
+    m_pScroll.lock()->SetUp_ScrollFromLeftTop(650.f, 179.f, 11.f, 500.f, 600.f, 1806.f);
     m_pScroll.lock()->Set_Depth(0.6f);
 
 

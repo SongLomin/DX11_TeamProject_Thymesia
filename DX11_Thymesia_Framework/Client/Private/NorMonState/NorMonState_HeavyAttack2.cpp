@@ -52,6 +52,18 @@ void CNorMonState_HeavyAttack2::Start()
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack05|BaseLayer|Arm");
 		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_Attack02_2");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_Attack02_2");
+		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_ComboA03");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_ComboA03");
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this, placeholders::_1);
@@ -63,7 +75,7 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 
 	//Turn_Transform(fTimeDelta);
 	switch (m_eMonType)
@@ -196,6 +208,32 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		}
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
+		case Client::MONSTERTYPE::ARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+		break;
+		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		break;
 		}
 
 		m_bAttackLookAtLimit = true;
@@ -260,6 +298,61 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 		break;
 		}
 		return true;
+	}
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		{
+			int iRand = rand() % 3;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+				break;
+			}	
+			return true;
+		}
+		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		{
+			int iRand = rand() % 3;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+				break;
+			}
+			return true;
+		}
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+			return true;
+		}
+		break;
+	default:
+		break;
 	}
 
 

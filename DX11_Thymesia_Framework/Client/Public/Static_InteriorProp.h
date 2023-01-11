@@ -35,6 +35,7 @@ private:
 
 private:
     weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;     
+    weak_ptr<CCollider>         m_pColliderCom;
 
     _float                      m_fModelMidOffset   = 0.f;
     _float                      m_fPhyxOffset       = 0.f;

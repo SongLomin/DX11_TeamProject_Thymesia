@@ -9,7 +9,7 @@ BEGIN(Engine)
 
 class CGameObject;
 
-static mutex ObjectManager_Mutex;
+static recursive_mutex ObjectManager_Mutex;
 
 class CObject_Manager final : public CBase
 {
@@ -98,8 +98,8 @@ public: /* For Template Function */
 	template <typename T>
 	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
 	{
-		//std::lock_guard<std::mutex> lock(m_job_q_);
-		// scoped_lock lock(ObjectManager_Mutex);
+		// std::lock_guard<std::mutex> lock(m_job_q_);
+		std::unique_lock<std::recursive_mutex> lock(ObjectManager_Mutex);
 
 		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
 

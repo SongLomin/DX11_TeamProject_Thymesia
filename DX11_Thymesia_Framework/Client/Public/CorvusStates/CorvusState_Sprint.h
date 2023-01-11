@@ -42,6 +42,8 @@ private:
     _float m_fCurrentSpeed = 6.8f;
     _float m_fAccel = 0.f;
 
+    _float m_fTimeAcc = 0.f;
+
 protected:
      void Free();
 

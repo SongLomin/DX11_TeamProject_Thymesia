@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CUI_InventoryConfirmWindow : public CUI_Button_Base
+class CUI_InventoryConfirmWindow : public CUI_Button
 {
 	GAMECLASS_H(CUI_InventoryConfirmWindow)
 	CLONE_H(CUI_InventoryConfirmWindow, CGameObject)

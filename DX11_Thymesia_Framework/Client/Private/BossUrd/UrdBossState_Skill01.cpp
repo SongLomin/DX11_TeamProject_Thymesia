@@ -74,7 +74,7 @@ void CUrdBossState_Skill01::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoJavlinCount(1);
 
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.5f, 2.5f, 2.5f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
@@ -192,6 +192,12 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::STAKE);
 		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.0f));
 		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.0f));
+		
+		// 번호에 따라서 저장되는 이펙트의 키값에 번호 부여 -> 나중에 끌 때 유용
+		std::string strEffectKey = "Urd_SkillWeaponShine_";
+		_uint iWeaponNum(pJavelinWeapon.lock()->Get_WeaponNum());
+		strEffectKey += std::to_string(iWeaponNum);
+		GET_SINGLE(CGameManager)->Store_EffectIndex(strEffectKey.c_str(), GET_SINGLE(CGameManager)->Use_EffectGroup(strEffectKey, pJavelinWeapon.lock()->Get_Transform(), _uint(TIMESCALE_LAYER::MONSTER)));
 		
 		//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 		weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();

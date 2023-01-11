@@ -86,6 +86,13 @@ void CUI::Tick(_float fTimeDelta)
 			m_bShaking = false;
 		}
 	}
+	if (m_pOwner.lock())
+	{
+		if (m_pOwner.lock()->Get_Enable() == false)
+		{
+			Set_Enable(false);
+		}
+	}
 }
 
 void CUI::LateTick(_float fTimeDelta)

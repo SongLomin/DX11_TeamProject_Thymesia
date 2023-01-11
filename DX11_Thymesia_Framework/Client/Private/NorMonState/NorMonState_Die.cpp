@@ -150,7 +150,32 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->CallBack_UI_Disable();
 
-	GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::AXEMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	}
+
+	
 
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
