@@ -117,12 +117,17 @@ void CCorvusState_ParryDeflectLeftup::Free()
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ParryDeflectLeftup::Call_AnimationEnd, this, placeholders::_1);
 }
 
+void CCorvusState_ParryDeflectLeftup::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 _bool CCorvusState_ParryDeflectLeftup::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 7)
 	{
 		if (Check_RequirementParryState())
 		{

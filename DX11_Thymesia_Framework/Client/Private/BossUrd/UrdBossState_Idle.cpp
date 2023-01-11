@@ -335,7 +335,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 						{
 							if (m_bAttack) // 거리가 존나게 먼상태에서 두번 댄싱공격했을떄 ->바로 발동하게
 							{
-								Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboB1>(0.05f);
+								Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack07>(0.05f);
 								return true;
 							}
 							else
