@@ -5,6 +5,7 @@
 BEGIN(Engine)
 class CCollider;
 class CBoneNode;
+class CBoneNode;
 END
 
 BEGIN(Client)
@@ -29,6 +30,9 @@ protected:
     _matrix Get_LeftHandCombinedWorldMatrix();
     _matrix Get_RightHandCombinedWorldMatrix();
 
+    _matrix Get_LeftHandCombinedWorldMatrix();
+    _matrix Get_RightHandCombinedWorldMatrix();
+
 protected:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 
@@ -38,7 +42,7 @@ protected:
 
 protected:
     _bool                m_bRootStop = true;
-    _bool                m_bOne = true; // 0ÀÌ¸é Á¤»ó 1ÀÌ¸é ½ºÅ¾
+    _bool                m_bOne = true; // 0ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½Ì¸ï¿½ ï¿½ï¿½Å¾
     _bool                m_bTurnAttack = false;
 
     weak_ptr<CBoneNode> m_pLeftHandBoneNode;

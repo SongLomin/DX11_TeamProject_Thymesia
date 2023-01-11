@@ -1564,7 +1564,7 @@ void CLoader::Load_EliteMobModel()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model_UseThread("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.014f, 0.014f, 0.014f);
 	GAMEINSTANCE->Load_Model_UseThread("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
