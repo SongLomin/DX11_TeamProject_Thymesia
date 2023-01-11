@@ -35,7 +35,6 @@ private:
     virtual HRESULT SetUp_ShaderResource() override;
 
 private:
-    weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
     weak_ptr<CCollider>         m_pColliderCom;
 
     weak_ptr<CGameObject>       m_pCollisionObject;

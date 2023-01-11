@@ -92,7 +92,7 @@ void CInteraction_Chair::SetUpColliderDesc()
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
     ColliderDesc.iLayer = (_uint)COLLISION_LAYER::CHECKPOINT;
-    ColliderDesc.vScale = _float3(3.f, 0.f, 0.f);
+    ColliderDesc.vScale = _float3(1.f, 0.f, 0.f);
 
     m_pInteractionColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pInteractionColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

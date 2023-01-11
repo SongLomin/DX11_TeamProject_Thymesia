@@ -39,6 +39,12 @@ private:
         ID_END
     };
 
+    struct SAVE_PROP
+    {
+        weak_ptr<CGameObject>   pObj;
+        json                    json;
+    };
+
 public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -82,7 +88,7 @@ private:
 
     RENDERGROUP                     m_eRenderGroup  = RENDERGROUP::RENDER_NONALPHABLEND;
 
-    list<json>                      m_PropSaveInfo;
+    list<SAVE_PROP>                 m_PropSaveInfo;
     weak_ptr<CPreView_InteriorProp> m_pPreviewProp;
 
 private:

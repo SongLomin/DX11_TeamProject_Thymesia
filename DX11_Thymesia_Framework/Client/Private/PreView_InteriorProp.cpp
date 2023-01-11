@@ -5,7 +5,6 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Transform.h"
-#include "PhysXCollider.h"
 #include "Collider.h"
 
 #include "GameManager.h"
@@ -22,7 +21,6 @@ HRESULT CPreView_InteriorProp::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
     m_pColliderCom      = Add_Component<CCollider>();
 
     m_pShaderCom.lock()->Set_ShaderInfo
@@ -46,7 +44,6 @@ void CPreView_InteriorProp::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
@@ -117,16 +114,7 @@ void CPreView_InteriorProp::Set_Model(string _szModelKey)
     if (!m_pModelCom.lock()->Get_ModelData().lock())
         return;
 
-    Remove_Components<CPhysXCollider>();
-    m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
-
     MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_MeshVertexInfo();
-
-    PHYSXCOLLIDERDESC tDesc;
-    Preset::PhysXColliderDesc::StaticInteriorBoxDefaultSetting(tDesc, m_pTransformCom, tInfo, &m_fPhyxOffset);
-    m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
-    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
 
     Remove_Components<CCollider>();
     m_pColliderCom = Add_Component<CCollider>();
