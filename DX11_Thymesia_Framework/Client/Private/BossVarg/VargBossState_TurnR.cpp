@@ -29,7 +29,7 @@ void CVargBossState_TurnR::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TurnR90");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_TurnR90|SK_C_Varg.ao|Varg_TurnR9");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_TurnR::Call_AnimationEnd, this, placeholders::_1);
 }
