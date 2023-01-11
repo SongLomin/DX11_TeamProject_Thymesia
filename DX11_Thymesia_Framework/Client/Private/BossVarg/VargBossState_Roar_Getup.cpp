@@ -97,22 +97,21 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	if (!Get_Enable())
 		return;
-
+	
 	switch (In_KeyIndex)
 	{
-	case 34:
+	/*case 34:
 		Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(true);
 		GET_SINGLE(CGameManager)->Store_EffectIndex("Varg_Eye", GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
-		break;
+		break;*/
 	case 62:
 		GAMEINSTANCE->Set_GodRayScale(0.f);
 		m_bShakingCamera = true;
 		break;
-	case 97:
+	case 97: 
 		m_bShakingCamera = false;
 		break;
 	}
-
 }
 
 
@@ -122,6 +121,11 @@ void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(true);
+	GET_SINGLE(CGameManager)->Store_EffectIndex("Varg_Eye", GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
+
+
+	GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
 }

@@ -394,7 +394,7 @@ HRESULT CNorMonster::Render(ID3D11DeviceContext* pDeviceContext)
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (i == 2 || i == 3)
+		if (i == 2 || i == 3) 
 			continue;
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))

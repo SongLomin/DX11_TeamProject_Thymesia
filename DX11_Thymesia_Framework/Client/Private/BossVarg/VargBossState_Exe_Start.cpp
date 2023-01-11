@@ -79,6 +79,7 @@ void CVargBossState_Exe_Start::OnStateStart(const _float& In_fAnimationBlendTime
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EXIT_SECTION);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
