@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "BoneNode.h"
 //#include "MonsterHPBar.h"
 #include "Status.h"
 //#include "ComboTimer.h"
@@ -75,6 +76,28 @@ void CBatBossStateBase::Play_OnHitEffect()
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 
+}
+
+_matrix CBatBossStateBase::Get_LeftHandCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
+}
+
+_matrix CBatBossStateBase::Get_RightHandCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
 }
 
 _bool CBatBossStateBase::Check_CrossAttackState()
