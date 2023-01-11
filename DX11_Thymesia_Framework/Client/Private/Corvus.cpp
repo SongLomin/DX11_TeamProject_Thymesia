@@ -158,19 +158,23 @@ void CCorvus::Tick(_float fTimeDelta)
 	m_pSkillSystem.lock()->Tick(fTimeDelta);
 	m_pStatus.lock()->Tick(fTimeDelta);
 
-	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
-	_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	if (m_LightDesc.bEnable)
+	{
+		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+		_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
-	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 1.5f, 0.f, 0.f) - vPlayerLook * 0.5f;
-	_vector vLightLook = XMVector3Normalize(vPlayerPos - vLightPos + vPlayerLook * 0.5f);
+		_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 1.5f, 0.f, 0.f) - vPlayerLook * 0.5f;
+		_vector vLightLook = XMVector3Normalize(vPlayerPos - vLightPos + vPlayerLook * 0.5f);
 
-	XMStoreFloat4(&m_LightDesc.vPosition,vLightPos);
-	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
+		XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
+		XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
 
-	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	}
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
+		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
 		/*DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
