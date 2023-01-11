@@ -39,9 +39,9 @@ void CNorMonState_Petrol::Start()
 {
 	__super::Start();
 
-	XMStoreFloat4(&m_fPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 5.f, 0.f));
+	XMStoreFloat4(&m_fPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 5.f, 0.f));
 	XMStoreFloat4(&m_fPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 10.f, 0.f));
-	XMStoreFloat4(&m_fPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, -5.f, 0.f));
+	XMStoreFloat4(&m_fPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(-0.1f, 0.f, -5.f, 0.f));
 
 	switch (m_eMonType)
 	{
@@ -92,14 +92,29 @@ void CNorMonState_Petrol::Tick(_float fTimeDelta)
 
 	if (m_bTurnCheck)
 	{
-		_float fTurnValue = 1.57f / 1.333f;
-		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
+		switch (m_iCorssResult)
+		{
+		case 1:
+		{
+			_float fTurnRifgtValue = 1.57f / 1.333f;
+			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnRifgtValue * 1.5f);
+		}
+			break;
+		case -1:
+		{
+			_float fTurnLeftValue = 1.57f / 1.333f;
+			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnLeftValue * -1.5f);
+			
+		}
+		break;
+		}
+
 	}
 	if (!m_bTurnCheck)
 	{
 		m_fCurrentSpeed += m_fAccel * fTimeDelta;
 		m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
-		PxControllerFilters Filters = Filters;
+		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 	}
 
@@ -207,6 +222,7 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 	if (Cul_DotResult() > 0.94f && m_bTurnCheck)
 	{
+		
 		Get_OwnerMonster()->Get_Transform()->LookAt2D(XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]));
 		m_bTurnCheck = false;
 	}
@@ -230,6 +246,9 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 			
 			++m_iPatrolCount;
 			m_bTurnCheck = true;
+			m_iCorssResult = ComputeDirectionToOtherPosition(m_fPatrolPosition[m_iPatrolCount]);
+			
+			//여서 이게아니고 왼쪽오른쪽판단이먼저임 판단하고 가야됨
 		}
 	}
 	else

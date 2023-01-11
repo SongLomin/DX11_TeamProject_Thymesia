@@ -71,6 +71,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_SpecialAttackStart>();
 	Add_Component<CNorMonState_SpecialAttackLoop>();
 	Add_Component<CNorMonState_SpecialAttackEnd>();
+	Add_Component<CNorMonState_Suprise_Attack>();
 	Add_Component<CNorMonState_Idle2Fight>();
 
 	LIGHTDESC LightDesc;
@@ -377,6 +378,8 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_SpecialAttackLoop);
 	INIT_STATE(CNorMonState_SpecialAttackEnd);
 	INIT_STATE(CNorMonState_Idle2Fight);
+	INIT_STATE(CNorMonState_Suprise_Attack);
+
 
 
 	string	strModelKey = Weak_StaticCast<CStatus_Monster>(m_pStatus).lock()->Get_Desc().m_szModelKey;
@@ -467,7 +470,7 @@ void CNorMonster::SetUp_ShaderResource()
 
 void CNorMonster::Move_RootMotion_Internal()
 {
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters  Filters;
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
 	switch (m_tLinkStateDesc.eMonType)

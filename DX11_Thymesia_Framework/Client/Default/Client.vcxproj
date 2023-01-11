@@ -541,6 +541,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Suprise_Attack.h" />
     <ClInclude Include="..\Public\PhysXColliderObject_Interior.h" />
     <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
     <ClInclude Include="..\Public\PreView_InteriorProp.h" />
@@ -1219,6 +1220,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Suprise_Attack.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp" />
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
     <ClCompile Include="..\Private\PreView_InteriorProp.cpp" />

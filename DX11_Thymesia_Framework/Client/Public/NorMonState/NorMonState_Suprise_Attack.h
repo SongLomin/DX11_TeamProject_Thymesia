@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CNorMonState_Petrol :
+class CNorMonState_Suprise_Attack :
 	public CNorMonsterStateBase
 {
-	GAMECLASS_H(CNorMonState_Petrol);
-	CLONE_H(CNorMonState_Petrol, CComponent)
-		SHALLOW_COPY(CNorMonState_Petrol)
+	GAMECLASS_H(CNorMonState_Suprise_Attack);
+	CLONE_H(CNorMonState_Suprise_Attack, CComponent)
+		SHALLOW_COPY(CNorMonState_Suprise_Attack)
 
 public:
 	_float      Cul_DotResult();
@@ -28,19 +28,10 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+
 private:
-	_float m_fMaxSpeed = 2.5f;
-	_float m_fCurrentSpeed = 1.2f;
-	_float m_fAccel = 0.f;
 
-
-	//TODO юс╫ц
-	_float4         m_fPatrolPosition[3];
-	_int            m_iPatrolCount = 0;
-	_int            m_iCorssResult = 0;
-	_bool           m_bTurnCheck = false;
-
-	virtual void OnEventMessage(_uint iArg) override;
+	//virtual void OnEventMessage(_uint iArg) override;
 
 private:
 //	void Call_AnimationEnd(_uint iEndAnimIndex);

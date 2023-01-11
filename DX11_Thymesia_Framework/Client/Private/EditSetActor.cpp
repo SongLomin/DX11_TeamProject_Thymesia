@@ -187,7 +187,8 @@ void CEditSetActor::View_CreateActor()
 		"Sit",
 		"Fidget",
 		"Spidle",
-		"RunAttackIdle"
+		"RunAttackIdle",
+		"SupriseAttack"
 	};
 
 	static const char* BossActionList[] =

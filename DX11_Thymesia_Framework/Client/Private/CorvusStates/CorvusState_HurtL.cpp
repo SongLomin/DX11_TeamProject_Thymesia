@@ -103,6 +103,15 @@ _bool CCorvusState_HurtL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	{
+		if (Check_RequirementParryState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
+		}
+	}
 
 	return false;
 }

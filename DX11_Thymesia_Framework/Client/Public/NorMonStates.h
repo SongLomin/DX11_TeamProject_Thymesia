@@ -39,6 +39,7 @@
 #include "NorMonState/NorMonState_Walk_R.h"
 #include "NorMonState/NorMonState_Parry.h"
 #include "NorMonState/NorMonState_Petrol.h"
+#include "NorMonState/NorMonState_Suprise_Attack.h"
 
 #include "NorMonState/NorMonState_TakeExecution.h"
 #include "NorMonState/NorMonState_Idle2Fight.h"

@@ -2194,6 +2194,9 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack5.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-2 HeavyAttack5</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Suprise_Attack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4418,6 +4421,9 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack5.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\11.HeavyAttack3\11-2 HeavyAttack5</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Suprise_Attack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -6524,6 +6530,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\25.Walk_R">
       <UniqueIdentifier>{84522801-e86c-46c2-8259-89ab8ecabd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack">
+      <UniqueIdentifier>{a4061e50-d0c7-46ef-b9f7-fc00596c90b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

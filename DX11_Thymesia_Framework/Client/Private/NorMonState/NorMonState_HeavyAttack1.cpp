@@ -322,6 +322,8 @@ _bool CNorMonState_HeavyAttack1::Check_AndChangeNextState()
 			return true;
 		}
 		break;
+	default:
+		break;
 	}
 
 	return false;
