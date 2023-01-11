@@ -33,7 +33,7 @@ HRESULT CLevel_Stage3::Initialize()
 	CameraDesc.vAt     = _float4(0.f, 0.f, 0.f, 1.f);
 	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear   = 0.2f;
+	CameraDesc.fNear   = 0.01f;
 	CameraDesc.fFar    = 50.f;
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_STAGE3, &CameraDesc);

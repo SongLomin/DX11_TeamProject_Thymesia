@@ -29,7 +29,7 @@ HRESULT CLevel_Logo::Initialize()
 	CameraDesc.vAt     = _float4(0.f, 1.2f, 0.f, 1.f);
 	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear   = 0.2f;
+	CameraDesc.fNear   = 0.01f;
 	CameraDesc.fFar    = 300.f;
 	
 	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
