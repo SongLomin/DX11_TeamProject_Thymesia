@@ -932,7 +932,7 @@ void CEditGround::Bake_FilterTexture()
 
 	wstring szTexturePath = TEXT("../Bin/GroundInfo/Filter/") + wstring(szFullTag) + TEXT(".dds");
 
-	//SaveDDSTextureToFile(DEVICECONTEXT, m_pTexture2D.Get(), szTexturePath.c_str());
+	SaveDDSTextureToFile(DEVICECONTEXT, m_pTexture2D.Get(), szTexturePath.c_str());
 	
 	string szBinFilePath = "../Bin/GroundInfo/Filter_SubInfo/" + m_szSaveTextureTag + ".bin";
 
@@ -1107,6 +1107,9 @@ void CEditGround::Write_Json(json& Out_Json)
 	
 	if (Out_Json.end() != Out_Json.find("Name"))
 		Out_Json["Name"] = typeid(CGround).name();
+
+	Bake_Mesh();  
+	Bake_FilterTexture();
 }
 
 void CEditGround::Load_FromJson(const json& In_Json)

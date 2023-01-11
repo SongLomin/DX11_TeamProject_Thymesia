@@ -222,6 +222,7 @@ void  CMonster::Write_Json(json& Out_Json)
     Out_Json["MonsterDesc"]["MonsterType"]      = m_tLinkStateDesc.eMonType;
     Out_Json["MonsterDesc"]["IdleType_Monster"] = m_tLinkStateDesc.eNorMonIdleType;
     Out_Json["MonsterDesc"]["IdleType_Boss"]    = m_tLinkStateDesc.eBossStartType;
+    Out_Json["MonsterDesc"]["Patrol"]           = m_tLinkStateDesc.bPatrol;
     Out_Json["MonsterDesc"]["SectionIndex"]     = m_tLinkStateDesc.iSectionIndex;
 
     auto iter = Out_Json["Component"].find("Model");
@@ -238,13 +239,15 @@ void  CMonster::Load_FromJson(const json& In_Json)
     m_tLinkStateDesc.eNorMonIdleType    = In_Json["MonsterDesc"]["IdleType_Monster"];
     m_tLinkStateDesc.eBossStartType     = In_Json["MonsterDesc"]["IdleType_Boss"];
 
+    if (In_Json["MonsterDesc"].end() != In_Json["MonsterDesc"].find("Patrol"))
+        m_tLinkStateDesc.bPatrol = In_Json["MonsterDesc"]["Patrol"];
+
     if (In_Json["MonsterDesc"].end() != In_Json["MonsterDesc"].find("SectionIndex"))
         m_tLinkStateDesc.iSectionIndex = In_Json["MonsterDesc"]["SectionIndex"];
 
     XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
     GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));
-
 
     Init_Desc();
 }

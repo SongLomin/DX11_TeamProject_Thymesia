@@ -36,7 +36,8 @@ HRESULT CInteraction_MapTable::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
-    m_pModelCom.lock()->Init_Model("SM_ToolRackArranged", "");
+    //m_pModelCom.lock()->Init_Model("SM_ToolRackArranged", "");
+    m_pModelCom.lock()->Init_Model("SM_Bookstand_001", "");
 
     return S_OK;
 }
@@ -98,6 +99,18 @@ void CInteraction_MapTable::SetUpColliderDesc()
     ColliderDesc.vScale = _float3(3.f, 0.f, 0.f);
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+    MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_MeshVertexInfo();
+    tInfo.vCenter;
+
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::INTERIOR;
+    ColliderDesc.vScale       = _float3((tInfo.vMax.x - tInfo.vMin.x), (tInfo.vMax.y - tInfo.vMin.y), (tInfo.vMax.z - tInfo.vMin.z));
+    ColliderDesc.vRotation    = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(0.f, tInfo.vCenter.y, 0.f);
+
+    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::OBB, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 

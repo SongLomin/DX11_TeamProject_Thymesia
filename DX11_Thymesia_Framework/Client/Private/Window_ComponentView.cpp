@@ -74,11 +74,10 @@ void CWindow_ComponentView::Draw_Components()
 
 		_bool bEnable = PICKED_GAMEOBJECT->Get_Enable();
 
-		ImGui::Text("Enable");
-		ImGui::Checkbox("Enable", &bEnable);
+		if (ImGui::Checkbox("Enable", &bEnable))
+			PICKED_GAMEOBJECT->Set_Enable(bEnable);
 		ImGui::Separator();
 
-		PICKED_GAMEOBJECT->Set_Enable(bEnable);
 	}
 
 	/*weak_ptr<CUI> pCastUI = Weak_Cast<CUI>(m_tPickedGameObjectDesc.pInstance);

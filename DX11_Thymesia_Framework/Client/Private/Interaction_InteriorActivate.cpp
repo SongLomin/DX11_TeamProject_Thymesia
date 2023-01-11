@@ -230,8 +230,9 @@ void CInteraction_InteriorActivate::SetUpColliderDesc()
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::TRIGGER;
-    ColliderDesc.vScale = _float3(3.f, 0.f, 0.f);
+    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
+    ColliderDesc.vScale       = _float3(3.f, 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(1.f, 0.f, 0.f);
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

@@ -100,10 +100,6 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 
 	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);
-	GET_SINGLE(CGameManager)->Activate_SectionLight(1, EVENT_TYPE::ON_EXIT_SECTION);
-
-	m_pOwner.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT);
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT);
 }
 
 void CVargBossState_Exe_Dead::OnDestroy()

@@ -61,7 +61,10 @@ private:
     void Exit_AnimIndex();
     void Call_CheckAnimEnd();
     void Set_State(const ANIM_EVENT In_eEvent);
+
     void Call_CheckEquipEnd(_bool& bState);
+    void CallBack_CreateEffect(_float _fTimeDelta, _bool& Out_State, string _szEffectTag);
+    void CallBack_DeleteEffect(_float _fTimeDelta, _bool& Out_State, string _szEffectTag);
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
@@ -79,15 +82,19 @@ private:
     _int                    m_iAnimIndex    = 0;
 
     _int                    m_iCheckIndex   = 0;
-    _int                    m_iEffectIndex  = -1;
+    _int                    m_iUseEffectIndex   = -1;
+    _int                    m_iUnUseEffectIndex = -1;
     LIGHTDESC               m_tLightDesc;   
     _float2                 m_vAddUVPos     = { 0.f, 0.f };
 
-    FDelegate<_bool&>       CallBack_EquipEnd;
     _bool                   m_bAisemyRender = false;
     ANIM_EVENT              m_eAnimEvent    = ANIM_EVENT::NONE;
     _bool                   m_bAnimEnd      = false;
     _bool                   m_bInteraction  = false;
+
+    FDelegate<_bool&>           CallBack_EquipEnd;
+    FDelegate<_float, _bool&, string>   CallBack_CreateEffect;
+    FDelegate<_float, _bool&, string>   CallBack_DeleteEffect;
 
 private:
     virtual void OnDestroy() override;
