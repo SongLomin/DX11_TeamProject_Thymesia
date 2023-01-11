@@ -73,21 +73,10 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 			XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f),
 			GAMEINSTANCE->Get_DeltaTime(),
 			Filters);
-		Get_OwnerCharacter().lock()->Get_Transform()->Set_Look2D(-vDoorOpenPlayerMatrix.r[2]);
+		Get_OwnerCharacter().lock()->Get_Transform()->LookAt2D(-vDoorOpenPlayerMatrix.r[2]);
 
-		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+		m_bOnce = true;
 
-
-		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-		vOtherWorldMatrix.r[3] = XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f);
-		_matrix                    vResultOtherWorldMatrix;
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.f, 0.f));
-		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-			vResultOtherWorldMatrix.r[3],
-			GAMEINSTANCE->Get_DeltaTime(),
-			Filters);
-		pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 		Get_OwnerMonster()->Set_BossExecutionStartOnOff(false);
 	}
 	
@@ -131,8 +120,34 @@ _bool CJokerState_TakeExecution_Start::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+	
+
+	PxControllerFilters Filters;
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+	_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 2 && m_bOnce)
+	{
+		m_bOnce = false;
+		PxControllerFilters Filters;
+		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+
+		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+		
+		_matrix                    vResultOtherWorldMatrix;
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-2.f, 0.f, 2.1f, 0.f));
+		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+			vResultOtherWorldMatrix.r[3],
+			GAMEINSTANCE->Get_DeltaTime(),
+			Filters);
+		pOtherCharacter.lock()->Get_Transform()->LookAt2D(-vOtherWorldMatrix.r[2]);
+		
+	}
 
 
+	
 
 	return false;
 }

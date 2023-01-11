@@ -245,7 +245,7 @@ void CCorvusState_Parry2::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
