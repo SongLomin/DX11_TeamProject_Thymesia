@@ -141,7 +141,7 @@ void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 		m_pStageDesc.lock()->Set_Texture("Loading_Font_SeaOfTrees_Desc");
 		break;
 	case Client::LEVEL_STAGE2:
-		m_pLoadingBG.lock()->Set_Texture("Loading_OceanOfMemories");
+		m_pLoadingBG.lock()->Set_Texture("Loading_RoyalGarden");
 		m_pStageTitle.lock()->Set_Texture("Loading_Font_RoyalGarden_Title");
 		m_pStageDesc.lock()->Set_Texture("Loading_Font_RoyalGarden_Desc");
 		break;

@@ -19,28 +19,22 @@ HRESULT CStolenSkill::Initialize(void* pArg)
 	m_pRequirementChecker = CRequirementChecker::Create();
 	m_pRequirementTime = CRequirementBase::Create< CRequirement_Time>();
 
+
+	m_pExpansionChecker = CRequirementChecker::Create();
+	m_pExpansionTime = CRequirementBase::Create<CRequirement_Time>();
+
+	m_pExpansionTime->Init_Req(m_fExpansionTime);
+
 	return S_OK;
 }
 
 void CStolenSkill::UseSkill()
 {
-	if (m_bUseAble == false || !m_pSkillState.lock())
+	if (!m_pSkillState.lock())
 	{
 		return;
 	}
-
-	m_bUseAble = false;
-
-	CClientComponent_Utils::ConvertOwnerToPlayer(m_pOwner).lock()->Change_State(m_pSkillState);
-
-	m_pRequirementTime->Init_Req(m_fSkillCoolDown);
-	m_pRequirementChecker->Add_Requirement(m_pRequirementTime);
-
-	Start_Skill();
-
-	m_eSkillName = SKILL_NAME::SKILL_END;
-	m_pSkillState = weak_ptr<CPlayerStateBase>();
-
+	__super::UseSkill();
 }
 
 void CStolenSkill::OnStealSkill(weak_ptr<CSkill_Base> pSkill)
@@ -48,6 +42,17 @@ void CStolenSkill::OnStealSkill(weak_ptr<CSkill_Base> pSkill)
 	m_eSkillName = pSkill.lock()->Get_SkillName();
 	m_fSkillCoolDown = pSkill.lock()->Get_SkillCoolDown();
 	m_pSkillState = pSkill.lock()->Get_SkillState();
+	m_pExpansionSkillState = pSkill.lock()->Get_ExpansionSkillState();
+
+}
+
+void CStolenSkill::Start_Skill(_bool bExpansion)
+{
+	__super::Start_Skill(bExpansion);
+
+	m_eSkillName = SKILL_NAME::SKILL_END;
+	m_pSkillState = weak_ptr<CPlayerStateBase>();
+
 }
 
 
