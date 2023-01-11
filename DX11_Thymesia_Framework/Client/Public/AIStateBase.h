@@ -69,6 +69,7 @@ protected:
     void                   TurnMechanism();
     _float                 ComputeAngleWithPlayer();
     _int                   ComputeDirectionToPlayer();
+    _int                   ComputeDirectionToOtherPosition(_float4 In_OtherPos);
 
 private:
     weak_ptr<CMonster>     m_pOwnerFromMonster;

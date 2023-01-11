@@ -49,6 +49,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_HeavyAttack1>();
 	Add_Component<CNorMonState_HeavyAttack2>();
 	Add_Component<CNorMonState_HeavyAttack3>();
+	Add_Component<CNorMonState_HeavyAttack4>();
+	Add_Component<CNorMonState_HeavyAttack5>();
 	Add_Component<CNorMonState_Walk_F>();
 	Add_Component<CNorMonState_Walk_FR>();
 	Add_Component<CNorMonState_Walk_FL>();
@@ -69,7 +71,9 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_SpecialAttackStart>();
 	Add_Component<CNorMonState_SpecialAttackLoop>();
 	Add_Component<CNorMonState_SpecialAttackEnd>();
+	Add_Component<CNorMonState_Suprise_Attack>();
 	Add_Component<CNorMonState_Idle2Fight>();
+	Add_Component<CNorMonState_TakeExecution>();
 
 	LIGHTDESC LightDesc;
 
@@ -259,21 +263,38 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.back().lock()->Add_Collider({ 1.21f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 1.31f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		break;
-	//case MONSTERTYPE::SPEARMAN:
-	//	m_pModelCom.lock()->Init_Model("Spearman", "", (_uint)TIMESCALE_LAYER::MONSTER);
-	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Spear", TIMESCALE_LAYER::MONSTER);
-	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-	//	break;
-	//case MONSTERTYPE::SHIELDMAN:
-	//	m_pModelCom.lock()->Init_Model("Shieldman", "", (_uint)TIMESCALE_LAYER::MONSTER);
-	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
-	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield1", TIMESCALE_LAYER::MONSTER);
-	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
-	//	break;
+	   case MONSTERTYPE::WEAKARMORSPEARMAN:
+		m_pModelCom.lock()->Init_Model("WeakArmorMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Halberd", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.91f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.01f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.11f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.21f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.31f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		break;
+	   case MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_pModelCom.lock()->Init_Model("WeakArmorMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Add_Collider({ 0.11f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.21f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.31f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.41f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield1", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+		break;
 		
 	}
 
@@ -311,12 +332,12 @@ void CNorMonster::Init_Desc()
 	case MONSTERTYPE::ARMORSPEARMAN:
 		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 		break;
-	//case MONSTERTYPE::SHIELDMAN:
-	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-	//	break;
-	//case MONSTERTYPE::SPEARMAN :
-	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-	//	break;
+	case MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case MONSTERTYPE::WEAKARMORSPEARMAN :
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
 
 
 	}
@@ -329,6 +350,8 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_LightAttack1);
 	INIT_STATE(CNorMonState_LightAttack2);
 	INIT_STATE(CNorMonState_LightAttack3);
+	INIT_STATE(CNorMonState_HeavyAttack4);
+	INIT_STATE(CNorMonState_HeavyAttack5);
 	INIT_STATE(CNorMonState_Run);
 	INIT_STATE(CNorMonState_TurnL90);
 	INIT_STATE(CNorMonState_TurnR90);
@@ -356,6 +379,9 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_SpecialAttackLoop);
 	INIT_STATE(CNorMonState_SpecialAttackEnd);
 	INIT_STATE(CNorMonState_Idle2Fight);
+	INIT_STATE(CNorMonState_Suprise_Attack);
+	INIT_STATE(CNorMonState_TakeExecution);
+
 
 
 	string	strModelKey = Weak_StaticCast<CStatus_Monster>(m_pStatus).lock()->Get_Desc().m_szModelKey;
@@ -394,8 +420,16 @@ HRESULT CNorMonster::Render(ID3D11DeviceContext* pDeviceContext)
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (i == 2 || i == 3) 
-			continue;
+		if (m_tLinkStateDesc.eMonType != MONSTERTYPE::ARMORSPEARMAN &&
+			m_tLinkStateDesc.eMonType != MONSTERTYPE::ARMORSHIELDMAN &&
+			m_tLinkStateDesc.eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN &&
+			m_tLinkStateDesc.eMonType != MONSTERTYPE::WEAKARMORSPEARMAN)
+		{
+			if (i == 2 || i == 3)
+					continue;
+		}
+		//if (i == 2 || i == 3)
+		//	continue;
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
@@ -438,7 +472,7 @@ void CNorMonster::SetUp_ShaderResource()
 
 void CNorMonster::Move_RootMotion_Internal()
 {
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters  Filters;
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
 	switch (m_tLinkStateDesc.eMonType)
@@ -485,22 +519,14 @@ void CNorMonster::Move_RootMotion_Internal()
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
-	//case MONSTERTYPE::SKULLSHIELDMAN:
-	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-	//	break;
-	//case  MONSTERTYPE::SKULLSPEARMAN:
-	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-	//	break;
-	//case  MONSTERTYPE::SPEARMAN:
-	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-	//	break;
-	//case MONSTERTYPE::SHIELDMAN:
-	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-	//	break;
+	case  MONSTERTYPE::WEAKARMORSHIELDMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case MONSTERTYPE::WEAKARMORSPEARMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
 	}
 
 }

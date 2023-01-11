@@ -81,7 +81,8 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Add_SingleGameObject<CFadeMask>(LEVEL_STATIC);
 
-	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Corvus");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
 	
 #ifdef _BAKE_MIPMAPS_
 	Bake_MipMaps();

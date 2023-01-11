@@ -475,6 +475,19 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
+	if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_HurtL>();
+	}
+
+	if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_HurtR>();
+	}
+
+
+
+
 	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = false;

@@ -28,7 +28,6 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
 private:
 	_float m_fMaxSpeed = 2.5f;
 	_float m_fCurrentSpeed = 1.2f;
@@ -38,6 +37,7 @@ private:
 	//TODO юс╫ц
 	_float4         m_fPatrolPosition[3];
 	_int            m_iPatrolCount = 0;
+	_int            m_iCorssResult = 0;
 	_bool           m_bTurnCheck = false;
 
 	virtual void OnEventMessage(_uint iArg) override;

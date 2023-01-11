@@ -535,10 +535,13 @@
     <ClInclude Include="..\Public\InteriorProp.h" />
     <ClInclude Include="..\Public\JavelinWeapon.h" />
     <ClInclude Include="..\Public\Level_Home.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack4.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack5.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Idle2Fight.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackEnd.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttackLoop.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Suprise_Attack.h" />
     <ClInclude Include="..\Public\PhysXColliderObject_Interior.h" />
     <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
     <ClInclude Include="..\Public\PreView_InteriorProp.h" />
@@ -1218,10 +1221,13 @@
     <ClCompile Include="..\Private\InteriorProp.cpp" />
     <ClCompile Include="..\Private\JavelinWeapon.cpp" />
     <ClCompile Include="..\Private\Level_Home.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack4.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack5.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Idle2Fight.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackEnd.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttackLoop.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Suprise_Attack.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp" />
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
     <ClCompile Include="..\Private\PreView_InteriorProp.cpp" />

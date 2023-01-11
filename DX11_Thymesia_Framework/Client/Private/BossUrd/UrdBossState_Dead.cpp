@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "JavelinWeapon.h"
+#include "UrdWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Dead);
 CLONE_C(CUrdBossState_Dead, CComponent)
@@ -78,6 +80,8 @@ void CUrdBossState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bAnimEnd = false;
 
+	m_bOnce = true;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -124,6 +128,30 @@ _bool CUrdBossState_Dead::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
+	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWepons();
+	list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
+
+	//한 0.1 이상에서부터 싹다 없애야될듯?
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.1f && m_bOnce)
+	{
+		m_bOnce = false;
+
+		for (auto& elnm : pJavelinWeapons)
+		{
+			elnm.lock()->Set_RenderOnOff(false);
+		}
+		for (auto& elnm : pDecoWeapons)
+		{
+			elnm.lock()->Set_RenderOnOff(false);
+		}
+
+
+		
+	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.9f)
 	{

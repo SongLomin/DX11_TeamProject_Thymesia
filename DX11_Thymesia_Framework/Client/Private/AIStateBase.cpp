@@ -37,7 +37,7 @@ void CAIStateBase::Init_Desc(void* In_pDesc)
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
 	m_eBossStartType  = StateLinkDesc.eBossStartType;
-	m_bPatrol       =   true;
+	m_bPatrol         = StateLinkDesc.bPatrol;
 }
 
 void CAIStateBase::Start()
@@ -345,6 +345,28 @@ _int CAIStateBase::ComputeDirectionToPlayer()
 	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
 	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
 	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
+	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
+
+	if (fCross >= 0.f) // 양수 오른쪽
+	{
+		// 오른쪽가는턴라이트싱행<1리턴>
+		return 1;
+	}
+	else // 음수 왼쪽
+	{
+		//왼쪽으로가는턴래프트실행 <-1리턴>
+		return -1;
+	}
+}
+
+_int CAIStateBase::ComputeDirectionToOtherPosition(_float4 In_OtherPos)
+{
+	
+	_vector vOtherPos = XMLoadFloat4(&In_OtherPos);
+	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
+	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vOtherPos - vMyPos);
 	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
 	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
