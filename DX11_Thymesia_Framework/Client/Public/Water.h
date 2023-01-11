@@ -47,6 +47,10 @@ private:
     vector<WATERWAVE_DESC>          m_WaterWaveDescs;
     _uint                   m_iDescCount = 0;
 
+    _float                  m_fTimeAcc = 0.f;
+    _float                  m_fTimeInterval = 1.f / 20.f;
+    _uint                   m_iPowCount = 0.f;
+
 public:
     void Free();
 };
