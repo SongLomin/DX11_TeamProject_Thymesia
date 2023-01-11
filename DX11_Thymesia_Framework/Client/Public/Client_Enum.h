@@ -491,7 +491,7 @@ namespace Client
 
 	enum class SKILL_NAME
 	{
-		SKILL_AXE,
+		SKILL_AXE = 0,
 		SKILL_KNIFE,
 		SKILL_HAMMER,
 		SKILL_SCYTHE,

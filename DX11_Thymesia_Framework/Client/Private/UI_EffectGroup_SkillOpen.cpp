@@ -89,7 +89,8 @@ void CUI_EffectGroup_SkillOpen::Init_EffectUI()
     m_pSkillName.lock()->SetMaskIndex(0);
     m_pSkillName.lock()->Set_Size(983, 69.f);
     m_pSkillName.lock()->Set_UIPosition(800.f, 461.f);
-    m_pSkillName.lock()->Set_Texture("SkillOpen_SkillName_Axe");
+    m_pSkillName.lock()->Set_Texture("SkillOpen_SkillName");
+    m_pSkillName.lock()->Set_DeffuseIndex((_uint)m_eSkillName);
     m_pSkillName.lock()->Set_Depth(0.7f);
     m_pSkillName.lock()->Set_Enable(false);
   
@@ -115,7 +116,8 @@ void CUI_EffectGroup_SkillOpen::Play(SKILL_NAME eSkillName)
     m_pBackGround.lock()->Set_Enable(true);
     m_pTitleBG.lock()->Set_Enable(true);
     m_pTitleText.lock()->Set_Enable(true);
-
+   
+    m_eSkillName = eSkillName;
  
     m_pStartCircleEffect.lock()->Set_Enable(true);
 

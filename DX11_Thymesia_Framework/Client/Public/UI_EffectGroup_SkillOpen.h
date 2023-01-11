@@ -38,6 +38,9 @@ private:
     weak_ptr<CUI_CustomEffect>        m_pStartCircleEffect;
 
 private:
+    SKILL_NAME       m_eSkillName = SKILL_NAME::SKILL_AXE;
+
+private:
     void            Free();
 
 
