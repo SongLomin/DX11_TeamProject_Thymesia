@@ -32,6 +32,7 @@ protected:
 private:
 	_float      m_fDissolveTime;
 	_bool       m_bAnimEnd;
+	_bool       m_bOnce = false;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

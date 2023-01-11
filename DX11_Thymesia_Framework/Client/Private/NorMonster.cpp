@@ -73,6 +73,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_SpecialAttackEnd>();
 	Add_Component<CNorMonState_Suprise_Attack>();
 	Add_Component<CNorMonState_Idle2Fight>();
+	Add_Component<CNorMonState_TakeExecution>();
 
 	LIGHTDESC LightDesc;
 
@@ -379,6 +380,7 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_SpecialAttackEnd);
 	INIT_STATE(CNorMonState_Idle2Fight);
 	INIT_STATE(CNorMonState_Suprise_Attack);
+	INIT_STATE(CNorMonState_TakeExecution);
 
 
 
