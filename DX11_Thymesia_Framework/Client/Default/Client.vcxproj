@@ -661,6 +661,7 @@
     <ClInclude Include="..\Public\UI_OptionElement_Slider.h" />
     <ClInclude Include="..\Public\UI_OptionItem.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Inventory.h" />
+    <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\UI_Scroll.h" />
@@ -1333,6 +1334,7 @@
     <ClCompile Include="..\Private\UI_OptionElement_Slider.cpp" />
     <ClCompile Include="..\Private\UI_OptionItem.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
+    <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_Scroll.cpp" />

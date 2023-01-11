@@ -42,6 +42,8 @@
 #include "UI_ItemRequirement.h"
 #include "UI_EvolveMenu_PlagueWeapon.h"
 #include "UI_EvolveMenu_Option.h"
+#include "UI_RadialBlurMask.h"
+
 
 GAMECLASS_C(CClientLevel)
 
@@ -140,6 +142,8 @@ void CClientLevel::SetUp_UI()
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
 
 	weak_ptr<CUIManager>	pUIManager = GET_SINGLE(CUIManager);
+
+	GAMEINSTANCE->Add_SingleGameObject<CUI_RadialBlurMask>(LEVEL_STATIC);
 
 	pUIManager.lock()->SetCursor(GAMEINSTANCE->Add_SingleGameObject<CUI_Cursor>(LEVEL_STATIC));
 

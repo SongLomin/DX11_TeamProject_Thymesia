@@ -17,6 +17,8 @@
 #include "GameManager.h"
 #include "Status_Player.h"
 #include "imgui.h"
+#include "PlayerSkill_System.h"
+
 
 GAMECLASS_C(CInteraction_CheckPoint);
 CLONE_C(CInteraction_CheckPoint, CGameObject);
@@ -328,6 +330,9 @@ void CInteraction_CheckPoint::Act_Interaction()
 
     if (pPlayerStatus.lock())
         pPlayerStatus.lock()->Full_Recovery();
+
+    weak_ptr<CPlayerSkill_System> pPlayerSkillSystem = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CPlayerSkill_System>();
+    pPlayerSkillSystem.lock()->ResetAllSkillCoolDown();
 
     GET_SINGLE(CGameManager)->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
     GET_SINGLE(CGameManager)->ResetWorld();

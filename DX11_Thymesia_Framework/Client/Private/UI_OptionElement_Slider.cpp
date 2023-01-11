@@ -27,7 +27,7 @@ HRESULT CUI_OptionElement_Slider::Initialize(void* pArg)
     m_tAmountInfo.fRotation = 0.f;
     m_tAmountInfo.szText = L"";
     m_tAmountInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
-    m_tAmountInfo.vPosition = _float2(274.f, 229.f);
+    m_tAmountInfo.vPosition = _float2(304.f, 229.f);
     m_tAmountInfo.vScale = _float2(0.6f, 0.6f);
 
     Add_Child(m_pSlider.lock()->Get_This());

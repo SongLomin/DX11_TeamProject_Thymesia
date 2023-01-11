@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CCorvusState_CheckPointStart);
 CLONE_C(CCorvusState_CheckPointStart, CComponent)
@@ -71,7 +73,6 @@ void CCorvusState_CheckPointStart::OnStateStart(const _float& In_fAnimationBlend
 void CCorvusState_CheckPointStart::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 }
 
 void CCorvusState_CheckPointStart::Call_AnimationEnd(_uint iEndAnimIndex)
@@ -80,7 +81,12 @@ void CCorvusState_CheckPointStart::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_CheckPointLoop>();
+	/*
+		여기서 처리해줘야함.
 	
+	*/
+	GET_SINGLE(CUIManager)->OnEnterEvolveMenu();
+
 }
 
 void CCorvusState_CheckPointStart::Free()
@@ -98,16 +104,11 @@ _bool CCorvusState_CheckPointStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	
 	if (KEY_INPUT(KEY::E, KEY_STATE::AWAY))
 	{
 		return true;
 	}
 	
-
-
-		
-
 	return false;
 }
 

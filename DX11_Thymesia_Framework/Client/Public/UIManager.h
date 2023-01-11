@@ -38,6 +38,12 @@ public:
     BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
     void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
 
+
+
+public:
+    void               OnEnterEvolveMenu();
+
+
 public:
     void   CreateItemPopupQueue();
     void   Add_ItemPopup(ITEM_NAME eItemName);
@@ -47,6 +53,9 @@ private:
     shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
     BUTTON_LEVEL  m_eButtonLevel = BUTTON_LEVEL::LEVEL1;
 
+
+public:
+    void        Open_EvolveMenu();
 
 private:
     POINT       m_MousePt;

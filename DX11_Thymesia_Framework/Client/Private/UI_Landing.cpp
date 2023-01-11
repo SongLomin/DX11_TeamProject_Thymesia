@@ -72,7 +72,7 @@ HRESULT CUI_Landing::Initialize(void* pArg)
     m_tLandingFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
     m_tLandingFaderDesc.eFaderType = FADER_TYPE::FADER_INOUTLOOPING;
     m_tLandingFaderDesc.fDelayTime = 0.f;
-    m_tLandingFaderDesc.fFadeMaxTime = 1.5f;
+    m_tLandingFaderDesc.fFadeMaxTime = 1.f;
     m_tLandingFaderDesc.vFadeColor = _float4(0, 0, 0, 0.3f);
 
     m_vecChildUI.push_back(m_pLanding);
@@ -146,10 +146,6 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
         m_pLandingBG.lock()->Set_UIDesc(LandingBG_Desc);
         m_pLandingBG.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
 
-        if (eLandingType == LANDING_BECONFOUND)
-        {
-            m_pEasingBlurAmount.lock()->Set_Lerp(0.3f, 0.0f, 1.f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, true);
-        }
     }
     else//스테이지에 따라 나와야함.GetCurrentLevel이나 머시기...그런걸로
     {
@@ -190,13 +186,13 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
 
 void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType, _float fCallTime)
 {
-    m_ePreCalledLanding = eLandingType;
+    m_pLanding.lock()->Set_AlphaColor(_float4(0.f, 0.f, 0.f, 0.f));
+    Set_Enable(true);
 
-    if (m_ePreCalledLanding == LANDING_BECONFOUND)
-    {
-        m_pEasingFloat.lock()->Set_Lerp(0.f, 1.f, fCallTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
-        m_pEasingBlurAmount.lock()->Callback_LerpEnd += bind(&CUI_Landing::Call_TimerEnd, this);
-    }
+    m_ePreCalledLanding = eLandingType;
+    
+    m_pEasingFloat.lock()->Set_Lerp(0.f, 1.f, fCallTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
+    m_pEasingFloat.lock()->Callback_LerpEnd += bind(&CUI_Landing::Call_TimerEnd, this);
 }
 
 void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
@@ -211,29 +207,30 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
 
         m_pLandingBG.lock()->Set_UIDesc(m_tUIDesc);
         m_pLandingBG.lock()->Set_Enable(false);
-    }
-    switch (m_ePreCalledLanding)
-    {
-    case Client::CUI_Landing::LANDING_BECONFOUND:
 
-        Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Call_Enable_EvolveMenu();
-        break;
-    case Client::CUI_Landing::LANDING_DEAD:
-        break;
-    case Client::CUI_Landing::LANDING_KILL_BOSS:
-        break;
-    case Client::CUI_Landing::LANDING_ENTER_STAGE:
-        break;
-    case Client::CUI_Landing::LANDING_END:
-        break;
-    default:
-        break;
+        switch (m_ePreCalledLanding)
+        {
+        case Client::CUI_Landing::LANDING_BECONFOUND:
+         //   Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Call_Enable_EvolveMenu();
+            break;
+        case Client::CUI_Landing::LANDING_DEAD:
+            break;
+        case Client::CUI_Landing::LANDING_KILL_BOSS:
+            break;
+        case Client::CUI_Landing::LANDING_ENTER_STAGE:
+            break;
+        case Client::CUI_Landing::LANDING_END:
+            break;
+        default:
+            break;
+        }
     }
-
 }
 
 void CUI_Landing::Call_TimerEnd()
 {
+    m_pLanding.lock()->Set_AlphaColor(_float4(0.f, 0.f, 0.f, 1.f));
+
     Call_Landing(m_ePreCalledLanding);
 }
 

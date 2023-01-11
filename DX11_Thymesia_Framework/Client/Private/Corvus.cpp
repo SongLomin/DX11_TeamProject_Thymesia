@@ -576,13 +576,12 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 
 		CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
 
-
 		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
 	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(
-			CUI_Landing::LANDING_ENTER_STAGE);	
+			CUI_Landing::LANDING_KILL_BOSS, 1.f);	
 	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{

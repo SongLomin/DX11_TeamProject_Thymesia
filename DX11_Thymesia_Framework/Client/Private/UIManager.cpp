@@ -5,8 +5,8 @@
 #include "ItemPopup_Queue.h"
 #include "UI_Cursor.h"
 #include "GameManager.h"
-
-
+#include "UI_RadialBlurMask.h"
+#include "UI_EvolveMenu.h"
 
 IMPLEMENT_SINGLETON(CUIManager)
 
@@ -27,6 +27,7 @@ void CUIManager::Initalize()
 
 void CUIManager::Tick(_float fTimeDelta)
 {
+
 }
 
 void CUIManager::LateTick(_float fTimeDelta)
@@ -53,6 +54,20 @@ void CUIManager::DisableCursor()
 	m_pCursor.lock()->Set_Enable(false);
 }
 
+void CUIManager::OnEnterEvolveMenu()
+{
+	weak_ptr<CUI_RadialBlurMask> pRadialBlurMask = GAMEINSTANCE->Get_GameObjects<CUI_RadialBlurMask>(LEVEL_STATIC).front();
+
+
+	if (!pRadialBlurMask.lock())
+	{
+		pRadialBlurMask = GAMEINSTANCE->Add_SingleGameObject<CUI_RadialBlurMask>(LEVEL_STATIC);
+	}
+	pRadialBlurMask.lock()->Set_Radial(0.0f, 0.3f, 0.5f);
+
+	pRadialBlurMask.lock()->Callback_OnEndLerp += bind(&CUIManager::Open_EvolveMenu, this);
+}
+
 void CUIManager::CreateItemPopupQueue()
 {
 	if (m_pItemPopupQueue)
@@ -65,6 +80,15 @@ void CUIManager::Add_ItemPopup(ITEM_NAME eItemName)
 {
 	m_pItemPopupQueue->AddPopup(eItemName);
 
+}
+
+void CUIManager::Open_EvolveMenu()
+{
+	
+
+
+	weak_ptr<CUI_EvolveMenu> pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
+	pEvolveMenu.lock()->Set_Enable(true);
 }
 
 void CUIManager::Free()
