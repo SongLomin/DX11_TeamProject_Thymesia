@@ -45,14 +45,6 @@ void CCorvusState_Urd_Execution::Tick(_float fTimeDelta)
 
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::EXECUTION);
 	
-	if (m_MovingRoot)
-	{
-		m_fCurrentSpeed += m_fAccel * fTimeDelta;
-		m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
-		PxControllerFilters Filters;
-		m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
-	}
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -150,17 +142,6 @@ _bool CCorvusState_Urd_Execution::Check_AndChangeNextState()
 		return false;
 
 	//125부터 135까지 피직스 강제로이동시켜야될듯>?
-
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 124 &&
-		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 135)
-	{
-		m_MovingRoot = true;
-	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 135)
-	{
-		m_MovingRoot = false;
-	}
 
 
 	return false;
