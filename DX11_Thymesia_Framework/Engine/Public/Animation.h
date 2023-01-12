@@ -62,7 +62,8 @@ private:
 
 	GETSET(_float, fAnimRatio)
 
-public:
+private:
+	virtual void OnDestroy() override;
 	void Free();
 };
 

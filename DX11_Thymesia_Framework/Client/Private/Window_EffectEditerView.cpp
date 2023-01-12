@@ -260,7 +260,7 @@ void CWindow_EffectEditerView::Update_Sound()
 
     if (ImGui::Button("Play"))
     {
-        GAMEINSTANCE->PlaySoundW(m_szSoundFileName, 1.f);
+        GAMEINSTANCE->PlaySound3D(m_szSoundFileName, m_fVolume, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
     }
 
 

@@ -104,6 +104,11 @@ HRESULT CImGui_Manager::Render(void)
 				{
 					this->Save_EffectJson();
 				}
+
+				if (EDITER_TYPE::MODEL == m_eCurrentEditerType)
+				{
+					GET_SINGLE(CWindow_ModelContantView)->Save_Model();
+				}
 				
 			}
 
@@ -145,6 +150,8 @@ HRESULT CImGui_Manager::Render(void)
 				{
 					GET_SINGLE(CWindow_ModelContantView)->Open_ModelFile(MODEL_TYPE::NONANIM);
 				}
+
+				
 			}
 
 
@@ -336,7 +343,7 @@ void CImGui_Manager::Init_EffectEditer()
 	m_pEditerCamera = GAMEINSTANCE->Add_GameObject<CCamera_Free>(LEVEL_EDIT, &CameraDesc);
 	m_pTerrain = GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_EDIT);
 	m_pTerrain.lock()->Get_Component<Engine::CTransform>().lock()->Add_Position(XMVectorSet(-30.f, 0.f, -30.f, 1.f));
-
+	
 	for (auto& elem : m_arrWindows)
 	{
 		elem->Initialize();
@@ -347,6 +354,7 @@ void CImGui_Manager::Init_EffectEditer()
 		elem->Start();
 	}
 
+	//CClientLevel::Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_EDIT);
 	m_eCurrentEditerType = EDITER_TYPE::EFFECT;
 }
 

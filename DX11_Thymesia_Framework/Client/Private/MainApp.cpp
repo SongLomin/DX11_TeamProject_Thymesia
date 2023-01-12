@@ -41,7 +41,7 @@ HRESULT CMainApp::Initialize()
 #endif // _RENDER_FPS_
 
 	CGameInstance::Create_Instance();
-	CGameManager::Create_Instance();
+	CGameManager::Create_Instance()->Initialize();
 	CUIManager::Create_Instance();
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))

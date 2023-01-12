@@ -4493,24 +4493,6 @@
     <Filter Include="97. Tool\00. IMGUI\Windows\01. SceneEditer\02. Component">
       <UniqueIdentifier>{f9e858b1-2c4f-4206-92df-1b392ec3fe89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect">
-      <UniqueIdentifier>{91bbb880-41fa-40e6-a07e-6530246a0175}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\00. EffectResource">
-      <UniqueIdentifier>{abcd3a72-ade2-4981-9fd6-782385e730f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\01. AnimationModel">
-      <UniqueIdentifier>{bf213ab9-9f2f-41bf-860f-3ab4aad8b023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\02. EditEffect">
-      <UniqueIdentifier>{2a442c21-709b-4489-b5d7-8a95fb8102bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\03. AnimationPlayer">
-      <UniqueIdentifier>{eadc26ea-e931-42a9-81ec-ebfac3dbb747}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\04. EffectHierarchy">
-      <UniqueIdentifier>{35d0a0ef-adba-4bc9-9910-3ee5d535d26f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. ClientLevel\03. Stage2">
       <UniqueIdentifier>{8f5d4da9-e8bb-4299-a8be-1cd7eb02e875}</UniqueIdentifier>
     </Filter>
@@ -5116,9 +5098,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\TestUI">
       <UniqueIdentifier>{3a7dd4a0-338c-4577-a64c-a11260525a5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
-      <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
     </Filter>
     <Filter Include="95. Utils">
       <UniqueIdentifier>{d1e7b6c9-9862-4942-a64d-ce6d33a781ed}</UniqueIdentifier>
@@ -6547,6 +6526,27 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack">
       <UniqueIdentifier>{a4061e50-d0c7-46ef-b9f7-fc00596c90b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect">
+      <UniqueIdentifier>{91bbb880-41fa-40e6-a07e-6530246a0175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\00. EffectResource">
+      <UniqueIdentifier>{abcd3a72-ade2-4981-9fd6-782385e730f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\01. AnimationModel">
+      <UniqueIdentifier>{bf213ab9-9f2f-41bf-860f-3ab4aad8b023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\02. EditEffect">
+      <UniqueIdentifier>{2a442c21-709b-4489-b5d7-8a95fb8102bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\03. AnimationPlayer">
+      <UniqueIdentifier>{eadc26ea-e931-42a9-81ec-ebfac3dbb747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\04. EffectHierarchy">
+      <UniqueIdentifier>{35d0a0ef-adba-4bc9-9910-3ee5d535d26f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
+      <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

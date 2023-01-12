@@ -65,7 +65,8 @@ public:
 
     void Load_FromBinary(const string& In_szPath);
     void Write_FromBinary();
-    void Load_EffectJson(const string& In_szPath, const _uint& In_iTimeScaleLayers, const _uint& In_iCreatedLevel);
+    void Load_EffectJson(const string& In_szPath, const _uint& In_iTimeScaleLayer, const _uint& In_iCreatedLevel);
+    void Load_EffectJson(const string& In_szPath, json& In_EffectJson, const _uint& In_iTimeScaleLayer, const _uint& In_iCreatedLevel);
     void Write_EffectJson(json& Out_Json);
 
 private:

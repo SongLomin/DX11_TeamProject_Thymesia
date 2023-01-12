@@ -7,6 +7,8 @@ IMPLEMENT_SINGLETON(CResource_Manager)
 
 static ::recursive_mutex Load_texture_Mutex;
 static ::recursive_mutex Load_Model_Mutex;
+static ::mutex Load_Shader_Mutex;
+static ::mutex Write_ShaderLog_Mutex;
 
 HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType)
 {
@@ -801,6 +803,8 @@ HRESULT CResource_Manager::Load_Shader(const _tchar* sKey, const _tchar* sShader
 	
 
 #ifdef _DEBUG
+	unique_lock<::mutex> lock(Write_ShaderLog_Mutex);
+
 	_hashcode KeyToHashcode = hash<tstring>()(sKey);
 
 	auto iter = m_ShaderFilePaths.find(KeyToHashcode);
@@ -872,11 +876,15 @@ HRESULT CResource_Manager::Load_Shader_Internal(const _tchar* sKey, const _tchar
 	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), /*&pError*/nullptr);
 #endif
 
+	
+
 	if (SUCCEEDED(hr))
 	{
 		_hashcode KeyToHashcode = hash<tstring>()(sKey);
 
+		unique_lock<::mutex> lock(Load_Shader_Mutex);
 		m_pShaderEffect[KeyToHashcode] = pNewEffect;
+		lock.unlock();
 	}
 
 	return hr;

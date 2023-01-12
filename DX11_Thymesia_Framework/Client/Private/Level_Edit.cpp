@@ -13,11 +13,16 @@ HRESULT CLevel_Edit::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	
+
 	m_pImGui_Manager = CImGui_Manager::Create_Instance();
 	m_pImGui_Manager->Initialize();
+
 #ifdef _SKYBOX_
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 #endif // _SKYBOX_
+
+	
 
 #ifdef _RENDER_FPS_
 	m_TextInfo_FPS.bCenterAlign = false;

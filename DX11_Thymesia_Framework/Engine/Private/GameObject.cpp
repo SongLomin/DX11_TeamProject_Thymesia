@@ -46,12 +46,10 @@ HRESULT CGameObject::Start()
 
 void CGameObject::Tick(_float fTimeDelta)
 {
-	CallBack_Tick(fTimeDelta);
 }
 
 void CGameObject::LateTick(_float fTimeDelta)
 {
-	CallBack_LateTick(fTimeDelta);
 }
 
 void CGameObject::Before_Render(_float fTimeDelta)

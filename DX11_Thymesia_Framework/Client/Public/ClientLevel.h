@@ -24,8 +24,9 @@ public:
 public:
     LEVEL   Get_MyLevel() { return m_eMyLevel; }
     LEVEL   Get_NextLevel() { return m_eNextLevel; }
-protected:
-    void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
+
+    static void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
+
 
     virtual void    Tick(_float fTimeDelta) override;
     virtual void    SetUp_UI();

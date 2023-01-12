@@ -156,7 +156,7 @@ _int CBatBossStateBase::Check_DotAttackState()
 
 
 	//왼쪽오른쪽구분을먼저하고
-	//그리고 가운데랑왼쪽 둘이구분해야도미 시발 
+	//그리고 가운데랑왼쪽 둘이구분해야도미 
 
 	//왼쪽
 

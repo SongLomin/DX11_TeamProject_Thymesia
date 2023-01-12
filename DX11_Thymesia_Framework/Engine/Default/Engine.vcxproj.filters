@@ -287,6 +287,9 @@
     <ClInclude Include="..\Public\Cuda_Device.h">
       <Filter>00. System\02. Cuda</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SubThread_Pool.h">
+      <Filter>98. Managers\15. ThreadManager\00. Thread\02. SubThread_Pool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -547,6 +550,9 @@
     <ClCompile Include="..\Private\Cuda_Device.cpp">
       <Filter>00. System\02. Cuda</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\SubThread_Pool.cpp">
+      <Filter>98. Managers\15. ThreadManager\00. Thread\02. SubThread_Pool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -795,9 +801,6 @@
     <Filter Include="98. Managers\15. ThreadManager\00. Thread\01. DeferredCommand_Thread">
       <UniqueIdentifier>{b93d26b9-8005-40e8-8553-31def97920b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98. Managers\15. ThreadManager\00. Thread\02. Thread_Pool">
-      <UniqueIdentifier>{306f5578-8517-48e6-94f3-b1a92bc16cd8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98. Managers\16. NvClothManager">
       <UniqueIdentifier>{848d31a4-f190-4d65-abb1-0ac9bbb97bf1}</UniqueIdentifier>
     </Filter>
@@ -833,6 +836,9 @@
     </Filter>
     <Filter Include="00. System\02. Cuda">
       <UniqueIdentifier>{aabfcc7b-c1ed-46a0-81ef-08f660c4f305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\15. ThreadManager\00. Thread\02. SubThread_Pool">
+      <UniqueIdentifier>{1071bca7-ccc5-411b-bf9e-a83e73b9ac6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

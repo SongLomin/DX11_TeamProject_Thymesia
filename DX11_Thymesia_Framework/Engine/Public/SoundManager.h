@@ -24,6 +24,8 @@ private:
 
 public:
 	void Initialize();
+	void Tick();
+
 	void Release();
 
 public:
@@ -32,8 +34,14 @@ public:
 	_int  BGMVolumeUp(_float _vol);
 	_int  BGMVolumeDown(_float _vol);
 	_int  Pause(CHANNELID eID);
-	_uint PlaySound(const string& In_szSoundKey, _uint _iIndex, _float _vol);
-	_uint PlaySound(const string& In_szSoundKey, _float _vol);
+	// Play sound with attenuation rate based on perspective with index.
+	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
+	// Play sound with attenuation rate based on perspective.
+	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
+	// Play sound without perspective. (e.g. environmental sound, UI sound) with index.
+	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
+	// Play sound without perspective. (e.g. environmental sound, UI sound)
+	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
@@ -57,7 +65,7 @@ private:
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
 	FMOD_CHANNEL* m_pChannelArr[MAX_CHANNEL];
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
-	FMOD_SYSTEM* m_pSystem;
+	FMOD_SYSTEM* m_pSystem{};
 	_bool		m_bPause = false;
 
 public:

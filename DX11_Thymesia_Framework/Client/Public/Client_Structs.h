@@ -424,10 +424,18 @@ namespace Client
 		_float      fDamage;
 	};
 
+	struct KEYSOUND_DESC
+	{
+		string		szSoundFileName;
+		_float		fVolume;
+	};
+
 	struct KEYFRAME_EVENT
 	{
 		list<_hashcode> EffectGroups;
 		list<_bool>		Enable_Weapon; // Enable은 한개지만 리스트가 비어있으면 이벤트가 없다는 것을 알려준다.
+		list<KEYSOUND_DESC> Sounds;
+		vector<KEYSOUND_DESC> RandomSounds;
 	};
 
 	struct DISSOLVE_DESC

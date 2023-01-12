@@ -44,6 +44,7 @@
 #include "UI_EvolveMenu_Option.h"
 #include "UI_RadialBlurMask.h"
 #include "UI_FadeMask.h"
+#include "SubThread_Pool.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -94,6 +95,10 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
 {
+	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+
+
+
 	std::filesystem::path dir_path = In_FolderPath;
 	std::vector<fs::directory_entry> entries;
 	std::copy(fs::directory_iterator(dir_path), fs::directory_iterator(), std::back_inserter(entries));
@@ -102,23 +107,21 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 
 	BEGIN_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 
-	//for_each_n(entries.begin(), entries.size(), [In_LevelIndex](const std::filesystem::directory_entry& entry)
-	//	{
-	//		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-	//		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-	//		//cout << entry.path().filename() << std::endl;
-	//	});
+	list<pair<string, json>> EffectJsons;
+
 
 	
 
 	while (itr != fs::end(itr)) {
 		const fs::directory_entry& entry = *itr;
 
-		GET_SINGLE(CThread_Manager)->Enqueue_Job(bind([entry, In_LevelIndex]() {
-			weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-			//cout << entry.path().filename() << std::endl;
-			}));
+		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+
+		//GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_LevelIndex, EffectGroup]() {
+		//	
+		//	//cout << entry.path().filename() << std::endl;
+		//	}));
 
 		
 #ifdef _DEBUG_COUT_
@@ -127,7 +130,7 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 
 		itr++;
 	}
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
 	END_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 }

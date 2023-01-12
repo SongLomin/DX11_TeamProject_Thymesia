@@ -14,10 +14,14 @@
 #include "CustomUI.h"
 #include "UI_Logo.h"
 #include "UI_Loading.h"
+#include "SubThread_Pool.h"
 #include <cmath>
 
 #define LOAD_TEXTURES_USE_THREAD(szKey, szPath, eMemoryType) \
-	GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CGameInstance::Load_Textures, CGameInstance::Get_Instance(), szKey, szPath, eMemoryType));
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind(&CGameInstance::Load_Textures, CGameInstance::Get_Instance(), szKey, szPath, eMemoryType));
+
+#define LOAD_SHADER_USE_THREAD(szKey, szPath) \
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind(&CGameInstance::Load_Shader, CGameInstance::Get_Instance(), szKey, szPath));
 	//GAMEINSTANCE->Load_Textures(szKey, szPath, eMemoryType);
 
 ///TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
@@ -182,12 +186,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllEffectMesh();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Default Resources..."));
-	GAMEINSTANCE->Load_Textures(("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
-	GAMEINSTANCE->Load_Textures(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("ButtonDefault"), TEXT("../Bin/Resources/Textures/UI/ButtonDefault.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("UI_White"), TEXT("../Bin/Resources/Textures/UI/UI_White.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures("TestTile", TEXT("../Bin/Resources/Textures/TestTexture/DefaultGrid.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	LOAD_TEXTURES_USE_THREAD(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("ButtonDefault"), TEXT("../Bin/Resources/Textures/UI/ButtonDefault.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("UI_White"), TEXT("../Bin/Resources/Textures/UI/UI_White.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD("TestTile", TEXT("../Bin/Resources/Textures/TestTexture/DefaultGrid.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading UI Resources..."));
 	Load_UIResource();
@@ -196,23 +200,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Shaders..."));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_UIEffect"), TEXT("../Bin/ShaderFiles/Shader_UIEffect.hlsl"));
-
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxAnimModel"), TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"));
-
-	//GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxCubeTex"), TEXT("../Bin/ShaderFiles/Shader_VtxCubeTex.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModel"), TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxNorTex"), TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxTex"), TEXT("../Bin/ShaderFiles/Shader_VtxTex.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxDecal"), TEXT("../Bin/ShaderFiles/Shader_VtxDecal.hlsl"));
-
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_EffectMesh"), TEXT("../Bin/ShaderFiles/Shader_EffectMesh.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxGround"), TEXT("../Bin/ShaderFiles/Shader_VtxGround.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxCurve"), TEXT("../Bin/ShaderFiles/Shader_VtxCurve.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_UIEffect"), TEXT("../Bin/ShaderFiles/Shader_UIEffect.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxAnimModel"), TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxCubeTex"), TEXT("../Bin/ShaderFiles/Shader_VtxCubeTex.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxModel"), TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxNorTex"), TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxTex"), TEXT("../Bin/ShaderFiles/Shader_VtxTex.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxDecal"), TEXT("../Bin/ShaderFiles/Shader_VtxDecal.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_EffectMesh"), TEXT("../Bin/ShaderFiles/Shader_EffectMesh.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxGround"), TEXT("../Bin/ShaderFiles/Shader_VtxGround.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
+	LOAD_SHADER_USE_THREAD(TEXT("Shader_VtxCurve"), TEXT("../Bin/ShaderFiles/Shader_VtxCurve.hlsl"));
 
 	
 
@@ -239,6 +239,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Sound..."));
 	GAMEINSTANCE->Load_SoundFileFromFolderPath("../bin/Sound");
+
+	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 
@@ -318,10 +321,10 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	GAMEINSTANCE->Set_MaskingTexture("UVMask");
 
+	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
 	lstrcpy(m_szLoadingText, TEXT("Test : Loading Complete"));
-
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	m_isFinished = true;
 	return S_OK;
@@ -398,10 +401,10 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GAMEINSTANCE->Set_IrradianceColorScale(_float3(1.f, 1.f, 1.f));
 
+	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+
 	lstrcpy(m_szLoadingText, TEXT("GamePlay : Loading Complete"));
-
-
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	m_isFinished = true;
 
 	return S_OK;
@@ -461,9 +464,10 @@ HRESULT CLoader::Loading_ForStage2Level()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
-	GAMEINSTANCE->Set_IrradianceColorScale(_float3(0.53f, 0.43f, 0.43f));
+	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GAMEINSTANCE->Set_IrradianceColorScale(_float3(0.53f, 0.43f, 0.43f));
 	m_isFinished = true;
 	return S_OK;
 }
@@ -498,7 +502,10 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	GAMEINSTANCE->Set_IrradianceColorScale(_float3(1.f, 1.f, 1.f));
 
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+
+
 	m_isFinished = true;
 
 	return S_OK;
@@ -541,7 +548,7 @@ HRESULT CLoader::Loading_ForHomeLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 	m_isFinished = true;
 
 	return S_OK;
@@ -628,7 +635,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 	m_isFinished = true;
 
 	return S_OK;
@@ -730,7 +737,7 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 
 		Load_AllEffectMeshInPath_Recursive(entry.path());
 
-		GET_SINGLE(CThread_Manager)->Enqueue_Job(bind([entry]() {
+		GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry]() {
 			string szFileName = entry.path().filename().string().c_str();
 			szFileName = szFileName.substr(0, szFileName.size() - 4);
 #ifdef _BAKE_EFFECTMESH_FBX_
@@ -772,8 +779,6 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 	string szExtension;
 	fs::directory_iterator itr(In_Path);
 
-	BEGIN_PERFROMANCE_CHECK("LOAD_ALL_MESH");
-
 	while (itr != fs::end(itr))
 	{
 		const fs::directory_entry& entry = *itr;
@@ -781,7 +786,7 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 		//string szPath
 		Load_AllEffectMeshInPath_Recursive(entry.path());
 
-		GET_SINGLE(CThread_Manager)->Enqueue_Job(bind([entry, In_eModelType, In_eMemoryType, TransformationMatrix, In_extansion]() {
+		GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_eModelType, In_eMemoryType, TransformationMatrix, In_extansion]() {
 			string szFileName = entry.path().filename().string().c_str();
 			szFileName = szFileName.substr(0, szFileName.size() - 4);
 
@@ -800,10 +805,6 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 
 		itr++;
 	}
-
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
-
-	END_PERFROMANCE_CHECK("LOAD_ALL_MESH");
  }
 
 //void CLoader::Load_AllMeshesInPath_Recursive(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType, _matrix TransformationMatrix, const char* In_extansion)
@@ -825,7 +826,7 @@ void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE
 	{
 		const fs::directory_entry& entry = *itr;
 
-		GET_SINGLE(CThread_Manager)->Enqueue_Job(bind([entry, In_eMemoryType]() {
+		GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_eMemoryType]() {
 			string szFileName = entry.path().filename().string();
 			szFileName = szFileName.substr(0, szFileName.find("."));
 			std::cout << "Load_AllTexture() : " << szFileName << std::endl;
@@ -842,8 +843,6 @@ void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE
 
 		itr++;
 	}
-
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	END_PERFROMANCE_CHECK("LOAD_ALL_TEXTURE");
 
@@ -1450,13 +1449,13 @@ void CLoader::Load_CorvusModel()
 	_matrix TransformMatrix = XMMatrixIdentity();
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
+	Load_Model_UseThread("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("CorvusDefaultSaber", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultSaber/Corvus_DefaultSaber.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("CorvusDefaultSaber", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultSaber/Corvus_DefaultSaber.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_NormalMobModel()
@@ -1464,90 +1463,90 @@ void CLoader::Load_NormalMobModel()
 	_matrix TransformMatrix = XMMatrixIdentity();
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Armorman", "../Bin/Resources/Meshes/NorMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Armorman", "../Bin/Resources/Meshes/NorMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Shieldman", "../Bin/Resources/Meshes/NorMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Model_UseThread("WeakArmorMan", "../Bin/Resources/Meshes/NorMonster/WeakArmorMan/WeakArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Shieldman", "../Bin/Resources/Meshes/NorMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("WeakArmorMan", "../Bin/Resources/Meshes/NorMonster/WeakArmorMan/WeakArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Skullman", "../Bin/Resources/Meshes/NorMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Skullman", "../Bin/Resources/Meshes/NorMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Spearman", "../Bin/Resources/Meshes/NorMonster/SpearMan/SpearMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Spearman", "../Bin/Resources/Meshes/NorMonster/SpearMan/SpearMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Sword", "../Bin/Resources/Meshes/NorMonster/Weapon/Sword/Sword.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Sword", "../Bin/Resources/Meshes/NorMonster/Weapon/Sword/Sword.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Spear", "../Bin/Resources/Meshes/NorMonster/Weapon/Spear/Spear.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Spear", "../Bin/Resources/Meshes/NorMonster/Weapon/Spear/Spear.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Shield2", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield2/Shield2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Shield2", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield2/Shield2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Shield1", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield1/Shield1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Shield1", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield1/Shield1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Halberd", "../Bin/Resources/Meshes/NorMonster/Weapon/Halberd/Halberd.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Halberd", "../Bin/Resources/Meshes/NorMonster/Weapon/Halberd/Halberd.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	//
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Balloon", "../Bin/Resources/Meshes/NorMonster/Balloon/Balloon.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Balloon", "../Bin/Resources/Meshes/NorMonster/Balloon/Balloon.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_AxeMan", "../Bin/Resources/Meshes/NorMonster/AxeMan/SK_C_LV1Villager_M_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_AxeMan", "../Bin/Resources/Meshes/NorMonster/AxeMan/SK_C_LV1Villager_M_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_KnifeWoman", "../Bin/Resources/Meshes/NorMonster/KnifeWoman/SK_C_LV1Villager_F_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_KnifeWoman", "../Bin/Resources/Meshes/NorMonster/KnifeWoman/SK_C_LV1Villager_F_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Gardner", "../Bin/Resources/Meshes/NorMonster/Gardner/Gardner.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Gardner", "../Bin/Resources/Meshes/NorMonster/Gardner/Gardner.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Axe", "../Bin/Resources/Meshes/NorMonster/Weapon/Axe/Axe2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Axe", "../Bin/Resources/Meshes/NorMonster/Weapon/Axe/Axe2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Scythe", "../Bin/Resources/Meshes/NorMonster/Weapon/Scythe/Scythe.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Scythe", "../Bin/Resources/Meshes/NorMonster/Weapon/Scythe/Scythe.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(190.f)) * XMMatrixRotationY(XMConvertToRadians(-170.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Weapon_Shield", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield/Shield.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Weapon_Shield", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield/Shield.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.f)) * XMMatrixRotationY(XMConvertToRadians(90.f)) * XMMatrixRotationZ(XMConvertToRadians(-110.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Vain", "../Bin/Resources/Meshes/NorMonster/Gardner/vain/Vain.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Vain", "../Bin/Resources/Meshes/NorMonster/Gardner/vain/Vain.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-180.f)) * XMMatrixRotationY(XMConvertToRadians(-40.f)) * XMMatrixRotationZ(XMConvertToRadians(50.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Vine", "../Bin/Resources/Meshes/NorMonster/Gardner/Vine.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Vine", "../Bin/Resources/Meshes/NorMonster/Gardner/Vine.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationY(XMConvertToRadians(-90.f)) * XMMatrixRotationZ(XMConvertToRadians(-20.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Scarf", "../Bin/Resources/Meshes/NorMonster/Gardner/Scarf.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Scarf", "../Bin/Resources/Meshes/NorMonster/Gardner/Scarf.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(-40.f)) * XMMatrixRotationZ(XMConvertToRadians(50.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Vine", "../Bin/Resources/Meshes/NorMonster/Gardner/Vine.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Vine", "../Bin/Resources/Meshes/NorMonster/Gardner/Vine.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(10.f)) * XMMatrixRotationY(XMConvertToRadians(10.f)) * XMMatrixRotationZ(XMConvertToRadians(10.f)) * XMMatrixScaling(0.1f, 0.1f, 0.1f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation1", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation1", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation2", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation2", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation3", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation3.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation3", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation3.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation4", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation4.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation4", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation4.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation5", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation5.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation5", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation5.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation6", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation6.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation6", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation6.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Mon_Mutation7", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation7.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Mon_Mutation7", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation7.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_RareMobModel()
@@ -1560,22 +1559,22 @@ void CLoader::Load_EliteMobModel()
 	_matrix TransformMatrix = XMMatrixIdentity();
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
-	GAMEINSTANCE->Load_Model_UseThread("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Elite_GreatSwordman", "../Bin/Resources/Meshes/EliteMonster/GreatSwordMan/GreatSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Elite_GreatSwordman", "../Bin/Resources/Meshes/EliteMonster/GreatSwordMan/GreatSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Elite_TwinSwordman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordMan/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Elite_TwinSwordman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordMan/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Elite_TwinSwordWoman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordWoman/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Elite_TwinSwordWoman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordWoman/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Joker_Weapon", "../Bin/Resources/Meshes/EliteMonster/Joker/Hammer/Hammer.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Joker_Weapon", "../Bin/Resources/Meshes/EliteMonster/Joker/Hammer/Hammer.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_BossMobModel()
@@ -1583,35 +1582,35 @@ void CLoader::Load_BossMobModel()
 	_matrix TransformMatrix = XMMatrixIdentity();
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/untitled.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/Varg.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	//TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	// TransformMatrix = XMMatrixRotationX() * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	// GAMEINSTANCE->Load_Model_UseThread("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_Urd", "../Bin/Resources/Meshes/Boss/Urd/Urd2.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
+	Load_Model_UseThread("Boss_Urd", "../Bin/Resources/Meshes/Boss/Urd/Urd2.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.f)) * XMMatrixRotationY(XMConvertToRadians(260.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_UrdWeapon2", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword02.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Boss_UrdWeapon2", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword02.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_Bat", "../Bin/Resources/Meshes/Boss/Bat/Bat.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
+	Load_Model_UseThread("Boss_Bat", "../Bin/Resources/Meshes/Boss/Bat/Bat.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
 
 	TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	GAMEINSTANCE->Load_Model_UseThread("Boss_BatWeapon", "../Bin/Resources/Meshes/Boss/Bat/Weapon/BushBottom.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Boss_BatWeapon", "../Bin/Resources/Meshes/Boss/Bat/Weapon/BushBottom.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	//Masking
 	GAMEINSTANCE->Load_Textures(("Mask"), TEXT("../Bin/Resources/Textures/Mask/193.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model_UseThread("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_Model_UseThread("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_AllMapModel()
@@ -1640,6 +1639,13 @@ void CLoader::Load_AllMapModel()
 
 	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Column/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+}
+
+void CLoader::Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool Is_bAnimZero)
+{
+	shared_ptr<CSubThread_Pool> pClientThread = GET_SINGLE(CGameManager)->Get_ClientThread();
+
+	pClientThread->Enqueue_Job(bind(&CGameInstance::Load_Model, CGameInstance::Get_Instance(), sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero));
 }
 
 

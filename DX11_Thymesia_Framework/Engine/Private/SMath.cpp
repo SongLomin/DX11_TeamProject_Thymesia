@@ -786,6 +786,16 @@ PxQuat ENGINE_DLL Engine::SMath::Convert_PxQuat(FXMVECTOR In_Vector)
 	return PxQuat(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2], In_Vector.m128_f32[3]);
 }
 
+FMOD_VECTOR ENGINE_DLL Engine::SMath::Convert_FMOD_VECTOR(FXMVECTOR In_Vector)
+{
+	FMOD_VECTOR vResult;
+	vResult.x = In_Vector.m128_f32[0];
+	vResult.y = In_Vector.m128_f32[1];
+	vResult.z = In_Vector.m128_f32[2];
+
+	return vResult;
+}
+
 PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(PxExtendedVec3 In_Vector)
 {
 	return PxVec3(_float(In_Vector.x), _float(In_Vector.y), _float(In_Vector.z));

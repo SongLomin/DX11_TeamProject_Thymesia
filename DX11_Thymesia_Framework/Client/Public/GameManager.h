@@ -8,6 +8,7 @@ class CGameObject;
 class CCamera;
 class CModel;
 class CTransform;
+class CSubThread_Pool;
 END
 
 BEGIN(Client)
@@ -42,7 +43,13 @@ class CGameManager :
     DECLARE_SINGLETON(CGameManager)
 
 public:
+    void Initialize();
+
+public:
     void LateTick(_float fTimeDelta);
+
+public:
+    shared_ptr<CSubThread_Pool> Get_ClientThread();
 
 public:
     void Set_GameState(const GAME_STATE& In_eState);
@@ -134,12 +141,12 @@ public:
     // 해당 이펙트 그룹의 인덱스를 반환합니다. (메모리 풀)
     // 이펙트를 UnUse할때 인덱스를 필요로 합니다.
 
-    _uint Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameFromHash, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
-    _uint Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
+    _uint Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameFromHash, weak_ptr<Engine::CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
+    _uint Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<Engine::CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
     void UnUse_EffectGroup(const string& In_szEffectGroupName, const _uint& In_EffectGroupIndex);
 
 private:
-    void Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable);
+    void Enable_WeaponFromEvent(weak_ptr<Engine::CTransform> pParentTransformCom, const _bool In_bEnable);
 
 public:
     void Load_AllKeyEventFromJson();
@@ -222,6 +229,9 @@ public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
     FDelegate<>                 CallBack_FocusOutMonster;
+
+private: /* For. SubThread Pool  */
+    shared_ptr<CSubThread_Pool> m_pClientThread;
 
 private:
     list<weak_ptr<CGameObject>> m_pLayers[(_uint)OBJECT_LAYER::LAYER_END];

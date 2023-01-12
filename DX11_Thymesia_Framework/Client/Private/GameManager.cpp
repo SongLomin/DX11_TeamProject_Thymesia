@@ -6,9 +6,15 @@
 #include "ClientLevel.h"
 #include "UI_Cursor.h"
 #include "ItemPopup_Queue.h"
+#include "SubThread_Pool.h"
 
 
 IMPLEMENT_SINGLETON(CGameManager)
+
+void CGameManager::Initialize()
+{
+	m_pClientThread = CSubThread_Pool::Create(8);
+}
 
 void CGameManager::LateTick(_float fTimeDelta)
 {
@@ -48,6 +54,11 @@ void CGameManager::LateTick(_float fTimeDelta)
 	{
 		Set_GameState(GAME_STATE::BATTLE_END);
 	}
+}
+
+shared_ptr<CSubThread_Pool> CGameManager::Get_ClientThread()
+{
+	return m_pClientThread;
 }
 
 void CGameManager::Set_GameState(const GAME_STATE& In_eState)
@@ -464,12 +475,29 @@ void CGameManager::Load_AllKeyEventFromJson()
 					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
 				}
 
-				if (KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
+				if (!KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
 				{
-					continue;
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
 				}
 
-				m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
+				for (auto& SoundJson : KeyEventJson["AnimationIndex"][i][j]["Sound"])
+				{
+					KEYSOUND_DESC KeySoundDesc;
+					KeySoundDesc.szSoundFileName = SoundJson["SoundName"];
+					KeySoundDesc.fVolume = SoundJson["Volume"];
+
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Sounds.push_back(KeySoundDesc);
+				}
+
+				for (auto& RandomSoundJson : KeyEventJson["AnimationIndex"][i][j]["RandomSound"])
+				{
+					KEYSOUND_DESC KeySoundDesc;
+					KeySoundDesc.szSoundFileName = RandomSoundJson["SoundName"];
+					KeySoundDesc.fVolume = RandomSoundJson["Volume"];
+
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].RandomSounds.push_back(KeySoundDesc);
+				}
+				
 			}
 		}
 
@@ -555,6 +583,16 @@ void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_p
 	{
 		Enable_WeaponFromEvent(In_TransformCom, elem);
 	}
+
+	for (auto& elem : Key_iter->second.Sounds)
+	{
+		GAMEINSTANCE->PlaySound3D(elem.szSoundFileName, elem.fVolume, In_TransformCom.lock()->Get_Position());
+	}
+
+	_int iRandom = rand() % Key_iter->second.RandomSounds.size();
+
+	GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume, In_TransformCom.lock()->Get_Position());
+
 }
 
 void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType)

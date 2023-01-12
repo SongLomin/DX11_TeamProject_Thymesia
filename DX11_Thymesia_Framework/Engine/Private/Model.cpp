@@ -545,6 +545,7 @@ void CModel::Reset_Model()
 
 	m_pModelData.reset();
 	m_iNumMeshContainers = 0;
+	m_iNumAnimations = 0;
 	m_iNumMaterials = 0;
 	m_MeshContainers.clear();
 	m_Materials.clear();
