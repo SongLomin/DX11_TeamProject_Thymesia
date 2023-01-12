@@ -299,13 +299,12 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA02", 2.f);
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_VS_TakeExecution_01", 1.1f);
 
-
 #pragma endregion // BigHandMan
+
     SET_ANIM_SPEED("Corvus_SD_HurtMFL",2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtMFR",2.f);
     SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.006f);
     SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.3f);
-    //�ӵ� 0.5���������
 
        /*
          SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 1.f);
