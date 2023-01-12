@@ -121,20 +121,29 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 
 	switch (m_eMonType)
 	{
-	case Client::MONSTERTYPE::ARMORSHIELDMAN:
-		
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:	
+		m_pModelCom.lock()->Set_AnimationSpeed(2.1f);
+		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+		m_fOffSetX = 0.f;
+		m_fOffSetZ = 1.1f;
 		break;
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
 		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(0.75f, 0.75f, 0.75f));
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_fOffSetX = -0.5f;
+		m_fOffSetZ = 1.f;
 		break;
+		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.1f);
+		m_fOffSetX = 0.f;
+		m_fOffSetZ = 0.8f;
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(0.75f, 0.75f, 0.75f));
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_fOffSetX = -0.5f;
+		m_fOffSetZ = 1.f;
 		break;
 	}
 
@@ -155,7 +164,7 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 	_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
 	vOtherWorldMatrix.r[3] = MonsterMatrix.r[3];
 	_matrix                    vResultOtherWorldMatrix;
-	vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.5f, 0.f, 1.f, 0.f));
+	vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(m_fOffSetX, 0.f, m_fOffSetZ, 0.f));
 	pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 		vResultOtherWorldMatrix.r[3],
 		GAMEINSTANCE->Get_DeltaTime(),
@@ -193,6 +202,9 @@ void CNorMonState_TakeExecution::OnStateEnd()
 	__super::OnStateEnd();
 
 	Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+
+	m_fOffSetX = 0.f;
+	m_fOffSetZ = 0.f;
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);

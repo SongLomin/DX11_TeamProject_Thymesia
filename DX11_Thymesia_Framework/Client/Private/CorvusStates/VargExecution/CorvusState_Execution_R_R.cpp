@@ -165,9 +165,12 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 		switch (m_eExcutionTargetType)
 		{
 		case Client::MONSTERTYPE::ARMORSHIELDMAN:
-		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
 			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
+			break;
+		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
+			Get_OwnerPlayer()->Change_State<CCorvusState_Armor_Execution_02>();
 			break;
 		case Client::MONSTERTYPE::ARMORSPEARMAN:
 		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
@@ -179,7 +182,7 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_Joker_Execution>();
 			break;
 		case Client::MONSTERTYPE::BIGHANDMAN:
-			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::ELITEMONSTER, EVENT_TYPE::ON_BIGHANDMANEXECUTION);
+			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::ELITEMONSTER, EVENT_TYPE::ON_BIGHANDMANEXECUTIONSTART);
 			Get_OwnerPlayer()->Change_State<CCorvusState_BigHandman_Execution>();
 			break;
 		case Client::MONSTERTYPE::VARG:

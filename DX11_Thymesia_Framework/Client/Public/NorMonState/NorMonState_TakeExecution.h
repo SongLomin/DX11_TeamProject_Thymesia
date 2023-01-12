@@ -30,6 +30,8 @@ protected:
 private:
 	_float      m_fDissolveTime;
 	_bool       m_bAnimEnd;
+	_float      m_fOffSetX;
+	_float      m_fOffSetZ;
 
 
 private:

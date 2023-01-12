@@ -75,6 +75,7 @@ void CBigHandManState_VS_TakeExecution_01::OnStateStart(const _float& In_fAnimat
 
 	Rotation_TargetToLookDir();
 
+	Get_OwnerMonster()->Set_EliteExecutionStartOnOff(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

@@ -826,6 +826,8 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
 	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
+
+	ADD_STATE_MACRO(CCorvusState_BigHandman_Execution);
 	ADD_STATE_MACRO(CCorvusState_LV2M_Execution);
 	ADD_STATE_MACRO(CCorvusState_LV1M_Execution);
 	ADD_STATE_MACRO(CCorvusState_AromorLV1_Execution);

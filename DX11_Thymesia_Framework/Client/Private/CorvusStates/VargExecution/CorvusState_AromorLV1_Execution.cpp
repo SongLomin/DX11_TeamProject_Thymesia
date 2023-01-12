@@ -61,7 +61,7 @@ void CCorvusState_AromorLV1_Execution::OnStateStart(const _float& In_fAnimationB
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_AromorLV1_Execution::Call_NextAnimationKey, this, placeholders::_1);
@@ -79,6 +79,7 @@ void CCorvusState_AromorLV1_Execution::OnStateStart(const _float& In_fAnimationB
 void CCorvusState_AromorLV1_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
