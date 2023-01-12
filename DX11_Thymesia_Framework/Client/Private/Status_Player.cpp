@@ -262,6 +262,29 @@ void CStatus_Player::Heal_Player(const _float fAmount)
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);
 }
 
+void CStatus_Player::ManaHeal_Player(const _float fAmount)
+{
+    m_tDesc.m_fCurrentMP += fAmount;
+    if (m_tDesc.m_fCurrentMP >= m_tDesc.m_fMaxMP)
+        m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
+
+    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+}
+
+void CStatus_Player::Heal_PlayerFromMaxHP(const _float fRatio)
+{
+    _float fHealAmount = m_tDesc.m_fMaxHP * fRatio;
+        
+    Heal_Player(fHealAmount);
+}
+
+void CStatus_Player::MPHeal_PlayerFromMaxMP(const _float fRatio)
+{
+    _float fHealAmount = m_tDesc.m_fMaxMP * fRatio;
+
+    ManaHeal_Player(fHealAmount);
+}
+
 _uint CStatus_Player::Get_CurrentPotionCount()
 {
     return m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion;

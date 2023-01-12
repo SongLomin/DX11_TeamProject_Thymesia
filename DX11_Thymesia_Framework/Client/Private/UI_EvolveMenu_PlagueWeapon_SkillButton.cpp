@@ -67,14 +67,12 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::LateTick(_float fTimeDelta)
 
 _bool CUI_EvolveMenu_PlagueWeapon_SkillButton::Check_UnLocked()
 {
-    if (m_eLockType == SKILLBUTTON_LOCK_TYPE::LOCKED)
-    {
-        return false;
-    }
     if (m_eLockType == SKILLBUTTON_LOCK_TYPE::UNLOCKED)
     {
         return true;
     }
+
+    return false;
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::Set_UIPosition(const _float fX, const _float fY)

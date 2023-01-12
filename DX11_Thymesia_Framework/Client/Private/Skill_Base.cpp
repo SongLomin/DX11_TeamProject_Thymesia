@@ -30,6 +30,9 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 	m_pRequirementChecker = CRequirementChecker::Create();
+	
+	m_fExpansionTime = 0.5f;
+
 
 	m_pRequirementMana = CRequirementBase::Create< CRequirement_PlayerStatusMana>();
 	m_pRequirementTime = CRequirementBase::Create< CRequirement_Time>();
@@ -133,6 +136,7 @@ void CSkill_Base::UseSkill()
 		Start_Skill(true);
 		return;
 	}
+	m_pExpansionTime->Init_Req(m_fExpansionTime);
 	m_pExpansionChecker->Add_Requirement(m_pExpansionTime);
 	m_bInputedKey = true;
 }

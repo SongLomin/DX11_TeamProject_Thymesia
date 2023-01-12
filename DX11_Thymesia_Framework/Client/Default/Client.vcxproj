@@ -612,6 +612,7 @@
     <ClInclude Include="..\Public\StolenSkill.h" />
     <ClInclude Include="..\Public\TargetCurve.h" />
     <ClInclude Include="..\Public\TestUI.h" />
+    <ClInclude Include="..\Public\TransformUtils.h" />
     <ClInclude Include="..\Public\UIHeaders.h" />
     <ClInclude Include="..\Public\UIManager.h" />
     <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
@@ -1278,6 +1279,7 @@
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
+    <ClCompile Include="..\Private\TransformUtils.cpp" />
     <ClCompile Include="..\Private\UIManager.cpp" />
     <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />
     <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />

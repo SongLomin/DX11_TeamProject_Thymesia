@@ -2205,6 +2205,7 @@
     <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
     <ClInclude Include="..\Public\UI_FadeMask.h" />
     <ClInclude Include="..\Public\UIHeaders.h" />
+    <ClInclude Include="..\Public\TransformUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4439,6 +4440,7 @@
     <ClCompile Include="..\Private\UI_Slider.cpp" />
     <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
     <ClCompile Include="..\Private\UI_FadeMask.cpp" />
+    <ClCompile Include="..\Private\TransformUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

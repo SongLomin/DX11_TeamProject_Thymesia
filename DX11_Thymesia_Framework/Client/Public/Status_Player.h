@@ -124,6 +124,12 @@ public://For MPBar
     _float         Get_Atk() { return m_tDesc.m_fNormalAtk; }
     virtual void    Set_Desc(void* In_Desc) override;
     void            Heal_Player(const _float fAmount);
+    void            ManaHeal_Player(const _float fAmount);
+
+
+    void            Heal_PlayerFromMaxHP(const _float fRatio);
+    void            MPHeal_PlayerFromMaxMP(const _float fRatio);
+
 
 
 

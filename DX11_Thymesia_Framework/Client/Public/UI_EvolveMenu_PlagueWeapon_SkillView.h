@@ -52,6 +52,9 @@ public:
 
 
 private:
+    typedef map<SKILL_NAME, weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>  SKILLMAP;
+
+
     vector<_float2>             m_vecSkillPos;
     
     vector<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>    m_vecSkillButton;

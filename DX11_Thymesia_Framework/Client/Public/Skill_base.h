@@ -30,13 +30,16 @@ public:
     virtual weak_ptr<CPlayerStateBase>  Get_SkillState() { return m_pSkillState; }
     virtual weak_ptr<CPlayerStateBase>  Get_ExpansionSkillState() { return m_pExpansionSkillState; }
 
-
+    _bool                               Get_Unlock() { return m_bUnlock; }
     _uint                               Get_CurrentSkillLevel() { return m_iCurrentSkillLevel; }
     _uint                               Get_MaxSkillLevel() { return m_iMaxSkillLevel; }
     ITEM_NAME                           Get_RequirementSkillPiece() { return m_eRequirementSkillPiece; }
 
     void                                Set_CurrentSkillLevel(_uint iCurrentSkillLevel) { m_iCurrentSkillLevel = iCurrentSkillLevel; }
-    
+    void                                Set_Unlock(_bool bUnlock) { m_bUnlock = bUnlock; }
+
+
+
 protected:
     virtual void                        RegisterThisSkillFromSkillSystem();
 
@@ -81,6 +84,8 @@ protected:
 
     _bool                                       m_bUseAble = false;
     _bool                                       m_bInputedKey= false;
+    _bool                                       m_bUnlock = false;
+
 
     SKILL_NAME                                  m_eSkillName;
     SKILL_TYPE                                  m_eSkillType;

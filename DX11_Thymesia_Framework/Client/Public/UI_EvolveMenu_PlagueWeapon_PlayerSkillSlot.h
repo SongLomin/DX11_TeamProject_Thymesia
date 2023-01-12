@@ -23,6 +23,7 @@ public:
 
 public:
 	void			Equip_Skill(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkill, _uint iSkillSocketType);
+	void			Clear_Slot();
 	void			UnEquip_Skill(_uint iSkillSocketType);
 	_bool			IsEquipedSkill();
 	weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>	Get_Equiped_Skill() { return m_pEquipSkill; }

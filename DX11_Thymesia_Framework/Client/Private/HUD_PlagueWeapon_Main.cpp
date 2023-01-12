@@ -10,6 +10,8 @@
 #include "HUD_Hover.h"
 #include "Status_Player.h"
 #include "Engine_Macro.h"
+#include "PlayerSkill_System.h"
+
 
 
 GAMECLASS_C(CHUD_PlagueWeapon_Main);
@@ -82,6 +84,14 @@ HRESULT CHUD_PlagueWeapon_Main::Start()
 {
     __super::Start();
 
+    Bind_Player();
+
+    Call_OnChangeSkill
+    (
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->
+        Get_Component<CPlayerSkill_System>().lock()->Get_EquipSkill(m_eSkillSocketType)
+    );
+    
     return S_OK;
 }
 
@@ -103,13 +113,11 @@ HRESULT CHUD_PlagueWeapon_Main::Render(ID3D11DeviceContext* pDeviceContext)
     return S_OK;
 }
 
-void CHUD_PlagueWeapon_Main::Bind_Player_FromSocketType(_uint iSocket_Type)
+void CHUD_PlagueWeapon_Main::Set_SocketType(_uint iSocket_Type)
 {
     m_eSkillSocketType = CPlayerSkill_System::SOCKET_TYPE(iSocket_Type);
-
-    Bind_Player();
-
 }
+
 
 
 

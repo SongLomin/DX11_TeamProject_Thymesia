@@ -193,6 +193,7 @@ void CInventory::Load_SaveData(const json& In_Json)
 		CURRENT_QUANTITY = 1,
 		CREATED_TIME = 2
 	};
+	m_mapInventory.clear();
 
 	shared_ptr<CItem> pItem;
 	for (auto& elem : In_Json[m_szFieldName])
