@@ -48,6 +48,16 @@ void CCorvusStateBase::Free()
 {
 }
 
+void CCorvusStateBase::Tick(_float fTimeDelta)
+{
+	__super::Tick(fTimeDelta);
+
+	_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+
+	GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 0.9f, 3.f);
+
+}
+
 _bool CCorvusStateBase::Check_RequirementAttackState()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))

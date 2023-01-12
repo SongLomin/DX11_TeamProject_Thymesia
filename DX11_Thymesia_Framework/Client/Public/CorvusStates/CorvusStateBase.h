@@ -17,6 +17,9 @@ public:
 	void Free();
 
 protected:
+    virtual void Tick(_float fTimeDelta) override;
+
+protected:
     virtual _bool Check_RequirementAttackState();
     virtual _bool Check_RequirementDashState();
     virtual _bool Check_RequirementJoggingState();
