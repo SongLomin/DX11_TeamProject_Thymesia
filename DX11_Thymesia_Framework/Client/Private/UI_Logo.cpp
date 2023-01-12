@@ -188,10 +188,13 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
     switch (eType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
+        std::system("rm ../Bin/ClientComponentData/Corvus/SaveData.json");
         Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
         m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
+        m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_LOAD_GAME:
         break;

@@ -16,6 +16,8 @@ HRESULT CStolenSkill::Initialize(void* pArg)
 {
 	USE_START(CSkill_Base);
 
+	m_eSkillName = SKILL_NAME::SKILL_END;
+
 	m_pRequirementChecker = CRequirementChecker::Create();
 	m_pRequirementTime = CRequirementBase::Create< CRequirement_Time>();
 
@@ -52,7 +54,7 @@ void CStolenSkill::Start_Skill(_bool bExpansion)
 
 	m_eSkillName = SKILL_NAME::SKILL_END;
 	m_pSkillState = weak_ptr<CPlayerStateBase>();
-
+	m_pExpansionSkillState = weak_ptr<CPlayerStateBase>();
 }
 
 

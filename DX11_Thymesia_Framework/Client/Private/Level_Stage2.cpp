@@ -24,7 +24,7 @@ HRESULT CLevel_Stage2::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-	
+
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE2);
 
 	CCamera::CAMERADESC CameraDesc;

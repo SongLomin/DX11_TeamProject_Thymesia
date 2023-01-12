@@ -344,13 +344,16 @@ void CUI_EvolveMenu::SetUpFromCurrentLevel()
 		break;
 	case Client::LEVEL_STAGE2:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
-		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_RoyalGarden");
 		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_Garden");
+		m_pQuestInformation.lock()->Set_Texture("EvolveMenu_Stage2_Quest1");
+
 		break;
 	case Client::LEVEL_STAGE3:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
-		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_HermessFortress");
 		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_HermesFortress");
+		m_pQuestInformation.lock()->Set_Texture("EvolveMenu_Stage3_Quest1");
 		break;
 	default:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);

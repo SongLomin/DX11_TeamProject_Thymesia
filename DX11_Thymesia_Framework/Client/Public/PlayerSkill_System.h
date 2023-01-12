@@ -49,6 +49,11 @@ public:
 
 
 public:
+	virtual void    Write_SaveData(json& Out_Json);
+	virtual void    Load_SaveData(const json& In_Json);
+
+
+public:
 	FDelegate<weak_ptr<CSkill_Base>>	Callback_OnChangeSkill[(_uint)SOCKET_TYPE::SOCKET_END];
 
 
@@ -62,6 +67,8 @@ private:
 	void			SetUp_SkillMapFromMonsterType();
 
 	void			Tick_SkillList(_float fTimeDelta);
+	void			WriteSaveData_Skill(json& Out_json, weak_ptr<CSkill_Base> pSkill);
+
 
 private:
 	shared_ptr<CRequirementChecker> m_pRequirementChecker;

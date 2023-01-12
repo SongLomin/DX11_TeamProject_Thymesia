@@ -18,11 +18,12 @@ HRESULT CInventory::Initialize_Prototype()
 	return S_OK;
 }
 
-
 HRESULT CInventory::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	
+
+	m_szFieldName = "Inventory";
+
 	return S_OK;
 }
 
@@ -41,7 +42,7 @@ void CInventory::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
-void CInventory::Push_Item(ITEM_NAME eItemName)
+void CInventory::Push_Item(ITEM_NAME eItemName, _bool bCallPopup)
 {
 	if (eItemName == ITEM_NAME::ITEM_NAME_END)//모종의 이유로 예측불가능한 enum이 들어오면 즉시 나간다.
 		return;
@@ -59,11 +60,11 @@ void CInventory::Push_Item(ITEM_NAME eItemName)
 	{
 		pair->second->Add_Quantity();//있다면 수량 하나 추가.
 	}
-	GET_SINGLE(CUIManager)->Add_ItemPopup(eItemName);
 
-	//weak_ptr<CUI_ItemPopup> pPopupUI = GAMEINSTANCE->Get_GameObjects<CUI_ItemPopup>(LEVEL_STATIC).front();
-	//pPopupUI.lock()->Ready_Popup(eItemName);
-	//pPopupUI.lock()->Start_Popup();
+	if (bCallPopup)
+	{
+		GET_SINGLE(CUIManager)->Add_ItemPopup(eItemName);
+	}
 }
 void CInventory::Push_Item(MONSTERTYPE eMonsterType)
 {
@@ -160,3 +161,48 @@ weak_ptr<CItem> CInventory::Find_Item(ITEM_NAME eItemName)
 	return pItem;
 }
 
+void CInventory::Write_SaveData(json& Out_Json)
+{
+
+	json& writeJson = Out_Json;
+
+	for (auto& pair : m_mapInventory)
+	{
+		json pairInfo;
+
+		pairInfo.push_back(pair.second->Get_Name());
+		pairInfo.push_back(pair.second->Get_CurrentQuantity());
+		pairInfo.push_back(pair.second->Get_CreatedTime());
+
+		writeJson[m_szFieldName].push_back(pairInfo);
+	}
+}
+
+void CInventory::Load_SaveData(const json& In_Json)
+{
+	json LoadedJson = In_Json;
+
+	if (LoadedJson.find(m_szFieldName) == LoadedJson.end())
+	{
+		return;
+	}
+
+	enum class INVENTORY_TYPE
+	{
+		ITEM_NAME,
+		CURRENT_QUANTITY = 1,
+		CREATED_TIME = 2
+	};
+
+	shared_ptr<CItem> pItem;
+	for (auto& elem : In_Json[m_szFieldName])
+	{
+		pItem = CItem::Create(elem[(_uint)INVENTORY_TYPE::ITEM_NAME]);
+
+		pItem->Set_CurrentQuantity(elem[(_uint)INVENTORY_TYPE::CURRENT_QUANTITY]);
+
+		pItem->Set_CreatedTime(elem[(_uint)INVENTORY_TYPE::CREATED_TIME]);
+
+		m_mapInventory.emplace(pItem->Get_Name(), pItem);
+	}
+}

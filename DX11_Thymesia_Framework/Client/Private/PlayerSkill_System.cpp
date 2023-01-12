@@ -152,6 +152,44 @@ void CPlayerSkill_System::RegisterSkill(SKILL_NAME eName, weak_ptr<CSkill_Base> 
 {
     m_SkillNameMap.emplace(eName, pSkill);
 }
+
+void CPlayerSkill_System::Write_SaveData(json& Out_Json)
+{
+    json& writeJson = Out_Json;
+
+    if (m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock())
+    {
+        writeJson["MainSkill"].push_back(m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock()->Get_SkillName());
+    }
+    if (m_SkillList[(_uint)SOCKET_TYPE::SOCKET_SUB].lock())
+    {
+        writeJson["SubSkill"].push_back(m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock()->Get_SkillName());
+    }
+    if (m_pStealSkill.lock()->Get_SkillName() != SKILL_NAME::SKILL_END)
+    {
+        writeJson["StealSkill"].push_back(m_pStealSkill.lock()->Get_SkillName());
+    }
+
+}
+void CPlayerSkill_System::Load_SaveData(const json& In_Json)
+{
+    json LoadedJson = In_Json;
+
+    if (LoadedJson.find("MainSkil") != LoadedJson.end())
+    {
+        OnChangeSkill(LoadedJson["MainSkill"], SOCKET_TYPE::SOCKET_MAIN);
+    }
+    if (LoadedJson.find("SubSkill") != LoadedJson.end())
+    {
+        OnChangeSkill(LoadedJson["SubSkill"], SOCKET_TYPE::SOCKET_SUB);
+    }
+    if (LoadedJson.find("StealSkill") != LoadedJson.end())
+    {
+        m_pStealSkill.lock()->OnStealSkill(m_SkillNameMap[LoadedJson["StealSkill"]]);
+        Callback_OnStealSkill(m_pStealSkill);
+    }
+}
+
 void CPlayerSkill_System::SetUp_SkillMapFromMonsterType()
 {
    m_MonsterSkillMap.emplace(MONSTERTYPE::AXEMAN, m_pOwner.lock()->Get_Component<CSkill_Axe>());
@@ -173,6 +211,13 @@ void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)
             m_SkillList[i].lock()->Tick(fTimeDelta);
         }
     }
+}
+
+void CPlayerSkill_System::WriteSaveData_Skill(json& Out_json, weak_ptr<CSkill_Base> pSkill)
+{
+    json writeJson = Out_json;
+
+    writeJson.push_back(pSkill.lock()->Get_SkillName());
 }
 
 void CPlayerSkill_System::Free()

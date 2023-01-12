@@ -601,7 +601,11 @@ namespace Client
 		OPTION_TYPE_END
 	};
 
-
+	enum class SAVEDATATYPE
+	{
+		SAVE = 500,
+		LOAD = 501,
+	};
 
 
 }

@@ -11,8 +11,6 @@ class CUI_Scroll;
 class CItem;
 class CInventorySorter;
 
-
-
 class CUI_Inventory : public CUI_Container
 {
 public:

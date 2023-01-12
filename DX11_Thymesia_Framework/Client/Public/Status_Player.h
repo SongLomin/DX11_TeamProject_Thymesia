@@ -82,6 +82,12 @@ public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
+
+    virtual void    Write_SaveData(json& Out_Json) override;
+    virtual void    Load_SaveData(const json& In_Json) override;
+
+
+
 public:
     FDelegate<>         Callback_Update_Status;
     FDelegate<_float>   Callback_ChangeHP;
@@ -118,6 +124,8 @@ public://For MPBar
     _float         Get_Atk() { return m_tDesc.m_fNormalAtk; }
     virtual void    Set_Desc(void* In_Desc) override;
     void            Heal_Player(const _float fAmount);
+
+
 
 
 

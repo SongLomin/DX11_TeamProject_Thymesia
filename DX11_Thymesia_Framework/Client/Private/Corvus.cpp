@@ -32,18 +32,15 @@ HRESULT CCorvus::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_szName = "Corvus";
+
+	
+
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 
-	json LoadedJson;
-	string strCorvusComponentPath = m_szClientComponentPath + "Corvus.json";
 
-	if (SUCCEEDED(CJson_Utility::Load_Json(strCorvusComponentPath.c_str(), LoadedJson)))
-	{
-		Load_FromJson(LoadedJson);
-		//DEBUG_ASSERT;
-	}
 	//CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
 
 	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
@@ -138,8 +135,8 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
+	Load_ClientComponentData();
 
-	Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -490,8 +487,6 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-
-
 	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = false;
@@ -634,15 +629,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
-		json	CorvusJson;
-
-		Write_Json(CorvusJson);
-		
-		string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
-
-		CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
-
-		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
+		Save_ClientComponentData();
+	}
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		Load_ClientComponentData();
 	}
 	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
 	{
@@ -679,8 +670,8 @@ void CCorvus::Move_RootMotion_Internal()
 
 void CCorvus::Test_BindSkill()
 {
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
+	//m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+	//m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 }
 
 void CCorvus::Ready_Weapon()
@@ -830,12 +821,6 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_BloodStorm>();
 }
 
-void CCorvus::WriteTalentFromJson(json& Out_Json)
-{
-
-}
-
-
 void CCorvus::Free()
 {
 	int a = 0;
@@ -845,9 +830,26 @@ void CCorvus::Save_ClientComponentData()
 {
 	json	CorvusJson;
 
-	Write_Json(CorvusJson);
+	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
 
-	string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
+	m_pStatus.lock()->Write_SaveData(CorvusJson);
+	m_pInventory.lock()->Write_SaveData(CorvusJson);
+	m_pSkillSystem.lock()->Write_SaveData(CorvusJson);
 
-	CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
+	CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
+}
+
+void CCorvus::Load_ClientComponentData()
+{
+	json	CorvusJson;
+	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
+	
+	if (FAILED(CJson_Utility::Load_Json(szClientSavePath.c_str(), CorvusJson)))
+	{
+		return;
+	}
+	m_pStatus.lock()->Load_SaveData(CorvusJson);
+	m_pInventory.lock()->Load_SaveData(CorvusJson);
+	m_pSkillSystem.lock()->Load_SaveData(CorvusJson);
+
 }

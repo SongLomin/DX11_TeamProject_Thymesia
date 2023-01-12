@@ -83,6 +83,8 @@ public:
 
 public:
     virtual void    Save_ClientComponentData() { }
+    virtual void    Load_ClientComponentData() { }
+
 
 
 protected:
@@ -130,7 +132,7 @@ protected:
     _flag      m_CollisionObjectFlags = 0;
     _flag      m_CollisionMonsterFlags = 0;
     _bool      m_bLadderCheck = false;
-   
+    string     m_szName;
 
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

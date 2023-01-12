@@ -1081,9 +1081,8 @@ void CLoader::Load_UIResource()
 	
 	
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
-	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
-	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
-
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/RoyalGarden.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_HermessFortress"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/HermessFortress.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_SelectHighlight"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight_02.png"), MEMORY_TYPE::MEMORY_STATIC);
 
