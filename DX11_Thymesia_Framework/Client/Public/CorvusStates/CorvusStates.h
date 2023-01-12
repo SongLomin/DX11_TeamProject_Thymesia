@@ -133,6 +133,12 @@
 #include "CorvusStates/StateExecution/CorvusState_Execution_R_R.h"
 #include "CorvusStates/StateExecution/CorvusState_Urd_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_BigHandman_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_Armor_Execution_01.h"
+#include "CorvusStates/StateExecution/CorvusState_Armor_Execution_02.h"
+#include "CorvusStates/StateExecution/CorvusState_AromorLV1_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_AromorLV1_NCamera_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_LV1M_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_LV2M_Execution.h"
 //플레이어 처형 스테이트
 // 
 // 

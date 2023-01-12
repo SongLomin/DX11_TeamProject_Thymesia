@@ -127,6 +127,15 @@ _bool CNorMonState_GroggyLoop::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_bNextStatepause)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > m_iCurrentKeyIndex)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_TakeExecution>(0.05f);
+			return true;
+		}
+	}
+
 
 	if (m_fLoopEndTime >= 7.f)
 	{
@@ -137,6 +146,22 @@ _bool CNorMonState_GroggyLoop::Check_AndChangeNextState()
 
 
 	return false;
+}
+
+void CNorMonState_GroggyLoop::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if (!Get_Enable())
+		return;
+
+	if ((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART == iArg)
+	{
+		m_bNextStatepause = true;
+		m_iCurrentKeyIndex = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+		m_iCurrentKeyIndex += 1;
+		//Get_OwnerCharacter().lock()->Change_State<CNorMonState_TakeExecution>(0.05f);
+	}
 }
 
 void CNorMonState_GroggyLoop::Free()

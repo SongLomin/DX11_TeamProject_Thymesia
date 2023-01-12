@@ -27,10 +27,8 @@ HRESULT CNorMonState_Petrol::Initialize_Prototype()
 HRESULT CNorMonState_Petrol::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	ZeroMemory(m_fPatrolPosition, sizeof(_float4) * 3);
-	ZeroMemory(&m_fStartPosition, sizeof(_float4));
 
-	
+	ZeroMemory(&m_fStartPosition, sizeof(_float4));
 
 	return S_OK;
 }
@@ -39,9 +37,11 @@ void CNorMonState_Petrol::Start()
 {
 	__super::Start();
 
-	XMStoreFloat4(&m_fPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 5.f, 0.f));
-	XMStoreFloat4(&m_fPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 10.f, 0.f));
-	XMStoreFloat4(&m_fPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.2f, 0.f, -5.f, 0.f));
+	m_vecPatrolPosition.resize(3, {});
+
+	XMStoreFloat3(&m_vecPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 5.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 10.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.2f, 0.f, -5.f, 0.f));
 
 	switch (m_eMonType)
 	{
@@ -171,7 +171,7 @@ _float CNorMonState_Petrol::Cul_DotResult()
 {
 	_vector vCurMonsterPos = m_pTransformCom.lock()->Get_Position();
 	vCurMonsterPos.m128_f32[1] = 0.f;
-	_vector vGoalPos = XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]);
+	_vector vGoalPos = XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]);
 	vGoalPos.m128_f32[1] = 0.f;
 	_vector vMonsterToGoalDirectionVector = XMVector3Normalize(vGoalPos - vCurMonsterPos);
 	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
@@ -213,7 +213,7 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 	_float4 MonsterPosion;
 	XMStoreFloat4(&MonsterPosion, Get_OwnerMonster()->Get_WorldPosition());
 	_vector vMonsterPos = XMLoadFloat4(&MonsterPosion);
-	_vector vOtherPos = XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]);
+	_vector vOtherPos = XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]);
 
 	_float fMonDistance = XMVector3Length(vMonsterPos - vOtherPos).m128_f32[0];
 
@@ -227,7 +227,7 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 			++m_iPatrolCount;
 			m_bTurnCheck = true;
-			m_iCorssResult = ComputeDirectionToOtherPosition(m_fPatrolPosition[m_iPatrolCount]);
+			m_iCorssResult = Compute_DirectionToOtherPosition(m_vecPatrolPosition[m_iPatrolCount]);
 			int i = 0;
 			//여서 이게아니고 왼쪽오른쪽판단이먼저임 판단하고 가야됨
 		}
@@ -235,7 +235,7 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 	else
 	{
 		m_iPatrolCount = 0;
-		m_iCorssResult = ComputeDirectionToOtherPosition(m_fPatrolPosition[m_iPatrolCount]);
+		m_iCorssResult = Compute_DirectionToOtherPosition(m_vecPatrolPosition[m_iPatrolCount]);
 	}
 
 	if (fDistance <= 3.f)
@@ -250,8 +250,11 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 	if (Cul_DotResult() > 0.94f && m_bTurnCheck)
 	{
-		
-		Get_OwnerMonster()->Get_Transform()->LookAt2D(XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]));
+
+		if (m_iPatrolCount >= m_vecPatrolPosition.size())  
+			return false;
+
+		Get_OwnerMonster()->Get_Transform()->LookAt2D(XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]));
 		m_bTurnCheck = false;
 	}
 

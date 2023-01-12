@@ -207,7 +207,7 @@ _int CBatBossStateBase::Check_DotAttackState()
 	}
 	
 
-		
+		return  (_uint)BATATTACK_DOTRESULT::BATATTACK_DOTRESULT_END;
 }
 
 

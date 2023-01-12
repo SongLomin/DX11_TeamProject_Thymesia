@@ -53,6 +53,7 @@ void CCorvusState_Climb_R_UP_End::Call_AnimationEnd(_uint iEndAnimIndex)
 
 	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
 	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	m_pPhysXControllerCom.lock()->Set_EnableColliderSimulation(true);
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
 }

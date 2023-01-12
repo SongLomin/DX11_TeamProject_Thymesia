@@ -103,7 +103,7 @@ void CInventory::Push_Item(MONSTERTYPE eMonsterType)
 	case Client::MONSTERTYPE::URD:
 		Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
 		break;
-	case Client::MONSTERTYPE::NMON_END:
+	case Client::MONSTERTYPE::TYPE_END:
 		break;
 	default:
 		break;

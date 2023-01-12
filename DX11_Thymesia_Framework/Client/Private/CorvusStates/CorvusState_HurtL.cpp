@@ -8,6 +8,9 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "PhysXController.h"
+#include "Weapon.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CCorvusState_HurtL);
 CLONE_C(CCorvusState_HurtL, CComponent)
@@ -59,6 +62,17 @@ void CCorvusState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+
+	weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+	list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+	pWeapons.front().lock()->Set_RenderOnOff(true);
+
+
+	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	m_pPhysXControllerCom.lock()->Set_EnableColliderSimulation(true);
 
 
 	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));

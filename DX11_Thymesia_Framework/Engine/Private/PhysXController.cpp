@@ -44,8 +44,10 @@ bool CPhysXController::filter(const PxController& a, const PxController& b)
 	if (!pLeftControllerCom.lock() || !pRightControllerCom.lock())
 		return false;
 
-	if (pLeftControllerCom.lock()->Is_EnableSimulation() && pLeftControllerCom.lock()->Is_EnableSimulation())
+	if (pLeftControllerCom.lock()->Is_EnableSimulation() && pRightControllerCom.lock()->Is_EnableSimulation())
 		return true;
+
+
 
 	return false;
 }
@@ -67,6 +69,14 @@ void CPhysXController::onObstacleHit(const PxControllerObstacleHit& hit)
 
 PxQueryHitType::Enum CPhysXController::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
 {
+	if (!Get_Enable())
+		return PxQueryHitType::eNONE;
+
+	if (!m_EnableColliderSimulation)
+	{
+		return PxQueryHitType::eNONE;
+	}
+	
 	PxFilterData OtherFilter = shape->getSimulationFilterData();
 
 	if ((m_FilterData.word0 & OtherFilter.word1) && (OtherFilter.word0 & m_FilterData.word1))
@@ -81,6 +91,11 @@ PxQueryHitType::Enum CPhysXController::postFilter(const PxFilterData& filterData
 {
 	if (!Get_Enable())
 		return PxQueryHitType::eNONE;
+
+	if (!m_EnableColliderSimulation)
+	{
+		return PxQueryHitType::eNONE;
+	}
 
 	PxFilterData OtherFilter = hit.shape->getSimulationFilterData();
 
@@ -128,8 +143,8 @@ void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _f
 	if (!m_pController)
 		return;
 
-	if (!Get_Enable())
-		return;
+	//if (!Get_Enable())
+	//	return;
 
 	PxExtendedVec3 vPosFromPx = m_pController->getFootPosition();
 
@@ -175,8 +190,8 @@ void CPhysXController::Enable_Gravity(const _bool In_bGravity)
 
 PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform, const _flag In_RootFlag)
 {
-	if (!Get_Enable())
-		return PxControllerCollisionFlags();
+	//if (!Get_Enable())
+	//	return PxControllerCollisionFlags();
 
 	_vector vRotatedPosition = XMVector3TransformCoord(disp, SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
 
@@ -269,6 +284,26 @@ void CPhysXController::Reset_Gravity()
 
 	m_fGravityAcc = 0.f;
 } 
+
+void CPhysXController::Set_EnableSimulation(const _bool In_EnableSimulation)
+{
+#ifdef _DEBUG
+	//cout << "Set_EnableSimulation: " << m_pOwner.lock()->Get_Component<CModel>().lock()->Get_ModelKey() << ": " << (In_EnableSimulation ? "true" : "false") << endl;
+
+	if (In_EnableSimulation)
+	{
+		int i = 0;
+	}
+	else
+	{
+		int i = 0;
+	}
+
+#endif // _DEBUG
+
+
+	m_EnableSimulation = In_EnableSimulation;
+}
 
 void CPhysXController::Set_CurrentCameraController()
 {

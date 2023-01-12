@@ -169,7 +169,7 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.4f);
 			}
 		}
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -182,7 +182,7 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.4f);
 			}
 		}
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -195,10 +195,10 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.4f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 		break;
 		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		{
@@ -208,10 +208,10 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.5f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 		break;
 		}
 

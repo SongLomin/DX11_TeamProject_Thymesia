@@ -7,6 +7,8 @@
 #include "UI_Cursor.h"
 #include "ItemPopup_Queue.h"
 
+static std::mutex On_LayerMessage_Mutex;
+
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -100,6 +102,18 @@ void CGameManager::Set_GameState(const GAME_STATE& In_eState)
 
 }
 
+void CGameManager::OnEventMessageForLayer(const OBJECT_LAYER& In_Layer, EVENT_TYPE iArg)
+{
+	unique_lock<mutex> lock(On_LayerMessage_Mutex);
+
+	for (auto& elem : m_pLayers[(_uint)In_Layer])
+	{
+		if(elem.lock())
+			elem.lock()->OnEventMessage((_uint)iArg);
+	}
+
+}
+
 void CGameManager::Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject)
 {
 	if (OBJECT_LAYER::MONSTER == In_Layer)
@@ -113,6 +127,7 @@ void CGameManager::Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameOb
 
 void CGameManager::Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject)
 {
+
 	for (auto iter = m_pLayers[(_uint)In_Layer].begin(); iter != m_pLayers[(_uint)In_Layer].end();)
 	{
 		if ((*iter).lock()->Get_GameObjectIndex() == In_GameObject.lock()->Get_GameObjectIndex())

@@ -71,6 +71,8 @@ void CBigHandManState_VS_TakeExecution_01::OnStateStart(const _float& In_fAnimat
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Get_OwnerMonster()->Release_Monster();
+
 	Rotation_TargetToLookDir();
 
 
@@ -122,7 +124,7 @@ _bool CBigHandManState_VS_TakeExecution_01::Check_AndChangeNextState()
 	{
 		m_bAnimationStop = true;
 		m_pOwner.lock()->Get_Component<CStatus_Monster>().lock()->CallBack_UI_Disable();
-		Get_OwnerMonster()->Release_Monster();
+		
 	}
 
 	return false;

@@ -49,6 +49,8 @@ public:
 
 
 public:
+    void OnEventMessageForLayer(const OBJECT_LAYER& In_Layer, EVENT_TYPE iArg);
+
     void Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
     void Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
 

@@ -27,7 +27,13 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
+	_bool   m_bNextStatepause = false;
+	_uint   m_iCurrentKeyIndex = 0;
+
+private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
+	virtual void OnEventMessage(_uint iArg) override;
+
 protected:
 	virtual void OnDestroy() override;
 	void Free();

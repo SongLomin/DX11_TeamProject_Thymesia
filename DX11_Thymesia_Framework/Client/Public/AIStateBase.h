@@ -48,7 +48,7 @@ protected:
     _float3                m_vLookAtDir;
     _float                 m_fCurrentRotateTime = 0.f;
     _float                 m_fStateTimeAcc = 100.f;
-    MONSTERTYPE            m_eMonType =     MONSTERTYPE::NMON_END; // 현재 몬스터가 어떤몬스터타입인지
+    MONSTERTYPE            m_eMonType =     MONSTERTYPE::TYPE_END; // 현재 몬스터가 어떤몬스터타입인지
     NORMONSTERIDLETYPE     m_eNorMonIdleType = NORMONSTERIDLETYPE::IDLEEND; // 현재몬스터가 어떤아이들타입인지
     weak_ptr<CTransform>   m_pTransformCom;  // 몬스터 트랜스폼받아오고저장할려고만듬
     _float4                m_fStartPosition;
@@ -69,7 +69,7 @@ protected:
     void                   TurnMechanism();
     _float                 ComputeAngleWithPlayer();
     _int                   ComputeDirectionToPlayer();
-    _int                   ComputeDirectionToOtherPosition(_float4 In_OtherPos);
+    _int                   Compute_DirectionToOtherPosition(const _float3& In_OtherPos);
 
 private:
     weak_ptr<CMonster>     m_pOwnerFromMonster;

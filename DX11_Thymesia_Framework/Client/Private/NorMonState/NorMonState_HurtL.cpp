@@ -100,6 +100,7 @@ void CNorMonState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+
 	switch (m_eMonType)
 	{
 	case Client::MONSTERTYPE::AXEMAN:

@@ -32,6 +32,9 @@ protected:
 private:
 	_bool   m_bOnce = false;
 
+	//TODO 
+	_bool m_bTwoOnce = false;
+
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

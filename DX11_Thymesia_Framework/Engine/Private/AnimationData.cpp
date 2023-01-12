@@ -298,7 +298,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA01", 2.f);
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA02", 2.f);
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_VS_TakeExecution_01", 1.1f);
-
+    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.36f)
 
 #pragma endregion // BigHandMan
     SET_ANIM_SPEED("Corvus_SD_HurtMFL",2.f);

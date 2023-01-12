@@ -27,7 +27,12 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
+	virtual void OnEventMessage(_uint iArg) override;
+
+private:
 	_float     m_fLoopEndTime = 0.f;
+	_bool   m_bNextStatepause = false;
+	_uint   m_iCurrentKeyIndex = 0;
 
 protected:
 

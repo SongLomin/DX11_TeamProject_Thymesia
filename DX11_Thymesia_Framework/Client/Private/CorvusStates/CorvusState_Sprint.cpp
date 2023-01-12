@@ -152,11 +152,25 @@ _bool CCorvusState_Sprint::Check_AndChangeNextState()
 		}
 	}
 
-	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
-		Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
-		return true;
-	}
+	
+		if (Check_RequirementAVoidState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			return true;
+		}
+	
+
+		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementAVoidState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+				return true;
+			}
+		}
+	
 
 
 	if (Check_RequirementAttackState())

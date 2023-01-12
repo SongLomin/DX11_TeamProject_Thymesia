@@ -28,7 +28,7 @@ void CPhysXCharacterController::Start()
 
 bool CPhysXCharacterController::filter(const PxController& a, const PxController& b)
 {
-	if (!Get_Enable())
+	/*if (!Get_Enable())
 		return false;
 
 	_uint iIndex = *(_uint*)b.getUserData();
@@ -42,7 +42,9 @@ bool CPhysXCharacterController::filter(const PxController& a, const PxController
 	else
 		return false;
 
-	return true;
+	return true;*/
+
+	return __super::filter(a, b);
 }
 
 void CPhysXCharacterController::onShapeHit(const PxControllerShapeHit& hit)

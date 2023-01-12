@@ -210,13 +210,13 @@ void CUrd::Init_Desc()
 
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 	m_pJavelinWeapon.back().lock()->Set_WeaponNum(1);
-	m_pJavelinWeapon.back().lock()->Set_RenderCheck(true);
+	m_pJavelinWeapon.back().lock()->Set_RenderCheck(false);
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 	m_pJavelinWeapon.back().lock()->Set_WeaponNum(2);
-	m_pJavelinWeapon.back().lock()->Set_RenderCheck(true);
+	m_pJavelinWeapon.back().lock()->Set_RenderCheck(false);
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 	m_pJavelinWeapon.back().lock()->Set_WeaponNum(3);
-	m_pJavelinWeapon.back().lock()->Set_RenderCheck(true);
+	m_pJavelinWeapon.back().lock()->Set_RenderCheck(false);
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
