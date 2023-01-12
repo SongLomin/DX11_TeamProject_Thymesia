@@ -728,7 +728,6 @@ void CModel::Create_Materials(const char* pModelFilePath)
 			tstring		szTextureFileddsPath = filesystem::path(szFullPath + ".dds").wstring();
 			tstring		szTextureFilepngPath = filesystem::path(szFullPath + ".png").wstring();
 
-
 #ifdef _DEBUG
 			//cout << "Load_Texture: " << szFullPath << endl;
 #endif // _DEBUG

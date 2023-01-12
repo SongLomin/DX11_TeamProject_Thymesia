@@ -91,10 +91,12 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
                 "ITEM_NAME_END"
             };
 
-            static _int iSelect_item = (_int)m_eItem;
+            static _int iSelect_item = 0;
 
             if (ImGui::Combo("Item", &iSelect_item, szItemList, IM_ARRAYSIZE(szItemList)))
-                m_eItem = (ITEM_NAME)iSelect_item;
+            {
+                m_Items.push_back((ITEM_NAME)iSelect_item);
+            }
         }
         break;
     }
@@ -105,16 +107,26 @@ void CInteraction_Item::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
-    Out_Json["Item_Name"] = (_int)m_eItem;
+    Out_Json["ItemCnt"] = (_uint)m_Items.size();
+
+    _int iIndex = 0;
+    for (auto elem : m_Items)
+    {
+        Out_Json["Item_Info"][iIndex] = (_uint)elem;
+        ++iIndex;
+    }
 }
 
 void CInteraction_Item::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
+ 
+    _uint iCnt = In_Json["ItemCnt"];
 
-    _int iItemName = In_Json["Item_Name"];
-
-    m_eItem = (ITEM_NAME)iItemName;
+    for (_uint i = 0; i < iCnt; ++i)
+    {
+        m_Items.push_back((ITEM_NAME)In_Json["Item_Info"][i]);
+    }
 }
 
 void CInteraction_Item::Act_Interaction()
@@ -124,8 +136,10 @@ void CInteraction_Item::Act_Interaction()
     if (!pPlayer.lock())
         return;
 
-    pPlayer.lock()->Get_Component<CInventory>().lock()->Push_Item(m_eItem);
-    m_pColliderCom.lock()->Set_Enable(true);
+    for (auto elem : m_Items)
+        pPlayer.lock()->Get_Component<CInventory>().lock()->Push_Item(elem);
+
+    m_pColliderCom.lock()->Set_Enable(false);
 }
 
 void CInteraction_Item::SetUpColliderDesc(_float* _pColliderDesc)

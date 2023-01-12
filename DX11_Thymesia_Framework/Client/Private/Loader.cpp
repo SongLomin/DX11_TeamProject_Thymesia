@@ -552,7 +552,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 {
 	//Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Texturesww..."));
 	Load_AllDiffuseTexture();
 	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
 	Load_AllMaskMap();

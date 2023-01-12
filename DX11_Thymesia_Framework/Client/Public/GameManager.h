@@ -214,6 +214,9 @@ public:
     void  Registration_Fog(weak_ptr<CFog> In_pObj);
     void  Activate_Fog(_uint In_iFogIndex);
 
+    void Set_PreLevel(LEVEL eLevel) { m_ePreLevel = eLevel; }
+    LEVEL Get_PreLevel() { return m_ePreLevel; }
+
 public:
     void Register_Water(weak_ptr<CWater> pWater);
     void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq, const _float In_fSpeed);
@@ -253,6 +256,7 @@ private:
     weak_ptr<CWater>                    m_pWater;
     weak_ptr<CInteriorProp>             m_pInterior;
     _uint                               m_iPreEventSection;  
+    LEVEL                               m_ePreLevel = LEVEL::LEVEL_END;
 
 private:
     _int                                m_iMonsterCount   = 0;

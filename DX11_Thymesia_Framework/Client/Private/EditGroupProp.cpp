@@ -35,7 +35,8 @@ static const char* items_FindType[] =
 	"Interaction_Aisemy",
 	"Interaction_InteriorActivate",
 	"CProp_Fence",
-	"CSection_Eventer"
+	"CSection_Eventer",
+	"CInteraction_MapTable"
 };
 
 HRESULT CEditGroupProp::Initialize_Prototype()
@@ -249,7 +250,8 @@ void CEditGroupProp::View_CreateProp()
 		"CastleGate",
 		"Item",
 		"Interaction_Aisemy",
-		"Interaction_InteriorActivate"
+		"Interaction_InteriorActivate",
+		"Interaction_MapTable"
 	};
 
 	static const char* items_Event_Prop[] =
@@ -395,6 +397,17 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_InteriorActivate>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode = typeid(CInteraction_InteriorActivate).hash_code();
 				tObjDesc.TypeName = typeid(CInteraction_InteriorActivate).name();
+			}
+			break;
+
+			case 10:
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_MapTable>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode = typeid(CInteraction_MapTable).hash_code();
+				tObjDesc.TypeName = typeid(CInteraction_MapTable).name();
 			}
 			break;
 		}

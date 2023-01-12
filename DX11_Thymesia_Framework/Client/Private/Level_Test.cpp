@@ -36,8 +36,8 @@ HRESULT CLevel_Test::Initialize()
 
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
-	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
-	// Load_FromJson(m_szDefaultJsonPath + "Stage_Home.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage_Home.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -148,6 +148,7 @@ void CLevel_Test::ExitLevel(LEVEL eLevel)
 {
 	switch (eLevel)
 	{
+		case  LEVEL::LEVEL_GAMEPLAY:
 		case  LEVEL::LEVEL_STAGE2:
 		case  LEVEL::LEVEL_STAGE3:
 		case  LEVEL::LEVEL_HOME:

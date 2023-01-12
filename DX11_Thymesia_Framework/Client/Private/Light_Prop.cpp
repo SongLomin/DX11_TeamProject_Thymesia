@@ -461,7 +461,9 @@ void CLight_Prop::OnDestroy()
 	__super::OnDestroy();
 
 	GAMEINSTANCE->Remove_Light(m_tLightDesc.Get_LightIndex());
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
+
+	if (0 <= m_iEffectIndex)
+		GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
 	GET_SINGLE(CGameManager)->Remove_SectionLight(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 }
 

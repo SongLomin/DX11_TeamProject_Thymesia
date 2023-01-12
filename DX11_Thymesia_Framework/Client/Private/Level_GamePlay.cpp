@@ -68,6 +68,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	SetWindowText(g_hWnd, TEXT("Setting Player..."));
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_GAMEPLAY);
+
 	return S_OK;
 }
 

@@ -63,8 +63,8 @@ private:
     void Set_State(const ANIM_EVENT In_eEvent);
 
     void Call_CheckEquipEnd(_bool& bState);
-    // void Call_CreateEffect(_float _fTimeDelta, _bool& Out_State, string _szEffectTag);
     void Call_DeleteEffect(_float _fTimeDelta, _bool& Out_State, string _szEffectTag);
+    void Call_CreateEffect(string _szEffectTag);
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
@@ -87,15 +87,14 @@ private:
     LIGHTDESC               m_tLightDesc;   
     _float2                 m_vAddUVPos     = { 0.f, 0.f };
 
-    _float m_fAccTime = 0.f;
-
     _bool                   m_bAisemyRender = false;
     ANIM_EVENT              m_eAnimEvent    = ANIM_EVENT::NONE;
     _bool                   m_bAnimEnd      = false;
     _bool                   m_bInteraction  = false;
+    _float                  m_fAccTime      = 0.f;
 
-    FDelegate<_bool&>           CallBack_EquipEnd;
-    FDelegate<_float, _bool&, string>   CallBack_CreateEffect;
+    FDelegate<_bool&>                   CallBack_EquipEnd;
+    FDelegate<string>                   CallBack_CreateEffect;
     FDelegate<_float, _bool&, string>   CallBack_DeleteEffect;
 
 private:
