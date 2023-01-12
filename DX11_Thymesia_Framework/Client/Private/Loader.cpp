@@ -904,6 +904,11 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_RoyalGarden_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+
+	LOAD_TEXTURES_USE_THREAD(("Loading_Font_SafeHouse_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SafeHouse_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Loading_Font_SafeHouse_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SafeHouse_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 	//MainMenu(LogoLevel)
 	LOAD_TEXTURES_USE_THREAD(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.dds"), MEMORY_TYPE::MEMORY_STATIC);

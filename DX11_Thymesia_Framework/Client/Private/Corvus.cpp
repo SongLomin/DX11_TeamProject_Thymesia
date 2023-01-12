@@ -836,6 +836,9 @@ void CCorvus::Save_ClientComponentData()
 	m_pInventory.lock()->Write_SaveData(CorvusJson);
 	m_pSkillSystem.lock()->Write_SaveData(CorvusJson);
 
+	_flag iFlag = Check_RequirementForTalentEffects();
+	CorvusJson["TalentEffect"] = iFlag;
+
 	CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
 }
 
@@ -852,4 +855,10 @@ void CCorvus::Load_ClientComponentData()
 	m_pInventory.lock()->Load_SaveData(CorvusJson);
 	m_pSkillSystem.lock()->Load_SaveData(CorvusJson);
 
+
+	if (CorvusJson.find("TalentEffect") == CorvusJson.end())
+		return;
+
+	m_iBindedTalentEffectes = CorvusJson["TalentEffect"];
+	
 }

@@ -110,6 +110,8 @@ protected:
     list<weak_ptr<CWeapon>> m_pWeapons;
 
     list<weak_ptr<CTalent_Effect>> m_pTalent_Effects;
+    _flag                   m_iBindedTalentEffectes = 0;
+
 
     unordered_map<_uint, DISSOLVE_DESC>  m_DissolveDescs;
     _uint m_iNumMeshContainers = 0;

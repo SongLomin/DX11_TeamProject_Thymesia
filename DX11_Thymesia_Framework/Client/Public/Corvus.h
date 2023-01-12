@@ -40,6 +40,7 @@ private:
 	void Ready_States();
 	void Ready_Skills();
 
+
 public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
 private:

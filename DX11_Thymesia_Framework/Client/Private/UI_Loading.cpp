@@ -150,7 +150,15 @@ void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 		m_pStageTitle.lock()->Set_Texture("Loading_Font_Fortress_Title");
 		m_pStageDesc.lock()->Set_Texture("Loading_Font_Fortress_Desc");
 		break;
-	case Client::LEVEL_EDIT:
+	case Client::LEVEL_TEST:
+		m_pLoadingBG.lock()->Set_Texture("Loading_SafeHouse");
+		m_pStageTitle.lock()->Set_Texture("Loading_Font_SafeHouse_Title");
+		m_pStageDesc.lock()->Set_Texture("Loading_Font_SafeHouse_Desc");
+		break;
+	case Client::LEVEL_HOME:
+		m_pLoadingBG.lock()->Set_Texture("Loading_SafeHouse");
+		m_pStageTitle.lock()->Set_Texture("Loading_Font_SafeHouse_Title");
+		m_pStageDesc.lock()->Set_Texture("Loading_Font_SafeHouse_Desc");
 		break;
 	case Client::LEVEL_END:
 		m_pLoadingBG.lock()->Set_Texture("Loading_OceanOfMemories");
