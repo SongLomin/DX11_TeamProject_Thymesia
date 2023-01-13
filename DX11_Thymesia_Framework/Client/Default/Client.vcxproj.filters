@@ -2224,6 +2224,9 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Preset_ShaderPass.h">
+      <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4477,6 +4480,9 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Preset_ShaderPass.cpp">
+      <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -6616,6 +6622,9 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
       <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\09. Preset_ShaderPass">
+      <UniqueIdentifier>{c040abcd-a8ee-49a8-9132-6f0208cfc02c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

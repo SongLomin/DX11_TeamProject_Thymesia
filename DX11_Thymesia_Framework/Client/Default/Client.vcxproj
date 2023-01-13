@@ -550,6 +550,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Suprise_Attack.h" />
     <ClInclude Include="..\Public\PhysXColliderObject_Interior.h" />
     <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
+    <ClInclude Include="..\Public\Preset_ShaderPass.h" />
     <ClInclude Include="..\Public\PreView_InteriorProp.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
@@ -1244,6 +1245,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Suprise_Attack.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp" />
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
+    <ClCompile Include="..\Private\Preset_ShaderPass.cpp" />
     <ClCompile Include="..\Private\PreView_InteriorProp.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
