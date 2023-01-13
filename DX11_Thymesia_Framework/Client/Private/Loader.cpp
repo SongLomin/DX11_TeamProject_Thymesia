@@ -79,9 +79,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 		break;
 
 	case LEVEL_TEST:
-		BEGIN_PERFROMANCE_CHECK("LOAD_LEVEL_TEST");
 		hr = pLoader->Loading_ForTestLevel();
-		END_PERFROMANCE_CHECK("LOAD_LEVEL_TEST");
 		break;
 
 	case LEVEL_HOME:
@@ -823,7 +821,6 @@ void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE
 	//tstring szPath;
 	//string szFileName;
 
-	BEGIN_PERFROMANCE_CHECK("LOAD_ALL_TEXTURE");
 
 	while (itr != fs::end(itr))
 	{
@@ -847,7 +844,6 @@ void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE
 		itr++;
 	}
 
-	END_PERFROMANCE_CHECK("LOAD_ALL_TEXTURE");
 
 }
 

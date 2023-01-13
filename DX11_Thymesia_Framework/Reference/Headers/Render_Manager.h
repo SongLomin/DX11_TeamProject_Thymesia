@@ -122,6 +122,7 @@ private:
 
 	HRESULT Blur(const _float& In_PixelPitchScalar, const _tchar* In_szMRT, const _tchar* In_szTarget);
 
+
 private:
 	void Emplace_SleepContext(const _uint In_iIndex);
 
@@ -132,6 +133,10 @@ public:
 	HRESULT Set_OldSchoolView(const _bool bOldSchool);
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
 
+public:
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
+	HRESULT Extract_Texture(const tstring& In_szFilePath);
+
 private:
 	void Render_DebugSRT(const _uint In_iIndex);
 
@@ -139,7 +144,10 @@ private:
 	vector<tstring> m_szDebugRenderMRTNames;
 	_float2			m_vDebugSize;
 	_bool			m_bOldSchoolView = true;
+
+	shared_ptr<CShader> m_pEditTextureShaderCom;
 #endif // _DEBUG
+	
 
 #ifdef _DEBUG
 	/* 직교투영을 위한 정보이다. */

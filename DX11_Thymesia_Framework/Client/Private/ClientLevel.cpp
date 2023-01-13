@@ -31,7 +31,6 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 		//DEBUG_ASSERT;
 	}
 
-	BEGIN_PERFROMANCE_CHECK("LOAD_FROM_JSON_ADD_GAMEOBJECT"); 
 
 	for (auto& Elem_GameObjects : LoadedJson["GameObject"])
 	{
@@ -52,7 +51,6 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 		
 	}
 
-	END_PERFROMANCE_CHECK("LOAD_FROM_JSON_ADD_GAMEOBJECT");
 }
 
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)

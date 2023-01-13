@@ -42,9 +42,13 @@ public:
 	HRESULT Begin_AntiAliasingMRT(const _tchar* pMRTTag);
 	HRESULT End_AntiAliasingMRT();
 
+	HRESULT Begin_ExtractTextureMRT(const _tchar* pMRTTag);
+	HRESULT End_ExtractTextureMRT();
+
 	HRESULT Bake_ShadowDepthStencilView(_uint iWidth, _uint iHeight);
 	HRESULT Bake_StaticShadowDepthStencilView(_uint iWidth, _uint iHeight);
 	HRESULT Bake_AntiAliasingDepthStencilView(_uint iWidth, _uint iHeight);
+	HRESULT Bake_ExtractTextureDepthStencilView(_uint iWidth, _uint iHeight);
 
 #ifdef _DEBUG
 public:
@@ -71,6 +75,10 @@ private:
 	ComPtr<ID3D11DepthStencilView> m_pStaticShadowDepthStencilView = nullptr;
 
 	ComPtr<ID3D11DepthStencilView> m_pAntiAliasingDepthStencilView = nullptr;
+
+	ComPtr<ID3D11DepthStencilView> m_pExtractTextureDepthStencilView = nullptr;
+	D3D11_VIEWPORT					m_tExtractTextureViewPortDesc;
+
 
 	D3D11_VIEWPORT					m_tOriginalViewPortDesc;
 	D3D11_VIEWPORT					m_tShadowViewPortDesc;
