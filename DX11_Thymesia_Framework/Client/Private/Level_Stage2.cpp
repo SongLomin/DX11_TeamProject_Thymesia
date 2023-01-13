@@ -85,6 +85,7 @@ void CLevel_Stage2::ExitLevel(LEVEL eLevel)
 
 	switch (eLevel)
 	{
+		case  LEVEL::LEVEL_TEST:
 		case  LEVEL::LEVEL_STAGE3:
 		{
 			m_eNextLevel = eLevel;

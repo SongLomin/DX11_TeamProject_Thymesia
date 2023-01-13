@@ -169,7 +169,7 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 		m_bRendering = true;
 
 #ifdef _INTERACTION_EFFECT_
-        if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
+/*        if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
         {
             if (-1 == m_iUnUseEffectIndex && CallBack_CreateEffect.empty() && CallBack_DeleteEffect.empty())
                 CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Deactivate");
@@ -178,7 +178,7 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
         {
             if (-1 == m_iUseEffectIndex && CallBack_CreateEffect.empty() && CallBack_DeleteEffect.empty())
                 CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Activate");
-        }    
+        }   */ 
 #endif // _INTERACTION_EFFECT_
 	}
 	else
@@ -186,20 +186,20 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 		m_bRendering = false;
 
 #ifdef _INTERACTION_EFFECT_
-        if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
-        {
-            if (-1 != m_iUnUseEffectIndex && CallBack_DeleteEffect.empty() && CallBack_CreateEffect.empty())
-                return;
+        //if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
+        //{
+        //    if (-1 != m_iUnUseEffectIndex && CallBack_DeleteEffect.empty() && CallBack_CreateEffect.empty())
+        //        return;
 
-            CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Deactivate");
-        }
-        else
-        {
-            if (-1 != m_iUseEffectIndex && CallBack_DeleteEffect.empty() && CallBack_CreateEffect.empty())
-                return;
+        //    CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Deactivate");
+        //}
+        //else
+        //{
+        //    if (-1 != m_iUseEffectIndex && CallBack_DeleteEffect.empty() && CallBack_CreateEffect.empty())
+        //        return;
 
-            CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Activate");
-        }
+        //    CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Activate");
+        //}
 #endif // _INTERACTION_EFFECT_
 	}
 #else

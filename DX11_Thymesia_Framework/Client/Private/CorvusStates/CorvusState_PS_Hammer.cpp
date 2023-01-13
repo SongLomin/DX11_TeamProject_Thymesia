@@ -63,7 +63,7 @@ void CCorvusState_PS_Hammer::Start()
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 	m_DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
-	m_DecalDesc.pTextureTag = "DecalTexture";
+	m_DecalDesc.strTextureTag = "DecalTexture";
 }
 
 void CCorvusState_PS_Hammer::Tick(_float fTimeDelta)

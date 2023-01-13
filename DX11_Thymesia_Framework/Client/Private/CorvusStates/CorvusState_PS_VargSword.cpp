@@ -64,7 +64,7 @@ HRESULT CCorvusState_PS_VargSword::Initialize(void* pArg)
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 	m_DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
-	m_DecalDesc.pTextureTag = "DecalLinear";
+	m_DecalDesc.strTextureTag = "DecalLinear";
 
 	return S_OK;
 }

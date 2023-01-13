@@ -26,7 +26,7 @@ HRESULT CEffect_Decal::Initialize(void* pArg)
 
 	m_pTransformCom.lock()->Rotation(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), XMConvertToRadians(-90.f));
 
-	memcpy(&m_DecalDesc, pArg, sizeof(DECAL_DESC));
+	m_DecalDesc = *(DECAL_DESC*)pArg;
 
 	m_pTransformCom.lock()->Set_Position(XMLoadFloat4(&m_DecalDesc.vPosition));
 
@@ -34,7 +34,7 @@ HRESULT CEffect_Decal::Initialize(void* pArg)
 	m_pTransformCom.lock()->Set_WorldMatrix(WorldMatrix);
 
 	m_pTransformCom.lock()->Set_Scaled(m_DecalDesc.vScale);  
-	m_pTextureCom.lock()->Use_Texture(m_DecalDesc.pTextureTag);
+	m_pTextureCom.lock()->Use_Texture(m_DecalDesc.strTextureTag.c_str());
 
 
 

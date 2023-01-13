@@ -74,7 +74,7 @@ void CCorvusState_PS_CaneSword::Start()
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
-	m_DecalDesc.pTextureTag = "DecalLinear";
+	m_DecalDesc.strTextureTag = "DecalLinear";
 
 }
 
