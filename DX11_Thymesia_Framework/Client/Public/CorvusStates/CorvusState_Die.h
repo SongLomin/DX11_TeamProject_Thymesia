@@ -35,6 +35,10 @@ private:
     _uint m_iDustEffectIndex;
     _bool m_bAnimPlay = true;
 
+    _float      m_fDissolveTime;
+    _bool       m_bDissolve = true;
+
+    _float m_fGrayScaleValue = 1.f;
 protected:
     void Free();
 
