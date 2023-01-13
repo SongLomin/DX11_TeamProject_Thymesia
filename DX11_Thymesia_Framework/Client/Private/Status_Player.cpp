@@ -189,10 +189,20 @@ void CStatus_Player::Set_Memory(_uint iMemory)
 
 void CStatus_Player::Consumed_Mana(_float fRequireMana)
 {
-    m_tDesc.m_fCurrentMP -= fRequireMana;
-
+    if (fRequireMana > m_tDesc.m_fMaxMP) 
+    {
+        DEBUG_ASSERT;
+    }
+    
+    if (m_tDesc.m_fCurrentMP < fRequireMana)
+    {
+        m_tDesc.m_fCurrentMP = 0.f;
+    }
+    else
+    {
+        m_tDesc.m_fCurrentMP -= fRequireMana;
+    }
     Callback_ChangeMP(m_tDesc.m_fCurrentMP);
-
 }
 
 void CStatus_Player::Full_Recovery()

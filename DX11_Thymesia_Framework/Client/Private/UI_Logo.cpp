@@ -184,17 +184,33 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
 {
     LOGO_BUTTON_TYPE eType = (LOGO_BUTTON_TYPE)iButtonIndex;
     
+    string                  szClientSavePath;
+    json	                CorvusJson;
+    json	                SaveLevelJson;
+    LEVEL                   eNextLevel = LEVEL::LEVEL_GAMEPLAY;
 
     switch (eType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
-        std::system("rm ../Bin/ClientComponentData/Corvus/SaveData.json");
+        
+        szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
+        CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
+
         Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
         m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:
-        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
+    {
+
+        szClientSavePath = "../Bin/SaveLevelData/SaveData.json";
+
+        if (SUCCEEDED(CJson_Utility::Load_Json(szClientSavePath.c_str(), SaveLevelJson)))
+        {
+            eNextLevel = SaveLevelJson["Level"];
+        }
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(eNextLevel);
         m_bSelect = false;
+    }
         break;
     case Client::CUI_Logo::LOGO_BUTTON_LOAD_GAME:
         break;

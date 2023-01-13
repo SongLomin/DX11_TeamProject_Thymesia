@@ -62,7 +62,7 @@ protected:
 
 public:
     void Call_FadeOutToLevelChange();
-
+    void SaveLevel();
 
 
 public:

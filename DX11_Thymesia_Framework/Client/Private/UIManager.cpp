@@ -57,10 +57,25 @@ void CUIManager::DisableCursor()
 
 void CUIManager::Set_CloseCurtain(_float fTime)
 {
+	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Get_GameObjects<CUI_FadeMask>(LEVEL_STATIC).front();
+	weak_ptr<CUI_RadialBlurMask> pRadialBlurMask = GAMEINSTANCE->Get_GameObjects<CUI_RadialBlurMask>(LEVEL_STATIC).front();
+
+
+	pRadialBlurMask.lock()->Set_Radial(0.0f, 0.3f, 0.5f);
+	pFadeMask.lock()->Set_Fade(0.f, 1.f, 0.5f, EASING_TYPE::LINEAR);
+
+	pFadeMask.lock()->Callback_OnLerpEnd += bind(&CUIManager::OpenCurtain, this);
+
 }
 
-void CUIManager::OpenCurtain(_float fTime)
+void CUIManager::OpenCurtain()
 {
+	weak_ptr<CUI_RadialBlurMask> pRadialBlurMask = GAMEINSTANCE->Get_GameObjects<CUI_RadialBlurMask>(LEVEL_STATIC).front();
+	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Get_GameObjects<CUI_FadeMask>(LEVEL_STATIC).front();
+
+	pRadialBlurMask.lock()->Set_Radial(0.3f, 0.0f, 0.5f);
+	pFadeMask.lock()->Set_Fade(1.f, 0.f, 0.5f, EASING_TYPE::LINEAR);
+
 }
 
 

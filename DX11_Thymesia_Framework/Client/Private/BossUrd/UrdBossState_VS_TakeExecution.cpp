@@ -12,6 +12,8 @@
 #include "PhysXCharacterController.h"
 #include "Status_Boss.h"
 #include "Status_Monster.h"
+#include "UI_ScriptQueue.h"
+
 
 GAMECLASS_C(CUrdBossState_VS_TakeExecution);
 CLONE_C(CUrdBossState_VS_TakeExecution, CComponent)
@@ -143,6 +145,7 @@ void CUrdBossState_VS_TakeExecution::Call_AnimationEnd(_uint iEndAnimIndex)
 
 	if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 	{
+		GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Urd_Phase2();
 		m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
 	}
 	

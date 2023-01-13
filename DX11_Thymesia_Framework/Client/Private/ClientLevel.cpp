@@ -15,7 +15,6 @@ HRESULT CClientLevel::Initialize()
 {
 	__super::Initialize();
 
-
 	m_bLading = false;
 
 	GAMEINSTANCE->Set_CreatedLevelIndex(m_eMyLevel);
@@ -60,8 +59,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 {
 	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
-
-
 	std::filesystem::path dir_path = In_FolderPath;
 	std::vector<fs::directory_entry> entries;
 	std::copy(fs::directory_iterator(dir_path), fs::directory_iterator(), std::back_inserter(entries));
@@ -71,9 +68,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 	BEGIN_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 
 	list<pair<string, json>> EffectJsons;
-
-
-	
 
 	while (itr != fs::end(itr)) {
 		const fs::directory_entry& entry = *itr;
@@ -112,17 +106,23 @@ void CClientLevel::Tick(_float fTimeDelta)
 	{
 		m_bLading = true;
 		Call_StageLanding();
+		SaveLevel();
 	}
 }
 
 void CClientLevel::SetUp_UI()
 {
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
-
 	weak_ptr<CUIManager>	pUIManager = GET_SINGLE(CUIManager);
 
-	
+	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO || m_eMyLevel == LEVEL_EDIT)
+		return;
 
+	if (pUIManager.lock()->Get_Completed_SetUpUI())
+	{
+		//이미 셋업된 UI면 리턴한다.
+		return;
+	}
 
 	GAMEINSTANCE->Add_SingleGameObject<CUI_RadialBlurMask>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_SingleGameObject<CUI_FadeMask>(LEVEL_STATIC);
@@ -154,7 +154,7 @@ void CClientLevel::SetUp_UI()
 	pUIManager.lock()->CreateItemPopupQueue();
 
 
-
+	pUIManager.lock()->Set_Complete_SetUpUI();
 	//pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CEvolveMenu_TalentButton>(LEVEL_STATIC));
 	//TODO : MonsterHpBar TestCode
 	/*
@@ -219,6 +219,8 @@ void CClientLevel::Call_StageLanding()
 	pUILanding.lock()->Call_Landing(
 		CUI_Landing::LANDING_ENTER_STAGE
 	);
+
+
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)
@@ -240,6 +242,20 @@ void CClientLevel::Call_FadeOutToLevelChange()
 	m_pFadeMask.lock()->Set_Enable(false);
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
 		return;
+}
+
+void CClientLevel::SaveLevel()
+{
+	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO || m_eMyLevel == LEVEL_EDIT)
+		return;
+
+
+	json	                LevelJson;
+	string                  szClientSavePath = "../Bin/SaveLevelData/SaveData.json";
+
+	LevelJson["Level"] = m_eMyLevel;
+
+	CJson_Utility::Save_Json(szClientSavePath.c_str(), LevelJson);
 }
 
 void CClientLevel::OnLevelEnter()

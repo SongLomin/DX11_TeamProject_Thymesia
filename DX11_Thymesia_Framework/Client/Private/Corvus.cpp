@@ -45,7 +45,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
-
+		
 	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
 	Preset::NvClothMesh::CorvusSetting(NvClothDesc);
 
@@ -935,6 +935,8 @@ void CCorvus::Save_ClientComponentData()
 	json	CorvusJson;
 
 	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
+	
+
 
 	m_pStatus.lock()->Write_SaveData(CorvusJson);
 	m_pInventory.lock()->Write_SaveData(CorvusJson);
