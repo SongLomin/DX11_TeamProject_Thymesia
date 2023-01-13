@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Player.h"
 //#include "BehaviorBase.h"
+#include "Effect_Decal.h"
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
@@ -31,9 +32,16 @@ void CVargBossState_RaidAttack::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.4f, 1.f, 9.f, 0.1f);
 		break;
 	case 93:
+	{
 		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.6f, 1.f, 9.f, 0.7f);
+
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 		break;
+	}
 	}
 }
 
@@ -53,9 +61,17 @@ HRESULT CVargBossState_RaidAttack::Initialize(void* pArg)
 void CVargBossState_RaidAttack::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_RaidAttack2");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack2");
 	m_bAttackLookAtLimit = true;
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this, placeholders::_1);
+
+	m_DecalDesc.vScale = { 3.4f,3.4f, 1.f };
+	m_DecalDesc.vPosition = { -0.687,0.f,3.187f, 1.f };
+	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fDisapearTime = 2.f;
+	//1Æä µ¥Ä® emissive color
+	m_DecalDesc.vColor = _float3(0.1f, 0.1f, 0.1f);
+	m_DecalDesc.strTextureTag = "DecalTexture";
 }
 
 void CVargBossState_RaidAttack::Tick(_float fTimeDelta)

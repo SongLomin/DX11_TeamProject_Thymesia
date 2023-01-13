@@ -27,9 +27,11 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
-
 	virtual void OnDestroy() override;
 	void Free();
+
+private:
+	DECAL_DESC m_DecalDesc;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

@@ -43,10 +43,10 @@
 #pragma region Effects
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
-#define _VARG_EFFECT_
-#define _BAT_EFFECT_
-#define _URD_EFFECT_
-#define _INTERACTION_EFFECT_
+//#define _VARG_EFFECT_
+//#define _BAT_EFFECT_
+//#define _URD_EFFECT_
+//#define _INTERACTION_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
@@ -120,10 +120,10 @@
 #pragma region Tool
 #undef _MAP_TOOL_
 #define _CORVUS_MODEL_
-// #define _BOSS_MODEL_
+ #define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
-#undef _ANIMATION_TOOL_WEAPON_
+//#undef _ANIMATION_TOOL_WEAPON_
 #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
 

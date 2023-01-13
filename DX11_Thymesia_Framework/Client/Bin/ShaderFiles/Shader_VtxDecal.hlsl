@@ -103,22 +103,28 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
     vDecalUV.x = vDecalUV.x + 0.5f;
     vDecalUV.y = 0.5f - vDecalUV.y ;
     
-    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, vDecalUV);
-    Out.vDiffuse.a = 1.f * g_fAlphaValue;
+    vector vDiffuseDesc =g_DiffuseTexture.Sample(DefaultSampler, vDecalUV);
+    vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, vDecalUV);
+    vector vORMDesc = g_NormalTexture.Sample(DefaultSampler, vDecalUV);
+    vector EmissiveDesc1 = g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV);
+    vector EmissiveDesc2 = g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV);
+    
+    Out.vDiffuse = vDiffuseDesc * EmissiveDesc1.a;
     clip(Out.vDiffuse.a - 0.01f);
+    Out.vDiffuse.a *= g_fAlphaValue;
 
-    Out.vNormal = normalize(mul(vector(g_NormalTexture.Sample(DefaultSampler, vDecalUV).xyz, 0.f), g_WorldMatrix));
-    Out.vNormal.a = 1.f;
+    Out.vNormal = normalize(mul(vector(vNormalDesc.xyz, 0.f), g_WorldMatrix));
+    Out.vNormal.a = EmissiveDesc1.a;
     Out.vNormal.a*= g_fAlphaValue;
     Out.vNormal.xyz = Out.vNormal.xyz *0.5f + 0.5f;
           
-    Out.vORM = g_ORMTexture.Sample(DefaultSampler, vDecalUV);
-    Out.vORM.a = 1.f* g_fAlphaValue;
+    Out.vORM = vORMDesc;
+    Out.vORM.a = EmissiveDesc1.a * g_fAlphaValue;
       
     Out.vShaderFlag = 0.f;
-    Out.vShaderFlag.b = 0.f < g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r + g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r; //일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
+    Out.vShaderFlag.b = 0.f < EmissiveDesc1.r + EmissiveDesc2.r; //일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
     Out.vExtractBloom = vector(g_vColor, 1.f);
-    Out.vExtractBloom.a = (g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r+ g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r) * g_fAlphaValue;
+    Out.vExtractBloom.a = (EmissiveDesc1.r + EmissiveDesc2.r) * g_fAlphaValue;
 	    
     return Out;
 }

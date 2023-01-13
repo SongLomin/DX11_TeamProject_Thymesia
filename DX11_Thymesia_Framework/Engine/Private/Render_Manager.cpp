@@ -509,6 +509,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 	if (FAILED(Render_Decal()))
 		DEBUG_ASSERT;
+	if (FAILED(Render_Water()))
+		DEBUG_ASSERT;
 
 	if (FAILED(Extract_OutLine()))
 		DEBUG_ASSERT;
@@ -951,6 +953,31 @@ HRESULT CRender_Manager::Render_Decal()
 
 	return S_OK;
 }
+
+HRESULT CRender_Manager::Render_Water()
+{
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_WATER].empty())
+	{
+		return S_OK;
+	}
+
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_MRTWithNoneClear(TEXT("MRT_Deferred"))))
+		DEBUG_ASSERT;
+
+	for (auto& pGameObejct : m_RenderObjects[(_uint)RENDERGROUP::RENDER_WATER])
+	{
+		if (pGameObejct.lock())
+			pGameObejct.lock()->Render(pDeviceContext);
+	}
+
+	m_RenderObjects[(_uint)RENDERGROUP::RENDER_WATER].clear();
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_MRT()))
+		DEBUG_ASSERT;
+}
+
 
 HRESULT CRender_Manager::Render_NonAlphaBlend()
 {
