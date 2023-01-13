@@ -113,6 +113,23 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	m_SpotLightDesc.eActorType = LIGHTDESC::TYPE_SPOTLIGHT;
+	m_SpotLightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	m_SpotLightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	m_SpotLightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	m_SpotLightDesc.fIntensity = 10.f;
+	m_SpotLightDesc.fRange = 10.f;
+	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
+	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(60.f));
+
+	vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
+	vLightLook = XMVectorSet(0.f,-1.f,0.f,0.f);
+
+	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
+	XMStoreFloat4(&m_SpotLightDesc.vDirection, vLightLook);
+
+	m_SpotLightDesc.bEnable = false;
+
 	_uint iNvClothColliderCount;
 	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
 
@@ -124,6 +141,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
+
+
 
 	return S_OK;
 }
@@ -184,15 +203,17 @@ void CCorvus::Tick(_float fTimeDelta)
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
 		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
-		/*DECAL_DESC DecalDesc;
+		//GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
+	/*	DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
 		DecalDesc.vScale = { 5.f,5.f,5.f };
 		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
 		DecalDesc.fTime = 3.f;
+		DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
+		DecalDesc.pTextureTag = "DecalTexture";
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
 	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{
@@ -258,12 +279,36 @@ void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 
 void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 {
-	m_LightDesc.fIntensity += fTimeDelta*0.4f;
+	m_LightDesc.fIntensity += fTimeDelta*0.2f;
+
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
+
+	m_SpotLightDesc.fIntensity = max(0.f, m_SpotLightDesc.fIntensity - fTimeDelta * 5.f);
 
 	if (0.4f < m_LightDesc.fIntensity)
 	{
 		Out_End = true;
+		m_SpotLightDesc.bEnable = false;
 	}
+
+	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
+}
+
+void CCorvus::Use_SpotLight(_float fTimeDelta, _bool& Out_End)
+{
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
+
+	m_SpotLightDesc.fIntensity = min(10.f, m_SpotLightDesc.fIntensity + fTimeDelta * 40.f);
+
+	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 }
 
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
@@ -490,17 +535,21 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-
-
 	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = false;
 		m_LightDesc.fIntensity = 0.f;
 		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	}
+	else if (EVENT_TYPE::ON_PLAYERSPOTLIGHT == (EVENT_TYPE)iArg)
+	{
+		m_SpotLightDesc.bEnable = true;
+		CallBack_LightEvent += bind(&CCorvus::Use_SpotLight, this, placeholders::_1, placeholders::_2);
+	}
 	else if (EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = true;
+		CallBack_LightEvent.Clear();
 		CallBack_LightEvent += bind(&CCorvus::TurnOn_Light, this, placeholders::_1, placeholders::_2);
 	}
 

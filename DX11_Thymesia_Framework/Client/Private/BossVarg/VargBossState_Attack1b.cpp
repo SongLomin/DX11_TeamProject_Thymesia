@@ -52,7 +52,7 @@ HRESULT CVargBossState_Attack1b::Initialize(void* pArg)
 void CVargBossState_Attack1b::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_ComboAttack2_1|SK_C_Varg.ao|Varg");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_ComboAttack2_1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack1b::Call_AnimationEnd, this, placeholders::_1);
 }
 

@@ -102,7 +102,7 @@ void CEffect_AttackArea::Before_Render(_float fTimeDelta)
 		Update_TransformWithEffectMesh();
 	}
 
-}
+} 
 
 HRESULT CEffect_AttackArea::Render(ID3D11DeviceContext* pDeviceContext)
 {

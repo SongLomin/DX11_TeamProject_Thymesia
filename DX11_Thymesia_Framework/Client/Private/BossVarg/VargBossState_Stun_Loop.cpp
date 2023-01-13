@@ -31,7 +31,7 @@ void CVargBossState_Stun_Loop::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_StunLoop|SK_C_Varg.ao|Varg_StunL");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_StunLoop");
 }
 
 void CVargBossState_Stun_Loop::Tick(_float fTimeDelta)

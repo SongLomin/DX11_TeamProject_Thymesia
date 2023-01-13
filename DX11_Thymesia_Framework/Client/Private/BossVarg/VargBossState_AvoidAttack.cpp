@@ -52,7 +52,7 @@ void CVargBossState_AvoidAttack::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_AvoidAttack1|SK_C_Varg.ao|Varg_A");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_AvoidAttack1");
 
 	m_bAttackLookAtLimit = true;
 

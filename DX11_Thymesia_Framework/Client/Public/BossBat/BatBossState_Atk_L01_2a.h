@@ -33,9 +33,9 @@ public:
     void Call_NextAnimationKey(const _uint& In_iKeyIndex);
 
 private:
-	_bool   m_bTurnTuning = false;
-
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
+
+	_bool   m_bTurnTuning = false;
 
 
 private:

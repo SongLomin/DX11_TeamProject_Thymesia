@@ -56,7 +56,7 @@ HRESULT CVargBossState_RunAttack::Initialize(void* pArg)
 void CVargBossState_RunAttack::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_RaidAttack1|SK_C_Varg.ao|Varg_Ra");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_RaidAttack1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunAttack::Call_AnimationEnd, this, placeholders::_1);
 }
 

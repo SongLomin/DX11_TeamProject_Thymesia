@@ -30,6 +30,13 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
+	_float m_fStopAnimationTimeAcc = 0.f;
+
+	_bool m_bLightEvent = false;
+	_bool m_bTrailEvent = false;
+	_bool m_bStopAnimation = false;
+
+private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
