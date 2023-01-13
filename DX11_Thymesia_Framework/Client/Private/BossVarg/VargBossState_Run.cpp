@@ -46,7 +46,7 @@ HRESULT CVargBossState_Run::Initialize(void* pArg)
 void CVargBossState_Run::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_RunF");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RunF");
 }
 
 void CVargBossState_Run::Tick(_float fTimeDelta)

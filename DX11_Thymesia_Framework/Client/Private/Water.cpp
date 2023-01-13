@@ -96,7 +96,7 @@ void CWater::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
+	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_WATER, Cast<CGameObject>(m_this));
 }
 
 HRESULT CWater::Render(ID3D11DeviceContext* pDeviceContext)

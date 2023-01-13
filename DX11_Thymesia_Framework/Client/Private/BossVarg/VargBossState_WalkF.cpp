@@ -34,7 +34,7 @@ void CVargBossState_WalkF::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_WalkF");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_WalkF");
 
 	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkF::Call_AnimationEnd, this, placeholders::_1);
 

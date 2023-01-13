@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
 #include "MobWeapon.h"
+#include "Effect_Decal.h"
 #include "UrdWeapon.h"
 #include "JavelinWeapon.h"
 #include "Status_Boss.h"
@@ -35,6 +36,14 @@ void CUrdBossState_SPSkill01::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_SPSkill01|BaseLayer");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
+
+	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
+	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fDisapearTime = 2.f;
+	//1Æä µ¥Ä® emissive color
+	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
+	m_DecalDesc.strTextureTag = "DecalUrd";
 }
 
 void CUrdBossState_SPSkill01::Tick(_float fTimeDelta)
@@ -117,6 +126,7 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	
 	case 184:
 	{
 		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
@@ -127,6 +137,11 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+
 	}
 		return;
 	case 204:

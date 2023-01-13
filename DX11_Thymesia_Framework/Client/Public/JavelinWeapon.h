@@ -104,6 +104,7 @@ protected:
 
 private:
     JAVELIN_STATE           m_eCurrentState = JAVELIN_STATE::STATE_END;
+    DECAL_DESC              m_DecalDesc;
 
 private:
     void Free();

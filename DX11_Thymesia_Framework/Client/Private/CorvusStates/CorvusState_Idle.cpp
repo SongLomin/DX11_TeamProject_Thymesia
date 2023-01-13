@@ -286,7 +286,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
 			break;
 		case 1:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Halberds>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword_Start>();
 			break;
 		case 2:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Halberds_Upgrade>();

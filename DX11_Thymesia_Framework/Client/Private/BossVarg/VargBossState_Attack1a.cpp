@@ -11,7 +11,7 @@
 #include "VargStates.h"
 #include "../Public/BossVarg/Varg.h"
 #include "VargWeapon.h"
-
+#include "Effect_Decal.h"
 #include "MobWeapon.h"
 #include "PhysXCharacterController.h"
 
@@ -30,6 +30,11 @@ void CVargBossState_Attack1a::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		break;
 	case 45:
 		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.5f, 1.f, 9.f, 0.7f);
+
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 		break;
 	case 46:
 		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
@@ -53,8 +58,16 @@ HRESULT CVargBossState_Attack1a::Initialize(void* pArg)
 void CVargBossState_Attack1a::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_ComboAttack1_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack1_1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack1a::Call_AnimationEnd, this, placeholders::_1);
+
+	m_DecalDesc.vScale = { 3.4f,3.4f, 1.f};
+	m_DecalDesc.vPosition = { -0.18f,0.f,2.540f, 1.f };
+	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fDisapearTime = 2.f;
+	//1Æä µ¥Ä® emissive color
+	m_DecalDesc.vColor = _float3(0.1f, 0.1f, 0.1f);
+	m_DecalDesc.strTextureTag = "DecalTexture";
 }
 
 void CVargBossState_Attack1a::Tick(_float fTimeDelta)

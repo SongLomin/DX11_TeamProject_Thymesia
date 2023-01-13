@@ -113,52 +113,53 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 	SET_ANIM_SPEED("Corvus_SD_HurtMFR", 2.f);*/
 #pragma endregion // Corvus
 #pragma region Varg
-    /*SET_ANIM_SPEED("Varg_SPAttack1_Catch", 2.306f);
-    SET_ANIM_SPEED("Varg_SPAttack1_Fail", 1.25f);
-    SET_ANIM_SPEED("Varg_SPAttack1_Roar", 1.25f);
-    SET_ANIM_SPEED("Varg_SPAttack1_Roar_GetUp", 1.25f);
-    SET_ANIM_SPEED("Varg_ComboAttack1_1", 1.25f);
-    SET_ANIM_SPEED("Varg_ComboAttack1_2", 1.25f);
-    SET_ANIM_SPEED("Varg_ComboAttack1_3", 1.25f);
+// SK_C_Varg.ao|
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
 
-    SET_ANIM_SPEED("Varg_ComboAttack2_1", 2.5f);
-    SET_ANIM_SPEED("Varg_ComboAttack2_2", 2.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_1", 2.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2", 2.5f);
 
-    SET_ANIM_SPEED("Varg_ComboAttack3_1", 2.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack3_1", 2.5f);
 
-    SET_ANIM_SPEED("Varg_ComboAttack2_2b", 2.f);
-    SET_ANIM_SPEED("Varg_ComboAttack2_2b1", 2.f);
-    SET_ANIM_SPEED("Varg_ComboAttack2_2b2", 2.f);
-    SET_ANIM_SPEED("Varg_ComboAttack2_3b", 2.f);
-    SET_ANIM_SPEED("Varg_TurnAttack1", 2.5f);
-    SET_ANIM_SPEED("Varg_TakeExecution_Start_FIX", 2.f);
-    SET_ANIM_SPEED("Varg_TakeParry_FIX", 2.f);
-    SET_ANIM_SPEED("Varg_TakeExecution_Dead", 1.5f);
-    SET_ANIM_SPEED("Varg_TakeExecution_End", 1.5f);
-    SET_ANIM_SPEED("Varg_TakeExecution_Loop", 1.5f);
-    SET_ANIM_SPEED("Varg_TakeExecution_NoDeadEnd", 1.5f);
-    SET_ANIM_SPEED("Varg_Seq_TutorialBossFightStart", 5.f);
-    SET_ANIM_SPEED("Varg_Seq_BossFightStart", 6.25f);
-    SET_ANIM_SPEED("Varg_SPAttack1_CatchSeq1", 2.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b1", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b2", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeParry_FIX", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Dead", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_End", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Loop", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_NoDeadEnd", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart", 5.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 6.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_CatchSeq1", 2.5f);
 
-    SET_ANIM_SPEED("Varg_AvoidB", 1.25f);
-    SET_ANIM_SPEED("Varg_AvoidAttack1", 2.f);
-    SET_ANIM_SPEED("Varg_RaidAttack2", 2.25f);
-    SET_ANIM_SPEED("Varg_RunF_Start", 1.25f);
-    SET_ANIM_SPEED("Varg_RunF_1", 1.25f);
-    SET_ANIM_SPEED("Varg_RunF", 1.25f);
-    SET_ANIM_SPEED("Varg_TurnL90", 1.5f);
-    SET_ANIM_SPEED("Varg_TurnR90", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidAttack1", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RaidAttack2", 2.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_Start", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_1", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnL90", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnR90", 1.5f);
 
-    SET_ANIM_SPEED("Varg_WalkB", 1.25f);
-    SET_ANIM_SPEED("Varg_WalkF", 1.25f);
-    SET_ANIM_SPEED("Varg_WalkL", 1.25f);
-    SET_ANIM_SPEED("Varg_WalkR", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkB", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkF", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkL", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkR", 1.25f);
 
-    SET_ANIM_SPEED("Varg_StunLoop", 2.f);
-    SET_ANIM_SPEED("Varg_StunEnd", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
 
-    SET_ANIM_SPEED("Varg_Dead", 1.25f);*/
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);
 #pragma endregion // Varg
 #pragma region Bat
     /*SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);

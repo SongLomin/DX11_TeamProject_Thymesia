@@ -6,6 +6,7 @@
 #include "JavelinWeapon.h"
 #include "BossUrd/Urd.h"
 #include "Status_Boss.h"
+#include "Effect_Decal.h"
 
 GAMECLASS_C(CJavelinWeapon);
 CLONE_C(CJavelinWeapon, CGameObject);
@@ -100,6 +101,13 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 HRESULT CJavelinWeapon::Start()
 {
 	
+	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	m_DecalDesc.vPosition = {0.f,0.f,0.f,1.f };
+	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fDisapearTime = 2.f;
+
+	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
+	m_DecalDesc.strTextureTag = "DecalUrd";
 
 	return S_OK;
 }
@@ -332,6 +340,12 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		{
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 		}
+		m_DecalDesc.vScale = { 1.5f,1.5f, 1.f };
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+
+
 #endif // _URD_EFFECT_
 
 		Set_JavelinState(JAVELIN_STATE::STAKE);
@@ -368,6 +382,11 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
+	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
+
+	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+
 }
 
 void CJavelinWeapon::Activate_ExplosionEffect()
@@ -392,6 +411,10 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
+
+	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
+
+	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 }
 
 void CJavelinWeapon::LookAt_Player()
