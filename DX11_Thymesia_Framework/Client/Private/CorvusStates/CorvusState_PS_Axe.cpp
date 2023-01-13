@@ -3,6 +3,8 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
+#include "Effect_Decal.h"
+
 
 GAMECLASS_C(CCorvusState_PS_Axe);
 CLONE_C(CCorvusState_PS_Axe, CComponent)
@@ -26,6 +28,11 @@ void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
 		GAMEINSTANCE->Set_MotionBlur(0.2f);
+
+		
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	}
 	return;
 	case 156:
@@ -51,6 +58,14 @@ void CCorvusState_PS_Axe::Start()
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Axe");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this, placeholders::_1);
+
+
+	m_DecalDesc.vScale = { 5.f,5.f,5.f };
+	m_DecalDesc.vPosition = {0.180, 0, 1.246, 1.f};
+	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fDisapearTime = 2.f;
+	m_DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
+	m_DecalDesc.pTextureTag = "DecalTexture";
 }
 
 void CCorvusState_PS_Axe::Tick(_float fTimeDelta)
