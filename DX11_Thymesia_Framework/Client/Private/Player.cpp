@@ -123,6 +123,14 @@ HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Lig
 
 void CPlayer::Bind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect)
 {
+    for(auto& iter : m_pTalent_Effects)
+    { 
+            //이미 같은 탤런트가 들어와있다면 나가리.
+            if (iter.lock()->Check_Requirement(m_thisToPlayer) == pTalentEffect.lock()->Check_Requirement(m_thisToPlayer))
+            {
+                return;
+            }
+    }
     m_pTalent_Effects.push_back(pTalentEffect);
     pTalentEffect.lock()->Bind_Talent_Effect(m_thisToPlayer);
 }
@@ -146,16 +154,13 @@ void CPlayer::UnBind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect)
 
 _flag CPlayer::Check_RequirementForTalentEffects()
 {
-    _flag PlayerTalentEffectFlags = 0;
-
-    // m_pTalent_Effects: 플레이어에게 부여된 텔런트 효과들.
 
     for (auto& elem : m_pTalent_Effects)
     {
-        PlayerTalentEffectFlags |= elem.lock()->Check_Requirement(m_thisToPlayer);
+        m_iBindedTalentEffectes |= elem.lock()->Check_Requirement(m_thisToPlayer);
     }
 
-    return PlayerTalentEffectFlags;
+    return m_iBindedTalentEffectes;
 }
 
 

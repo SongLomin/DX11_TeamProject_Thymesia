@@ -74,17 +74,20 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_tFaderDesc.fFadeMaxTime = 1.f;
     m_tFaderDesc.vFadeColor = _float4(0, 0, 0, 0.7f);
 
-
-    
-
-
     return S_OK;
 }
 
 HRESULT CHUD_PlagueWeapon_Steal::Start()
 {
     __super::Start();
+
     Bind_Player();
+
+    Call_OnChangeSkill
+    (
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->
+        Get_Component<CPlayerSkill_System>().lock()->Get_StealSkill()
+    );
 
     return S_OK;
 }
@@ -93,7 +96,6 @@ void CHUD_PlagueWeapon_Steal::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-   
 }
 
 void CHUD_PlagueWeapon_Steal::LateTick(_float fTimeDelta)
@@ -158,4 +160,5 @@ void CHUD_PlagueWeapon_Steal::Bind_Player()
 
 void CHUD_PlagueWeapon_Steal::Free()
 {
+
 }

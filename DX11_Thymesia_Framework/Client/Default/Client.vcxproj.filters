@@ -2195,6 +2195,8 @@
     <ClInclude Include="..\Public\UI_Slider.h" />
     <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
     <ClInclude Include="..\Public\UI_FadeMask.h" />
+    <ClInclude Include="..\Public\UIHeaders.h" />
+    <ClInclude Include="..\Public\TransformUtils.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_LV2M_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution</Filter>
     </ClInclude>
@@ -4447,6 +4449,7 @@
     <ClCompile Include="..\Private\UI_Slider.cpp" />
     <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
     <ClCompile Include="..\Private\UI_FadeMask.cpp" />
+    <ClCompile Include="..\Private\TransformUtils.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_LV1M_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution</Filter>
     </ClCompile>

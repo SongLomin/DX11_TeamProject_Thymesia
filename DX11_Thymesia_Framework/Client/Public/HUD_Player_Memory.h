@@ -43,7 +43,7 @@ private:
 public:
 	void	Call_UpdateMemory();
 
-	void	Call_ChangeMemory(_float fMemory);
+	void	Call_ChangeMemory(_uint iMemory);
 public:
 	void Free();
 };

@@ -20,8 +20,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
-
-	void	Bind_Player_FromSocketType(_uint iSocket_Type);
+	virtual void	Set_SocketType(_uint iSocket_Type);
 
 
 };

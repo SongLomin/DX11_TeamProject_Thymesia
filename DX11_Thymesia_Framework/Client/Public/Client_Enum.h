@@ -492,7 +492,7 @@ namespace Client
 
 	enum class SKILL_NAME
 	{
-		SKILL_AXE,
+		SKILL_AXE = 0,
 		SKILL_KNIFE,
 		SKILL_HAMMER,
 		SKILL_SCYTHE,
@@ -609,7 +609,11 @@ namespace Client
 		OPTION_TYPE_END
 	};
 
-
+	enum class SAVEDATATYPE
+	{
+		SAVE = 500,
+		LOAD = 501,
+	};
 
 
 }

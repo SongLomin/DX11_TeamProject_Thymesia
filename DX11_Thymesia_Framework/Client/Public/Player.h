@@ -83,6 +83,8 @@ public:
 
 public:
     virtual void    Save_ClientComponentData() { }
+    virtual void    Load_ClientComponentData() { }
+
 
 
 protected:
@@ -108,6 +110,8 @@ protected:
     list<weak_ptr<CWeapon>> m_pWeapons;
 
     list<weak_ptr<CTalent_Effect>> m_pTalent_Effects;
+    _flag                   m_iBindedTalentEffectes = 0;
+
 
     unordered_map<_uint, DISSOLVE_DESC>  m_DissolveDescs;
     _uint m_iNumMeshContainers = 0;
@@ -130,7 +134,7 @@ protected:
     _flag      m_CollisionObjectFlags = 0;
     _flag      m_CollisionMonsterFlags = 0;
     _bool      m_bLadderCheck = false;
-   
+    string     m_szName;
 
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

@@ -886,7 +886,7 @@ void CLoader::Load_UIResource()
 #ifndef _EFFECT_TOOL_
 	LOAD_TEXTURES_USE_THREAD(("Loading_SafeHouse"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Lobby_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
-	LOAD_TEXTURES_USE_THREAD(("Loading_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Loading_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Garden_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Garden_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_OceanOfMemories"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_MemoryOcean_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_Tutorial"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Tutorial_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -904,6 +904,11 @@ void CLoader::Load_UIResource()
 
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_RoyalGarden_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	LOAD_TEXTURES_USE_THREAD(("Loading_Font_SafeHouse_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SafeHouse_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Loading_Font_SafeHouse_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/SafeHouse_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 	//MainMenu(LogoLevel)
 	LOAD_TEXTURES_USE_THREAD(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1079,8 +1084,11 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_UseForgottenFeather"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UseForgottenFeather.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_Cease_Recall"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Cease_Recall.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_ResumeGame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/ResumeGame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
-
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/RoyalGarden.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_HermessFortress"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/HermessFortress.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Text_SelectHighlight"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight_02.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1098,7 +1106,9 @@ void CLoader::Load_UIResource()
 
 
 	//Stage1_Quest
-	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Stage1_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage1/Quese_1.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Stage1_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage1/Quest1.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Stage2_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage2/Quest1.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Stage3_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage3/Quest1.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 	//Level Up Page
@@ -1418,7 +1428,7 @@ void CLoader::Load_UIResource()
 
 
 	LOAD_TEXTURES_USE_THREAD(("SkillOpen_TitleText"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/TitleText.png"), MEMORY_TYPE::MEMORY_STATIC);
-	LOAD_TEXTURES_USE_THREAD(("SkillOpen_SkillName_Axe"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/SkillName_Axe.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("SkillOpen_SkillName"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/SkillName%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 	LOAD_TEXTURES_USE_THREAD(("EvolveMenu_Option_Defualt"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/OptionsMenu/SettingBox_Long.png"), MEMORY_TYPE::MEMORY_STATIC);

@@ -25,11 +25,12 @@ private:
 	virtual void SetUp_ShaderResource() override;
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
-
 private:
-
 	void Update_KeyInput(_float fTimeDelta);
 	void Debug_KeyInput(_float fTimeDelta);
+
+	virtual void    Save_ClientComponentData() override;
+	virtual void    Load_ClientComponentData() override;
 
 	virtual void Move_RootMotion_Internal() override;
 
@@ -39,9 +40,6 @@ private:
 	void Ready_States();
 	void Ready_Skills();
 
-	void WriteTalentFromJson(json& Out_Json);
-	void LoadTalentFromJson(const json& In_Json);
-	virtual void Save_ClientComponentData() override;
 
 public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }

@@ -30,12 +30,22 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 	m_pRequirementChecker = CRequirementChecker::Create();
+	
+	m_fExpansionTime = 0.5f;
+
 
 	m_pRequirementMana = CRequirementBase::Create< CRequirement_PlayerStatusMana>();
 	m_pRequirementTime = CRequirementBase::Create< CRequirement_Time>();
-
-	m_pRequirementChecker->Add_Requirement(m_pRequirementMana);
 	
+	m_pRequirementChecker->Add_Requirement(m_pRequirementMana);
+
+
+	m_pExpansionChecker = CRequirementChecker::Create();
+	m_pExpansionTime = CRequirementBase::Create<CRequirement_Time>();
+
+	m_pExpansionTime->Init_Req(m_fExpansionTime);
+
+
 	Init_SkillInfo();
 	Init_State();
 	
@@ -43,10 +53,12 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 
 	RegisterThisSkillFromSkillSystem();
 
+
 	return S_OK;
 }
 
 void CSkill_Base::Start()
+
 {
 	__super::Start();
 
@@ -55,11 +67,6 @@ void CSkill_Base::Start()
 void CSkill_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	if (m_bUseAble)
-	{
-		return;
-	}	
 
 	_bool isUseAble = Is_UseAble();
 
@@ -70,7 +77,13 @@ void CSkill_Base::Tick(_float fTimeDelta)
 			Callback_EndCoolDown();
 		}
 	}
+
 	m_bUseAble = isUseAble;
+
+	if (m_pExpansionChecker->Check_Requirments() && m_bInputedKey)
+	{
+		Start_Skill();
+	}
 }
 
 void CSkill_Base::LateTick(_float fTimeDelta)
@@ -112,17 +125,20 @@ void CSkill_Base::UseSkill()
 	{
 		return;
 	}
-
-	m_bUseAble = false;
-
-	CClientComponent_Utils::ConvertOwnerToPlayer(m_pOwner).lock()->Change_State(m_pSkillState);
-	
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Consumed_Mana(m_fRequiredCost);
-
-	m_pRequirementTime->Init_Req(m_fSkillCoolDown);
-	m_pRequirementChecker->Add_Requirement(m_pRequirementTime);
-
-	Start_Skill();
+	if (!m_pExpansionSkillState.lock())
+	{
+		Start_Skill();
+		return;
+	}
+	if (m_pExpansionChecker->size() > 0)
+	{
+		m_pExpansionChecker->Clear_Requirements();
+		Start_Skill(true);
+		return;
+	}
+	m_pExpansionTime->Init_Req(m_fExpansionTime);
+	m_pExpansionChecker->Add_Requirement(m_pExpansionTime);
+	m_bInputedKey = true;
 }
 
 _float CSkill_Base::Get_RatioCoolDown()
@@ -146,8 +162,25 @@ void CSkill_Base::Clear_Callback()
 	Callback_EndCoolDown.Clear();
 }
 
-void CSkill_Base::Start_Skill()
+void CSkill_Base::Start_Skill(_bool bExapnsion)
 {
+	m_bUseAble = false;
+
+	if (bExapnsion)
+	{
+		CClientComponent_Utils::ConvertOwnerToPlayer(m_pOwner).lock()->Change_State(m_pExpansionSkillState);
+	}
+	else
+	{
+		CClientComponent_Utils::ConvertOwnerToPlayer(m_pOwner).lock()->Change_State(m_pSkillState);
+
+	}
+	m_bInputedKey = false;
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Consumed_Mana(m_fRequiredCost);
+
+	m_pRequirementTime->Init_Req(m_fSkillCoolDown);
+	m_pRequirementChecker->Add_Requirement(m_pRequirementTime);
+
 	Callback_StartSkill();
 }
 

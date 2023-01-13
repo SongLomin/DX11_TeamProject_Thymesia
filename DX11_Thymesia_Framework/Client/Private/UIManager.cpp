@@ -55,6 +55,15 @@ void CUIManager::DisableCursor()
 	m_pCursor.lock()->Set_Enable(false);
 }
 
+void CUIManager::Set_CloseCurtain(_float fTime)
+{
+}
+
+void CUIManager::OpenCurtain(_float fTime)
+{
+}
+
+
 void CUIManager::OnEnterEvolveMenu()
 {
 	weak_ptr<CUI_RadialBlurMask> pRadialBlurMask = GAMEINSTANCE->Get_GameObjects<CUI_RadialBlurMask>(LEVEL_STATIC).front();
@@ -107,6 +116,7 @@ void CUIManager::Open_EvolveMenu()
 	pFadeMask.lock()->Set_Fade(1.f, 0.f, 0.3f, EASING_TYPE::LINEAR);
 
 }
+
 
 void CUIManager::Free()
 {

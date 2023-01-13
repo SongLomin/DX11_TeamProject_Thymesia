@@ -34,6 +34,14 @@ public:
     void    EnableCursor();
     void    DisableCursor();
 
+
+    void        Set_CloseCurtain(_float fTime);
+    FDelegate<> Callback_OpenCurtain;
+
+private:
+    void        OpenCurtain(_float fTime);
+
+
 public:
     BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
     void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
@@ -58,6 +66,10 @@ private:
 
 public:
     void        Open_EvolveMenu();
+
+private:
+    _float      m_fCurtainTime;
+
 
 private:
     POINT       m_MousePt;

@@ -40,7 +40,6 @@ void CCorvusState_Execution_R_R::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -61,7 +60,6 @@ void CCorvusState_Execution_R_R::OnStateStart(const _float& In_fAnimationBlendTi
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
 
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_Execution_R_R::Call_NextAnimationKey, this, placeholders::_1);

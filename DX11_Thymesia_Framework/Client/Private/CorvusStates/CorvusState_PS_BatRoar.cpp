@@ -3,6 +3,9 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
+#include "Status_Player.h"
+
+
 
 GAMECLASS_C(CCorvusState_PS_BatRoar);
 CLONE_C(CCorvusState_PS_BatRoar, CComponent)
@@ -36,6 +39,10 @@ void CCorvusState_PS_BatRoar::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		XMStoreFloat3(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
 		vPlayerPos.y += 1.f;
 		GAMEINSTANCE->Set_RadialBlur(0.2f, vPlayerPos);
+
+		//스킬 효과
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CStatus_Player>().lock()
+			->Heal_PlayerFromMaxHP(0.3f);
 	}
 		return;
 	case 108:

@@ -11,6 +11,8 @@ BEGIN(Client)
 class CTalent_Effect;
 class CCustomUI;
 class CUI_EvolveTalent_Active;
+
+
 class CTalent :
     public CUI_Button
 {
@@ -70,8 +72,6 @@ public:
 private:
     void                        Add_TalentChild(weak_ptr<CTalent> In_pChild);
     
-  
-
 //For Button
 private:
     void			Update_ChildUI();

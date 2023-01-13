@@ -163,7 +163,12 @@ void CMonsterHPBar_Base::Tick(_float fTimeDelta)
 	Set_ChildPosFromThis();
 	Check_Track();
 
+	if (!Get_Enable())
+	{
+		m_pRecovery.lock()->Set_Enable(false);
+		m_pStunned.lock()->Set_Enable(false);
 
+	}
 }
 
 void CMonsterHPBar_Base::LateTick(_float fTimeDelta)

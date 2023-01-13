@@ -13,7 +13,6 @@
 #include "GameManager.h"
 
 
-
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon);
 CLONE_C(CUI_EvolveMenu_PlagueWeapon, CGameObject);
 
@@ -145,13 +144,20 @@ void CUI_EvolveMenu_PlagueWeapon::Call_OnUnlockSkill(weak_ptr<CUI_EvolveMenu_Pla
 {
 	m_pSkillInformation.lock()->Clear_Information();
 	m_pSkillInformation.lock()->View_Information(pSkillButton);
-	//해금 이펙트 추가
 
+	//해금 이펙트 추가
 	weak_ptr<CUI_EffectGroup_SkillOpen> pEffectGroup = GET_SINGLE(CGameManager)->
 		GetGameObject_SafetyUseMemoryPool< CUI_EffectGroup_SkillOpen>(LEVEL_STATIC);
 
 	pEffectGroup.lock()->Play(pSkillButton.lock()->Get_SkillName());
 
+	weak_ptr<CSkill_Base> pSkill = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->
+		Get_Component<CPlayerSkill_System>().lock()->Find_Skill(pSkillButton.lock()->Get_SkillName());
+
+	if (pSkill.lock())
+	{
+		pSkill.lock()->Set_Unlock(true);
+	}
 }
 
 void CUI_EvolveMenu_PlagueWeapon::Call_OnLButtonUp(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)

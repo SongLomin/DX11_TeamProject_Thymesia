@@ -302,7 +302,6 @@ _uint CGameManager::Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameF
 		return -1;
 	}
 
-
 	for (auto& elem : m_pEffectGroups[In_EffectGroupNameFromHash])
 	{
 		if (elem.lock()->Use_EffectGroup(pParentTransformCom, In_iTimeScaleLayer))
