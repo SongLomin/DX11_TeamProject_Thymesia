@@ -36,7 +36,14 @@ sampler		PointClampSampler = sampler_state
 	AddressV = clamp;
 };
 
-
+sampler sRGBSampler {
+    filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Clamp;
+    AddressV = Clamp;
+    AddressW = Clamp;
+    MaxAnisotropy = 16;
+    BorderColor = float4(0, 0, 0, 0);
+};
 
 RasterizerState RS_Default
 {

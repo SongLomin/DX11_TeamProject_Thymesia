@@ -488,6 +488,17 @@ HRESULT CGameInstance::Add_DebugSRT(const _tchar* In_szMRTName)
 {
 	return m_pRender_Manager->Add_DebugSRT(In_szMRTName);
 }
+
+HRESULT CGameInstance::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue)
+{
+	return m_pRender_Manager->Render_EditTexture(pSRV, In_Red, In_Green, In_Blue);
+}
+
+HRESULT CGameInstance::Extract_Texture(const tstring& In_szFilePath)
+{
+	return m_pRender_Manager->Extract_Texture(In_szFilePath);
+}
+
 #endif // _DEBUG
 
 HRESULT CGameInstance::Set_MotionBlur(const _float In_fBlurScale)

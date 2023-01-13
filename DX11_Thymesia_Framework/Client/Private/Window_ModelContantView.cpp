@@ -19,8 +19,6 @@ HRESULT CWindow_ModelContantView::Initialize()
     m_bEnable = true;
     SetUp_ImGuiDESC("Model Contant", ImVec2(250.f, 500.f), window_flags);
 
-    m_pModelData = make_shared<MODEL_DATA>();
-
     m_pPreviewAnimModel = GAMEINSTANCE->Add_GameObject<CPreviewAnimationModel>(LEVEL_EDIT);
     m_pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreview_Prop>(LEVEL_EDIT);
 
@@ -112,7 +110,11 @@ HRESULT CWindow_ModelContantView::Render(ID3D11DeviceContext* pDeviceContext)
     if (FAILED(__super::Begin()))
         return E_FAIL;
 
-    ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, m_pModelData->szModelFileName.c_str());
+    if (m_pModelData)
+    {
+        ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, m_pModelData->szModelFileName.c_str());
+    }
+    
 
     if (ImGui::Button("ReLoad Model") || KEY_INPUT(KEY::F5, KEY_STATE::TAP))
     {

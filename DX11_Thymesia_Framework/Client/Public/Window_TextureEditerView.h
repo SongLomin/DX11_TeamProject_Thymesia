@@ -21,6 +21,7 @@ private:
 	void	Reset_TextureEditer();
 	void	Reset_RGBs();
 	_bool	Open_Texture();
+	_bool	Save_Texture();
 	
 private:
 	void	Render_RGBButton();

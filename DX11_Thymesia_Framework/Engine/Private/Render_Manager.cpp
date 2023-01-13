@@ -222,8 +222,10 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractTexture"),
-		(_uint)1024, (_uint)1024, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		(_uint)1024, (_uint)1024, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+
+	pRenderTargetManager->Bake_ExtractTextureDepthStencilView(1024, 1024);
 
 	/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurShadow"),
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
@@ -863,9 +865,11 @@ HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSR
 	vGChannel.m128_f32[In_Green] = 1.f;
 	vBChannel.m128_f32[In_Blue] = 1.f;
 
-	m_pEditTextureShaderCom->Set_RawValue("g_RChannelUse", &vRChannel, sizeof(_vector));
-	m_pEditTextureShaderCom->Set_RawValue("g_GChannelUse", &vRChannel, sizeof(_vector));
-	m_pEditTextureShaderCom->Set_RawValue("g_BChannelUse", &vRChannel, sizeof(_vector));
+	_uint3 iChannelIndex{ (_uint)In_Red, (_uint)In_Green, (_uint)In_Blue };
+
+	m_pEditTextureShaderCom->Set_RawValue("g_ChannelIndex", &iChannelIndex, sizeof(_uint3));
+	/*m_pEditTextureShaderCom->Set_RawValue("g_GChannelUse", &vRChannel, sizeof(_vector));
+	m_pEditTextureShaderCom->Set_RawValue("g_BChannelUse", &vRChannel, sizeof(_vector));*/
 
 	m_pEditTextureShaderCom->Set_ShaderResourceView("g_SourTexture", pSRV);
 
@@ -879,6 +883,36 @@ HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSR
 }
 HRESULT CRender_Manager::Extract_Texture(const tstring& In_szFilePath)
 {
+	DirectX::ScratchImage image;
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	shared_ptr<CRenderTarget> pRenderTarget = pRenderTargetManager->Find_RenderTarget(TEXT("Target_ExtractTexture"));
+
+	HRESULT hr = DirectX::CaptureTexture(DEVICE, DEVICECONTEXT, pRenderTarget->Get_Texture().Get(), image);
+	if (FAILED(hr))
+	{
+		return hr;
+		// Handle the error here
+	}
+
+	DirectX::ScratchImage ConvertedImage;
+
+	hr = DirectX::Convert(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, DirectX::TEX_FILTER_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, ConvertedImage);
+	if (FAILED(hr))
+	{
+		return hr;
+		// Handle the error here
+	}
+
+	// Save the image to a png file
+	hr = DirectX::SaveToWICFile(ConvertedImage.GetImages(), ConvertedImage.GetImageCount(), DirectX::WIC_FLAGS_NONE, DirectX::GetWICCodec(DirectX::WIC_CODEC_PNG), In_szFilePath.c_str());
+	if (FAILED(hr))
+	{
+		return hr;
+		// Handle the error here
+	}
+
 	//png굽기
 	return S_OK;
 }
@@ -2457,6 +2491,9 @@ void CRender_Manager::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEve
 		m_pOutLineShader->Set_ShaderInfo_Internal();
 		m_pDistortionShader->Set_ShaderInfo_Internal();
 		m_pPostProcessingShader->Set_ShaderInfo_Internal();
+#ifdef _DEBUG
+		m_pEditTextureShaderCom->Set_ShaderInfo_Internal();
+#endif // _DEBUG
 	}
 
 }
@@ -2468,5 +2505,9 @@ void CRender_Manager::Free()
 	m_pOutLineShader.reset();
 	m_pDistortionShader.reset();
 	m_pPostProcessingShader.reset();
+
+#ifdef _DEBUG
+	m_pEditTextureShaderCom.reset();
+#endif // _DEBUG
 	m_pVIBuffer.reset();
 }

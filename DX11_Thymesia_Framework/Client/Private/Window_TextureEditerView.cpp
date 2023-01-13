@@ -48,6 +48,11 @@ HRESULT CWindow_TextureEditerView::Render(ID3D11DeviceContext* pDeviceContext)
 
     ImGui::SameLine();
 
+    if (ImGui::Button("Save Texture"))
+    {
+        Save_Texture();
+    }
+
     ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, szTextureFileName.c_str());
 
     ImGui::Separator();
@@ -59,6 +64,27 @@ HRESULT CWindow_TextureEditerView::Render(ID3D11DeviceContext* pDeviceContext)
 
     Render_RGBButton();
 
+    ImGui::Separator();
+
+#ifdef _DEBUG
+    if (m_pSRV.Get())
+    {
+        GAMEINSTANCE->Render_EditTexture(m_pSRV, m_RGBs[1][0], m_RGBs[1][1], m_RGBs[1][2]);
+    }
+#endif // _DEBUG
+
+    
+
+    ComPtr<ID3D11ShaderResourceView> pRenderTargetSRV = GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_ExtractTexture"));
+
+    if (pRenderTargetSRV.Get())
+    {
+        ImTextureID RT_Handle = (void*)pRenderTargetSRV.Get();
+        ImGui::Image(RT_Handle, ImVec2(256, 256));
+
+        pRenderTargetSRV.Reset();
+    }
+    ImGui::Separator();
 
     __super::End();
 	return S_OK;
@@ -92,8 +118,9 @@ _bool CWindow_TextureEditerView::Open_Texture()
         return false;
     }
 
-    szTextureFileName = szFileName;
+    Reset_TextureEditer();
 
+    szTextureFileName = szFileName;
     szTextureFilePath = filesystem::path(szFilePath).wstring();
 
     HRESULT hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath.c_str(), nullptr, m_pSRV.GetAddressOf());
@@ -103,6 +130,21 @@ _bool CWindow_TextureEditerView::Open_Texture()
         return false;
     }
 
+
+    return true;
+}
+
+_bool CWindow_TextureEditerView::Save_Texture()
+{
+    if (szTextureFilePath.empty())
+        return false;
+
+#ifdef _DEBUG
+    GAMEINSTANCE->Extract_Texture(szTextureFilePath);
+#endif // _DEBUG
+
+
+    
 
     return true;
 }
@@ -192,4 +234,5 @@ void CWindow_TextureEditerView::OnDestroy()
 
 void CWindow_TextureEditerView::Free()
 {
+    m_pSRV.Reset();
 }

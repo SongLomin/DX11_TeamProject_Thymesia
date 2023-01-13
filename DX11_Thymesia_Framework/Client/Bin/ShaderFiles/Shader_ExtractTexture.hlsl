@@ -3,10 +3,7 @@
 
 matrix g_WorldMatrix,g_ViewMatrix, g_ProjMatrix; //직교투영
 
-vector g_RChannelUse;
-vector g_GChannelUse;
-vector g_BChannelUse;
-
+uint3 g_ChannelIndex;
 texture2D g_SourTexture;
 
 struct VS_IN
@@ -56,15 +53,18 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 	
-    vector vTextureDesc = g_SourTexture.Sample(DefaultSampler, In.vTexUV);
-    vTextureDesc.a = 1.f;
+    //vector vTextureDesc = g_SourTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vTextureDesc = g_SourTexture.Sample(sRGBSampler, In.vTexUV);
     
-    Out.vColor.r = dot(vTextureDesc, g_RChannelUse);
-    Out.vColor.g = dot(vTextureDesc, g_GChannelUse);
-    Out.vColor.b = dot(vTextureDesc, g_BChannelUse);
+    Out.vColor.r = vTextureDesc[g_ChannelIndex.r];
+    Out.vColor.g = vTextureDesc[g_ChannelIndex.g];
+    Out.vColor.b = vTextureDesc[g_ChannelIndex.b];  
+       
+    Out.vColor.rgb = pow(Out.vColor.rgb, 2.2f);          
     
-    Out.vColor.w = 1.f;
+    Out.vColor.a = vTextureDesc.a;
    
+    //Out.vColor = vTextureDesc;
     return Out;
 }
       

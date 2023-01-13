@@ -163,6 +163,8 @@ public: /* For.Render_Manager */
 	HRESULT Set_DebugSize(const _float2 vSize);
 	HRESULT Set_OldSchoolView(const _bool bOldSchool);
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
+	HRESULT Extract_Texture(const tstring& In_szFilePath);
 #endif // _DEBUG
 
 
@@ -202,6 +204,7 @@ public: /* For.Resource_Manager */
 	HRESULT	ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage);
 
 	HRESULT Release_ResourceByMemoryType(MEMORY_TYPE _eMemType);
+
 
 public: /* For.Font_Manager */
 	HRESULT Add_Font(_uint iFontTag, const _tchar* pFontFilePath);
