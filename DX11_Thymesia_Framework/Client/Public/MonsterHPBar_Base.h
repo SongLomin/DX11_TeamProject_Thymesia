@@ -76,11 +76,16 @@ protected:
 
 	weak_ptr<CProgressBar>	m_pWhite;
 	weak_ptr<CProgressBar>	m_pGreen;
-	weak_ptr<CHUD_Hover>	m_pGreenTrack;
 
+
+	//특정 상황에서만 켜지는 녀석들
+	weak_ptr<CHUD_Hover>	m_pGreenTrack;
 	weak_ptr<CCustomUI>		m_pTrack;
 	weak_ptr<CHUD_Hover>	m_pRecovery;
 	weak_ptr<CHUD_Hover>	m_pStunned;
+	
+	
+	
 	weak_ptr<CMonster>		m_pTarget;
 
 

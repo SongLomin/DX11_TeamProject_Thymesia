@@ -39,6 +39,8 @@ protected:
 
 private:
 	weak_ptr<CCustomUI>			m_pOptionName;
+	_int						m_iAmount = 0;
+
 
 	weak_ptr<CUI_OptionElementBase> m_pElement;
 

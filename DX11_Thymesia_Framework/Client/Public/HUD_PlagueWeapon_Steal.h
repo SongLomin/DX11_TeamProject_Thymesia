@@ -17,6 +17,7 @@ class CHUD_PlagueWeapon_Steal :
 {
 	GAMECLASS_H(CHUD_PlagueWeapon_Steal);
 	CLONE_H(CHUD_PlagueWeapon_Steal, CGameObject);
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -34,14 +35,11 @@ public:
 	virtual void		Call_UpdateCoolDown(_float fCoolDownRatio) override;
 	virtual void		Call_EndCoolDown() override;
 
-
 private:
 		virtual void			Bind_Player() override;
 
-
 private:
-	weak_ptr<CCustomUI>						m_pPlagueWeapon_Decoration;	//쿨타임 알려주는 게이지 프레임
-
+	weak_ptr<CCustomUI>			m_pPlagueWeapon_Decoration;	//쿨타임 알려주는 게이지 프레임
 
 public:
 	void Free();

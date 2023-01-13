@@ -47,7 +47,14 @@ HRESULT CMonsterHPBar_Boss::Start()
 
 void CMonsterHPBar_Boss::Tick(_float fTimeDelta)
 {
-    __super::Tick(fTimeDelta);
+    //__super::Tick(fTimeDelta);
+
+	Check_Track();
+	if (!Get_Enable())
+	{
+		m_pRecovery.lock()->Set_Enable(false);
+		m_pStunned.lock()->Set_Enable(false);
+	}
 }
 
 void CMonsterHPBar_Boss::LateTick(_float fTimeDelta)
