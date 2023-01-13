@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "JavelinWeapon.h"
 #include "BossUrd/Urd.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CJavelinWeapon);
 CLONE_C(CJavelinWeapon, CGameObject);
@@ -16,22 +17,54 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 	switch (m_eCurrentState)
 	{
 	case Client::CJavelinWeapon::JAVELIN_STATE::BIND_HAND:
+	{
 		m_pCurrentModelCom = m_pStakeModelCom;
-		break;
-	case Client::CJavelinWeapon::JAVELIN_STATE::THROW:
-		m_pCurrentModelCom = m_pModelCom;
-		cout << Weak_Cast<CUrd>( m_pParentTransformCom.lock()->Get_Owner()).lock()->Get_CurState().lock()->Get_StateIndex() << endl;
-		LookAt_Player();
-		break;
-	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
-		break;
-	case Client::CJavelinWeapon::JAVELIN_STATE::STATE_END:
-		break;
-	default:
-		break;
 	}
+	break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::THROW:
+	{
+		m_pCurrentModelCom = m_pModelCom;
+		cout << Weak_Cast<CUrd>(m_pParentTransformCom.lock()->Get_Owner()).lock()->Get_CurState().lock()->Get_StateIndex() << endl;
+		LookAt_Player();
+	}
+	break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
+	{
+#ifdef _URD_EFFECT_
+		switch (m_iWeaponNum)
+		{
+		case 2:
+		{
+			for (auto& elem : Weak_StaticCast<CUrd>(m_pParentCharacter).lock()->Get_JavelinWeapons())
+			{
+				if (1 == elem.lock()->Get_WeaponNum())
+				{
+					Activate_ExplosionEffect(elem);
+				}
+			}
+		}
+		break;
+		case 3:
+		{
+			for (auto& elem : Weak_StaticCast<CUrd>(m_pParentCharacter).lock()->Get_JavelinWeapons())
+			{
+				if (1 == elem.lock()->Get_WeaponNum())
+				{
+					Activate_ExplosionEffect(elem);
+				}
 
-
+				if (2 == elem.lock()->Get_WeaponNum())
+				{
+					Activate_ExplosionEffect(elem);
+				}
+			}
+		}
+		break;
+		}
+#endif // _URD_EFFECT_
+	}
+	break;
+	}
 }
 
 HRESULT CJavelinWeapon::Initialize_Prototype()
@@ -289,7 +322,16 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 		pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
 
-		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		weak_ptr<CStatus_Boss> pStatus = m_pParentCharacter.lock()->Get_Component<CStatus_Boss>();
+		_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
+		if (2 == iPhase)
+		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		}
+		else if (1 == iPhase)
+		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		}
 #endif // _URD_EFFECT_
 
 		Set_JavelinState(JAVELIN_STATE::STAKE);
@@ -302,6 +344,54 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 
 void CJavelinWeapon::Update_Matrix_Stake()
 {
+}
+
+void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinWeapon)
+{
+	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
+	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+
+	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
+	pForEffectTransform.lock()->Set_Position(pJavelinWeapon.lock()->Get_Transform()->Get_Position());
+
+	weak_ptr<CStatus_Boss> pStatus = m_pParentCharacter.lock()->Get_Component<CStatus_Boss>();
+	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (2 == iPhase)
+	{
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+	}
+	else if (1 == iPhase)
+	{
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+	}
+	else
+	{
+		DEBUG_ASSERT;
+	}
+}
+
+void CJavelinWeapon::Activate_ExplosionEffect()
+{
+	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
+	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+
+	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
+	pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
+
+	weak_ptr<CStatus_Boss> pStatus = m_pParentCharacter.lock()->Get_Component<CStatus_Boss>();
+	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (2 == iPhase)
+	{
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+	}
+	else if (1 == iPhase)
+	{
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2 ", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+	}
+	else
+	{
+		DEBUG_ASSERT;
+	}
 }
 
 void CJavelinWeapon::LookAt_Player()

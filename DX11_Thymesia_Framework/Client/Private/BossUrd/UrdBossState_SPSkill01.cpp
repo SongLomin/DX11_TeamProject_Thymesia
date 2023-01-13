@@ -11,6 +11,7 @@
 #include "MobWeapon.h"
 #include "UrdWeapon.h"
 #include "JavelinWeapon.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CUrdBossState_SPSkill01);
 CLONE_C(CUrdBossState_SPSkill01, CComponent)
@@ -24,8 +25,6 @@ HRESULT CUrdBossState_SPSkill01::Initialize_Prototype()
 HRESULT CUrdBossState_SPSkill01::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -59,7 +58,6 @@ void CUrdBossState_SPSkill01::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-
 	m_iResetWeaponNum = 0;
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(0);
@@ -71,15 +69,12 @@ void CUrdBossState_SPSkill01::OnStateStart(const _float& In_fAnimationBlendTime)
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	
-	
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+			bind(&CUrdBossState_SPSkill01::Call_NextKeyFrame, this, placeholders::_1);
+	}
 }	
 
 
@@ -87,9 +82,25 @@ void CUrdBossState_SPSkill01::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	if (m_pThisAnimationCom.lock())
+	{
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+			bind(&CUrdBossState_SPSkill01::Call_NextKeyFrame, this, placeholders::_1);
+	}
+
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (1 == iPhase)
+	{
+#ifdef _URD_EFFECT_
+		if ("Boss_Urd" == Weak_Cast<CUrd>(m_pOwner).lock()->Get_KeyEventName())
+		{
+			Weak_Cast<CUrd>(m_pOwner).lock()->Unbind_KeyEvent("Boss_Urd");
+			Weak_Cast<CUrd>(m_pOwner).lock()->Bind_KeyEvent("Boss_Urd_Phase2");
+		}
+#endif // _URD_EFFECT_
+	}
 }
-
-
 
 void CUrdBossState_SPSkill01::Call_AnimationEnd(_uint iEndAnimIndex)
 {
@@ -100,6 +111,49 @@ void CUrdBossState_SPSkill01::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+}
+
+void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 184:
+	{
+		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
+		{
+			if (3 == elem.lock()->Get_WeaponNum())
+			{
+				elem.lock()->Activate_ExplosionEffect(elem);
+				return;
+			}
+		}
+	}
+		return;
+	case 204:
+	{
+		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
+		{
+			if (2 == elem.lock()->Get_WeaponNum())
+			{
+				elem.lock()->Activate_ExplosionEffect(elem);
+				return;
+			}
+		}
+	}
+		return;
+	case 224:
+	{
+		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
+		{
+			if (1 == elem.lock()->Get_WeaponNum())
+			{	
+				elem.lock()->Activate_ExplosionEffect(elem);
+				return;
+			}
+		}
+	}
+		return;
+	}
 }
 
 void CUrdBossState_SPSkill01::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
@@ -125,7 +179,7 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
-	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWepons();
+	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWeapons();
 	list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 250 &&

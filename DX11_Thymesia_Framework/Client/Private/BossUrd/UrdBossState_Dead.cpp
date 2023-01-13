@@ -133,7 +133,7 @@ _bool CUrdBossState_Dead::Check_AndChangeNextState()
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 	weak_ptr<CUrd> pUrd = Weak_StaticCast<CUrd>(pMonster).lock();
-	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWepons();
+	list<weak_ptr<CJavelinWeapon>> pJavelinWeapons = pUrd.lock()->Get_JavelinWeapons();
 	list<weak_ptr<CMobWeapon>>	pDecoWeapons = pUrd.lock()->Get_DecoWeapons();
 
 	//한 0.1 이상에서부터 싹다 없애야될듯?
