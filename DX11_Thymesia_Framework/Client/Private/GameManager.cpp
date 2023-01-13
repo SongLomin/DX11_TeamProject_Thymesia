@@ -986,7 +986,7 @@ void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVi
 
 	WATERWAVE_DESC WaveDesc;
 	WaveDesc.vPosition = _float2(In_vWorldPosition.m128_f32[0], In_vWorldPosition.m128_f32[2]);
-	WaveDesc.fFreq = In_fFreq;
+	WaveDesc.fFreq = /*In_fFreq*/5.f;
 	WaveDesc.fSpeed = In_fSpeed;
 	WaveDesc.fVibrationScale = In_fVibrationScale;
 	WaveDesc.fTimeAcc = 0.f;

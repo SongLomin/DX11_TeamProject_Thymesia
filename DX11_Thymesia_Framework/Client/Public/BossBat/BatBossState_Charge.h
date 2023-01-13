@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CModel;
+class CAnimation;
 END
 
 BEGIN(Client)
@@ -28,8 +29,13 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+public:
+	void Call_NextAnimationKey(const _uint& In_iKeyIndex);
+
 
 private:
+	weak_ptr<CAnimation> m_ThisStateAnimationCom;
+
 	_uint       m_iHellSceram = 0;
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

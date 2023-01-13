@@ -34,7 +34,7 @@ void CVargBossState_SPA_Roar_Getup::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp|SK_C_Varg.a");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_SPAttack1_Roar_GetUp");
 
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Roar_Getup::Call_AnimationEnd, this, placeholders::_1);
@@ -52,7 +52,30 @@ void CVargBossState_SPA_Roar_Getup::Tick(_float fTimeDelta)
 		GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
 	}
 
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	if (!m_bStopAnimation)
+	{
+		m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	}
+	else
+	{
+		//노가다임
+		m_fStopAnimationTimeAcc += fTimeDelta;
+
+		if ( m_bLightEvent && 2.f < m_fStopAnimationTimeAcc)
+		{
+			m_bLightEvent = false;
+			GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_PLAYERSPOTLIGHT);
+		}
+		else if (m_bTrailEvent && 3.5f < m_fStopAnimationTimeAcc)
+		{
+			Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(true);
+			GET_SINGLE(CGameManager)->Store_EffectIndex("Varg_Eye", GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
+			m_bTrailEvent = false;
+		}
+
+		if (4.f < m_fStopAnimationTimeAcc)
+			m_bStopAnimation = false;
+	}
 }
 
 
@@ -90,8 +113,6 @@ void CVargBossState_SPA_Roar_Getup::OnStateEnd()
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
 		bind(&CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame, this, placeholders::_1);
 
-
-
 }
 void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
@@ -111,6 +132,10 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	case 97: 
 		m_bShakingCamera = false;
 		break;
+	case 132:
+		GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
+		m_bStopAnimation = true;
+		break;
 	}
 }
 
@@ -121,11 +146,6 @@ void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
-	Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(true);
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Varg_Eye", GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
-
-
-	GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
 }

@@ -51,7 +51,7 @@ void CCorvusState_Sprint::Tick(_float fTimeDelta)
 	m_fTimeAcc += fTimeDelta;
 	if (0.5f < m_fTimeAcc)
 	{
-		GET_SINGLE(CGameManager)->Add_WaterWave(m_pOwnerFromPlayer.lock()->Get_WorldPosition(), 0.15f, 9.f, 3.f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(m_pOwnerFromPlayer.lock()->Get_WorldPosition(), 0.2f, 9.f, 3.f);
 		m_fTimeAcc = 0.f;
 	}
 

@@ -496,10 +496,12 @@ namespace Engine
 	{
 		_float4 vPosition;
 		_float3 vScale;
+		_float4x4 WorldMatrix;
 		_char* pTextureTag;
+		_float3 vColor;
 
 		_float  fTime;
-		_float	fDissapearTime;
+		_float	fDisapearTime;
 	};
 	
 }

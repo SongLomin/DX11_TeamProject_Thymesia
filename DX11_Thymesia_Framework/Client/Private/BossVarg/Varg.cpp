@@ -443,7 +443,7 @@ void CVarg::Init_Desc()
 void CVarg::Move_RootMotion_Internal()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 
 	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
@@ -459,17 +459,19 @@ void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
 	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
 	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
 
+	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 }
 
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
 {
-	m_LightDesc.fIntensity -= fTimeDelta;
+	m_LightDesc.fIntensity -= fTimeDelta*5.f;
 
 	if (0.f > m_LightDesc.fIntensity)
 	{
 		m_LightDesc.bEnable = false;
 		In_bEnd = true;
 	}
+	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 }
 
 void CVarg::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

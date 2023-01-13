@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CModel;
+
 END
 
 BEGIN(Client)
@@ -29,7 +30,8 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-private:
+
+
 	_bool        m_bSpecialAtk = false;
 protected:
 	void Free();

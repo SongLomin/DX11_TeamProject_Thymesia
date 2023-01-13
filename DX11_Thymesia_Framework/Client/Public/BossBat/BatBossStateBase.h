@@ -44,6 +44,7 @@ protected:
 
     weak_ptr<CBoneNode> m_pLeftHandBoneNode;
     weak_ptr<CBoneNode> m_pRightHandBoneNode;
+
 public:
     virtual void OnEventMessage(_uint iArg) override;
     void Free();

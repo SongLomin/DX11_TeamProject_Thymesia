@@ -52,6 +52,7 @@ private:
 
 private:
 	LIGHTDESC m_LightDesc;
+	LIGHTDESC m_SpotLightDesc;
 	_float3 m_vMoveScale{ 1.f,1.f,1.f };
 
 	weak_ptr<CTalent_Sword>  m_pSword;
@@ -72,6 +73,7 @@ private:
 
 private:
 	void TurnOn_Light(_float fTimeDelta, _bool& Out_End);
+	void Use_SpotLight(_float fTimeDelta, _bool& Out_End);
 
 private:
 	virtual void OnEnable(void* pArg) override;
