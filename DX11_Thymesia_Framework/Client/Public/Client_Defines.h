@@ -119,11 +119,11 @@
 #pragma region Tool
 #undef _MAP_TOOL_
 #define _CORVUS_MODEL_
- #define _BOSS_MODEL_
+// a#define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
 // #define _NORMAL_MOB_MODEL_
-//#undef _ANIMATION_TOOL_WEAPON_
-#define _BAKE_EFFECTMESH_FBX_
+#undef _ANIMATION_TOOL_WEAPON_
+#undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
 
 #pragma region Effects
