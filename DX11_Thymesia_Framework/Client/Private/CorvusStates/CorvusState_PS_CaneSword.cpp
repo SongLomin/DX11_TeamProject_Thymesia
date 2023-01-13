@@ -4,6 +4,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Weapon.h"
+#include "Effect_Decal.h"
 
 GAMECLASS_C(CCorvusState_PS_CaneSword);
 CLONE_C(CCorvusState_PS_CaneSword, CComponent)
@@ -26,6 +27,11 @@ void CCorvusState_PS_CaneSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		ZeroMemory(&vPlayerPos, sizeof(_float3));
 		XMStoreFloat3(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
 		GAMEINSTANCE->Set_RadialBlur(0.2f, vPlayerPos);
+
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	}
 		return;
 	case 100:
@@ -62,6 +68,14 @@ void CCorvusState_PS_CaneSword::Start()
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_CaneSword_SP02");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_CaneSword::Call_AnimationEnd, this, placeholders::_1);
+
+	m_DecalDesc.vScale = { 6.129f,5.f,3.f };
+	m_DecalDesc.vPosition = { -0.16f, 0.f, 4.28f, 1.f };
+	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fDisapearTime = 2.f;
+	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
+	m_DecalDesc.pTextureTag = "DecalLinear";
+
 }
 
 void CCorvusState_PS_CaneSword::Tick(_float fTimeDelta)
