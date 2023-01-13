@@ -491,10 +491,12 @@ void CInteraction_Door::Requirement_Key(_bool& Out_bRequirement)
 
 void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
 {
-    weak_ptr<CGameObject> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+    if (!(m_ActionFlag & ACTION_FLAG::ROTATION))
+    {
+        Out_bRequirement = true;
 
-    if (!pPlayer.lock())
         return;
+    }
 
     _uint iCheckIndex = m_pDirColliderCom.lock()->Get_ColliderIndex();
 

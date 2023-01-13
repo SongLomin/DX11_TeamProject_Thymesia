@@ -216,8 +216,6 @@ void CEditSetActor::View_CreateActor()
 		if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 			return;
 
-		bRenderActor != bRenderActor;
-
 		for (auto& elem : iter_collider->second)
 			elem.pInstance.lock()->Set_Enable(bRenderActor);
 	}

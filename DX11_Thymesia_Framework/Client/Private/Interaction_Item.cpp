@@ -91,9 +91,34 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
                 "ITEM_NAME_END"
             };
 
-            static _int iSelect_item = 0;
+            static _int iSelect_item      = 0;
+            static _int iSelect_ItemIndex = 0;
 
-            if (ImGui::Combo("Item", &iSelect_item, szItemList, IM_ARRAYSIZE(szItemList)))
+            ImGui::Combo("Item", &iSelect_item, szItemList, IM_ARRAYSIZE(szItemList));
+
+            auto ItemInfo = m_Items.begin();
+
+            if (ImGui::BeginListBox("##Item", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+            {
+                for (_uint i = 0; i < m_Items.size(); ++i)
+                {
+                    const bool is_selected = (iSelect_ItemIndex == i);
+
+                    if (ImGui::Selectable(szItemList[(_uint)(*ItemInfo)], is_selected))
+                    {
+                        iSelect_ItemIndex = i;
+                    }
+
+                    if (is_selected)
+                        ImGui::SetItemDefaultFocus();
+
+                    ItemInfo++;
+                }
+
+                ImGui::EndListBox();
+            }
+
+            if (ImGui::Button("Add Item"))
             {
                 m_Items.push_back((ITEM_NAME)iSelect_item);
             }
