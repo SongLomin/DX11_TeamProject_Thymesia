@@ -101,7 +101,7 @@ VS_OUT_HULL VS_MAIN_HULL(VS_IN In)
     VS_OUT_HULL Out = (VS_OUT_HULL) 0;
     
     float3 localPos = In.vPosition.xyz;
-    localPos.y += (g_DisplacementTexture.SampleLevel(DefaultSampler, In.vTexUV * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f;
+    localPos.y += (g_DisplacementTexture.SampleLevel(DefaultSampler, In.vTexUV * 0.8f + g_vUVNoise * 0.003f, 0).r) * 0.5f + 0.2f;
     
     Out.vPosition = vector(localPos, 1.f); //mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;

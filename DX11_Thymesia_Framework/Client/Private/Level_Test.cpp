@@ -69,6 +69,9 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.f), 9999.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
+	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(3.01f, 25.f, 40.2f, 1.f));
+	GAMEINSTANCE->Set_GodRayScale(1.f);
+
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
