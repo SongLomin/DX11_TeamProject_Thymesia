@@ -849,6 +849,12 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Color
 	if (In_Json.find("Render_Group") != In_Json.end())
 		m_eRenderGroup = In_Json["Render_Group"];
+
+	if (RENDERGROUP::RENDER_ALPHABLEND != m_eRenderGroup)
+	{
+		m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+	}
+
 	if (In_Json.find("Discard_Ratio") != In_Json.end())
 		m_tEffectParticleDesc.fDiscardRatio = In_Json["Discard_Ratio"];
 
