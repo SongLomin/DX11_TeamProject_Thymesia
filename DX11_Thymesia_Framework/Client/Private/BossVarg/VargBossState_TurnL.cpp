@@ -32,7 +32,7 @@ void CVargBossState_TurnL::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_TurnL90");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TurnL90");
 
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_TurnL::Call_AnimationEnd, this, placeholders::_1);

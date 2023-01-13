@@ -34,7 +34,7 @@ void CVargBossState_Exe_Start::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_TakeExecution_Start_FIX");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX");
 
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Start::Call_AnimationEnd, this, placeholders::_1);
