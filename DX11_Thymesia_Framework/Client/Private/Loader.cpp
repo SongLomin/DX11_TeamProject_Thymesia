@@ -601,7 +601,9 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_NormalMobModel();
 #endif // _EFFECT_TOOL_
 
+#ifdef _MAP_TOOL_
 	Load_AllMapModel();
+#endif // _MAP_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;
@@ -1561,8 +1563,8 @@ void CLoader::Load_EliteMobModel()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
 	Load_Model_UseThread("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	Load_Model_UseThread("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.014f, 0.014f, 0.014f);
+	GAMEINSTANCE->Load_Model_UseThread("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	Load_Model_UseThread("Elite_GreatSwordman", "../Bin/Resources/Meshes/EliteMonster/GreatSwordMan/GreatSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);

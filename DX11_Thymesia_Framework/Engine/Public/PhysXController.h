@@ -17,7 +17,8 @@ class ENGINE_DLL CPhysXController :
 public:
 	_uint	Get_PControllerIndex() const { return m_iControllerIndex; }
 	_bool	Is_EnableSimulation() const { return m_EnableSimulation; }
-	void	Set_EnableSimulation(const _bool In_EnableSimulation) { m_EnableSimulation = In_EnableSimulation; }
+	void	Set_EnableSimulation(const _bool In_EnableSimulation);
+	void	Set_EnableColliderSimulation(const _bool In_EnableSimulation) { m_EnableColliderSimulation = In_EnableSimulation; }
 	void	Set_CurrentCameraController();
 	PxController* Get_Controller();
 	virtual _vector	Get_Position();
@@ -90,6 +91,7 @@ protected:
 	PxController* m_pController = nullptr;
 
 	_bool									m_EnableSimulation = true;
+	_bool									m_EnableColliderSimulation = true;
 	_bool									m_bEnableGravity = true;
 
 

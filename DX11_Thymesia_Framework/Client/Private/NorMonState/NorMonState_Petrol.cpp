@@ -27,10 +27,8 @@ HRESULT CNorMonState_Petrol::Initialize_Prototype()
 HRESULT CNorMonState_Petrol::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	ZeroMemory(m_fPatrolPosition, sizeof(_float4) * 3);
-	ZeroMemory(&m_fStartPosition, sizeof(_float4));
 
-	
+	ZeroMemory(&m_fStartPosition, sizeof(_float4));
 
 	return S_OK;
 }
@@ -39,9 +37,11 @@ void CNorMonState_Petrol::Start()
 {
 	__super::Start();
 
-	XMStoreFloat4(&m_fPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 5.f, 0.f));
-	XMStoreFloat4(&m_fPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 10.f, 0.f));
-	XMStoreFloat4(&m_fPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(-0.1f, 0.f, -5.f, 0.f));
+	m_vecPatrolPosition.resize(3, {});
+
+	XMStoreFloat3(&m_vecPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 5.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 10.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.2f, 0.f, -5.f, 0.f));
 
 	switch (m_eMonType)
 	{
@@ -78,7 +78,7 @@ void CNorMonState_Petrol::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_WalkF");
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_WalkF");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_WalkF");
 		break;
 
 	}
@@ -97,13 +97,13 @@ void CNorMonState_Petrol::Tick(_float fTimeDelta)
 		case 1:
 		{
 			_float fTurnRifgtValue = 1.57f / 1.333f;
-			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnRifgtValue * 1.5f);
+			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnRifgtValue * 1.f);
 		}
 			break;
 		case -1:
 		{
 			_float fTurnLeftValue = 1.57f / 1.333f;
-			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnLeftValue * -1.5f);
+			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnLeftValue * -1.f);
 			
 		}
 		break;
@@ -171,7 +171,7 @@ _float CNorMonState_Petrol::Cul_DotResult()
 {
 	_vector vCurMonsterPos = m_pTransformCom.lock()->Get_Position();
 	vCurMonsterPos.m128_f32[1] = 0.f;
-	_vector vGoalPos = XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]);
+	_vector vGoalPos = XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]);
 	vGoalPos.m128_f32[1] = 0.f;
 	_vector vMonsterToGoalDirectionVector = XMVector3Normalize(vGoalPos - vCurMonsterPos);
 	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
@@ -210,6 +210,34 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
+	_float4 MonsterPosion;
+	XMStoreFloat4(&MonsterPosion, Get_OwnerMonster()->Get_WorldPosition());
+	_vector vMonsterPos = XMLoadFloat4(&MonsterPosion);
+	_vector vOtherPos = XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]);
+
+	_float fMonDistance = XMVector3Length(vMonsterPos - vOtherPos).m128_f32[0];
+
+	if (m_iPatrolCount <= 2)
+	{
+		if (!m_bTurnCheck)
+			Get_OwnerMonster()->Get_Transform()->LookAt2D(vOtherPos);
+
+		if (fMonDistance <= 0.05f + DBL_EPSILON)
+		{
+
+			++m_iPatrolCount;
+			m_bTurnCheck = true;
+			m_iCorssResult = Compute_DirectionToOtherPosition(m_vecPatrolPosition[m_iPatrolCount]);
+			int i = 0;
+			//여서 이게아니고 왼쪽오른쪽판단이먼저임 판단하고 가야됨
+		}
+	}
+	else
+	{
+		m_iPatrolCount = 0;
+		m_iCorssResult = Compute_DirectionToOtherPosition(m_vecPatrolPosition[m_iPatrolCount]);
+	}
+
 	if (fDistance <= 3.f)
 	{
 		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
@@ -222,39 +250,19 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 
 	if (Cul_DotResult() > 0.94f && m_bTurnCheck)
 	{
-		
-		Get_OwnerMonster()->Get_Transform()->LookAt2D(XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]));
+
+		if (m_iPatrolCount >= m_vecPatrolPosition.size())  
+			return false;
+
+		Get_OwnerMonster()->Get_Transform()->LookAt2D(XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]));
 		m_bTurnCheck = false;
 	}
 
-	_float4 MonsterPosion;
-	XMStoreFloat4(&MonsterPosion, Get_OwnerMonster()->Get_WorldPosition());
-	_vector vMonsterPos = XMLoadFloat4(&MonsterPosion);
-	_vector vOtherPos = XMLoadFloat4(&m_fPatrolPosition[m_iPatrolCount]);
-	
-	_float fMonDistance = XMVector3Length(vMonsterPos - vOtherPos).m128_f32[0];
+
 	
 	//현재위치에서 빼주고 그 디스턴스 구해서 그디스턴스가 엡실론보다작아지면 다음거 턴매커니즘하고 다시것고 0 -> 1 -> 2 가고 다시 0반복 
 
-	if (m_iPatrolCount <= 2)
-	{
-		if(!m_bTurnCheck)
-		Get_OwnerMonster()->Get_Transform()->LookAt2D(vOtherPos);
-
-		if (fMonDistance <= 0.05f + DBL_EPSILON)
-		{
-			
-			++m_iPatrolCount;
-			m_bTurnCheck = true;
-			m_iCorssResult = ComputeDirectionToOtherPosition(m_fPatrolPosition[m_iPatrolCount]);
-			
-			//여서 이게아니고 왼쪽오른쪽판단이먼저임 판단하고 가야됨
-		}
-	}
-	else
-	{
-		m_iPatrolCount = 0;
-	}
+	
 
 
 	return false;

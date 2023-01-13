@@ -412,6 +412,8 @@ void CTransform::LookAt(_fvector vTargetPos)
 
 void CTransform::LookAt2D(_fvector vTargetPos)
 {
+    if (XMVectorGetX(XMVector3Length(vTargetPos)) <= DBL_EPSILON)
+        DEBUG_ASSERT;
     _vector     vTargetPosFromVec4 = vTargetPos;
     vTargetPosFromVec4.m128_f32[3] = 1.f;
     _vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);

@@ -14,6 +14,8 @@ class CNorMonState_TakeExecution :
 	CLONE_H(CNorMonState_TakeExecution, CComponent)
 		SHALLOW_COPY(CNorMonState_TakeExecution)
 
+public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -25,6 +27,11 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
+private:
+	_float      m_fDissolveTime;
+	_bool       m_bAnimEnd;
+	_float      m_fOffSetX;
+	_float      m_fOffSetZ;
 
 
 private:

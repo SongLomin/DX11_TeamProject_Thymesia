@@ -180,7 +180,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 		break;
 		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		{
@@ -193,7 +193,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 		break;
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
 		{
@@ -216,10 +216,10 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.3f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 		break;
 		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		{
@@ -229,7 +229,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 1.3f);
 			}
 		}
 		m_pModelCom.lock()->Set_AnimationSpeed(2.f);

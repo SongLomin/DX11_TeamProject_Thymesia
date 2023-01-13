@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "BoneNode.h"
 //#include "MonsterHPBar.h"
 #include "Status.h"
 //#include "ComboTimer.h"
@@ -75,6 +76,28 @@ void CBatBossStateBase::Play_OnHitEffect()
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 
+}
+
+_matrix CBatBossStateBase::Get_LeftHandCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pLeftHandBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
+}
+
+_matrix CBatBossStateBase::Get_RightHandCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pRightHandBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
 }
 
 _bool CBatBossStateBase::Check_CrossAttackState()
@@ -184,7 +207,7 @@ _int CBatBossStateBase::Check_DotAttackState()
 	}
 	
 
-		
+		return  (_uint)BATATTACK_DOTRESULT::BATATTACK_DOTRESULT_END;
 }
 
 
@@ -339,9 +362,12 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		//현재상태가 스턴스타트나 스턴루프인경우에 
 		//다시 검사를해준다 플레이어의 공격이 들어오면 바그처형으로 갑니다 
 		// 바그처형으로가고 바그처형으로 갈떄 그 애니메이션한태 값하나던져주면 해결ㅇ완료 
+		
 	}
 
 }
+
+
 
 void CBatBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {

@@ -163,10 +163,10 @@ void CNorMonState_HeavyAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::UPPER_HIT, 1.3f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 		break;
 		case Client::MONSTERTYPE::ARMORSPEARMAN:
 		{
@@ -176,10 +176,10 @@ void CNorMonState_HeavyAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::UPPER_HIT, 1.3f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 		break;
 		}
 

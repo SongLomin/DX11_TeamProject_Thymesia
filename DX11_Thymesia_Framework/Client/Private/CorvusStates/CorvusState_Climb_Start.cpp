@@ -70,6 +70,7 @@ void CCorvusState_Climb_Start::OnStateStart(const _float& In_fAnimationBlendTime
 	}
 
 	m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
+	m_pPhysXControllerCom.lock()->Set_EnableColliderSimulation(false);
 
 	if (!m_pModelCom.lock().get())
 	{

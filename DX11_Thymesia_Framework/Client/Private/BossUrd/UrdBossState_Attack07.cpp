@@ -3,7 +3,8 @@
 #include "BossUrd/UrdBossState_Idle.h"
 #include "BossUrd/UrdBossState_Step_Idle.h"
 #include "Animation.h"
-
+#include "MobWeapon.h"
+#include "Monster.h"
 GAMECLASS_C(CUrdBossState_Attack07);
 CLONE_C(CUrdBossState_Attack07, CComponent)
 
@@ -67,6 +68,15 @@ void CUrdBossState_Attack07::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_bAttackLookAtLimit = true;
 	Set_MoveScale(2.5f);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 47);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NOPARRYATTACK, 2.2f);
+	}
+
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	if (m_pThisAnimationCom.lock())
 	{

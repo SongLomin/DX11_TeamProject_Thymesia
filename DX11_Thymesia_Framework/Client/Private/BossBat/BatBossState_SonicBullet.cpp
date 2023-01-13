@@ -114,10 +114,13 @@ _bool CBatBossState_SonicBullet::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 100)
+	if (ComputeAngleWithPlayer() > 0.98f && m_bAttackLookAtLimit)
 	{
+		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
+
+
 
 
 	return false;

@@ -180,7 +180,7 @@ void CMonster::Respawn_Monster(_fvector In_vPosition)
 void     CMonster::Bind_HPBar()
 {
     //UI ÀçÈ°¿ë
-    m_pHPBar = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CMonsterHPBar_Base>(LEVEL_STATIC);
+    m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
     if (!m_pHPBar.lock())
     {
         m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);

@@ -245,7 +245,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		_vector vCorssPotision = pMyCollider.lock()->Get_CurrentPosition();
 		_vector vOtherDoCorssPositon = pOtherCollider.lock()->Get_CurrentPosition();
@@ -279,7 +279,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		Get_OwnerPlayer()->Change_State<CCorvusState_HurtXXL>();
 	}
@@ -296,7 +296,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		Get_OwnerPlayer()->Change_State<CCorvusState_HurtXL>();
 	}
@@ -312,9 +312,26 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		Get_OwnerPlayer()->Change_State<CCorvusState_HurtBlown>();
+	}
+	else if (In_eHitType == HIT_TYPE::NOPARRYATTACK)
+	{
+		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
+			Get_ParentObject().lock()->
+			Get_Component<CTransform>().lock()->
+			Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
+		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
+
+		Get_OwnerPlayer()->Change_State<CCorvusState_HurtXL>();
+
 	}
 
 	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(4.5f, {0.6f,0.f,0.f}, 0.9f);

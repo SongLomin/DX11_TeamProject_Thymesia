@@ -491,6 +491,21 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 
 
+	if (EVENT_TYPE::ON_ARMOREXECUTIONSHIELD == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+
+
+
+
+
 
 	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
@@ -811,7 +826,14 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
 	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
+
 	ADD_STATE_MACRO(CCorvusState_BigHandman_Execution);
+	ADD_STATE_MACRO(CCorvusState_LV2M_Execution);
+	ADD_STATE_MACRO(CCorvusState_LV1M_Execution);
+	ADD_STATE_MACRO(CCorvusState_AromorLV1_Execution);
+	ADD_STATE_MACRO(CCorvusState_Armor_Execution_02);
+	ADD_STATE_MACRO(CCorvusState_Armor_Execution_01);
+	ADD_STATE_MACRO(CCorvusState_AromorLV1_NCamera_Execution);
 
 #undef ADD_STATE_MACRO
 }

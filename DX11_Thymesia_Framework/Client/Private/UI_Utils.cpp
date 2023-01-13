@@ -218,8 +218,20 @@ ITEM_NAME CUI_Utils::ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType)
 		eItemName = ITEM_NAME::SKILLPIECE_AXE;
 		break;
 	case Client::MONSTERTYPE::ENHANCE_GARDENER:
-		eItemName = ITEM_NAME::SKILLPIECE_SCYTHE;
+		eItemName = ITEM_NAME::SKILLPIECE_SCYTHE;		
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		break;	
 	default:
 		break;
 	}

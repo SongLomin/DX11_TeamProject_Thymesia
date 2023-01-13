@@ -51,22 +51,22 @@ void CNorMonState_HurtL::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FL|BaseLayer|Arm");
 		break;
 	case Client::MONSTERTYPE::SKULLSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtM_FL");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtS_FL");
 		break;
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtM_FL");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtS_FL");
 		break;
 	case Client::MONSTERTYPE::ARMORSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_HurtM_FL");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_Shield_HurtS_FL");
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_HurtM_FL");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_Shield_HurtS_FL");
 		break;
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_HurtM_FL");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_HurtS_FL");
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_HurtM_FL");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_HurtS_FL");
 		break;
 	}
 
@@ -99,6 +99,7 @@ void CNorMonState_HurtL::LateTick(_float fTimeDelta)
 void CNorMonState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
 
 	switch (m_eMonType)
 	{
@@ -220,12 +221,12 @@ _bool CNorMonState_HurtL::Check_AndChangeNextState()
 				break;
 			case Client::MONSTERTYPE::ARMORSPEARMAN:
 				Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock()->Set_ZeroParryCount(0);
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
 				m_iParryCount = 0;
 				break;
 			case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 				Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock()->Set_ZeroParryCount(0);
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
 				m_iParryCount = 0;
 				break;
 

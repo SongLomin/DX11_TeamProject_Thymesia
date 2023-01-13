@@ -16,7 +16,7 @@ public:
     virtual _float  Get_CamOffset() const override {
         return 0.5f;
     }
-
+    void  Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
 public:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -45,6 +45,9 @@ private:
     virtual void OnEnable(void* _Arg = nullptr) override;
     virtual void OnDisable() override;
     virtual void OnDestroy() override;
+
+private:
+    _float3             m_vMoveScale = { 1.f,1.f,1.f };
 
 private:
     void Free();

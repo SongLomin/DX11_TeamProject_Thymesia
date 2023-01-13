@@ -64,7 +64,7 @@ void CCorvusState_Joker_Execution::OnStateStart(const _float& In_fAnimationBlend
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 22);
 
 
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();

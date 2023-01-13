@@ -8,6 +8,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "Monster.h"
 
 
 GAMECLASS_C(CNorMonState_GroggyStart);
@@ -119,8 +120,21 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
 		GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
+		break;
+	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
+		break;
 
 	}
+
 
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -145,6 +159,23 @@ void CNorMonState_GroggyStart::OnStateEnd()
 }
 
 
+void CNorMonState_GroggyStart::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if (!Get_Enable())
+		return;
+
+	if ((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART == iArg)
+	{
+		m_bNextStatepause = true;
+		m_iCurrentKeyIndex = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+		m_iCurrentKeyIndex += 1;
+		//Get_OwnerCharacter().lock()->Change_State<CNorMonState_TakeExecution>(0.05f);
+	}
+
+}
+
 void CNorMonState_GroggyStart::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_GroggyStart::Call_AnimationEnd, this, placeholders::_1);
@@ -167,6 +198,15 @@ _bool CNorMonState_GroggyStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	
+	if (m_bNextStatepause)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > m_iCurrentKeyIndex)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_TakeExecution>(0.05f);
+			return true;
+		}
+	}
 
 
 	return false;

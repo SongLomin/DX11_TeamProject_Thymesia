@@ -37,7 +37,7 @@ void CAIStateBase::Init_Desc(void* In_pDesc)
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
 	m_eBossStartType  = StateLinkDesc.eBossStartType;
-	m_bPatrol         = StateLinkDesc.bPatrol;
+	m_bPatrol = false;///StateLinkDesc.bPatrol;
 }
 
 void CAIStateBase::Start()
@@ -361,10 +361,10 @@ _int CAIStateBase::ComputeDirectionToPlayer()
 	}
 }
 
-_int CAIStateBase::ComputeDirectionToOtherPosition(_float4 In_OtherPos)
+_int CAIStateBase::Compute_DirectionToOtherPosition(const _float3& In_OtherPos)
 {
 	
-	_vector vOtherPos = XMLoadFloat4(&In_OtherPos);
+	_vector vOtherPos = XMLoadFloat3(&In_OtherPos);
 	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
 	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vOtherPos - vMyPos);
 	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);

@@ -19,6 +19,7 @@ public:
 	_matrix Get_PlayerTransform() {
 		return XMLoadFloat4x4(&m_vPlyerMatrix);
 	}
+
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

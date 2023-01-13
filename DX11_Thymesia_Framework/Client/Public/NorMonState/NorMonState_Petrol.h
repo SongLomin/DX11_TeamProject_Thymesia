@@ -35,11 +35,11 @@ private:
 
 
 	//TODO юс╫ц
-	_float4         m_fPatrolPosition[3];
+	vector<_float3>          m_vecPatrolPosition;
 	_int            m_iPatrolCount = 0;
 	_int            m_iCorssResult = 0;
 	_bool           m_bTurnCheck = false;
-
+	
 	virtual void OnEventMessage(_uint iArg) override;
 
 private:
