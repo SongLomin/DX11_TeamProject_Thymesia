@@ -117,7 +117,7 @@ void CNorMonState_Walk_F::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
 	
 }

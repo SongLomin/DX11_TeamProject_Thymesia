@@ -191,7 +191,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 		return true;
 	}
 
-	if (!m_bClosePlayer && fPToMDistance <= 3.f)
+	if (!m_bClosePlayer && fPToMDistance <= 5.f)
 	{
 		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
 		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ClosePlayerCheck(true);

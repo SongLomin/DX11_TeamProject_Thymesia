@@ -77,6 +77,8 @@ void CCorvusState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+
 	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.2f, 1.f, 9.f, 0.4f);
 
@@ -90,6 +92,7 @@ void CCorvusState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 void CCorvusState_HurtL::OnStateEnd()
 {
 	__super::OnStateEnd();
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_HurtL::Call_AnimationEnd(_uint iEndAnimIndex)
@@ -123,6 +126,13 @@ _bool CCorvusState_HurtL::Check_AndChangeNextState()
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
+		}
+
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
 			return true;
 		}
 	}
