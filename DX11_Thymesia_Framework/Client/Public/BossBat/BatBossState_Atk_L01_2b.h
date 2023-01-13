@@ -36,6 +36,9 @@ private:
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
 
+	_bool m_bWaterWave = false;
+	_float m_fTimeAcc = 0.f;
+
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

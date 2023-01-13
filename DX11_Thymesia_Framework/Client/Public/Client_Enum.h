@@ -98,6 +98,14 @@ namespace Client
 		TYPE_END
 	};
 
+	enum class DIRECTION
+	{
+		RIGHT,
+		UP,
+		LOOK,
+		TYPE_END
+	};
+
 	enum  class EFFECT_TYPE
 	{
 		MESH,

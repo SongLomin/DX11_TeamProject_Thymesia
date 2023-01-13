@@ -622,9 +622,9 @@ void CGameManager::End_Cinematic()
 	m_pTargetCamera.lock()->End_Cinematic();
 }
 
-void CGameManager::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc)
+void CGameManager::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc, DIRECTION eMoveDir)
 {
-	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime, eZoomLerpFunc);
+	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime, eZoomLerpFunc,eMoveDir);
 }
 
 void CGameManager::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc)

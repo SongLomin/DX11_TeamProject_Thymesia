@@ -40,7 +40,7 @@ public:
 	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _fmatrix OffSetMatrix, CINEMATIC_TYPE eType);
 	void End_Cinematic();
 
-	void Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc );
+	void Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc,DIRECTION eMoveDir = DIRECTION::LOOK);
 	void Deactivate_Zoom(_float fZoomTime,  EASING_TYPE eZoomLerpFunc);
 
 	void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio);//특정 방향으로
@@ -67,6 +67,7 @@ private:
 
 
 private:
+
 	weak_ptr<CPhysXCameraController> m_pPhysXCameraControllerCom;
 
 	//연출이 끝난 후에 위치 보정 용
@@ -91,6 +92,8 @@ private:
 	_bool					m_bIsFocused = false;
 	_bool					m_bFirst = true;
 
+	_float m_fRenderOptionMoveOffSet = 0.f;
+
 	_long m_iMouseMovementX = 0;
 	_long m_iMouseMovementY = 0;
 
@@ -109,6 +112,7 @@ private:
 	_float m_fZoomTime = 0.f; // 줌 지속 시간
 	_float m_fZoomTimeAcc = 0.f;
 	EASING_TYPE m_eZoomLerpFunc = EASING_TYPE::TYPE_END;
+	DIRECTION m_eMoveDirection = DIRECTION::TYPE_END;
 
 	_bool	m_bRandomShaking = false;
 	_float3 m_vShakingStartOffSet = _float3(0.f, 0.f, 0.f);

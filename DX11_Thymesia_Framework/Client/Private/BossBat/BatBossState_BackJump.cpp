@@ -79,7 +79,7 @@ void CBatBossState_BackJump::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		_vector vPosition = CombinedMatrix.r[3];
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
 		break;
 	}
@@ -87,12 +87,12 @@ void CBatBossState_BackJump::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
 
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		_vector vPosition = CombinedMatrix.r[3];
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
 		break;
 	}
 	case 136:
-	{
+	{//´Ù¸®
 		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
 		break;

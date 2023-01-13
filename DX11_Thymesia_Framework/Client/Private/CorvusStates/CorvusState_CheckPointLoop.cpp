@@ -36,7 +36,7 @@ void CCorvusState_CheckPointLoop::Start()
 
 void CCorvusState_CheckPointLoop::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	CPlayerStateBase::Tick(fTimeDelta);
 
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
