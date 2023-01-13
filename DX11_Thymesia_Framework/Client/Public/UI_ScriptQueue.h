@@ -23,6 +23,8 @@ public:
 public:
     void                    Call_SetScript_Tutorial_Varg();
     void                    Call_SetScript_Tutorial_Varg_Appear();
+    void                    Call_SetScript_Varg_Page2();
+    void                    Call_SetScript_Varg_Dead();
 
 
 private:
