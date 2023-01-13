@@ -6,6 +6,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -35,7 +36,12 @@ private:
     void    SetUpColliderDesc();
 
 private:
-    weak_ptr<CCollider>     m_pColliderCom;
+    weak_ptr<CCollider>         m_pColliderCom;
+    weak_ptr<CCollider>         m_pInteractionColliderCom;
+    weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
+
+    _float                      m_fPhyxOffset = 0.f;
+
 
 private:
     virtual void OnDestroy() override;

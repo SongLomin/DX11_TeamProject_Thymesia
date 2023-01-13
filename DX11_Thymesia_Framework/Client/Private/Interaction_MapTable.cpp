@@ -10,6 +10,7 @@
 #include "ActorDecor.h"
 #include "UI_Landing.h"
 #include "UIManager.h"
+#include "PhysXCollider.h"
 
 #include "GameInstance.h"
 #include "ClientLevel.h"
@@ -27,8 +28,10 @@ HRESULT CInteraction_MapTable::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pColliderCom       = Add_Component<CCollider>();
-    
+    m_pColliderCom            = Add_Component<CCollider>();
+    m_pInteractionColliderCom = Add_Component<CCollider>();
+    m_pPhysXColliderCom       = Add_Component<CPhysXCollider>();
+
     m_pShaderCom.lock()->Set_ShaderInfo
     (
         TEXT("Shader_VtxModel"),
@@ -36,7 +39,6 @@ HRESULT CInteraction_MapTable::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
-    //m_pModelCom.lock()->Init_Model("SM_ToolRackArranged", "");
     m_pModelCom.lock()->Init_Model("SM_Bookstand_001", "");
 
     return S_OK;
@@ -46,13 +48,10 @@ HRESULT CInteraction_MapTable::Start()
 {
     __super::Start();
 
-    if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
-        m_pColliderCom.lock()->Set_Enable(false);
-
-    if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
-        m_pColliderCom.lock()->Set_Enable(false);
-
     SetUpColliderDesc();
+
+    if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+        m_pInteractionColliderCom.lock()->Set_Enable(false);
 
     return S_OK;
 }
@@ -87,7 +86,20 @@ void CInteraction_MapTable::Load_FromJson(const json& In_Json)
 
 void CInteraction_MapTable::Act_Interaction()
 {
+    switch (GET_SINGLE(CGameManager)->Get_PreLevel())
+    {
+        case LEVEL::LEVEL_STAGE2:
+        {
+            Weak_Cast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_STAGE3);
+        }
+        break;
 
+        default:
+        {
+            Weak_Cast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
+        }
+        break;
+    }
 }
 
 void CInteraction_MapTable::SetUpColliderDesc()
@@ -96,13 +108,16 @@ void CInteraction_MapTable::SetUpColliderDesc()
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
     ColliderDesc.iLayer = (_uint)COLLISION_LAYER::TRIGGER;
-    ColliderDesc.vScale = _float3(3.f, 0.f, 0.f);
+    ColliderDesc.vScale = _float3(0.5f, 0.f, 0.f);
 
-    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+    m_pInteractionColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    m_pInteractionColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
-    MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_MeshVertexInfo();
-    tInfo.vCenter;
+    MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+    XMStoreFloat3(&m_vCenterOffset, (XMLoadFloat3(&tInfo.vMin) + XMLoadFloat3(&tInfo.vMax)) / 2.f);
+    tInfo.vCenter = m_vCenterOffset;
+    m_fCullingOffsetRange = XMVectorGetX(XMVector3Length(XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin))));
 
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
     ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::INTERIOR;
@@ -112,6 +127,12 @@ void CInteraction_MapTable::SetUpColliderDesc()
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::OBB, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+    PHYSXCOLLIDERDESC tDesc;
+    Preset::PhysXColliderDesc::StaticInteriorBoxDefaultSetting(tDesc, m_pTransformCom, tInfo, &m_fPhyxOffset);
+    m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
 }
 
 void CInteraction_MapTable::OnDestroy()

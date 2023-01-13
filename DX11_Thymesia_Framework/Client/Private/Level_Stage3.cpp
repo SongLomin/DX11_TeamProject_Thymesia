@@ -53,6 +53,7 @@ HRESULT CLevel_Stage3::Initialize()
 	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(3.01f, 25.f, 40.2f, 1.f));
 
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_STAGE3);
 
 	return S_OK;
 }

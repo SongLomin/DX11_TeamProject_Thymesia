@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "Texture.h"
 #include "VIBuffer_Ground.h"
+#include "Collider.h"
 
 #include "PhysXColliderObject_Interior.h"
 #include "Static_InteriorProp.h"
@@ -117,6 +118,7 @@ void CInteriorProp::OnEventMessage(_uint iArg)
         {
 			Set_Enable(true);
 			m_pPreviewProp.lock()->Set_Enable(true);
+			m_pPreviewProp.lock()->Get_Component<CCollider>().lock()->Set_Enable(true);
         }
         break;
 
@@ -124,6 +126,7 @@ void CInteriorProp::OnEventMessage(_uint iArg)
         {
 			Set_Enable(false);
 			m_pPreviewProp.lock()->Set_Enable(false);
+			m_pPreviewProp.lock()->Get_Component<CCollider>().lock()->Set_Enable(false);
 
 			SaveJson_PropS();
         }
@@ -161,7 +164,7 @@ void CInteriorProp::Select_Props()
 	{
 		_int iNext = (_int)m_ePropID + 1;
 
-		m_ePropID = (iNext >= (_int)PROP_ID::ID_END) ? (PROP_ID::STATIC_FLOWERPOT) : ((PROP_ID)iNext);
+		m_ePropID = (iNext >= (_int)PROP_ID::ID_END) ? ((PROP_ID)(0)) : ((PROP_ID)iNext);
 		SetUp_PreviewPropMesh(m_ePropID);
 		m_fRotationY = 0.f;
 		m_pPreviewProp.lock()->Get_Transform().get()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.f);
@@ -171,7 +174,7 @@ void CInteriorProp::Select_Props()
 	{
 		_int iNext = (_int)m_ePropID - 1;
 
-		m_ePropID = (iNext < 0) ? (PROP_ID::INTERACTION_ABILITY) : ((PROP_ID)iNext);
+		m_ePropID = (iNext < 0) ? ((PROP_ID)((_int)PROP_ID::ID_END - 1)) : ((PROP_ID)iNext);
 		SetUp_PreviewPropMesh(m_ePropID);
 		m_fRotationY = 0.f;
 		m_pPreviewProp.lock()->Get_Transform().get()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.f);
@@ -304,34 +307,6 @@ void CInteriorProp::Create_Prop(PROP_ID _eItemID, _fmatrix _WorldMatrix)
 			SaveJson_SingleProp(pObj, typeid(CInteraction_Chair).name(), typeid(CInteraction_Chair).hash_code());
 		}
 		break;
-
-		case PROP_ID::INTERACTION_MAP:
-		{
-			weak_ptr<CGameObject> pObj = GAMEINSTANCE->Add_GameObject<CInteraction_MapTable>(m_CreatedLevel);
-			pObj.lock()->Get_Transform().get()->Set_WorldMatrix(_WorldMatrix);
-
-			SaveJson_SingleProp(pObj, typeid(CInteraction_MapTable).name(), typeid(CInteraction_MapTable).hash_code());
-		}
-		break;
-
-		case PROP_ID::INTERACTION_STAT:
-		{
-			
-		}
-		break;
-
-
-		case PROP_ID::INTERACTION_SKILL:
-		{
-
-		}
-		break;
-
-		case PROP_ID::INTERACTION_ABILITY:
-		{
-
-		}
-		break;
 	}
 }
 
@@ -430,33 +405,6 @@ void CInteriorProp::SetUp_PreviewPropMesh(PROP_ID _eItemID)
 			m_pPreviewProp.lock()->Get_Transform().get()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.f);
 		}
 		break;
-
-		case PROP_ID::INTERACTION_MAP:
-		{
-			m_pPreviewProp.lock()->Set_Model("SM_ToolRackArranged");
-			m_pPreviewProp.lock()->Get_Transform().get()->Set_Scaled(_float3(1.f, 1.f, 1.f));
-			m_pPreviewProp.lock()->Get_Transform().get()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.f);
-		}
-		break;
-
-		case PROP_ID::INTERACTION_STAT:
-		{
-
-		}
-		break;
-
-
-		case PROP_ID::INTERACTION_SKILL:
-		{
-
-		}
-		break;
-
-		case PROP_ID::INTERACTION_ABILITY:
-		{
-
-		}
-		break;
 	}
 }
 
@@ -546,6 +494,8 @@ void CInteriorProp::RotationProp(weak_ptr<CTransform> _pTargetTransfomCom)
 void CInteriorProp::OnDestroy()
 {
 	SaveJson_PropS();
+
+	m_PropSaveInfo.clear();
 }
 
 void CInteriorProp::Free()
