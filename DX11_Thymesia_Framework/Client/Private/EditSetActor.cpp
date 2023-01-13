@@ -140,6 +140,7 @@ void CEditSetActor::OnEventMessage(_uint iArg)
 
 void CEditSetActor::Write_Json(json& Out_Json)
 {
+
 }
 
 void CEditSetActor::View_CreateActor()
@@ -154,19 +155,19 @@ void CEditSetActor::View_CreateActor()
 
 	static const char* ActorList_Nor[] =
 	{
-		"Axe Man",
-		"Knife Woman",
-		"Skull",
-		"Gardener",
-		"Shield Axe Man",
-		"Balloon",
-		"Enhance_Gardener",
-		"Skull_Shield",
-		"Skull_Spear",
-		"Armor_Shield",
-		"WeakArmor_Shield",
-		"Armor_Spearman",
-		"WeakArmor_Spearman"
+		"Axe Man",						// 1
+		"Knife Woman",					// 2
+		"Skull",						// 3
+		"Gardener",						// 4
+		"Shield Axe Man",				// 5
+		"Balloon",						// 6
+		"Enhance_Gardener",				// 7
+		"Skull_Shield",					// 8
+		"Skull_Spear",					// 9
+		"Armor_Shield",					// 10
+		"WeakArmor_Shield",				// 11
+		"Armor_Spearman",				// 12
+		"WeakArmor_Spearman"			// 13
 	};
 
 	static const char* ActorList_Elite[] =
@@ -231,7 +232,7 @@ void CEditSetActor::View_CreateActor()
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Elite, IM_ARRAYSIZE(ActorList_Elite));
 	else if (2 == iSelect_ActorTypeList)
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Boss, IM_ARRAYSIZE(ActorList_Boss));
-	else if (4 != iSelect_ActorTypeList)
+	else if (3 != iSelect_ActorTypeList)
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Nor, IM_ARRAYSIZE(ActorList_Nor));
 
 	if (2 == iSelect_ActorTypeList)
@@ -239,7 +240,7 @@ void CEditSetActor::View_CreateActor()
 		ImGui::Combo("Boss State", &iSelect_BossActionList, BossActionList, IM_ARRAYSIZE(BossActionList));
 		bNorMonsterCreate = false;
 	}
-	else if (4 != iSelect_ActorTypeList)
+	else if (3 != iSelect_ActorTypeList)
 	{
 		ImGui::Combo("Monster State", &iSelect_MonsterActionList, MonsterActionList, IM_ARRAYSIZE(MonsterActionList));
 		bNorMonsterCreate = true;
