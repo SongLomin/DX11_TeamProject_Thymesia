@@ -207,6 +207,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Armor_Execution_01.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Armor_Execution_02.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_AromorLV1_Execution.h" />
@@ -910,6 +911,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_01.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_02.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_AromorLV1_Execution.cpp" />

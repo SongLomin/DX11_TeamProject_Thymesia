@@ -289,7 +289,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Halberds>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Armor_Execution_02>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Halberds_Upgrade>();
 			break;
 		case 3:
 			Get_OwnerPlayer()->Change_State<CCorvusState_LV1M_Execution>();
