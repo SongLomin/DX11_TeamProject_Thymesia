@@ -23,6 +23,7 @@ private:
     {
         weak_ptr<CTexture>       pDiffTex;
         weak_ptr<CTexture>       pNormTex;
+        weak_ptr<CTexture>       pORMTex;
         _float                   fDensity = 0.f;
     } TEXTURES_INFO;
 
