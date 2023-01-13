@@ -2224,6 +2224,12 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Halberds</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds_Upgrade.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Halberds\Upgrade</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Preset_ShaderPass.h">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClInclude>
@@ -4480,6 +4486,12 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Halberds</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds_Upgrade.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Halberds\Upgrade</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Preset_ShaderPass.cpp">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClCompile>
@@ -6622,6 +6634,12 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
       <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Halberds">
+      <UniqueIdentifier>{d08b1610-09c3-487d-b902-91161109350c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Halberds\Upgrade">
+      <UniqueIdentifier>{4fdf3520-6d65-4b10-a4b1-541276b03333}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. DataPreset\09. Preset_ShaderPass">
       <UniqueIdentifier>{c040abcd-a8ee-49a8-9132-6f0208cfc02c}</UniqueIdentifier>
