@@ -341,7 +341,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 		}
 		m_DecalDesc.vScale = { 1.5f,1.5f, 1.f };
-		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform);
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 

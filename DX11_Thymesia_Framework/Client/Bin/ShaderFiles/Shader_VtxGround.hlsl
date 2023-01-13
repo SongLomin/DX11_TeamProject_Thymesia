@@ -398,7 +398,6 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
     float3 vPixelNorm = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
 
     if (0.1f < vFilterDiffuse.r)
