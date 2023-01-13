@@ -6,18 +6,17 @@
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4 g_vShaderFlag;
 
-texture2D g_Texture_Sorc_Diff, g_Texture_Sorc_Norm;
+texture2D g_Texture_Sorc_Diff, g_Texture_Sorc_Norm, g_Texture_Sorc_ORM;
 float g_fSorc_Density;
-texture2D g_Texture_AddNo1_Diff, g_Texture_AddNo1_Norm;
+texture2D g_Texture_AddNo1_Diff, g_Texture_AddNo1_Norm, g_Texture_AddNo1_ORM;
 float g_fAddNo1_Density;
-texture2D g_Texture_AddNo2_Diff, g_Texture_AddNo2_Norm;
+texture2D g_Texture_AddNo2_Diff, g_Texture_AddNo2_Norm, g_Texture_AddNo2_ORM;
 float g_fAddNo2_Density;
-texture2D g_Texture_AddNo3_Diff, g_Texture_AddNo3_Norm;
+texture2D g_Texture_AddNo3_Diff, g_Texture_AddNo3_Norm, g_Texture_AddNo3_ORM;
 float g_fAddNo3_Density;
 texture2D g_FilterTexture;
 
 texture2D g_DisplacementTexture;
-texture2D g_SpecularTexture;
 
 float g_fFar = 300.f;
 
@@ -406,9 +405,11 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     {
         vector AddTex_Diff = g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
         vector AddTex_Norm = g_Texture_AddNo1_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
+        vector AddTex_ORM = g_Texture_AddNo1_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
         vector vFilter = vector(vFilterDiffuse.r, vFilterDiffuse.r, vFilterDiffuse.r, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
+        Out.vORM = AddTex_ORM;
         vPixelNorm = AddTex_Norm.xyz;
     }
 
@@ -416,9 +417,11 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     {
         vector AddTex_Diff = g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
         vector AddTex_Norm = g_Texture_AddNo2_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
+        vector AddTex_ORM = g_Texture_AddNo2_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
         vector vFilter = vector(vFilterDiffuse.g, vFilterDiffuse.g, vFilterDiffuse.g, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
+        Out.vORM = AddTex_ORM;
         vPixelNorm = AddTex_Norm.xyz;
     }
 
@@ -426,9 +429,11 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     {
         vector AddTex_Diff = g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
         vector AddTex_Norm = g_Texture_AddNo3_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
+        vector AddTex_ORM = g_Texture_AddNo3_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
         vector vFilter = vector(vFilterDiffuse.b, vFilterDiffuse.b, vFilterDiffuse.b, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
+        Out.vORM = AddTex_ORM;
         vPixelNorm = AddTex_Norm.xyz;
     }
     //물쉐이더 테스트 용 
@@ -441,7 +446,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vNormal     = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
+    
     Out.vExtractBloom = 0.f;
     Out.vRimLight = 0.f;
     return Out;
