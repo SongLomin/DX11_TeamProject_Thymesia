@@ -118,7 +118,7 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 15.f)
+	if (fPToMDistance <= 25.f)
 	{
 		m_bSinematicStart = true;
 
