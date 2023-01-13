@@ -36,6 +36,7 @@ public:
 public:
     _vector Get_WorldPosition();
 
+    const std::string Get_KeyEventName()  const { return m_strKeyEventName; }
     void Bind_KeyEvent(const char* szKeyEventName);
     void Unbind_KeyEvent(const char* szKeyEventName);
 
