@@ -62,8 +62,6 @@ void CUI_ScriptQueue::Call_SetScript_Tutorial_Varg()
     tScriptDesc.bLerp = true;
     m_ScriptDescQueue.push(tScriptDesc);
 
-
-
     tScriptDesc.fLifeTime = 2.f;
     tScriptDesc.fPos = _float2(g_iWinCX / 2.f, 850.f);
     tScriptDesc.fSize = _float2(644.f, 36.f);
@@ -88,6 +86,14 @@ void CUI_ScriptQueue::Call_SetScript_Tutorial_Varg_Appear()
     tScriptDesc.strScriptKey = "Script_Varg_Tutorial_Appear";
     tScriptDesc.bLerp = false;
     m_ScriptDescQueue.push(tScriptDesc);
+}
+
+void CUI_ScriptQueue::Call_SetScript_Varg_Page2()
+{
+}
+
+void CUI_ScriptQueue::Call_SetScript_Varg_Dead()
+{
 }
 
 void CUI_ScriptQueue::OnEnable(void* pArg)

@@ -191,7 +191,7 @@ public: /* For.Resource_Manager */
 	vector<ComPtr<ID3D11ShaderResourceView>> Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	
 	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
-	void Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
+	//void Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
 	shared_ptr<MODEL_DATA> Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	vector<const string*> Get_AllModelKeys();
 	vector<const string*> Get_AllNoneAnimModelKeys();
@@ -236,8 +236,10 @@ public: /* For.Sound_Manager */
 	_int  BGMVolumeUp(_float _vol);
 	_int  BGMVolumeDown(_float _vol);
 	_int  Pause(CHANNELID eID);
-	_uint PlaySound(const string& In_szSoundKey, _uint _iIndex, _float _vol);
-	_uint PlaySound(const string& In_szSoundKey, _float _vol);
+	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
+	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
+	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
+	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();

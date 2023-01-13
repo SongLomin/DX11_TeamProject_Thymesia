@@ -137,6 +137,14 @@ _uint CAnimation::Get_MaxChannelKeyIndex() const
 	return m_iMaxkeyFrame;
 }
 
+void CAnimation::OnDestroy()
+{
+	for (auto& elem : m_Channels)
+	{
+		m_pOwner.lock()->Remove_Component(elem);
+	}
+}
+
 void CAnimation::Free()
 {
 }

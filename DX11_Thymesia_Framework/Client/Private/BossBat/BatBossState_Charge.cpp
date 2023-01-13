@@ -32,6 +32,9 @@ void CBatBossState_Charge::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Charge");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Charge::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -51,7 +54,18 @@ void CBatBossState_Charge::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_Charge::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
 
+	if (In_iKeyIndex >= 80 && In_iKeyIndex <= 225)
+	{
+		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
+	}
+}
 
 void CBatBossState_Charge::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -62,6 +76,10 @@ void CBatBossState_Charge::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_Charge::Call_NextAnimationKey, this, placeholders::_1);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -77,7 +95,8 @@ void CBatBossState_Charge::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_Charge::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 

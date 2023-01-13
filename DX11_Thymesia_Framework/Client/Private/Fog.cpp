@@ -42,6 +42,16 @@ void CFog::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+    /*if (KEY_INPUT(KEY::M, KEY_STATE::HOLD) && KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+    {
+        GAMEINSTANCE->Set_FogDesc(m_FogList[0].vColor, m_FogList[0].fRange);
+    }
+
+    else if (KEY_INPUT(KEY::M, KEY_STATE::HOLD) && KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+    {
+        GAMEINSTANCE->Set_FogDesc(_float4(0.f, 0.f, 0.f, 0.f), 1000.f);
+    }*/
+
     if (m_bAction)
         CallBack_Act(fTimeDelta);
 }

@@ -1740,15 +1740,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Skill_Hammer.h" />
     <ClInclude Include="..\Public\Skill_Scythe.h" />
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.ComboAttack2b1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.ComboAttack2b2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.ComboAttack3b</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\38.AvoidAttack</Filter>
     </ClInclude>
@@ -2204,6 +2195,35 @@
     <ClInclude Include="..\Public\UI_Slider.h" />
     <ClInclude Include="..\Public\UI_RadialBlurMask.h" />
     <ClInclude Include="..\Public\UI_FadeMask.h" />
+    <ClInclude Include="..\Public\UIHeaders.h" />
+    <ClInclude Include="..\Public\TransformUtils.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_LV2M_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_LV1M_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_AromorLV1_NCamera_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\04.CorvusState_AromorLV1_NCamera_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_AromorLV1_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\03.CorvusState_AromorLV1_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Armor_Execution_02.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\02.CorvusState_Armor_Execution_02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Armor_Execution_01.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\CorvusState_Armor_Execution_01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3980,15 +4000,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Skill_Hammer.cpp" />
     <ClCompile Include="..\Private\Skill_Scythe.cpp" />
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.ComboAttack2b1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.ComboAttack2b2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.ComboAttack3b</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\38.AvoidAttack</Filter>
     </ClCompile>
@@ -4438,6 +4449,34 @@
     <ClCompile Include="..\Private\UI_Slider.cpp" />
     <ClCompile Include="..\Private\UI_RadialBlurMask.cpp" />
     <ClCompile Include="..\Private\UI_FadeMask.cpp" />
+    <ClCompile Include="..\Private\TransformUtils.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_LV1M_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_AromorLV1_NCamera_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\04.CorvusState_AromorLV1_NCamera_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_AromorLV1_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\03.CorvusState_AromorLV1_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_LV2M_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_01.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\CorvusState_Armor_Execution_01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_02.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\02.CorvusState_Armor_Execution_02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4492,24 +4531,6 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\01. SceneEditer\02. Component">
       <UniqueIdentifier>{f9e858b1-2c4f-4206-92df-1b392ec3fe89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect">
-      <UniqueIdentifier>{91bbb880-41fa-40e6-a07e-6530246a0175}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\00. EffectResource">
-      <UniqueIdentifier>{abcd3a72-ade2-4981-9fd6-782385e730f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\01. AnimationModel">
-      <UniqueIdentifier>{bf213ab9-9f2f-41bf-860f-3ab4aad8b023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\02. EditEffect">
-      <UniqueIdentifier>{2a442c21-709b-4489-b5d7-8a95fb8102bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\03. AnimationPlayer">
-      <UniqueIdentifier>{eadc26ea-e931-42a9-81ec-ebfac3dbb747}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\04. EffectHierarchy">
-      <UniqueIdentifier>{35d0a0ef-adba-4bc9-9910-3ee5d535d26f}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. ClientLevel\03. Stage2">
       <UniqueIdentifier>{8f5d4da9-e8bb-4299-a8be-1cd7eb02e875}</UniqueIdentifier>
@@ -5116,9 +5137,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\TestUI">
       <UniqueIdentifier>{3a7dd4a0-338c-4577-a64c-a11260525a5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
-      <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
     </Filter>
     <Filter Include="95. Utils">
       <UniqueIdentifier>{d1e7b6c9-9862-4942-a64d-ce6d33a781ed}</UniqueIdentifier>
@@ -6547,6 +6565,57 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\30.Suprise Attack">
       <UniqueIdentifier>{a4061e50-d0c7-46ef-b9f7-fc00596c90b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon">
+      <UniqueIdentifier>{bb4724bb-e8eb-4257-b66d-604505311fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution">
+      <UniqueIdentifier>{f5527b93-e6fb-43e1-b296-cfdd4bde1e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution">
+      <UniqueIdentifier>{318c5370-2ebb-41c8-b8e1-195eb17b5476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\04.CorvusState_AromorLV1_NCamera_Execution">
+      <UniqueIdentifier>{5affc4f7-f4bf-4290-b7f1-7b4a9d875432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\03.CorvusState_AromorLV1_Execution">
+      <UniqueIdentifier>{8cfd7429-4ef4-474a-af88-cb1811f90188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\02.CorvusState_Armor_Execution_02">
+      <UniqueIdentifier>{e7a58fd4-5f7f-464c-ba7d-c22542d63d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\CorvusState_Armor_Execution_01">
+      <UniqueIdentifier>{9074ad90-1e80-4633-aeff-9494dfd199fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.">
+      <UniqueIdentifier>{4ac89973-2dc0-467a-8971-8f7353ae8daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.">
+      <UniqueIdentifier>{7eb5f397-68a8-40fa-a8eb-356aa4fd1264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.">
+      <UniqueIdentifier>{77dcc4f5-131c-49ef-9139-2819b2c185a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect">
+      <UniqueIdentifier>{91bbb880-41fa-40e6-a07e-6530246a0175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\00. EffectResource">
+      <UniqueIdentifier>{abcd3a72-ade2-4981-9fd6-782385e730f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\01. AnimationModel">
+      <UniqueIdentifier>{bf213ab9-9f2f-41bf-860f-3ab4aad8b023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\02. EditEffect">
+      <UniqueIdentifier>{2a442c21-709b-4489-b5d7-8a95fb8102bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\03. AnimationPlayer">
+      <UniqueIdentifier>{eadc26ea-e931-42a9-81ec-ebfac3dbb747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\04. EffectHierarchy">
+      <UniqueIdentifier>{35d0a0ef-adba-4bc9-9910-3ee5d535d26f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
+      <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

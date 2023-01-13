@@ -545,6 +545,7 @@ void CModel::Reset_Model()
 
 	m_pModelData.reset();
 	m_iNumMeshContainers = 0;
+	m_iNumAnimations = 0;
 	m_iNumMaterials = 0;
 	m_MeshContainers.clear();
 	m_Materials.clear();
@@ -727,7 +728,6 @@ void CModel::Create_Materials(const char* pModelFilePath)
 
 			tstring		szTextureFileddsPath = filesystem::path(szFullPath + ".dds").wstring();
 			tstring		szTextureFilepngPath = filesystem::path(szFullPath + ".png").wstring();
-
 
 #ifdef _DEBUG
 			//cout << "Load_Texture: " << szFullPath << endl;

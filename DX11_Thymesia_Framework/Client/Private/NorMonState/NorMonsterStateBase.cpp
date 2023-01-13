@@ -221,16 +221,31 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 		//공격 형태에 따라서 애니메이션 변경
 
+	
+
 		if (m_eMonType != MONSTERTYPE::BALLOON)
 		{
 			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
 				|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
 			{
 				if (m_eMonType != MONSTERTYPE::ARMORSHIELDMAN && m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN &&
-					m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN && m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
+					m_eMonType != MONSTERTYPE::WEAKARMORSPEARMAN && m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
 				{
 					Get_OwnerMonster()->Change_State<CNorMonState_Die>();
 				}		    
+				else
+				{
+					if (m_eMonType == MONSTERTYPE::ARMORSHIELDMAN || m_eMonType == MONSTERTYPE::WEAKARMORSHIELDMAN)
+					{
+						pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSHIELD);
+					}
+					else if (m_eMonType == MONSTERTYPE::WEAKARMORSPEARMAN || m_eMonType == MONSTERTYPE::ARMORSPEARMAN)
+					{
+						pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSPEAR);
+					}
+
+					
+				}
 			}
 			else if (m_pStatusCom.lock()->Is_Dead())
 			{

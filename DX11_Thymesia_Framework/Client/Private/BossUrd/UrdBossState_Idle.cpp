@@ -85,7 +85,7 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	{
 		
 
-		if (m_iPhaseTwoSkillCount >= 8)
+		if (m_iPhaseTwoSkillCount >= 6)
 		{
 			m_bSkillStart = true;
 			m_iPhaseTwoSkillCount = 0;
@@ -206,7 +206,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	{
 	    if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 		{
-			if (fPToMDistance <= 4.f)
+			if (fPToMDistance <= 4.5f)
 			{
 				if (m_bTurnCheck)
 				{
@@ -280,7 +280,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 		}
 		else if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
 		{
-			if (fPToMDistance <= 4.f)
+			if (fPToMDistance <= 4.5f)
 			{
 				if (m_bTurnCheck)
 				{
@@ -335,7 +335,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 						{
 							if (m_bAttack) // 거리가 존나게 먼상태에서 두번 댄싱공격했을떄 ->바로 발동하게
 							{
-								Get_OwnerCharacter().lock()->Change_State<CUrdBossState_AttackComboB1>(0.05f);
+								Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack07>(0.05f);
 								return true;
 							}
 							else

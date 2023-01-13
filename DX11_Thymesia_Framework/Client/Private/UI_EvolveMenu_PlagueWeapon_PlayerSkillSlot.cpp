@@ -49,12 +49,10 @@ void CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot::Equip_Skill(weak_ptr<CUI_Evolv
         m_pEquipSkill.lock()->Set_Slot(m_pEquipSkill.lock()->Get_OriginSlot());
         m_pEquipSkill.lock()->SetPosToMyOriginSlot();
     }
-
     m_pEquipSkill = pSkill;
     m_pEquipSkill.lock()->Set_Slot(CUI::Get_This());
     m_pEquipSkill.lock()->SetPosToMyCurrentSlot();
     
-
     weak_ptr<CPlayerSkill_System> pSkillSystem = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CPlayerSkill_System>();
 
     if (pSkillSystem.lock())
@@ -65,15 +63,18 @@ void CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot::Equip_Skill(weak_ptr<CUI_Evolv
 
 }
 
-void CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot::UnEquip_Skill(_uint iSkillSocketType)
+void CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot::Clear_Slot()
 {
     if (m_pEquipSkill.lock())
     {
         m_pEquipSkill.lock()->Set_Slot(m_pEquipSkill.lock()->Get_OriginSlot());
     }
     m_pEquipSkill = weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillButton>();
+}
 
-
+void CUI_EvolveMenu_PlagueWeapon_PlayerSkillSlot::UnEquip_Skill(_uint iSkillSocketType)
+{
+    Clear_Slot();
 
     weak_ptr<CPlayerSkill_System> pSkillSystem = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CPlayerSkill_System>();
 

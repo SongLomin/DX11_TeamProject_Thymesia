@@ -93,7 +93,7 @@ void CNorMonState_HeavyAttack4::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.5f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 		break;
 		}
 

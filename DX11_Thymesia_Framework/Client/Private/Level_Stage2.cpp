@@ -24,7 +24,7 @@ HRESULT CLevel_Stage2::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-	
+
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE2);
 
 	CCamera::CAMERADESC CameraDesc;
@@ -49,6 +49,8 @@ HRESULT CLevel_Stage2::Initialize()
 	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
+
+	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_STAGE2);
 
 	return S_OK;
 }
@@ -83,6 +85,7 @@ void CLevel_Stage2::ExitLevel(LEVEL eLevel)
 
 	switch (eLevel)
 	{
+		case  LEVEL::LEVEL_TEST:
 		case  LEVEL::LEVEL_STAGE3:
 		{
 			m_eNextLevel = eLevel;

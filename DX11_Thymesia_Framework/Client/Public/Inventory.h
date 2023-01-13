@@ -20,7 +20,7 @@ public:
 	virtual void LateTick(_float fTimeDelta) override;
 
 public:
-	void		Push_Item(ITEM_NAME eItemName);
+	void		Push_Item(ITEM_NAME eItemName, _bool bCallPopup = true);
 	void		Push_Item(MONSTERTYPE eMonsterType);
 
 	_bool		Pop_Item(ITEM_NAME eItemName);
@@ -30,6 +30,11 @@ public:
 	weak_ptr<CItem> Find_Item(ITEM_NAME eItemName);
 
 	map<ITEM_NAME, shared_ptr<CItem>>	Get_Inventory() { return m_mapInventory; }
+
+
+public:
+	virtual void    Write_SaveData(json& Out_Json) override;
+	virtual void    Load_SaveData(const json& In_Json) override;
 
 private:
 	map<ITEM_NAME, shared_ptr<CItem>>	m_mapInventory;

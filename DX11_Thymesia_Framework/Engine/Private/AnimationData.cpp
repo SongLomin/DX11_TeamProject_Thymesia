@@ -1,4 +1,4 @@
-#include "AnimationData.h"
+ï»¿#include "AnimationData.h"
 
 HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float In_fSpeed)
 {
@@ -19,138 +19,146 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     }
 
 #pragma region Corvus
-    /*SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
-    SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
-    SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
+ //   SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
+ //   SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
+ //   SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
 
 
-    SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast01", 2.f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast02", 2.f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast03", 2.f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawLong_PlunderAttack2TTT", 2.f);
-    SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast01", 2.f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast02", 2.f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast03", 2.f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawLong_PlunderAttack2TTT", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
 
-    SET_ANIM_SPEED("Corvus_SD_AvoidShort_F", 1.75f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShort_L", 1.75f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShort_R", 1.75f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShort_B_NEW", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShort_F", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShort_L", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShort_R", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShort_B_NEW", 1.75f);
 
-    SET_ANIM_SPEED("Corvus_SD_AvoidLongB_NEW", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidLongF", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidLongL_NEW", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidLongR_NEW", 1.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidLongB_NEW", 1.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidLongF", 1.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidLongL_NEW", 1.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidLongR_NEW", 1.5f);
 
-    SET_ANIM_SPEED("Corvus_SD_AvoidF", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_B", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_F", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_L", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_R", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.f);
-    SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_SprintAttack_1", 2.5f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
-    SET_ANIM_SPEED("Corvus_Raven_ClawLong_ChargeFull", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 1.75f);
-    SET_ANIM_SPEED("Corvus_PW_Axe", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_Axe_B_V1", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_Knife_A_V1", 2.75f);
-    SET_ANIM_SPEED("Corvus_PW_Scythe", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_Scythe_B", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_Hammer_A", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_Hammer_B_Ver2", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidF", 2.25f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_B", 2.25f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_F", 2.25f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_L", 2.25f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_R", 2.25f);
+ //   SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_SprintAttack_1", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
+ //   SET_ANIM_SPEED("Corvus_Raven_ClawLong_ChargeFull", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_PW_Axe", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Axe_B_V1", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Knife_A_V1", 2.75f);
+ //   SET_ANIM_SPEED("Corvus_PW_Scythe", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Scythe_B", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Hammer_A", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Hammer_B_Ver2", 2.f);
+	//SET_ANIM_SPEED("Corvus_PW_Halberds", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Halberds_B", 2.f);
 
-    SET_ANIM_SPEED("Corvus_PW_Bat_Roar_A", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_Bat_Roar_B", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_BigHand_Start", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_BigHand_End", 2.f);
 
-    SET_ANIM_SPEED("Corvus_PW_VargSword_B", 1.75f);
-    SET_ANIM_SPEED("Corvus_PW_VargSword_Start", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_PW_Bat_Roar_A", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Bat_Roar_B", 2.f);
 
-    SET_ANIM_SPEED("Corvus_PW_UrdSword01", 2.25f);
-    SET_ANIM_SPEED("Corvus_PW_Magician_A", 1.75f);
-    SET_ANIM_SPEED("Corvus_PW_CaneSword_Fast", 2.f);
-    SET_ANIM_SPEED("Corvus_PW_CaneSword_SP02", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_LAttack4", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD_LAttack5", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidAttack_D", 3.5f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidAttack_E2", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_PW_VargSword_B", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_PW_VargSword_Start", 1.75f);
 
-    SET_ANIM_SPEED("Corvus_SD_ParryDeflect_L", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_ParryDeflect_LUp", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtXLF", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtXXLF", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtKnockDown", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtFallDown_End", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtFallDown", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_UrdSword01", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_Magician_A", 1.75f);
+ //   SET_ANIM_SPEED("Corvus_PW_CaneSword_Fast", 2.f);
+ //   SET_ANIM_SPEED("Corvus_PW_CaneSword_SP02", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_LAttack4", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_LAttack5", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidAttack_D", 3.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_AvoidAttack_E2", 2.5f);
 
-    SET_ANIM_SPEED("Corvus_SD_ParryDeflect_R", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_ParryDeflect_RUp", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_ParryDeflect_L", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_ParryDeflect_LUp", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_HurtXLF", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_HurtXXLF", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_HurtKnockDown", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_HurtFallDown_End", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_HurtFallDown", 2.f);
 
-    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_UP", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_ParryDeflect_R", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_ParryDeflect_RUp", 2.f);
 
-    SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
-    SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.4f);
+ //   SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_UP", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
+ //   SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
 
-    SET_ANIM_SPEED("Corvus_StunExecute_StartR_R", 2.f);
-    SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
-    SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);*/
+ //   SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
+ //   SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.82f);
+
+ //   SET_ANIM_SPEED("Corvus_StunExecute_StartR_R", 2.f);
+ //   SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
+ //   SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
+ //   SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);
+
+	//SET_ANIM_SPEED("Corvus_SD_HurtMFL", 2.f);
+	//SET_ANIM_SPEED("Corvus_SD_HurtMFR", 2.f);
 #pragma endregion // Corvus
 #pragma region Varg
-    /*SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
+    SET_ANIM_SPEED("Varg_SPAttack1_Catch", 2.306f);
+    SET_ANIM_SPEED("Varg_SPAttack1_Fail", 1.25f);
+    SET_ANIM_SPEED("Varg_SPAttack1_Roar", 1.25f);
+    SET_ANIM_SPEED("Varg_SPAttack1_Roar_GetUp", 1.25f);
+    SET_ANIM_SPEED("Varg_ComboAttack1_1", 1.25f);
+    SET_ANIM_SPEED("Varg_ComboAttack1_2", 1.25f);
+    SET_ANIM_SPEED("Varg_ComboAttack1_3", 1.25f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_1", 2.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2", 2.5f);
+    SET_ANIM_SPEED("Varg_ComboAttack2_1", 2.5f);
+    SET_ANIM_SPEED("Varg_ComboAttack2_2", 2.5f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack3_1", 2.5f);
+    SET_ANIM_SPEED("Varg_ComboAttack3_1", 2.5f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b1", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b2", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeParry_FIX", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Dead", 1.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_End", 1.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Loop", 1.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_NoDeadEnd", 1.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart", 5.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 6.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_CatchSeq1", 2.5f);
+    SET_ANIM_SPEED("Varg_ComboAttack2_2b", 2.f);
+    SET_ANIM_SPEED("Varg_ComboAttack2_2b1", 2.f);
+    SET_ANIM_SPEED("Varg_ComboAttack2_2b2", 2.f);
+    SET_ANIM_SPEED("Varg_ComboAttack2_3b", 2.f);
+    SET_ANIM_SPEED("Varg_TurnAttack1", 2.5f);
+    SET_ANIM_SPEED("Varg_TakeExecution_Start_FIX", 2.f);
+    SET_ANIM_SPEED("Varg_TakeParry_FIX", 2.f);
+    SET_ANIM_SPEED("Varg_TakeExecution_Dead", 1.5f);
+    SET_ANIM_SPEED("Varg_TakeExecution_End", 1.5f);
+    SET_ANIM_SPEED("Varg_TakeExecution_Loop", 1.5f);
+    SET_ANIM_SPEED("Varg_TakeExecution_NoDeadEnd", 1.5f);
+    SET_ANIM_SPEED("Varg_Seq_TutorialBossFightStart", 5.f);
+    SET_ANIM_SPEED("Varg_Seq_BossFightStart", 6.25f);
+    SET_ANIM_SPEED("Varg_SPAttack1_CatchSeq1", 2.5f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidAttack1", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RaidAttack2", 2.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_Start", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_1", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnL90", 1.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnR90", 1.5f);
+    SET_ANIM_SPEED("Varg_AvoidB", 1.25f);
+    SET_ANIM_SPEED("Varg_AvoidAttack1", 2.f);
+    SET_ANIM_SPEED("Varg_RaidAttack2", 2.25f);
+    SET_ANIM_SPEED("Varg_RunF_Start", 1.25f);
+    SET_ANIM_SPEED("Varg_RunF_1", 1.25f);
+    SET_ANIM_SPEED("Varg_RunF", 1.25f);
+    SET_ANIM_SPEED("Varg_TurnL90", 1.5f);
+    SET_ANIM_SPEED("Varg_TurnR90", 1.5f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkB", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkF", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkL", 1.25f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkR", 1.25f);
+    SET_ANIM_SPEED("Varg_WalkB", 1.25f);
+    SET_ANIM_SPEED("Varg_WalkF", 1.25f);
+    SET_ANIM_SPEED("Varg_WalkL", 1.25f);
+    SET_ANIM_SPEED("Varg_WalkR", 1.25f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
+    SET_ANIM_SPEED("Varg_StunLoop", 2.f);
+    SET_ANIM_SPEED("Varg_StunEnd", 2.f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);*/
+    SET_ANIM_SPEED("Varg_Dead", 1.25f);
 #pragma endregion // Varg
 #pragma region Bat
     /*SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
@@ -238,7 +246,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 	SET_ANIM_SPEED("Armature|Armature|Urd_Parry_L|BaseLayer", 1.5f);
 	SET_ANIM_SPEED("Armature|Armature|Urd_Parry_R|BaseLayer", 1.5f);
 	SET_ANIM_SPEED("Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer", 4.f);
-	SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);*/
+    SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);*/
 #pragma endregion // Urd
 
 
@@ -297,18 +305,19 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA01", 2.f);
     SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA02", 2.f);
-    SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_VS_TakeExecution_01", 1.1f);
-
+    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.36f)
 
 #pragma endregion // BigHandMan
 
-    //SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 0.5f);
-    SET_ANIM_SPEED("Corvus_VSUrd_Execution",0.9f);
-    SET_ANIM_SPEED("Corvus_SD_HurtMFL",2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtMFR",2.f);
     SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.006f);
-    SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.3f);
-    //¼Óµµ 0.5¹è´õºü¸£°Ô
+    // SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.3f);
+
+    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_UP", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 1.5f);
+    //SET_ANIM_SPEED("Armature|Armature|Urd_Dead|BaseLayer", 0.67f);
+    //ï¿½Óµï¿½ 0.5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
        /*
          SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 1.f);

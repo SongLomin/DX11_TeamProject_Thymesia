@@ -286,22 +286,22 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
 			break;
 		case 1:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword_Start>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_NCamera_Execution>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_BatRoar>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Armor_Execution_02>();
 			break;
 		case 3:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_BatRoar_Upgrade>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LV1M_Execution>();
 			break;
 		case 4:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe_Upgrade>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LV2M_Execution>();
 			break;
 		case 5:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer_Upgrade>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
 			break;
 		case 6:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_NCamera_Execution>();
 			break;
 		case 7:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();

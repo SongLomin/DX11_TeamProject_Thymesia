@@ -60,11 +60,21 @@ void CCorvusState_NorMob_Execution::OnStateStart(const _float& In_fAnimationBlen
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-
 	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
 
+	_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
 
+	if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::HEALING_EXELCUTION_LV2)
+	{
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Heal_PlayerFromMaxHP(0.4f);
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->MPHeal_PlayerFromMaxMP(0.4f);
+	}
+	else if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::HEALING_EXELCUTION_LV1)
+	{
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Heal_PlayerFromMaxHP(0.2f);
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->MPHeal_PlayerFromMaxMP(0.2f);
+	}
 	//GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

@@ -183,7 +183,7 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);	
 
 
-			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 8)
+			if (Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_PhaseTwoSkillCount() >= 6)
 			{
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_ZeroPhaseTwoSkillCount(0);
@@ -262,21 +262,13 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_StateIndex() ||
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_StateIndex() ||
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_WalkL>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_WalkR>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFL>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFR>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFL45>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFR45>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepR>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepL>().lock()->Get_StateIndex()
-
-				)
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_WalkR>().lock()->Get_StateIndex() )		
 			{
 
 				if (In_eHitType == HIT_TYPE::LEFT_HIT)
 				{
-					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 4 ||
-						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 4)
+					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 3 ||
+						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 3)
 					{
 						Get_OwnerMonster()->Change_State<CUrdBossState_Parry_L>();
 						return;
@@ -288,8 +280,8 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 				{
-					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 4 ||
-						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 4)
+					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 3 ||
+						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 3)
 					{
 						Get_OwnerMonster()->Change_State<CUrdBossState_Parry_R>();
 						return;

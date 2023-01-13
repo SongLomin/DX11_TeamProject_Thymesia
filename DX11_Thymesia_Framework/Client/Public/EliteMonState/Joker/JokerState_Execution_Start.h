@@ -14,9 +14,7 @@ class CJokerState_TakeExecution_Start :
 	CLONE_H(CJokerState_TakeExecution_Start, CComponent)
 		SHALLOW_COPY(CJokerState_TakeExecution_Start)
 
-public:
-	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
-	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
+
 
 
 protected:
@@ -32,8 +30,10 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 	virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 private:
-	_bool    m_bTurnCheck = false;
-	_bool    m_bBackReset = false;
+	_bool   m_bOnce = false;
+
+	//TODO 
+	_bool m_bTwoOnce = false;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

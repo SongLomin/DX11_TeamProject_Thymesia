@@ -21,18 +21,24 @@ HRESULT CEffect_Decal::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxDecal"),
 		VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements);
 
-	m_pTextureCom.lock()->Use_Texture("DecalTexture");
 
 	m_eRenderGroup = RENDERGROUP::RENDER_DECAL;
 
 	m_pTransformCom.lock()->Rotation(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), XMConvertToRadians(-90.f));
 
-	memcpy(&m_DecalDesc, pArg, sizeof(DECAL_DESC));
+	m_DecalDesc = *(DECAL_DESC*)pArg;
 
 	m_pTransformCom.lock()->Set_Position(XMLoadFloat4(&m_DecalDesc.vPosition));
-	m_pTransformCom.lock()->Set_Scaled(m_DecalDesc.vScale);
 
-	m_fTimeAcc = m_DecalDesc.fTime;
+	_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix() * XMLoadFloat4x4(&m_DecalDesc.WorldMatrix);
+	m_pTransformCom.lock()->Set_WorldMatrix(WorldMatrix);
+
+	m_pTransformCom.lock()->Set_Scaled(m_DecalDesc.vScale);  
+	m_pTextureCom.lock()->Use_Texture(m_DecalDesc.strTextureTag.c_str());
+
+
+
+	m_fTimeAcc = m_DecalDesc.fDisapearTime;
 
 	return S_OK;
 }
@@ -47,6 +53,9 @@ void CEffect_Decal::Tick(_float fTimeDelta)
 void CEffect_Decal::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	if (m_DecalDesc.fTime < 0.f)
+		m_DecalDesc.fDisapearTime -= fTimeDelta;
 
 	if (Check_IsDead())
 	{
@@ -101,7 +110,9 @@ void CEffect_Decal::SetUp_ShaderResource()
 	TempMatrix = XMMatrixTranspose(WorldInvMatrix);
 	m_pShaderCom.lock()->Set_RawValue("g_InvWorldMatrix", (void*)&TempMatrix, sizeof(_matrix));
 
-	_float fAlphaRatio = m_DecalDesc.fTime / m_fTimeAcc;
+	m_pShaderCom.lock()->Set_RawValue("g_vColor", (void*)&m_DecalDesc.vColor, sizeof(_float3));
+
+	_float fAlphaRatio = m_DecalDesc.fDisapearTime / m_fTimeAcc;
 
 	m_pShaderCom.lock()->Set_RawValue("g_fAlphaValue", &fAlphaRatio, sizeof(_float));
 
@@ -117,7 +128,7 @@ void CEffect_Decal::SetUp_ShaderResource()
 
 _bool CEffect_Decal::Check_IsDead()
 {
-	if (0.f > m_DecalDesc.fTime)
+	if (0.f > m_DecalDesc.fDisapearTime)
 	{
 		return true;
 	}

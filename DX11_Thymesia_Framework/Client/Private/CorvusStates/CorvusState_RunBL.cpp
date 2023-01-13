@@ -42,7 +42,7 @@ void CCorvusState_RunBL::Start()
 
 void CCorvusState_RunBL::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	CPlayerStateBase::Tick(fTimeDelta);
 
 	//Turn_Transform(fTimeDelta);
 

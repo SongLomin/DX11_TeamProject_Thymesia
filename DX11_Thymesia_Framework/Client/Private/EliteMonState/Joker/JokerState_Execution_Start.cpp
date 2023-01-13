@@ -12,6 +12,7 @@
 #include "MonsterHPBar_Base.h"
 #include "Status_Monster.h"
 #include "PhysXCharacterController.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CJokerState_TakeExecution_Start);
 CLONE_C(CJokerState_TakeExecution_Start, CComponent)
@@ -65,12 +66,16 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
+	_bool  m_bf = Get_OwnerMonster()->Get_EliteExecutionStartOnOff();
+
+	//m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
+
+	if (Get_OwnerMonster()->Get_EliteExecutionStartOnOff())
 	{
 		PxControllerFilters Filters;
 		_matrix                    vDoorOpenPlayerMatrix = Get_Owner().lock()->Get_Component<CJokerState_Sp_Open>().lock()->Get_PlayerTransform();
 		m_pPhysXControllerCom.lock()->Set_Position(
-			XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f),
+			XMVectorSet(121.2f, 49.58f, -48.90f, 1.f),
 			GAMEINSTANCE->Get_DeltaTime(),
 			Filters);
 		Get_OwnerCharacter().lock()->Get_Transform()->Set_Look2D(-vDoorOpenPlayerMatrix.r[2]);
@@ -80,16 +85,21 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 
 
 		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-		vOtherWorldMatrix.r[3] = XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f);
+		vOtherWorldMatrix.r[3] = XMVectorSet(121.2f, 49.58f, -48.90f, 1.f);
 		_matrix                    vResultOtherWorldMatrix;
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 1.f, 0.f));
 		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),
 			Filters);
 		pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-		Get_OwnerMonster()->Set_BossExecutionStartOnOff(false);
+
+		Get_OwnerMonster()->Set_EliteExecutionStartOnOff(false);
 	}
+
+	m_bOnce = true;
+
+	m_bTwoOnce = true;
 	
 	m_pOwner.lock()->Get_Component<CStatus_Monster>().lock()->CallBack_UI_Disable();
 
@@ -104,6 +114,8 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 void CJokerState_TakeExecution_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	//m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
 
 
 }
@@ -131,8 +143,61 @@ _bool CJokerState_TakeExecution_Start::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+	
+	//
+	//PxControllerFilters Filters;
+	//weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	//weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+	//_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+	//
+ 	//if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 1 && m_bOnce)
+	//{
+	//			m_bOnce = false;
+	//		PxControllerFilters Filters;
+	//		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	//		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+	//		_matrix                    vDoorOpenPlayerMatrix = Get_Owner().lock()->Get_Component<CJokerState_Sp_Open>().lock()->Get_PlayerTransform();
+	//		m_pPhysXControllerCom.lock()->Set_Position(
+	//			XMVectorSet(121.273582f, 49.5800247f, -48.9076538f, 1.f),
+	//			GAMEINSTANCE->Get_DeltaTime(),
+	//			Filters);
+	//		Get_OwnerCharacter().lock()->Get_Transform()->LookAt2D(-vDoorOpenPlayerMatrix.r[2]);
+	//
+	//		
+	//	
+	//		Get_OwnerMonster()->Set_BossExecutionStartOnOff(false);
+	//	
+	//	
+	//}
+	//
+	//if ((m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 2  && !m_bOnce && m_bTwoOnce))
+	//{
+	//	_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+	//	m_bTwoOnce = false;
+	//
+	//	_matrix                    vResultOtherWorldMatrix;
+	//	vResultOtherWorldMatrix = Get_OwnerMonster()->Get_Transform()->Get_WorldMatrix();
+	//	pOtherCharacter.lock()->Get_PhysXController().lock()->Set_Position(XMVectorSet(123.273582f, 49.5800247f, -48.6076538f, 1.f),
+	//		GAMEINSTANCE->Get_DeltaTime(),
+	//		Filters);
+	//	
+	//}
+	//
+	//if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.7f)
+	//{
+	//	
+	//	PxControllerFilters Filters;
+	//	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	//	weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+	//
+	//	_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+	//
+	//	pOtherCharacter.lock()->Get_Transform()->LookAt2D(-vOtherWorldMatrix.r[2]);
+	//	
+	//}
 
 
+	
 
 	return false;
 }

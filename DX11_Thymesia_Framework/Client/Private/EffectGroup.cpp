@@ -387,6 +387,34 @@ void CEffectGroup::Load_EffectJson(const string& In_szPath, const _uint& In_iTim
 
 }
 
+void CEffectGroup::Load_EffectJson(const string& In_szPath, json& In_EffectJson, const _uint& In_iTimeScaleLayer, const _uint& In_iCreatedLevel)
+{
+
+    m_szEffectGroupName = In_EffectJson["EffectGroupName"];
+    _size_t iEffectMeshCount = In_EffectJson["EffectMeshCount"];
+    _size_t iEffectParticleCount = In_EffectJson["EffectParticleCount"];
+
+    for (_int i(0); i < (_int)iEffectMeshCount; ++i)
+    {
+        this->Add_EffectMesh(In_iCreatedLevel);
+        m_pEffectMeshs[i].lock()->Load_EffectJson(In_EffectJson["EffectMesh"][to_string(i)], In_iTimeScaleLayer);
+    }
+
+    for (_int i(0); i < (_int)iEffectParticleCount; i++)
+    {
+        this->Add_Particle(In_iCreatedLevel);
+        m_pEffectParticles[i].lock()->Load_EffectJson(In_EffectJson["EffectParticle"][to_string(i)], In_iTimeScaleLayer);
+    }
+
+    this->UnUse_EffectGroup();
+
+    m_szPath = In_szPath;
+    m_iTimeScaleLayer = In_iTimeScaleLayer;
+    m_iCreatedLevel = In_iCreatedLevel;
+
+    GET_SINGLE(CGameManager)->Register_EffectGroup(m_szEffectGroupName, Weak_Cast<CEffectGroup>(m_this));
+}
+
 void CEffectGroup::Write_EffectJson(json& Out_Json)
 {
     Out_Json["EffectGroupName"] = m_szEffectGroupName;

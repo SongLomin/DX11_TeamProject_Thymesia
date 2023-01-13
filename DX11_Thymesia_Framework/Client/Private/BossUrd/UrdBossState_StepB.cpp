@@ -117,7 +117,7 @@ _bool CUrdBossState_StepB::Check_AndChangeNextState()
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
 		{
-			int iRand = rand() % 3;
+			int iRand = rand() % 4;
 			switch (iRand)
 			{
 			case 0:
@@ -130,6 +130,10 @@ _bool CUrdBossState_StepB::Check_AndChangeNextState()
 				break;
 			case 2:
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_R>(0.05f);
+				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
+				break;
+			case 3:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
 				Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(false);
 				break;
 			}

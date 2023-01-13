@@ -449,6 +449,9 @@ PS_OUT PS_MASK(PS_IN In)
 	
 	Out.vColor.a *= g_fAlphaColor;
 	
+	if (Out.vColor.a < 0.1f)
+        discard;
+	
 	return Out;
 }
 

@@ -108,6 +108,11 @@ _bool CBigHandManState_Stun_Start::Check_AndChangeNextState()
 
 
 
+	if (Get_OwnerMonster()->Get_EliteExecutionStartOnOff())
+	{
+		Get_OwnerCharacter().lock()->Change_State<CBigHandManState_VS_TakeExecution_01>(0.05f);
+		return true;
+	}
 
 	return false;
 }

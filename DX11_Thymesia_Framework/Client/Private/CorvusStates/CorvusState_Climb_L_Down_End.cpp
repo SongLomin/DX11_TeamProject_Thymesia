@@ -101,6 +101,7 @@ _bool CCorvusState_Climb_L_Down_End::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
 	{
 		m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+		m_pPhysXControllerCom.lock()->Set_EnableColliderSimulation(true);
 	}
 
 	//if ((Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))

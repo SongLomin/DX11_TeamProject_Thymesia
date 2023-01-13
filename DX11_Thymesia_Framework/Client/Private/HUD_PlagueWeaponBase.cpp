@@ -67,6 +67,10 @@ HRESULT CHUD_PlagueWeaponBase::Render()
 //스킬이 바뀌면 여기서 뚜다다다다다다다다
 void CHUD_PlagueWeaponBase::Call_OnChangeSkill(weak_ptr<CSkill_Base> pSkillBase)
 {
+    if (!pSkillBase.lock())
+    {
+        return;
+    }
     pSkillBase.lock()->Callback_StartSkill +=
         bind(&CHUD_PlagueWeaponBase::Call_UseStartSkill, this);
 

@@ -16,6 +16,9 @@
 #include "UI_Button.h"
 #include "UI_EvolveMenu_Talent.h"
 #include "UI_EvolveTalent_Active.h"
+
+
+
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
 
@@ -83,8 +86,6 @@ HRESULT CTalent::Start()
     m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
     m_pEffect = Get_ComponentByType<CTalent_Effect>();
 
-
-   
     return S_OK;
 }
 
@@ -228,6 +229,9 @@ void CTalent::OnLButtonClick()
 
     list<weak_ptr<CTalent>> visitNodes;
     int                     iCost = 0;
+    //юс╫ц
+    //tPlayerDesc.m_iTalent =
+    tPlayerDesc.m_iTalent = 100;
     TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);
 
     switch (eResult)
@@ -243,16 +247,20 @@ void CTalent::OnLButtonClick()
     {   
         tPlayerDesc.m_iTalent -= iCost;
         weak_ptr<CTalent> pTalent;
+
         for (auto& elem : visitNodes)
         {
             pTalent = elem;
-            elem.lock()->CheckLButtonClick(true);
-            m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
-        }
-        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
+            GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
 
-        if (pTalent.lock()->m_pParent.lock())
-            pTalent.lock()->m_pParent.lock()->CheckLButtonClick(true);
+            if (pTalent.lock()->m_pParent.lock())
+            {
+                pTalent.lock()->CheckLButtonClick(true);
+                m_pPlayer.lock()->Bind_TalentEffects(pTalent.lock()->Get_Effect());
+
+            }
+        }
+        
         break;
     }
     case Client::TALENT_RESULT::SUBSCRIPTPOINT:
@@ -343,10 +351,8 @@ _uint CTalent::GetActiveNodeCount(weak_ptr<CTalent> In_Talent)
 {
     _uint   iActiveNode = 0;
 
-
     if (m_bActive == true)
         ++iActiveNode;
-
 
     for (auto& elem : m_pChilds)
     {
@@ -431,8 +437,6 @@ TALENT_RESULT CTalent::Check_Requiment(const int In_iPoint, int& Out_iCost, list
         Out_iCost = iDepth;
 
         return TALENT_RESULT::SUBSCRIPTPOINT;
-
-
     }
     else
     {
@@ -535,6 +539,17 @@ void CTalent::OnEnable(void* pArg)
     {
         elem.lock()->Set_Enable(true);
     }
+
+    weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
+
+    if (pPlayer.lock())
+    {
+        if (pPlayer.lock()->Check_RequirementForTalentEffects() & m_pEffect.lock()->Check_Requirement(pPlayer))
+        {
+            CheckLButtonClick(true);
+        }
+    }
+
 
 }
 

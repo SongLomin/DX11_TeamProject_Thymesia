@@ -1,0 +1,5215 @@
+{
+  "EffectGroupName": "Urd_StepFL45_BP_Phase2",
+  "EffectMeshCount": 0,
+  "EffectParticle": {
+    "0": {
+      "Bone_Name": "Head",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 300,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "1": {
+      "Bone_Name": "Head",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 100,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "2": {
+      "Bone_Name": "Head",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 75,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "3": {
+      "Bone_Name": "Head",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 25,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "4": {
+      "Bone_Name": "weapon_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 300,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "5": {
+      "Bone_Name": "weapon_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 100,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "6": {
+      "Bone_Name": "weapon_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 75,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "7": {
+      "Bone_Name": "weapon_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 25,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "8": {
+      "Bone_Name": "weapon_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 300,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "9": {
+      "Bone_Name": "weapon_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 100,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "10": {
+      "Bone_Name": "weapon_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 75,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "11": {
+      "Bone_Name": "weapon_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 25,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "12": {
+      "Bone_Name": "foot_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 300,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "13": {
+      "Bone_Name": "foot_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 100,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "14": {
+      "Bone_Name": "foot_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 75,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "15": {
+      "Bone_Name": "foot_l",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 25,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "16": {
+      "Bone_Name": "foot_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 300,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "17": {
+      "Bone_Name": "foot_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 100,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "18": {
+      "Bone_Name": "foot_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 75,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "19": {
+      "Bone_Name": "foot_r",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 25,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "20": {
+      "Bone_Name": "spine_01",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 300,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "21": {
+      "Bone_Name": "spine_01",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 100,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.10000000149011612,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 0.5,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.004999999888241291,
+        -0.004999999888241291,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 82,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "22": {
+      "Bone_Name": "spine_01",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 75,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.75
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    },
+    "23": {
+      "Bone_Name": "spine_01",
+      "Diffuse_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Diffuse_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Diffuse_XInverse": false,
+      "Diffuse_YInverse": false,
+      "Discard_Ratio": 0.8999999761581421,
+      "Follow_Transform": 1,
+      "Gravity_Force": [
+        0,
+        0.25,
+        0,
+        0
+      ],
+      "Init_Time": 0,
+      "Is_Looping": false,
+      "Mask_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Mask_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Instance": 25,
+      "Max_Limit_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Rotation": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Rotation_Speed": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Scale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "Max_Scale_Force": [
+        -0.00009999999747378752,
+        -0.00009999999747378752,
+        0,
+        0
+      ],
+      "Max_Spawn_Offset_Direction": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "Max_Spawn_Offset_Range": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        0
+      ],
+      "Max_Spawn_Time": 0.5450000166893005,
+      "Max_Speed": [
+        0,
+        0,
+        0.30000001192092896,
+        0
+      ],
+      "Max_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Max_Start_Rotation": [
+        3.141592025756836,
+        3.141592025756836,
+        3.141592025756836,
+        0
+      ],
+      "Max_Start_Scale": [
+        0.029999999329447746,
+        0.029999999329447746,
+        0,
+        0
+      ],
+      "Min_Life_Time": 2,
+      "Min_Limit_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Rotation": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Rotation_Speed": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Scale": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Scale_Force": [
+        -0.0010000000474974513,
+        -0.0010000000474974513,
+        0,
+        0
+      ],
+      "Min_Spawn_Offset_Direction": [
+        -1,
+        -1,
+        -1,
+        0
+      ],
+      "Min_Spawn_Offset_Range": [
+        -0.009999999776482582,
+        -0.009999999776482582,
+        -0.009999999776482582,
+        0
+      ],
+      "Min_Spawn_Position": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Spawn_Time": 0,
+      "Min_Speed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Min_Start_Color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "Min_Start_Rotation": [
+        -3.141592025756836,
+        -3.141592025756836,
+        -3.141592025756836,
+        0
+      ],
+      "Min_Start_Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0,
+        0
+      ],
+      "Name": "RectEffect.png",
+      "Noise_Start_UV": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "Noise_UV_Max": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "ParticleOption1": 234,
+      "ParticleOption2": 83,
+      "ParticleOption3": 17,
+      "ParticleOption4": 0,
+      "ParticleOption5": 0,
+      "ParticleOption6": 3,
+      "ParticleType": 3,
+      "Render_Group": 7,
+      "ShaderPassIndex": 1,
+      "Start_Glow_Color": [
+        0.5,
+        0.8,
+        1,
+        0.5
+      ],
+      "Sync_Animation": false,
+      "Sync_AnimationKey": 8,
+      "UV_Diffuse_Index": 0,
+      "UV_Mask_Index": 1,
+      "UV_Noise_Index": 0
+    }
+  },
+  "EffectParticleCount": 24
+}

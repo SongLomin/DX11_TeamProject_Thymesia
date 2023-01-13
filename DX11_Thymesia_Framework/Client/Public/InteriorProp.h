@@ -31,10 +31,6 @@ private:
         STATIC_SHELF,
 
         INTERACTION_CHAIR,
-        INTERACTION_MAP,
-        INTERACTION_STAT,
-        INTERACTION_SKILL,
-        INTERACTION_ABILITY,
 
         ID_END
     };

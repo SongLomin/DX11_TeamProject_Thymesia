@@ -14,8 +14,8 @@ public:
 
 public:
 	virtual void    UseSkill() override;
-	void		OnStealSkill(weak_ptr<CSkill_Base>	pSkill);
-
+	void			OnStealSkill(weak_ptr<CSkill_Base>	pSkill);
+	virtual void	Start_Skill(_bool bExpansion = false) override;
 
 private:
 	void		Free();

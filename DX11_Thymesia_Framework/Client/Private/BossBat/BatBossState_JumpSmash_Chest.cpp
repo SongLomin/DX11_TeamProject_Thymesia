@@ -33,6 +33,9 @@ void CBatBossState_JumpSmash_Chest::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_JumpSmash_Chest");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -70,7 +73,64 @@ void CBatBossState_JumpSmash_Chest::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CBatBossState_JumpSmash_Chest::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
 
+	switch (In_iKeyIndex)
+	{
+	case 30:
+	{
+		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
+		break;
+	}
+	case 87:
+	{
+		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
+		break;
+	}
+	case 92:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 0.9f, 0.3f);
+		
+		CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 0.9f, 0.3f);
+
+		break;
+	}
+	case 107:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 0.9f, 0.3f);
+
+		CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 0.9f, 0.3f);
+
+		break;
+	}
+	case 236:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 0.9f, 0.3f);
+
+		break;
+	}
+	}
+}
 
 void CBatBossState_JumpSmash_Chest::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -88,6 +148,10 @@ void CBatBossState_JumpSmash_Chest::OnStateStart(const _float& In_fAnimationBlen
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_JumpSmash_Chest::Call_NextAnimationKey, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;
@@ -102,7 +166,8 @@ void CBatBossState_JumpSmash_Chest::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_JumpSmash_Chest::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 

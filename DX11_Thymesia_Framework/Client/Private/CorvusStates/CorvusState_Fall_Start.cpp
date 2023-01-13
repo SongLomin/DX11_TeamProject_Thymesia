@@ -61,6 +61,7 @@ void CCorvusState_Fall_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+	m_pPhysXControllerCom.lock()->Set_EnableColliderSimulation(true);
 
 	if (!m_pModelCom.lock().get())
 	{

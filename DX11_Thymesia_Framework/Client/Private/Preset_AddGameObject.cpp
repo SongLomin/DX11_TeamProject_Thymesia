@@ -107,8 +107,6 @@ void Preset::AddGameObject::TalentSetting()
 	pExecutionTalent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
 	pExecutionTalent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock(), placeholders::_1);
 
-
-
 	// 치유의처형1
 	weak_ptr<CTalent> pHealingExecution1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pHealingExecution1Talent.lock()->Add_Component<CTalent_Effect_HealingExecutionLV1>();
@@ -189,7 +187,7 @@ void Preset::AddGameObject::TalentSetting()
 
 
 	//회피
-
+	// 
 	//회피부모
 	weak_ptr<CTalent> pAvoid1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pAvoid1Talent.lock()->Add_Component<CTalent_Effect_AvoidLv1>();
@@ -212,7 +210,6 @@ void Preset::AddGameObject::TalentSetting()
 	pAvoidShort1Talent.lock()->Add_Component<CTalent_Effect_Short_AvoidLv1>();
 	pAvoidShort1Talent.lock()->Set_TalentName(TALENT_NAME::SHORT_AVOID_LV1);
 	pAvoidShort1Talent.lock()->Set_Parent(pAvoid1Talent);
-
 
 	//숏회피자식2
 	weak_ptr<CTalent> pAvoidShort2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);

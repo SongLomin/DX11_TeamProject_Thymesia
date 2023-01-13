@@ -311,7 +311,7 @@ void CBossStateBase::TurnMechanism()
 	if (!pCurrentPlayer.lock())
 		return;
 
-	if (m_eMonType == MONSTERTYPE::NMON_END)
+	if (m_eMonType == MONSTERTYPE::TYPE_END)
 		return;
 
 	switch (m_eMonType)

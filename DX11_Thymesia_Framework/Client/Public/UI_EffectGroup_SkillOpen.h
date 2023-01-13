@@ -36,7 +36,6 @@ private:
     weak_ptr<CUI_CustomEffect>        m_pSkillName;
 
     weak_ptr<CUI_CustomEffect>        m_pStartCircleEffect;
-
 private:
     void            Free();
 

@@ -38,7 +38,8 @@ void CCorvusState_Bat_Execution::Start()
 
 void CCorvusState_Bat_Execution::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	CPlayerStateBase::Tick(fTimeDelta);
+
 	_matrix LocalMat = XMMatrixIdentity();
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));

@@ -51,57 +51,61 @@ void CUI_EffectGroup_SkillOpen::LateTick(_float fTimeDelta)
 
 void CUI_EffectGroup_SkillOpen::Init_EffectUI()
 {
-    m_pBackGround = GET_SINGLE(CGameManager)->GetGameObject_SafetyUseMemoryPool<CUI_CustomEffect>(LEVEL_STATIC);
+    m_pBackGround = GAMEINSTANCE->Add_GameObject<CUI_CustomEffect>(LEVEL_STATIC);
 
     m_pBackGround.lock()->Set_PassIndex(0);
     m_pBackGround.lock()->SetMaskIndex(0);
+    m_pBackGround.lock()->Set_DeffuseIndex(0);
     m_pBackGround.lock()->Set_Size(1600.f, 900.f);
     m_pBackGround.lock()->Set_UIPosition(800.f, 450.f);
     m_pBackGround.lock()->Set_Texture("NoneBlack");
     m_pBackGround.lock()->Set_Depth(0.9f);
     m_pBackGround.lock()->Set_Enable(false);
 
-    m_pTitleBG = GET_SINGLE(CGameManager)->GetGameObject_SafetyUseMemoryPool<CUI_CustomEffect>(LEVEL_STATIC);
+    m_pTitleBG = GAMEINSTANCE->Add_GameObject<CUI_CustomEffect>(LEVEL_STATIC);
 
     m_pTitleBG.lock()->Set_PassIndex(0);
     m_pTitleBG.lock()->SetMaskIndex(0);
+    m_pTitleBG.lock()->Set_DeffuseIndex(0);
+
     m_pTitleBG.lock()->Set_Size(1600.f, 110.f);
     m_pTitleBG.lock()->Set_UIPosition(800.f, 450.f);
     m_pTitleBG.lock()->Set_Texture("MainMenu_SelectableButton_2");
     m_pTitleBG.lock()->Set_Depth(0.8f);
     m_pTitleBG.lock()->Set_Enable(false);
 
-
-    m_pTitleText = GET_SINGLE(CGameManager)->GetGameObject_SafetyUseMemoryPool<CUI_CustomEffect>(LEVEL_STATIC);
+    m_pTitleText = GAMEINSTANCE->Add_GameObject<CUI_CustomEffect>(LEVEL_STATIC);
 
     m_pTitleText.lock()->Set_PassIndex(0);
     m_pTitleText.lock()->SetMaskIndex(0);
     m_pTitleText.lock()->Set_Size(207, 44.f);
+    m_pTitleText.lock()->Set_DeffuseIndex(0);
     m_pTitleText.lock()->Set_UIPosition(800.f, 420.f);
     m_pTitleText.lock()->Set_Texture("SkillOpen_TitleText");
     m_pTitleText.lock()->Set_Depth(0.7f);
     m_pTitleText.lock()->Set_Enable(false);
 
  
-    m_pSkillName = GET_SINGLE(CGameManager)->GetGameObject_SafetyUseMemoryPool<CUI_CustomEffect>(LEVEL_STATIC);
+    m_pSkillName = GAMEINSTANCE->Add_GameObject<CUI_CustomEffect>(LEVEL_STATIC);
 
     m_pSkillName.lock()->Set_PassIndex(0);
     m_pSkillName.lock()->SetMaskIndex(0);
     m_pSkillName.lock()->Set_Size(983, 69.f);
     m_pSkillName.lock()->Set_UIPosition(800.f, 461.f);
-    m_pSkillName.lock()->Set_Texture("SkillOpen_SkillName_Axe");
+    m_pSkillName.lock()->Set_Texture("SkillOpen_SkillName");
+    m_pSkillName.lock()->Set_DeffuseIndex(0);
     m_pSkillName.lock()->Set_Depth(0.7f);
     m_pSkillName.lock()->Set_Enable(false);
   
 
-
-    m_pStartCircleEffect = GET_SINGLE(CGameManager)->GetGameObject_SafetyUseMemoryPool<CUI_CustomEffect>(LEVEL_STATIC);
+    m_pStartCircleEffect = GAMEINSTANCE->Add_GameObject<CUI_CustomEffect>(LEVEL_STATIC);
 
     m_pStartCircleEffect.lock()->Set_PassIndex(1);
     m_pStartCircleEffect.lock()->SetMaskIndex(1);
     m_pStartCircleEffect.lock()->Set_Size(600, 600.f);
     m_pStartCircleEffect.lock()->Set_UIPosition(800.f, 450.f);
     m_pStartCircleEffect.lock()->Set_Texture("HighLight");
+    m_pStartCircleEffect.lock()->Set_DeffuseIndex(0);
     m_pStartCircleEffect.lock()->Set_Depth(0.7f);
     m_pStartCircleEffect.lock()->Set_Enable(false);
 
@@ -115,9 +119,10 @@ void CUI_EffectGroup_SkillOpen::Play(SKILL_NAME eSkillName)
     m_pBackGround.lock()->Set_Enable(true);
     m_pTitleBG.lock()->Set_Enable(true);
     m_pTitleText.lock()->Set_Enable(true);
-
- 
     m_pStartCircleEffect.lock()->Set_Enable(true);
+
+
+    m_pSkillName.lock()->Set_DeffuseIndex((_uint)eSkillName);
 
 
 

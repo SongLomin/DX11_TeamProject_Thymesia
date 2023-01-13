@@ -203,6 +203,7 @@
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\CollisionCallBack.h" />
     <ClInclude Include="..\Public\CollisionSimulationEventCallBack.h" />
+    <ClInclude Include="..\Public\SubThread_Pool.h" />
     <ClInclude Include="..\Public\Optimization_Manager.h" />
     <ClInclude Include="..\Public\Cuda_Device.h" />
     <ClInclude Include="..\Public\CustomContextManagerCallback.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\CollisionCallBack.cpp" />
     <ClCompile Include="..\Private\CollisionSimulationEventCallBack.cpp" />
+    <ClCompile Include="..\Private\SubThread_Pool.cpp" />
     <ClCompile Include="..\Private\Optimization_Manager.cpp" />
     <ClCompile Include="..\Private\Cuda_Device.cpp" />
     <ClCompile Include="..\Private\CustomContextManagerCallback.cpp" />

@@ -754,10 +754,7 @@ void CUI_EvolveMenu_Level::Init_ChangeFontInfo()
     m_tTextInfo_ChangeMP.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeMP.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeMP.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 518.f - m_fFontSize * 0.5f);
-
-
-
-    
+   
 }
 
 
@@ -894,7 +891,6 @@ void CUI_EvolveMenu_Level::Update_ChangeStatus(CStatus_Player::PLAYERDESC& tChan
 
     tChangedPlayerStatus.m_fMaxMP = 150.f + ((_float)(tChangedPlayerStatus.m_iPlague - 1) * 20.f);
 
-  
     CalculateNeedMemory();
     Update_FontInfo();
 }
@@ -1064,6 +1060,9 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
                 m_tOriginStatus = m_tChangeStatus;
+
+                GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Set_Desc(&m_tOriginStatus);
+
             }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;

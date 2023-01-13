@@ -76,7 +76,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager->Initialize();
 
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
-	m_pThread_Manager->Initialize(20);
+	m_pThread_Manager->Initialize(8);
 
 	m_pNvCloth_Manager->Initialize();
 
@@ -163,6 +163,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pPhysX_Manager->Tick(fTimeDelta);
 	END_UPDATE_PERFROMANCE_CHECK("PhysX_Tick");
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+
+	m_pSound_Manager->Tick();
 
 	++m_iLoopIndex;
 
@@ -609,10 +611,10 @@ HRESULT CGameInstance::Load_Model(const _char* sKey, const _char* sModelFilePath
 	return m_pResource_Manager->Load_Model(sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
 }
 
-void CGameInstance::Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, const _bool Is_bAnimZero)
-{
-	m_pThread_Manager->Enqueue_Job(&CResource_Manager::Load_Model, m_pResource_Manager, sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
-}
+//void CGameInstance::Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, const _bool Is_bAnimZero)
+//{
+//	m_pThread_Manager->Enqueue_Job(&CResource_Manager::Load_Model, m_pResource_Manager, sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
+//}
 
 shared_ptr<MODEL_DATA> CGameInstance::Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType)
 {
@@ -755,14 +757,24 @@ _int CGameInstance::Pause(CHANNELID eID)
 	return m_pSound_Manager->Pause(eID);
 }
 
-_uint CGameInstance::PlaySound(const string& In_szSoundKey, _uint _iIndex, _float _vol)
+_uint CGameInstance::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition)
 {
-	return m_pSound_Manager->PlaySound(In_szSoundKey, _iIndex, _vol);
+	return m_pSound_Manager->PlaySound3D(In_szSoundKey, _iIndex, _vol, In_WorldPosition);
 }
 
-_uint CGameInstance::PlaySound(const string& In_szSoundKey, _float _vol)
+_uint CGameInstance::PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition)
 {
-	return m_pSound_Manager->PlaySound(In_szSoundKey, _vol);
+	return m_pSound_Manager->PlaySound3D(In_szSoundKey, _vol, In_WorldPosition);
+}
+
+_uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol)
+{
+	return m_pSound_Manager->PlaySound2D(In_szSoundKey, _iIndex, _vol);
+}
+
+_uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _float _vol)
+{
+	return m_pSound_Manager->PlaySound2D(In_szSoundKey, _vol);
 }
 
 void CGameInstance::PlayBGM(const string& In_szSoundKey, _float _vol)

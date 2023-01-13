@@ -17,8 +17,7 @@
 #include "GameManager.h"
 #include "Status_Player.h"
 #include "imgui.h"
-#include "PlayerSkill_System.h"
-
+#include <PlayerSkill_System.h>
 
 GAMECLASS_C(CInteraction_CheckPoint);
 CLONE_C(CInteraction_CheckPoint, CGameObject);
@@ -94,7 +93,7 @@ HRESULT CInteraction_CheckPoint::Start()
     
     _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
     OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * -m_fAisemyOffset;
-    m_pTransformCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
+    //m_pTransformCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
     m_pChairTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
 
 	m_tLightDesc   = GAMEINSTANCE->Add_Light(m_tLightDesc);
@@ -134,6 +133,19 @@ void CInteraction_CheckPoint::LateTick(_float fTimeDelta)
         m_vAddUVPos.x += fTimeDelta * m_vAddSpeed.x;
         m_vAddUVPos.y += fTimeDelta * m_vAddSpeed.y;
     }
+
+    _bool bState = false;
+
+    CallBack_DeleteEffect(fTimeDelta, bState, "");
+
+    if (bState)
+        CallBack_DeleteEffect.Clear();
+
+    if (CallBack_DeleteEffect.empty())
+    {
+        CallBack_CreateEffect("");
+        CallBack_CreateEffect.Clear();
+    }
 }
 
 void CInteraction_CheckPoint::Thread_PreTick(_float fTimeDelta)
@@ -152,39 +164,21 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _Actor_Culling_
 	// TODO : 과연 수정을 할 것인가?
 
-	//m_bRendering = true;
-
 	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 1.f))
 	{
 		m_bRendering = true;
 
 #ifdef _INTERACTION_EFFECT_
-        if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
+/*        if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
         {
-            if (-1 != m_iUnUseEffectIndex)
-                return;
-
-            m_iUnUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup
-            (
-                "ChairEffect_Deactivate",
-                m_pChairTransfromCom.lock(),
-                (_uint)TIMESCALE_LAYER::NONE
-            );
-
+            if (-1 == m_iUnUseEffectIndex && CallBack_CreateEffect.empty() && CallBack_DeleteEffect.empty())
+                CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Deactivate");
         }
         else
         {
-            if (-1 != m_iUseEffectIndex)
-                return;
-
-            m_iUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup
-            (
-                "ChairEffect_Activate",
-                m_pChairTransfromCom.lock(),
-                (_uint)TIMESCALE_LAYER::NONE
-            );
-        }    
-
+            if (-1 == m_iUseEffectIndex && CallBack_CreateEffect.empty() && CallBack_DeleteEffect.empty())
+                CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Activate");
+        }   */ 
 #endif // _INTERACTION_EFFECT_
 	}
 	else
@@ -192,32 +186,20 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 		m_bRendering = false;
 
 #ifdef _INTERACTION_EFFECT_
-        if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
-        {
-            if (-1 == m_iUnUseEffectIndex)
-                return;
+        //if (ANIM_EVENT::STAY == m_eAnimEvent || ANIM_EVENT::BEGINE == m_eAnimEvent)
+        //{
+        //    if (-1 != m_iUnUseEffectIndex && CallBack_DeleteEffect.empty() && CallBack_CreateEffect.empty())
+        //        return;
 
-            GET_SINGLE(CGameManager)->UnUse_EffectGroup
-            (
-                "ChairEffect_Deactivate",
-                m_iUnUseEffectIndex
-            );
+        //    CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Deactivate");
+        //}
+        //else
+        //{
+        //    if (-1 != m_iUseEffectIndex && CallBack_DeleteEffect.empty() && CallBack_CreateEffect.empty())
+        //        return;
 
-            m_iUnUseEffectIndex = -1;
-        }
-        else
-        {
-            if (-1 == m_iUseEffectIndex)
-                return;
-
-            GET_SINGLE(CGameManager)->UnUse_EffectGroup
-            (
-                "ChairEffect_Activate",
-                m_iUseEffectIndex
-            );
-
-            m_iUseEffectIndex = -1;
-        }
+        //    CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Activate");
+        //}
 #endif // _INTERACTION_EFFECT_
 	}
 #else
@@ -261,6 +243,10 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
         case EVENT_TYPE::ON_EDIT_UDATE:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+            _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+            OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * -m_fAisemyOffset;
+            m_pChairTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
         }
         break;
 
@@ -377,6 +363,9 @@ void CInteraction_CheckPoint::Act_Interaction()
     weak_ptr<CPlayerSkill_System> pPlayerSkillSystem = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CPlayerSkill_System>();
     pPlayerSkillSystem.lock()->ResetAllSkillCoolDown();
 
+    weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+    pPlayer.lock()->Save_ClientComponentData();
+
     GET_SINGLE(CGameManager)->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
     GET_SINGLE(CGameManager)->ResetWorld();
 }
@@ -492,7 +481,11 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pDeco.lock()->Set_Enable(true);
 
             m_bAisemyRender = true;
+
         }
+#ifdef _INTERACTION_EFFECT_
+        CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Deactivate");
+#endif
         break;
 
         case Client::CInteraction_CheckPoint::STAY:
@@ -501,16 +494,10 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.f);
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
 
-            if (-1 != m_iUseEffectIndex)
-            {
-                GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iUseEffectIndex);
-                m_iUseEffectIndex = -1;
-            }
-
-            if (-1 == m_iUnUseEffectIndex)
-            {
-                m_iUnUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Deactivate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-            }
+#ifdef _INTERACTION_EFFECT_
+            CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Activate");
+            CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Deactivate");
+#endif
         }
         break;
 
@@ -536,16 +523,10 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.5f);
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
 
-            if (-1 == m_iUseEffectIndex)
-            {
-                m_iUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-            }
-
-            if (-1 != m_iUnUseEffectIndex)
-            {
-                GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Deactivate", m_iUnUseEffectIndex);
-                m_iUnUseEffectIndex = -1;
-            }
+#ifdef _INTERACTION_EFFECT_
+            CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Deactivate");
+            CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Activate");
+#endif
         }
         break;
 
@@ -603,6 +584,11 @@ void CInteraction_CheckPoint::Update_AnimIndex()
 void CInteraction_CheckPoint::Exit_AnimIndex()
 {
     m_pAnimModelCom.lock()->CallBack_AnimationEnd.Clear();
+
+#ifdef _INTERACTION_EFFECT_
+    if (ANIM_EVENT::BEGINE == m_eAnimEvent)
+        CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Activate");
+#endif
 }
 
 void CInteraction_CheckPoint::Set_State(const ANIM_EVENT In_eEvent)
@@ -631,18 +617,18 @@ void CInteraction_CheckPoint::Call_DeleteEffect(_float _fTimeDelta, _bool& Out_S
 
     if (string("ChairEffect_Activate") == _szEffectTag)
     {
-        if (5.f < m_fAccTime)
+        if (-1 == m_iUseEffectIndex)
         {
-            if (-1 == m_iUseEffectIndex)
-            {
-                m_iUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-            }
+            m_fAccTime = 0.f;
+            Out_State  = true;
 
-            if (-1 != m_iUnUseEffectIndex)
-            {
-                GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Deactivate", m_iUnUseEffectIndex);
-                m_iUnUseEffectIndex = -1;
-            }
+            return;
+        }
+
+        if (2.f < m_fAccTime)
+        {
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iUseEffectIndex);
+            m_iUseEffectIndex = -1;
 
             m_fAccTime = 0.f;
             Out_State  = true;
@@ -651,22 +637,47 @@ void CInteraction_CheckPoint::Call_DeleteEffect(_float _fTimeDelta, _bool& Out_S
 
     else if (string("ChairEffect_Deactivate") == _szEffectTag)
     {
-        if (3.f < m_fAccTime)
+        if (-1 == m_iUnUseEffectIndex)
         {
-            if (-1 != m_iUseEffectIndex)
-            {
-                GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iUseEffectIndex);
-                m_iUseEffectIndex = -1;
-            }
-
-            if (-1 != m_iUnUseEffectIndex)
-            {
-                m_iUnUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
-            }
-
             m_fAccTime = 0.f;
             Out_State  = true;
+
+            return;
         }
+
+        if (5.f < m_fAccTime)
+        {
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Deactivate", m_iUnUseEffectIndex);
+            m_iUnUseEffectIndex = -1;
+
+            m_fAccTime = 0.f;
+            Out_State  = true;    
+        }
+    }
+}
+
+void CInteraction_CheckPoint::Call_CreateEffect(string _szEffectTag)
+{
+    if (string("ChairEffect_Activate") == _szEffectTag)
+    {
+        if (-1 != m_iUnUseEffectIndex)
+        {
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Deactivate", m_iUnUseEffectIndex);
+            m_iUnUseEffectIndex = -1;
+        }
+
+        m_iUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom, (_uint)TIMESCALE_LAYER::NONE);
+    }
+
+    else if (string("ChairEffect_Deactivate") == _szEffectTag)
+    {
+        if (-1 != m_iUseEffectIndex)
+        {
+            GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Activate", m_iUseEffectIndex);
+            m_iUseEffectIndex = -1;
+        }
+
+        m_iUnUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Deactivate", m_pChairTransfromCom, (_uint)TIMESCALE_LAYER::NONE);;
     }
 }
 

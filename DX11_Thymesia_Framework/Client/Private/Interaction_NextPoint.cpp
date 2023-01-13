@@ -160,6 +160,7 @@ void CInteraction_NextPoint::OnEventMessage(_uint iArg)
                 "LEVEL_STAGE4",
                 "LEVEL_EDIT",
                 "LEVEL_TEST",
+                "LEVEL_HOME"
             };
 
             _int iSelect_Level = (_int)m_eNextLevel;

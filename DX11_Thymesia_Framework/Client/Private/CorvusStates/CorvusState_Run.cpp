@@ -43,7 +43,7 @@ void CCorvusState_Run::Start()
 
 void CCorvusState_Run::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	CPlayerStateBase::Tick(fTimeDelta);
 
 
 	if (!m_bLockOn)
@@ -52,7 +52,7 @@ void CCorvusState_Run::Tick(_float fTimeDelta)
 	}
 	
 	m_fTimeAcc += fTimeDelta;
-	if (0.5f < m_fTimeAcc)
+	if (0.4f < m_fTimeAcc)
 	{
 		GET_SINGLE(CGameManager)->Add_WaterWave(m_pOwnerFromPlayer.lock()->Get_WorldPosition(), 0.1f, 9.f, 3.f);
 		m_fTimeAcc = 0.f;

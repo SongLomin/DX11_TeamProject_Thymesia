@@ -26,7 +26,7 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override; 
 
 public:
-    void InitItemType(ITEM_NAME In_eItemType) { m_eItem = In_eItemType; }
+    void Add_Item(ITEM_NAME In_eItemType) { m_Items.push_back(In_eItemType); }
 
 public:
     virtual void Act_Interaction() override;
@@ -43,7 +43,7 @@ private:
 private:
     weak_ptr<CCollider>     m_pColliderCom;
 
-    ITEM_NAME               m_eItem = ITEM_NAME::ITEM_NAME_END;
+    list<ITEM_NAME>         m_Items;
 
 private:
     void Free();

@@ -33,6 +33,9 @@ void CBatBossState_Car::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Car");
 
+	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
+	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Car::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -68,6 +71,81 @@ void CBatBossState_Car::LateTick(_float fTimeDelta)
 }
 
 
+void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	if (In_iKeyIndex >= 266 && In_iKeyIndex <= 305)
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+
+	}
+	else if ( In_iKeyIndex >= 316 && In_iKeyIndex <= 350)
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+
+	}
+
+	switch (In_iKeyIndex)
+	{
+	case 199:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+
+	case 228:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 265:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 315:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 490:
+	{
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	case 587:
+	{
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		break;
+	}
+	}
+}
 
 void CBatBossState_Car::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -83,6 +161,11 @@ void CBatBossState_Car::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBatBossState_Car::Call_NextAnimationKey, this, placeholders::_1);
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;
@@ -97,6 +180,8 @@ void CBatBossState_Car::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBatBossState_Car::Call_NextAnimationKey, this, placeholders::_1);
 
 }
 

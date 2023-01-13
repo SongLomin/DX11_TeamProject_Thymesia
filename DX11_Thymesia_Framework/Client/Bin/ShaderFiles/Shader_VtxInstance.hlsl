@@ -626,6 +626,39 @@ PS_OUT PS_SPRITE_BLACKDISCARD_SOFT(PS_IN_SPRITE_SOFT In)
     return Out;
 }
 
+struct PS_STENCIL_OUT
+{
+	vector vColor : SV_TARGET0;
+};
+
+PS_STENCIL_OUT PS_ONLY_STENCIL(PS_IN In)
+{
+	PS_STENCIL_OUT Out = (PS_STENCIL_OUT)0;
+	float MaskAlpha = g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).g;
+
+    clip(MaskAlpha - g_fDiscardRatio);
+
+	return Out;
+}
+
+DepthStencilState DSS_OnlyStencil
+{//스텐실 테스트는 깊이 테스트를 활성화 해야 됨
+	DepthEnable = true;
+	DepthWriteMask = zero;
+	DepthFunc = less_equal;
+
+	StencilEnable = true;
+	StencilWriteMask = 0xff;
+
+	FrontFaceStencilFunc = always;
+	FrontFaceStencilPass = replace;
+	FrontFaceStencilFail = keep;
+
+	BackFaceStencilFunc = always;
+	BackFaceStencilPass = replace;
+	BackFaceStencilFail = keep;
+};
+
 technique11 DefaultTechnique
 {
     pass SpriteImage_BlackDiscard_DSSDefault // 0
@@ -835,4 +868,17 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_BLACKDISCARD_SOFT();
     }
+
+	pass Only_Write_Stencil // 16
+	{
+		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_OnlyStencil, 4);
+		SetRasterizerState(RS_NonCulling);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_ONLY_STENCIL();
+	}
 }

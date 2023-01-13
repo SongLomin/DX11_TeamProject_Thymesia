@@ -18,6 +18,11 @@ _bool CRequirementChecker::Check_Requirments()
 {
 	_bool bResult = true;
 
+	if (m_pRequirements.empty())//들어오는 조건 자체가 없다면
+	{
+		return true;
+	}
+
 	for (auto iter = m_pRequirements.begin(); iter != m_pRequirements.end();)
 	{
 		if (!(*iter))

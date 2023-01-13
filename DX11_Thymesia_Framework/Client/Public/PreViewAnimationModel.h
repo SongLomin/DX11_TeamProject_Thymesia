@@ -36,6 +36,8 @@ public:
     void Clear_DebugWeapon();
     void Clear_ModelWeapon();
 
+    void Bind_KeyFrameEvent(const string& In_szKeyFrameEventFileName);
+
 private:
     void Release_BeforeModel();
 

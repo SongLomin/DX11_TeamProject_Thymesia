@@ -143,7 +143,9 @@ void CUI_EveolveMenu_Talent::Create_TalentInformation()
         268.f,
         ALIGN_LEFTTOP
     );
-    m_pTalentImage.lock()->Set_Texture("Test");
+    m_pTalentImage.lock()->Set_Texture("UVMask");
+    m_pTalentImage.lock()->Set_DeffuseIndex(703);
+    m_pTalentImage.lock()->Set_PassIndex(14);
     m_pTalentImage.lock()->Set_Depth(0.1f);
     Add_Child(m_pTalentImage);
 

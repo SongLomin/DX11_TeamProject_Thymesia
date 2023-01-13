@@ -40,6 +40,8 @@ public:
     _bool Get_BossExecutionStartOnOff() { return m_bBossExecutionStartOnOff; }
     _bool Get_EliteExecutionStartOnOff() { return m_bEliteExecutionStartOnOff; }
     void  Set_EliteExecutionStartOnOff(_bool EliteExecutionStartOnOff) { m_bBossExecutionStartOnOff = EliteExecutionStartOnOff; }
+    _bool Get_ArmorMonStunCheck() { return m_bArmorMonStunCheck; }
+    void  Set_ArmorMonStunCheck(_bool ArmorMonStunCheck) { m_bArmorMonStunCheck = ArmorMonStunCheck; }
     weak_ptr<CCharacter> Get_TargetCharacter() const;
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
@@ -110,6 +112,7 @@ private:
 protected:
     _bool       m_bBossExecutionStartOnOff = false;
     _bool       m_bEliteExecutionStartOnOff = false;
+    _bool       m_bArmorMonStunCheck = false;
 
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;

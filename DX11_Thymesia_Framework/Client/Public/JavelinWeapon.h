@@ -31,6 +31,7 @@ public:
 public:
     void  Set_JavelinState(const JAVELIN_STATE In_JavelinState);
     void  Set_RenderCheck(_bool bRenderCheck) { m_bRenderCheck = bRenderCheck; }
+    const JAVELIN_STATE Get_JavelinState() const { return m_eCurrentState; }
     _bool Get_RenderCheck() { return m_bRenderCheck; }
 
 protected:// CGameObject을(를) 통해 상속됨
@@ -69,7 +70,9 @@ private:
     void Update_Matrix_Throw(_float fTimeDelta);
     void Update_Matrix_Stake();
 
-   
+public:
+    void Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinWeapon);
+    void Activate_ExplosionEffect();
 
 
 public:

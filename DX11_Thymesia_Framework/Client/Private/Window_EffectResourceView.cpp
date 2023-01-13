@@ -2,6 +2,7 @@
 #include "Window_EffectResourceView.h"
 #include "GameInstance.h"
 #include <imgui_impl_win32.h>
+#include "ClientLevel.h"
 
 IMPLEMENT_SINGLETON(CWindow_EffectResourceView)
 
@@ -16,6 +17,8 @@ HRESULT CWindow_EffectResourceView::Initialize()
     SetUp_ImGuiDESC("Resource##Effect_Resource_View", ImVec2(150.f, 500.f), window_flags);
 
     Load_Resources();
+
+    
 
     return S_OK;
 }

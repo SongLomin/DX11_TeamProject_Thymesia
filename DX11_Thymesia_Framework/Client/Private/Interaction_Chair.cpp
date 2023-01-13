@@ -10,6 +10,7 @@
 #include "ActorDecor.h"
 #include "UI_Landing.h"
 #include "UIManager.h"
+#include "PhysXCollider.h"
 
 #include "GameInstance.h"
 #include "GameManager.h"
@@ -28,6 +29,7 @@ HRESULT CInteraction_Chair::Initialize(void* pArg)
 
     m_pColliderCom            = Add_Component<CCollider>();
     m_pInteractionColliderCom = Add_Component<CCollider>();
+    m_pPhysXColliderCom       = Add_Component<CPhysXCollider>();
     
     m_pShaderCom.lock()->Set_ShaderInfo
     (
@@ -45,10 +47,13 @@ HRESULT CInteraction_Chair::Start()
 {
     __super::Start();
 
-    if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
-        m_pColliderCom.lock()->Set_Enable(false);
-
     SetUpColliderDesc();
+
+    if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+    {
+        m_pColliderCom.lock()->Set_Enable(false);
+        m_pInteractionColliderCom.lock()->Set_Enable(false);
+    }
 
     return S_OK;
 }
@@ -92,14 +97,23 @@ void CInteraction_Chair::SetUpColliderDesc()
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
     ColliderDesc.iLayer = (_uint)COLLISION_LAYER::CHECKPOINT;
-    ColliderDesc.vScale = _float3(1.f, 0.f, 0.f);
+    ColliderDesc.vScale = _float3(1.8f, 0.f, 0.f);
 
     m_pInteractionColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pInteractionColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
     MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_MeshVertexInfo();
-    tInfo.vCenter;
 
+    XMStoreFloat3(&m_vCenterOffset, (XMLoadFloat3(&tInfo.vMin) + XMLoadFloat3(&tInfo.vMax)) / 2.f);
+    tInfo.vCenter = m_vCenterOffset;
+    m_fCullingOffsetRange = XMVectorGetX(XMVector3Length(XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin))));
+
+    PHYSXCOLLIDERDESC tDesc;
+    Preset::PhysXColliderDesc::StaticInteriorBoxDefaultSetting(tDesc, m_pTransformCom, tInfo, &m_fPhyxOffset);
+    m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, m_fPhyxOffset, 0.f, 0.f));
+    
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
     ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::INTERIOR;
     ColliderDesc.vScale       = _float3((tInfo.vMax.x - tInfo.vMin.x), (tInfo.vMax.y - tInfo.vMin.y), (tInfo.vMax.z - tInfo.vMin.z));

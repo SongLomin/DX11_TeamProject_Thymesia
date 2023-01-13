@@ -62,6 +62,8 @@ private:
 	void	Load_BossMobModel();
 	void	Load_AllMapModel();
 
+	void	Load_Model_UseThread(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool Is_bAnimZero = false);
+
 private:
 	LEVEL					m_eNextLevel = LEVEL_END;
 

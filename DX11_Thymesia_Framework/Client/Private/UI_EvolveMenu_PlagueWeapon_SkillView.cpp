@@ -7,8 +7,7 @@
 #include "UI_EvolveMenu_PlagueWeapon_SkillButton.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h"
 #include "UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h"
-#include "PlayerSkillHeader.h"
-
+#include "GameManager.h"
 
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon_SkillView)
 CLONE_C(CUI_EvolveMenu_PlagueWeapon_SkillView, CGameObject)
@@ -156,16 +155,64 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_PlayerSkillSlot()
 	
 	}
 }
-
 void CUI_EvolveMenu_PlagueWeapon_SkillView::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);
 
+	//여기서 다 빼주고 넣어주는 이유.
+	//플레이어가 어떤 스킬을 어디서 넣고 저장했는지를 알 수가 없음.
+	//인게임 중에서 로드하는 상황도 나올 수 있기 때문에, 
+	//일단 다 빼고 플레이어 스킬 상황에 맞게 넣어준다.
+
+
+	/*
+		비용이 많이 드는가? X : 스킬 개수도 적고, 많이 켜질일도없음
+	*/
+	SKILLMAP SkillMap;
+	weak_ptr<CPlayerSkill_System> pPlayerSkillSystem = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CPlayerSkill_System>();
+	weak_ptr<CSkill_Base> pSkill;
+
 	for (auto& elem : m_vecSkillButton)
 	{
-		elem.lock()->Set_Enable(true);
+		elem.lock()->Set_Enable(true);//모든 스킬버튼의 렌더를 ON
+		
+		SkillMap.emplace(elem.lock()->Get_SkillName(), elem);
 	}
+	//창 열리면 장착한 스킬 모두 뺀다.
+	for (_uint i = 0; i < m_vecPlayerSkillSlot.size(); i++)
+	{
+		m_vecPlayerSkillSlot[i].lock()->Clear_Slot();
+	}
+	//순회를 돌면서 활성화된 스킬을 찾아서 활성화시켜줌
+	/*
+		둘다 맵이라 비용은 크지 않을듯
+	*/
+	//Check To Unlocked Skills
+	for(auto& pair : SkillMap)
+	{
+		pSkill = pPlayerSkillSystem.lock()->Find_Skill(pair.first);
 
+		if (pSkill.lock())
+		{
+			if (pSkill.lock()->Get_Unlock())
+			{
+				pair.second.lock()->Unlock_Skill();
+			}
+		}
+		pSkill = weak_ptr<CSkill_Base>();
+	}
+	//Check to Equip Skills
+	_uint iSocketCount = (_uint)CPlayerSkill_System::SOCKET_TYPE::SOCKET_END;
+
+	for (_uint i = 0; i < iSocketCount; i++)
+	{
+		pSkill = pPlayerSkillSystem.lock()->Get_EquipSkill((CPlayerSkill_System::SOCKET_TYPE)i);
+
+		if (pSkill.lock())
+		{
+			m_vecPlayerSkillSlot[i].lock()->Equip_Skill(SkillMap[pSkill.lock()->Get_SkillName()], i);
+		}
+	}	
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillView::OnDisable()

@@ -6,44 +6,8 @@
 #include "FadeMask.h"
 #include "GameManager.h"
 #include "EffectGroup.h"
-#include "UI_PauseMenu.h"
-#include "UI_EvolveMenu.h"
-#include "HUD_PlagueWeapon.h"
-#include "UI_Landing.h"
-#include "UIManager.h"
+#include "UIHeaders.h"
 #include "Static_Instancing_Prop.h"
-#include "HUD_PlagueWeapon.h"
-#include "UI_PauseMenu.h"
-#include "MonsterHPBar_Base.h"
-#include "MonsterHPBar_Elite.h"
-#include "MonsterHPBar_Boss.h"
-#include "MonsterParryingBar.h"
-#include "UI_Containers.h"
-#include "UI_EvolveMenu.h"
-#include "UI_EvolveMenu_Level.h"
-#include "UI_EvolveMenu_Talent.h"
-#include "Player_MPBar.h"
-#include "Player_HPBar.h"
-#include "HUD_Player_Memory.h"
-#include "Player_PotionUI.h"
-#include "Player_FeatherUI.h"
-#include "UI_Script.h"
-#include "UI_ScriptQueue.h"
-#include "UI_DamageFont.h"
-#include "TestUI.h"
-#include "UI_EvolveMenu_SelectDecoration.h"
-#include "UI_Interaction.h"
-#include "UI_Utils.h"
-#include "UI_MonsterFocus.h"
-#include "UI_Cursor.h"
-#include "UI_ItemPopup.h"
-#include "UI_BloodOverlay.h"
-#include "UI_AppearEventVarg.h"
-#include "UI_ItemRequirement.h"
-#include "UI_EvolveMenu_PlagueWeapon.h"
-#include "UI_EvolveMenu_Option.h"
-#include "UI_RadialBlurMask.h"
-#include "UI_FadeMask.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -94,6 +58,10 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
 {
+	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+
+
+
 	std::filesystem::path dir_path = In_FolderPath;
 	std::vector<fs::directory_entry> entries;
 	std::copy(fs::directory_iterator(dir_path), fs::directory_iterator(), std::back_inserter(entries));
@@ -102,23 +70,21 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 
 	BEGIN_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 
-	//for_each_n(entries.begin(), entries.size(), [In_LevelIndex](const std::filesystem::directory_entry& entry)
-	//	{
-	//		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-	//		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-	//		//cout << entry.path().filename() << std::endl;
-	//	});
+	list<pair<string, json>> EffectJsons;
+
 
 	
 
 	while (itr != fs::end(itr)) {
 		const fs::directory_entry& entry = *itr;
 
-		GET_SINGLE(CThread_Manager)->Enqueue_Job(bind([entry, In_LevelIndex]() {
-			weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-			//cout << entry.path().filename() << std::endl;
-			}));
+		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+
+		//GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_LevelIndex, EffectGroup]() {
+		//	
+		//	//cout << entry.path().filename() << std::endl;
+		//	}));
 
 		
 #ifdef _DEBUG_COUT_
@@ -127,7 +93,7 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 
 		itr++;
 	}
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
 	END_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 }

@@ -42,7 +42,7 @@ private:
 
 protected:
     void Free();
-
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
 

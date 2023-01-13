@@ -489,6 +489,7 @@ void CNorMonster::Move_RootMotion_Internal()
 		break;
 	case  MONSTERTYPE::GARDENER:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case MONSTERTYPE::ENHANCE_GARDENER:
@@ -512,19 +513,30 @@ void CNorMonster::Move_RootMotion_Internal()
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::ARMORSHIELDMAN:
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root" , true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		vMoveDir = vMoveDir * XMLoadFloat3(&m_vMoveScale);
+	
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::ARMORSPEARMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		vMoveDir = vMoveDir * XMLoadFloat3(&m_vMoveScale);
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom, m_pModelCom.lock()->Get_RootBoneFlag("root"));
 		break;
 	case  MONSTERTYPE::WEAKARMORSHIELDMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		vMoveDir = vMoveDir * XMLoadFloat3(&m_vMoveScale);
+
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
 	case MONSTERTYPE::WEAKARMORSPEARMAN:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		vMoveDir = vMoveDir * XMLoadFloat3(&m_vMoveScale);
+		Print_Vector(vMoveDir);
+
+		if (XMVectorGetX(XMVector3Length(vMoveDir)) >= 2.f)
+			int i = 0;
+
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
 	}

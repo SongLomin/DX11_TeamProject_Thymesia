@@ -190,57 +190,75 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 	//	m_iContainerIndex = 0;
 #endif //_DEBUG
 
-	_int iPassIndex = 0;
+	_flag BindTextureFlag;
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		BindTextureFlag = 0;
 
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
-			iPassIndex = 0;
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+#ifdef _DEBUG
+			cout << "DiffuseTexture is not binded. : " << m_pModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+			continue;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		// NoneCulling		OK.
+		else if (
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 8;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		NO.
+		// NoneCulling		OK.
+		else if (
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 11;
+		}
+
+		// NormalTexture	NO.
+		// ORMTexture		NO.
+		else if (
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 12;
 		}
 		else
 		{
-			iPassIndex = 4;
-		}
-
-		if (m_pModelCom.lock()->Get_ModelData().lock()->szModelFileName == "Varg")
-		{
-			if (1 == i || 3 == i)
-			{
-				iPassIndex = 9;
-
-				if (1 == i)
-				{
-					m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
-					/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
-						* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
-				}
-
-
-				if (3 == i)
-				{
-					m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
-					/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
-						* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
-				}
-			}
-			else
-			{
-				//m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
-				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
-			}
-		}	
-
 #ifdef _DEBUG
-		//if (i == 2)
-		//	continue;
+			cout << "The correct pass does not define. : " << m_pModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG
 
-		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+			m_iPassIndex = 12;
+		}
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
@@ -344,7 +362,7 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
-		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		/*m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 
@@ -366,7 +384,7 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_UrdWeapon", TIMESCALE_LAYER::MONSTER);
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");*/
 #endif // _ANIMATION_TOOL_WEAPON_
 	}
 }
@@ -426,6 +444,12 @@ void CPreviewAnimationModel::Clear_ModelWeapon()
 		elem.lock()->Set_Dead();
 
 	m_pModelWeapons.clear();
+}
+
+void CPreviewAnimationModel::Bind_KeyFrameEvent(const string& In_szKeyFrameEventFileName)
+{
+	Unbind_KeyEvent(In_szKeyFrameEventFileName.c_str());
+	Bind_KeyEvent(In_szKeyFrameEventFileName.c_str());
 }
 
 

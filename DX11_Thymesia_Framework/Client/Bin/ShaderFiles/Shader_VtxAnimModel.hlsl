@@ -680,7 +680,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
     }
       
-    pass Pass10_Aisemy_MoveUV
+    pass Pass10_Aisemy_MoveUV //10
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 3);
@@ -692,5 +692,31 @@ technique11 DefaultTechnique
         GeometryShader  = NULL;
         PixelShader     = compile ps_5_0 PS_MAIN_AISEMY_MOVEUV();
 
+    }
+
+    pass Default_Normal_NonCulling //11
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
+    }
+
+    pass Default_NonCulling //12
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 }

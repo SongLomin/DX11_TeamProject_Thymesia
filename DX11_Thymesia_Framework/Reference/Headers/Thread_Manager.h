@@ -6,7 +6,7 @@ BEGIN(Engine)
 
 class CGameObject;
 
-class ENGINE_DLL CThread_Manager final : public CBase
+class CThread_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CThread_Manager)
 
@@ -40,8 +40,6 @@ public:
 	GAMEOBJECT_THREAD			m_GameObject_Threads[(_uint)THREAD_TYPE::TYPE_END];
 
 private:
-
-
 	// 총 Worker 쓰레드의 개수.
 	size_t num_threads_;
 	// Worker 쓰레드를 보관하는 벡터.

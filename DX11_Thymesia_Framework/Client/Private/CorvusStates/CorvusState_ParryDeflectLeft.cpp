@@ -118,13 +118,18 @@ void CCorvusState_ParryDeflectLeft::Free()
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ParryDeflectLeft::Call_AnimationEnd, this, placeholders::_1);
 }
 
+void CCorvusState_ParryDeflectLeft::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 _bool CCorvusState_ParryDeflectLeft::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.17f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 7)
 	{
 		if (Check_RequirementParryState())
 		{
@@ -138,11 +143,17 @@ _bool CCorvusState_ParryDeflectLeft::Check_AndChangeNextState()
 			}
 		}
 
+
+		return true;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.17f)
+	{
 		if (Check_RequirementRunState())
 		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
 		}
-		
+
 		return true;
 	}
 

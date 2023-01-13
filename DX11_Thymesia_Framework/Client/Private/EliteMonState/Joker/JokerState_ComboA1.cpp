@@ -120,6 +120,7 @@ _bool CJokerState_ComboA1::Check_AndChangeNextState()
 		return true;
 	}
 	
+	return false;
 }
 
 

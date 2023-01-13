@@ -6,9 +6,17 @@
 #include "ClientLevel.h"
 #include "UI_Cursor.h"
 #include "ItemPopup_Queue.h"
+#include "SubThread_Pool.h"
+
+static std::mutex On_LayerMessage_Mutex;
 
 
 IMPLEMENT_SINGLETON(CGameManager)
+
+void CGameManager::Initialize()
+{
+	m_pClientThread = CSubThread_Pool::Create(8);
+}
 
 void CGameManager::LateTick(_float fTimeDelta)
 {
@@ -48,6 +56,11 @@ void CGameManager::LateTick(_float fTimeDelta)
 	{
 		Set_GameState(GAME_STATE::BATTLE_END);
 	}
+}
+
+shared_ptr<CSubThread_Pool> CGameManager::Get_ClientThread()
+{
+	return m_pClientThread;
 }
 
 void CGameManager::Set_GameState(const GAME_STATE& In_eState)
@@ -100,6 +113,18 @@ void CGameManager::Set_GameState(const GAME_STATE& In_eState)
 
 }
 
+void CGameManager::OnEventMessageForLayer(const OBJECT_LAYER& In_Layer, EVENT_TYPE iArg)
+{
+	unique_lock<mutex> lock(On_LayerMessage_Mutex);
+
+	for (auto& elem : m_pLayers[(_uint)In_Layer])
+	{
+		if(elem.lock())
+			elem.lock()->OnEventMessage((_uint)iArg);
+	}
+
+}
+
 void CGameManager::Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject)
 {
 	if (OBJECT_LAYER::MONSTER == In_Layer)
@@ -113,6 +138,7 @@ void CGameManager::Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameOb
 
 void CGameManager::Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject)
 {
+
 	for (auto iter = m_pLayers[(_uint)In_Layer].begin(); iter != m_pLayers[(_uint)In_Layer].end();)
 	{
 		if ((*iter).lock()->Get_GameObjectIndex() == In_GameObject.lock()->Get_GameObjectIndex())
@@ -275,7 +301,6 @@ _uint CGameManager::Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameF
 	{
 		return -1;
 	}
-
 
 	for (auto& elem : m_pEffectGroups[In_EffectGroupNameFromHash])
 	{
@@ -464,12 +489,29 @@ void CGameManager::Load_AllKeyEventFromJson()
 					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
 				}
 
-				if (KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
+				if (!KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
 				{
-					continue;
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
 				}
 
-				m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
+				for (auto& SoundJson : KeyEventJson["AnimationIndex"][i][j]["Sound"])
+				{
+					KEYSOUND_DESC KeySoundDesc;
+					KeySoundDesc.szSoundFileName = SoundJson["SoundName"];
+					KeySoundDesc.fVolume = SoundJson["Volume"];
+
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Sounds.push_back(KeySoundDesc);
+				}
+
+				for (auto& RandomSoundJson : KeyEventJson["AnimationIndex"][i][j]["RandomSound"])
+				{
+					KEYSOUND_DESC KeySoundDesc;
+					KeySoundDesc.szSoundFileName = RandomSoundJson["SoundName"];
+					KeySoundDesc.fVolume = RandomSoundJson["Volume"];
+
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].RandomSounds.push_back(KeySoundDesc);
+				}
+				
 			}
 		}
 
@@ -554,6 +596,19 @@ void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_p
 	for (auto& elem : Key_iter->second.Enable_Weapon)
 	{
 		Enable_WeaponFromEvent(In_TransformCom, elem);
+	}
+
+	for (auto& elem : Key_iter->second.Sounds)
+	{
+		GAMEINSTANCE->PlaySound3D(elem.szSoundFileName, elem.fVolume, In_TransformCom.lock()->Get_Position());
+	}
+
+	if (!Key_iter->second.RandomSounds.empty())
+	{
+		_int iRandom = rand() % Key_iter->second.RandomSounds.size();
+
+		GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume, In_TransformCom.lock()->Get_Position());
+
 	}
 }
 
@@ -934,7 +989,7 @@ void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVi
 
 	WATERWAVE_DESC WaveDesc;
 	WaveDesc.vPosition = _float2(In_vWorldPosition.m128_f32[0], In_vWorldPosition.m128_f32[2]);
-	WaveDesc.fFreq = In_fFreq;
+	WaveDesc.fFreq = /*In_fFreq*/5.f;
 	WaveDesc.fSpeed = In_fSpeed;
 	WaveDesc.fVibrationScale = In_fVibrationScale;
 	WaveDesc.fTimeAcc = 0.f;

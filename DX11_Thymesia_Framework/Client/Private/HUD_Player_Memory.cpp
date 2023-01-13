@@ -138,8 +138,10 @@ void CHUD_Player_Memory::Call_UpdateMemory()
     m_pEasingComFloat.lock()->Set_Lerp(m_fLerpMemory, fMemory, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
 }
 
-void CHUD_Player_Memory::Call_ChangeMemory(_float fMemory)
+void CHUD_Player_Memory::Call_ChangeMemory(_uint iMemory)
 {
+    _float fMemory = (_float)iMemory;
+
     m_pEasingComFloat.lock()->Set_Lerp(m_fLerpMemory, fMemory, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
 }
 

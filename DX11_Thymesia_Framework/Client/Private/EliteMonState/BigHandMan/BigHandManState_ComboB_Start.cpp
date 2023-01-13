@@ -68,6 +68,8 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 	m_bAttackLookAtLimit = true;
 
 
+
+
 	if (m_bFourAttackEnd && m_iAttackCount == 0)
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -77,11 +79,13 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 	if (m_bFourAttackEnd && m_iAttackCount > 0)
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 43);
+
 	}
 
 	if(!m_bFourAttackEnd && m_iAttackCount > 2)
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 43);
+
 	}
 
 	if (m_bOneAttackEnd || m_bOneAttackRun)
@@ -89,23 +93,8 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
 
-	if (m_iAttackCount == 0)
-	{
-		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-	}
-	else if (m_iAttackCount == 1)
-	{
-		m_pModelCom.lock()->Set_AnimationSpeed(1.15f);
-	}
-	else if (m_iAttackCount == 2)
-	{
-		m_pModelCom.lock()->Set_AnimationSpeed(1.3f);
-	}
-	else if (m_iAttackCount == 3)
-	{
-		m_pModelCom.lock()->Set_AnimationSpeed(1.45f);
-	}
-
+	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f + (m_iAttackCount * 0.5));
 	
 
 #ifdef _DEBUG

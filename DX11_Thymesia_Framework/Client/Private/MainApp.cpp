@@ -41,7 +41,7 @@ HRESULT CMainApp::Initialize()
 #endif // _RENDER_FPS_
 
 	CGameInstance::Create_Instance();
-	CGameManager::Create_Instance();
+	CGameManager::Create_Instance()->Initialize();
 	CUIManager::Create_Instance();
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
@@ -133,6 +133,7 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Tick(float fTimeDelta)
 {
+#ifndef _EFFECT_TOOL_
 	if (GetFocus())
 	{
 		if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::ALT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
@@ -153,6 +154,7 @@ void CMainApp::Tick(float fTimeDelta)
 			ClipCursor(&ClientRect);
 		}
 	}
+#endif // _EFFECT_TOOL_
 
 #ifdef _DEBUG
 	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))

@@ -19,7 +19,6 @@ HRESULT CStatus_Player::Initialize(void* pArg)
 
     m_szFieldName = "Status_Player";
 
- 
     return S_OK;
 }
 
@@ -62,28 +61,48 @@ void CStatus_Player::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
-   Out_Json["Status_Player"]["m_fMaxHP"] = m_tDesc.m_fMaxHP;
-   Out_Json["Status_Player"]["m_fMaxMP"] = m_tDesc.m_fMaxMP;
-   Out_Json["Status_Player"]["m_fNormalAtk"] = m_tDesc.m_fNormalAtk;
-   Out_Json["Status_Player"]["m_fPlagueAtk"] = m_tDesc.m_fPlagueAtk;
-   Out_Json["Status_Player"]["m_fParryingAtk"] = m_tDesc.m_fParryingAtk;
-   Out_Json["Status_Player"]["m_iLevel"] = m_tDesc.m_iLevel;
-   Out_Json["Status_Player"]["m_iStr"] = m_tDesc.m_iStr;
-   Out_Json["Status_Player"]["m_iVital"] = m_tDesc.m_iVital;
-   Out_Json["Status_Player"]["m_iPlague"] = m_tDesc.m_iPlague;
-   Out_Json["Status_Player"]["m_iMemory"] = m_tDesc.m_iMemory;
-   Out_Json["Status_Player"]["m_iWound"] = m_tDesc.m_iWound;
+  
 }
 
 void CStatus_Player::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
 
-    if (In_Json.find("Status_Player") == In_Json.end())
+  
+}
+
+void CStatus_Player::Write_SaveData(json& Out_Json)
+{
+    Out_Json[m_szFieldName]["m_fMaxHP"] = m_tDesc.m_fMaxHP;
+    Out_Json[m_szFieldName]["m_fMaxMP"] = m_tDesc.m_fMaxMP;
+    Out_Json[m_szFieldName]["m_fNormalAtk"] = m_tDesc.m_fNormalAtk;
+    Out_Json[m_szFieldName]["m_fPlagueAtk"] = m_tDesc.m_fPlagueAtk;
+    Out_Json[m_szFieldName]["m_fParryingAtk"] = m_tDesc.m_fParryingAtk;
+    Out_Json[m_szFieldName]["m_iLevel"] = m_tDesc.m_iLevel;
+    Out_Json[m_szFieldName]["m_iStr"] = m_tDesc.m_iStr;
+    Out_Json[m_szFieldName]["m_iVital"] = m_tDesc.m_iVital;
+    Out_Json[m_szFieldName]["m_iPlague"] = m_tDesc.m_iPlague;
+    Out_Json[m_szFieldName]["m_iMemory"] = m_tDesc.m_iMemory;
+    Out_Json[m_szFieldName]["m_iWound"] = m_tDesc.m_iWound;
+
+}
+
+void CStatus_Player::Load_SaveData(const json& In_Json)
+{
+
+    json LoadedJson;
+    string                  m_szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
+
+    if (SUCCEEDED(CJson_Utility::Load_Json(m_szClientSavePath.c_str(), LoadedJson)))
+    {
+        (LoadedJson);
+        //DEBUG_ASSERT;
+    }
+    if (LoadedJson.find("Status_Player") == LoadedJson.end())
     {
         return;
     }
-    json Status_PlayerJson = In_Json["Status_Player"];
+    json Status_PlayerJson = LoadedJson["Status_Player"];
 
     m_tDesc.m_fMaxHP = Status_PlayerJson["m_fMaxHP"];
     m_tDesc.m_fMaxMP = Status_PlayerJson["m_fMaxMP"];
@@ -96,12 +115,13 @@ void CStatus_Player::Load_FromJson(const json& In_Json)
     m_tDesc.m_iPlague = Status_PlayerJson["m_iPlague"];
     m_tDesc.m_iMemory = Status_PlayerJson["m_iMemory"];
     m_tDesc.m_iWound = Status_PlayerJson["m_iWound"];
-   
+
     m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
     m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
 
     Callback_Update_Status();
 }
+
 
 _bool CStatus_Player::Is_Dead()
 {
@@ -240,6 +260,29 @@ void CStatus_Player::Heal_Player(const _float fAmount)
         m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
 
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);
+}
+
+void CStatus_Player::ManaHeal_Player(const _float fAmount)
+{
+    m_tDesc.m_fCurrentMP += fAmount;
+    if (m_tDesc.m_fCurrentMP >= m_tDesc.m_fMaxMP)
+        m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
+
+    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+}
+
+void CStatus_Player::Heal_PlayerFromMaxHP(const _float fRatio)
+{
+    _float fHealAmount = m_tDesc.m_fMaxHP * fRatio;
+        
+    Heal_Player(fHealAmount);
+}
+
+void CStatus_Player::MPHeal_PlayerFromMaxMP(const _float fRatio)
+{
+    _float fHealAmount = m_tDesc.m_fMaxMP * fRatio;
+
+    ManaHeal_Player(fHealAmount);
 }
 
 _uint CStatus_Player::Get_CurrentPotionCount()

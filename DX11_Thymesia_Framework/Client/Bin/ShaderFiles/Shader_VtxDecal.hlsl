@@ -7,7 +7,7 @@ matrix g_InvViewMatrix, g_InvProjMatrix;
 
 float g_fAlphaValue = 1.f;
    
-vector g_vColor = vector(0.f,1.f,0.7f,1.f);
+float3 g_vColor = float3(0.f,1.f,0.7f);
       
 texture2D	g_DiffuseTexture;
 texture2D	g_NormalTexture;
@@ -104,8 +104,7 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
     vDecalUV.y = 0.5f - vDecalUV.y ;
     
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, vDecalUV);
-    Out.vDiffuse.a = 1.f;
-    Out.vDiffuse.a *= g_fAlphaValue;
+    Out.vDiffuse.a = 1.f * g_fAlphaValue;
     clip(Out.vDiffuse.a - 0.01f);
 
     Out.vNormal = normalize(mul(vector(g_NormalTexture.Sample(DefaultSampler, vDecalUV).xyz, 0.f), g_WorldMatrix));
@@ -114,11 +113,11 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
     Out.vNormal.xyz = Out.vNormal.xyz *0.5f + 0.5f;
           
     Out.vORM = g_ORMTexture.Sample(DefaultSampler, vDecalUV);
-    Out.vORM.a *= g_fAlphaValue;
+    Out.vORM.a = 1.f* g_fAlphaValue;
       
     Out.vShaderFlag = 0.f;
     Out.vShaderFlag.b = 0.f < g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r + g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r; //일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
-    Out.vExtractBloom = g_vColor;
+    Out.vExtractBloom = vector(g_vColor, 1.f);
     Out.vExtractBloom.a = (g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV).r+ g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV).r) * g_fAlphaValue;
 	    
     return Out;

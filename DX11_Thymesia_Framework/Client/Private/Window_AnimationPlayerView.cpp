@@ -97,6 +97,8 @@ void CWindow_AnimationPlayerView::Call_UpdatePreViewModel()
     // 델리게이트에 바인드.
     m_pCurrentAnimation.lock()->CallBack_NextChannelKey += bind(&CWindow_AnimationPlayerView::Call_NextAnimationKey, this, placeholders::_1);
 
+    m_pPreViewModel.lock()->Bind_KeyFrameEvent(m_pCurrentModelCom.lock()->Get_ModelKey());
+
 }
 
 void CWindow_AnimationPlayerView::Call_NextAnimationKey(const _uint& In_Key)
@@ -107,6 +109,54 @@ void CWindow_AnimationPlayerView::Call_NextAnimationKey(const _uint& In_Key)
     {
         //애니메이션 키가 변경되면 리셋을 호출할지 확인한다.
         pCurrentEffectGroup.lock()->OnChangeAnimationKey(In_Key);
+    }
+
+
+    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
+
+
+    /*json& SoundJson = m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [In_Key];*/
+
+    if (nullptr == m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()][In_Key])
+    {
+        return;
+    }
+
+    json& KeyFrameJson = m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()][In_Key];
+
+    if (KeyFrameJson.empty())
+    {
+        KeyFrameJson = nullptr;
+        return;
+    }
+
+    if (KeyFrameJson["Sound"] != nullptr)
+    {
+        json& SoundJson = KeyFrameJson["Sound"];
+
+        if (!SoundJson.empty())
+        {
+            for (auto& elem : SoundJson)
+            {
+                GAMEINSTANCE->PlaySound3D(elem["SoundName"], elem["Volume"], {});
+            }
+        }
+    }
+
+
+    if (KeyFrameJson["RandomSound"] != nullptr)
+    {
+        json& RandomSoundJson = KeyFrameJson["RandomSound"];
+
+        if (!RandomSoundJson.empty())
+        {
+            _int iRandomIndex = rand() % RandomSoundJson.size();
+            GAMEINSTANCE->PlaySound3D(RandomSoundJson[iRandomIndex]["SoundName"], RandomSoundJson[iRandomIndex]["Volume"], {});
+        }
     }
 
 }
@@ -174,7 +224,7 @@ void CWindow_AnimationPlayerView::Add_SoundKeyEvent()
     [iIndex]["Sound"].back();
 
     KeySoundJson["SoundName"] = m_strSoundFileName;
-    KeySoundJson["Volume"] = m_strSoundFileName;
+    KeySoundJson["Volume"] = GET_SINGLE(CWindow_EffectEditerView)->Get_SoundVolume();
 
     /*m_KeyEventJson["AnimationIndex"]
         [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
@@ -190,7 +240,28 @@ void CWindow_AnimationPlayerView::Add_SoundKeyEvent()
 
 void CWindow_AnimationPlayerView::Add_RandomSoundKeyEvent()
 {
+    if (!m_pPreViewModel.lock())
+        return;
 
+    if (m_strSoundFileName.empty())
+        return;
+
+    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
+
+    _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
+
+
+
+    m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["RandomSound"].push_back({});
+
+    json& KeySoundJson = m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["RandomSound"].back();
+
+    KeySoundJson["SoundName"] = m_strSoundFileName;
+    KeySoundJson["Volume"] = GET_SINGLE(CWindow_EffectEditerView)->Get_SoundVolume();
 
 }
 
@@ -480,6 +551,8 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         string szKeyValueTypeName;
         string szKeyValueName;
 
+        _int iIndex = 0;
+
         for (_size_t i = 0; i < KeyJson.size(); ++i)
         {
             if (KeyJson[i].empty())
@@ -500,11 +573,24 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
                     //for(auto iter_EffectName = iter.value().begin();)
 
-                    
+                    if (iter.value().empty())
+                    {
+                        iter.value() = nullptr;
+                        iter = KeyJson[i].erase(iter);
+                        continue;
+                    }
+
+
                     if (strcmp(szKeyValueTypeName.c_str(), "EffectName") == 0)
                     {
                         if (ImGui::TreeNode(szKeyValueTypeName.c_str()))
                         {
+                            if (iter.value().empty())
+                            {
+                                iter.value() = nullptr;
+                                iter = KeyJson[i].erase(iter);
+                                bKeyEventErase = true;
+                            }
 
                             for (auto iter_EffectName = iter.value().begin(); iter_EffectName != iter.value().end();)
                             {
@@ -513,7 +599,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
                                 szKeyValueName = iter_EffectName.value();
                                 if (ImGui::TreeNode(szKeyValueName.c_str()))
                                 {
-                                    if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
+                                    if (ImGui::Button((string("[Remove] ") + to_string(iIndex++)).c_str()))
                                     {
                                         iter_EffectName = iter.value().erase(iter_EffectName);
                                         bEffectErase = true;
@@ -535,8 +621,9 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
                     {
                         if (ImGui::TreeNode(string(iter.value().get<_bool>() ? "Enable_Weapon [true]" : "Enable_Weapon [false]").c_str()))
                         {
-                            if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
+                            if (ImGui::Button((string("[Remove] ") + to_string(iIndex++)).c_str()))
                             {
+                                iter.value() = nullptr;
                                 iter = KeyJson[i].erase(iter);
                                 bKeyEventErase = true;
                             }
@@ -551,20 +638,36 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
                         {
                             json& SoundJson = iter.value();
 
+                            if (SoundJson.empty())
+                            {
+                                iter.value() = nullptr;
+                                iter = KeyJson[i].erase(iter);
+                                bKeyEventErase = true;
+                            }
+
                             for (auto iter_Sound = SoundJson.begin(); iter_Sound != SoundJson.end();)
                             {
                                 _bool bEffectErase = false;
 
-                                if (ImGui::TreeNode(iter_Sound.value()["SoundName"].get<string>().c_str()))
-                                {
+                                string SoundFileName = iter_Sound.value()["SoundName"].get<string>().c_str();
 
-                                    if (ImGui::Button((string("[Remove] ") + szKeyValueTypeName).c_str()))
+                                if (ImGui::TreeNode(string(SoundFileName + to_string(iIndex)).c_str()))
+                                {
+                                    _float Volume = iter_Sound.value()["Volume"];
+
+                                    if (ImGui::SliderFloat((string("[Volume]") + to_string(iIndex)).c_str(), &Volume, 0, 2.f, "%.1f"))
+                                    {
+                                        iter_Sound.value()["Volume"] = Volume;
+                                    }
+
+                                    if (ImGui::Button((string("[Remove] ") + to_string(iIndex)).c_str()))
                                     {
                                         iter_Sound = SoundJson.erase(iter_Sound);
                                         bEffectErase = true;
                                     }
 
                                     ImGui::TreePop();
+                                    ++iIndex;
                                 }
 
                                 if (!bEffectErase)
@@ -576,6 +679,55 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
                             ImGui::TreePop();
                         }
                     }
+
+                    else if (strcmp(szKeyValueTypeName.c_str(), "RandomSound") == 0)
+                    {
+                        if (ImGui::TreeNode(szKeyValueTypeName.c_str()))
+                        {
+                            json& SoundJson = iter.value();
+
+                            if (SoundJson.empty())
+                            {
+                                iter.value() = nullptr;
+                                iter = KeyJson[i].erase(iter);
+                                bKeyEventErase = true;
+                            }
+
+                            for (auto iter_Sound = SoundJson.begin(); iter_Sound != SoundJson.end();)
+                            {
+                                _bool bEffectErase = false;
+
+                                string SoundFileName = iter_Sound.value()["SoundName"].get<string>().c_str();
+
+                                if (ImGui::TreeNode(string(SoundFileName + to_string(iIndex)).c_str()))
+                                {
+                                    _float Volume = iter_Sound.value()["Volume"];
+
+                                    if (ImGui::SliderFloat((string("[Volume]") + to_string(iIndex)).c_str(), &Volume, 0, 2.f, "%.1f"))
+                                    {
+                                        iter_Sound.value()["Volume"] = Volume;
+                                    }
+
+                                    if (ImGui::Button((string("[Remove] ") + to_string(iIndex)).c_str()))
+                                    {
+                                        iter_Sound = SoundJson.erase(iter_Sound);
+                                        bEffectErase = true;
+                                    }
+
+                                    ImGui::TreePop();
+                                    ++iIndex;
+                                }
+
+                                if (!bEffectErase)
+                                {
+                                    ++iter_Sound;
+                                }
+                            }
+
+                            ImGui::TreePop();
+                        }
+                    }
+
 
                     if (!bKeyEventErase)
                     {
@@ -620,7 +772,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
     ImGui::Text(m_pPreViewModel.lock()->Get_CurrentModel().lock()->Get_ModelKey());
 
-    ImGui::SameLine();
+    /*ImGui::SameLine();
 
     if (ImGui::Button("Clear Effect Back"))
     {
@@ -636,9 +788,15 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         Clear_WeaponEvent();
         Save_KeyEvent();
         Load_KeyEvent();
+    }*/
+
+    if (ImGui::Button("Save KeyEvent"))
+    {
+        Save_KeyEvent();
     }
 
-    ImGui::SameLine();
+    ImGui::Separator();
+    ImGui::Separator();
 
     if (ImGui::Button("Clear All"))
     {

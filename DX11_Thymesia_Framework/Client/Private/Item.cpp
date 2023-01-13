@@ -15,8 +15,17 @@ HRESULT CItem::Initalize(ITEM_NAME eItemName)
     CPreset_ItemData::CreateItemData(Weak_StaticCast<CItem>(m_this), eItemName);
 
     
-
     return S_OK;
+}
+
+void CItem::Set_CurrentQuantity(_int iQuantity)
+{
+    m_iCurrentQuantity = iQuantity;
+}
+
+void CItem::Set_CreatedTime(time_t iCreatedTime)
+{
+    m_iCreatedTime = iCreatedTime;
 }
 
 void CItem::Add_Quantity()

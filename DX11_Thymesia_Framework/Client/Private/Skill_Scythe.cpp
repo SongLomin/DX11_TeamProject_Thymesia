@@ -4,6 +4,7 @@
 #include "ClientComponent_Utils.h"
 #include "PlayerStateBase.h"
 #include "CorvusStates/CorvusState_PS_Scythe.h"
+#include "CorvusStates/CorvusState_PS_Scythe_Upgrade.h"
 #include "Status_Player.h"
 #include "Requirement_Time.h"
 #include "RequirementChecker.h"
@@ -38,6 +39,7 @@ void CSkill_Scythe::Init_SkillInfo()
 void CSkill_Scythe::Init_State()
 {
 	m_pSkillState = m_pOwner.lock()->Get_Component<CCorvusState_PS_Scythe>();
+	m_pExpansionSkillState = m_pOwner.lock()->Get_Component<CCorvusState_PS_Scythe_Upgrade>();
 
 }
 

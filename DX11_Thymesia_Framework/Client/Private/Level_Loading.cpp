@@ -44,8 +44,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 		LEVEL::LEVEL_LOADING	!= m_eNextLevel &&
 		LEVEL::LEVEL_LOGO		!= m_eNextLevel &&
 		LEVEL::LEVEL_LOBBY      != m_eNextLevel &&
-		LEVEL::LEVEL_EDIT       != m_eNextLevel &&
-		LEVEL::LEVEL_TEST       != m_eNextLevel)
+		LEVEL::LEVEL_EDIT       != m_eNextLevel)
 	{
 		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
 		m_pUILoading.lock()->SetUp_LoadingUI(m_eNextLevel);
@@ -73,8 +72,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			LEVEL::LEVEL_LOADING	!= m_eNextLevel &&
 			LEVEL::LEVEL_LOGO		!= m_eNextLevel &&
 			LEVEL::LEVEL_LOBBY      != m_eNextLevel &&
-			LEVEL::LEVEL_EDIT       != m_eNextLevel &&
-			LEVEL::LEVEL_TEST       != m_eNextLevel)
+			LEVEL::LEVEL_EDIT       != m_eNextLevel)
 		{
 			m_pUILoading.lock()->Set_Complete();
 

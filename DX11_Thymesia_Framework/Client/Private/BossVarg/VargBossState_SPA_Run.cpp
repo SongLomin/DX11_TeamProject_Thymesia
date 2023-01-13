@@ -33,7 +33,7 @@ void CVargBossState_SPA_Run::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_SPAttack1_Run|SK_C_Varg.ao|Varg_");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_SPAttack1_Run");
 
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this, placeholders::_1);

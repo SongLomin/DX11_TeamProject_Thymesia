@@ -31,7 +31,7 @@ HRESULT CVargBossState_IdleGeneral::Initialize(void* pArg)
 void CVargBossState_IdleGeneral::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_IdleGeneral|SK_C_Varg.ao|Varg_Id");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_IdleGeneral");
 }
 
 void CVargBossState_IdleGeneral::Tick(_float fTimeDelta)

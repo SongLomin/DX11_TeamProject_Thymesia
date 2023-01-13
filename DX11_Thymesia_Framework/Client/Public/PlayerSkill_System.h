@@ -39,13 +39,21 @@ public:
 	void					SwapSkillMaintoSub();
 	HRESULT					OnStealMonsterSkill(MONSTERTYPE In_eMonsterType);
 
+	weak_ptr<CSkill_Base>	Get_EquipSkill(SOCKET_TYPE eSocketType);
+	weak_ptr<CSkill_Base>	Get_StealSkill();
+
 public:
-	void			UnBindSkill(SOCKET_TYPE eType);
-	void			OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
-	void			OnChangeSkill(SKILL_NAME eSkillName, SOCKET_TYPE eType);
+	void							UnBindSkill(SOCKET_TYPE eType);
+	void							OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
+	void							OnChangeSkill(SKILL_NAME eSkillName, SOCKET_TYPE eType);
+
+	void							RegisterSkill(SKILL_NAME eName, weak_ptr<CSkill_Base> pSkill);
 
 
-	void			RegisterSkill(SKILL_NAME eName, weak_ptr<CSkill_Base> pSkill);
+	weak_ptr<CSkill_Base>			Find_Skill(SKILL_NAME eSkillName);
+public:
+	virtual void    Write_SaveData(json& Out_Json);
+	virtual void    Load_SaveData(const json& In_Json);
 
 
 public:
@@ -62,6 +70,8 @@ private:
 	void			SetUp_SkillMapFromMonsterType();
 
 	void			Tick_SkillList(_float fTimeDelta);
+	void			WriteSaveData_Skill(json& Out_json, weak_ptr<CSkill_Base> pSkill);
+
 
 private:
 	shared_ptr<CRequirementChecker> m_pRequirementChecker;

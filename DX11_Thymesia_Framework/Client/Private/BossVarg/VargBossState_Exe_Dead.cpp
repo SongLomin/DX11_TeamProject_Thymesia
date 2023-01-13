@@ -37,7 +37,7 @@ void CVargBossState_Exe_Dead::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|SK_C_Varg.ao|SK_C_Varg.ao|Varg_TakeExecution_Dead|SK_C_Varg.ao|");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Varg_TakeExecution_Dead");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -66,11 +66,28 @@ void CVargBossState_Exe_Dead::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CC
 	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
+void CVargBossState_Exe_Dead::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	if (In_KeyIndex == 40)
+	{
+		m_pOwner.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT);
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT);
+	}
+}
+
 void CVargBossState_Exe_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CVargBossState_Exe_Dead::Call_NextKeyFrame, this, placeholders::_1);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -84,6 +101,9 @@ void CVargBossState_Exe_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVargBossState_Exe_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CVargBossState_Exe_Dead::Call_NextKeyFrame, this, placeholders::_1);
+
 }
 
 

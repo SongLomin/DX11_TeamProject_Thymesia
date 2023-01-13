@@ -106,10 +106,12 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
 					m_iStepCloseCount = 1;
+					m_iStepFarCount = 2;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
 					m_iStepCloseCount = 2;
+					m_iStepFarCount = 1;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR>(0.05f);
@@ -143,16 +145,13 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 			else if (m_iStepCloseCount == 1) //오른쪽
 			{
 				//둘중에하나 왼쪽공격 또는 왼쪽
-				int iRand = rand() % 3;
+				int iRand = rand() % 2;
 				switch (iRand)
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 					break;
 				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
-					break;
-				case 2:
 					int iRand = rand() % 2;
 					switch (iRand)
 					{
@@ -171,16 +170,13 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 			}
 			else if (m_iStepCloseCount == 2) //왼쪽
 			{
-				int iRand = rand() % 3;
+				int iRand = rand() % 2;
 				switch (iRand)
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 					break;
 				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
-					break;
-				case 2:
 					int iRand = rand() % 2;
 					switch (iRand)
 					{
@@ -470,16 +466,14 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		else if (m_iStepCloseCount == 1) //오른쪽
 		{
 			//둘중에하나 왼쪽공격 또는 왼쪽
-			int iRand = rand() % 3;
+			int iRand = rand() % 2;
 			switch (iRand)
 			{
 			case 0:
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
 				break;
+
 			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepL>(0.05f);
-				break;
-			case 2:
 			{
 				int iRand = rand() % 2;
 				switch (iRand)
@@ -501,16 +495,13 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 		}
 		else if (m_iStepCloseCount == 2) //왼쪽
 		{
-			int iRand = rand() % 3;
+			int iRand = rand() % 2;
 			switch (iRand)
 			{
 			case 0:
 				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
 				break;
 			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepR>(0.05f);
-				break;
-			case 2:
 			{
 
 				int iRand = rand() % 2;

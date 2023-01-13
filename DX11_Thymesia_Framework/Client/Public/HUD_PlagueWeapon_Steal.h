@@ -38,6 +38,7 @@ public:
 private:
 		virtual void			Bind_Player() override;
 
+
 private:
 	weak_ptr<CCustomUI>						m_pPlagueWeapon_Decoration;	//쿨타임 알려주는 게이지 프레임
 

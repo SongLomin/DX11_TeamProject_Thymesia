@@ -8,6 +8,7 @@ class CGameObject;
 class CCamera;
 class CModel;
 class CTransform;
+class CSubThread_Pool;
 END
 
 BEGIN(Client)
@@ -42,13 +43,21 @@ class CGameManager :
     DECLARE_SINGLETON(CGameManager)
 
 public:
+    void Initialize();
+
+public:
     void LateTick(_float fTimeDelta);
+
+public:
+    shared_ptr<CSubThread_Pool> Get_ClientThread();
 
 public:
     void Set_GameState(const GAME_STATE& In_eState);
 
 
 public:
+    void OnEventMessageForLayer(const OBJECT_LAYER& In_Layer, EVENT_TYPE iArg);
+
     void Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
     void Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
 
@@ -134,12 +143,12 @@ public:
     // 해당 이펙트 그룹의 인덱스를 반환합니다. (메모리 풀)
     // 이펙트를 UnUse할때 인덱스를 필요로 합니다.
 
-    _uint Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameFromHash, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
-    _uint Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
+    _uint Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameFromHash, weak_ptr<Engine::CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
+    _uint Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<Engine::CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
     void UnUse_EffectGroup(const string& In_szEffectGroupName, const _uint& In_EffectGroupIndex);
 
 private:
-    void Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable);
+    void Enable_WeaponFromEvent(weak_ptr<Engine::CTransform> pParentTransformCom, const _bool In_bEnable);
 
 public:
     void Load_AllKeyEventFromJson();
@@ -214,6 +223,9 @@ public:
     void  Registration_Fog(weak_ptr<CFog> In_pObj);
     void  Activate_Fog(_uint In_iFogIndex);
 
+    void Set_PreLevel(LEVEL eLevel) { m_ePreLevel = eLevel; }
+    LEVEL Get_PreLevel() { return m_ePreLevel; }
+
 public:
     void Register_Water(weak_ptr<CWater> pWater);
     void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq, const _float In_fSpeed);
@@ -222,6 +234,9 @@ public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
     FDelegate<>                 CallBack_FocusOutMonster;
+
+private: /* For. SubThread Pool  */
+    shared_ptr<CSubThread_Pool> m_pClientThread;
 
 private:
     list<weak_ptr<CGameObject>> m_pLayers[(_uint)OBJECT_LAYER::LAYER_END];
@@ -253,6 +268,7 @@ private:
     weak_ptr<CWater>                    m_pWater;
     weak_ptr<CInteriorProp>             m_pInterior;
     _uint                               m_iPreEventSection;  
+    LEVEL                               m_ePreLevel = LEVEL::LEVEL_END;
 
 private:
     _int                                m_iMonsterCount   = 0;

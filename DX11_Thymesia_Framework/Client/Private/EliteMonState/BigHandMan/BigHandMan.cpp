@@ -191,9 +191,9 @@ void CBigHandMan::OnEventMessage(_uint iArg)
 		Set_Enable(true);
 	}
 
-	if ((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTION == iArg)
+	if ((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTIONSTART == iArg)
 	{
-		Change_State<CBigHandManState_VS_TakeExecution_01>();
+		m_bEliteExecutionStartOnOff = true;
 	}
 
 

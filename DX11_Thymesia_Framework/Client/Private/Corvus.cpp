@@ -32,18 +32,15 @@ HRESULT CCorvus::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_szName = "Corvus";
+
+	
+
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 
-	json LoadedJson;
-	string strCorvusComponentPath = m_szClientComponentPath + "Corvus.json";
 
-	if (SUCCEEDED(CJson_Utility::Load_Json(strCorvusComponentPath.c_str(), LoadedJson)))
-	{
-		Load_FromJson(LoadedJson);
-		//DEBUG_ASSERT;
-	}
 	//CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
 
 	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
@@ -113,6 +110,23 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	m_SpotLightDesc.eActorType = LIGHTDESC::TYPE_SPOTLIGHT;
+	m_SpotLightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	m_SpotLightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	m_SpotLightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	m_SpotLightDesc.fIntensity = 10.f;
+	m_SpotLightDesc.fRange = 10.f;
+	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
+	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(60.f));
+
+	vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
+	vLightLook = XMVectorSet(0.f,-1.f,0.f,0.f);
+
+	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
+	XMStoreFloat4(&m_SpotLightDesc.vDirection, vLightLook);
+
+	m_SpotLightDesc.bEnable = false;
+
 	_uint iNvClothColliderCount;
 	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
 
@@ -124,6 +138,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
+
+
 
 	return S_OK;
 }
@@ -138,8 +154,8 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
+	Load_ClientComponentData();
 
-	Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -184,15 +200,17 @@ void CCorvus::Tick(_float fTimeDelta)
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
 		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
-		/*DECAL_DESC DecalDesc;
+		//GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
+	/*	DECAL_DESC DecalDesc;
 		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
 
 		DecalDesc.vScale = { 5.f,5.f,5.f };
 		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
 		DecalDesc.fTime = 3.f;
+		DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
+		DecalDesc.pTextureTag = "DecalTexture";
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
 	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{
@@ -258,12 +276,36 @@ void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 
 void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 {
-	m_LightDesc.fIntensity += fTimeDelta*0.4f;
+	m_LightDesc.fIntensity += fTimeDelta*0.2f;
+
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
+
+	m_SpotLightDesc.fIntensity = max(0.f, m_SpotLightDesc.fIntensity - fTimeDelta * 5.f);
 
 	if (0.4f < m_LightDesc.fIntensity)
 	{
 		Out_End = true;
+		m_SpotLightDesc.bEnable = false;
 	}
+
+	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
+}
+
+void CCorvus::Use_SpotLight(_float fTimeDelta, _bool& Out_End)
+{
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
+
+	m_SpotLightDesc.fIntensity = min(10.f, m_SpotLightDesc.fIntensity + fTimeDelta * 40.f);
+
+	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 }
 
 void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
@@ -491,6 +533,21 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 
 
+	if (EVENT_TYPE::ON_ARMOREXECUTIONSHIELD == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+
+
+
+
+
 
 	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
@@ -498,9 +555,15 @@ void CCorvus::OnEventMessage(_uint iArg)
 		m_LightDesc.fIntensity = 0.f;
 		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	}
+	else if (EVENT_TYPE::ON_PLAYERSPOTLIGHT == (EVENT_TYPE)iArg)
+	{
+		m_SpotLightDesc.bEnable = true;
+		CallBack_LightEvent += bind(&CCorvus::Use_SpotLight, this, placeholders::_1, placeholders::_2);
+	}
 	else if (EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = true;
+		CallBack_LightEvent.Clear();
 		CallBack_LightEvent += bind(&CCorvus::TurnOn_Light, this, placeholders::_1, placeholders::_2);
 	}
 
@@ -634,15 +697,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
-		json	CorvusJson;
-
-		Write_Json(CorvusJson);
-		
-		string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
-
-		CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
-
-		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
+		Save_ClientComponentData();
+	}
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		Load_ClientComponentData();
 	}
 	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
 	{
@@ -679,8 +738,8 @@ void CCorvus::Move_RootMotion_Internal()
 
 void CCorvus::Test_BindSkill()
 {
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
+	//m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+	//m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 }
 
 void CCorvus::Ready_Weapon()
@@ -811,7 +870,14 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
 	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
+
 	ADD_STATE_MACRO(CCorvusState_BigHandman_Execution);
+	ADD_STATE_MACRO(CCorvusState_LV2M_Execution);
+	ADD_STATE_MACRO(CCorvusState_LV1M_Execution);
+	ADD_STATE_MACRO(CCorvusState_AromorLV1_Execution);
+	ADD_STATE_MACRO(CCorvusState_Armor_Execution_02);
+	ADD_STATE_MACRO(CCorvusState_Armor_Execution_01);
+	ADD_STATE_MACRO(CCorvusState_AromorLV1_NCamera_Execution);
 
 #undef ADD_STATE_MACRO
 }
@@ -830,12 +896,6 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_BloodStorm>();
 }
 
-void CCorvus::WriteTalentFromJson(json& Out_Json)
-{
-
-}
-
-
 void CCorvus::Free()
 {
 	int a = 0;
@@ -845,9 +905,35 @@ void CCorvus::Save_ClientComponentData()
 {
 	json	CorvusJson;
 
-	Write_Json(CorvusJson);
+	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
 
-	string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
+	m_pStatus.lock()->Write_SaveData(CorvusJson);
+	m_pInventory.lock()->Write_SaveData(CorvusJson);
+	m_pSkillSystem.lock()->Write_SaveData(CorvusJson);
 
-	CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
+	_flag iFlag = Check_RequirementForTalentEffects();
+	CorvusJson["TalentEffect"] = iFlag;
+
+	CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
+}
+
+void CCorvus::Load_ClientComponentData()
+{
+	json	CorvusJson;
+	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
+	
+	if (FAILED(CJson_Utility::Load_Json(szClientSavePath.c_str(), CorvusJson)))
+	{
+		return;
+	}
+	m_pStatus.lock()->Load_SaveData(CorvusJson);
+	m_pInventory.lock()->Load_SaveData(CorvusJson);
+	m_pSkillSystem.lock()->Load_SaveData(CorvusJson);
+
+
+	if (CorvusJson.find("TalentEffect") == CorvusJson.end())
+		return;
+
+	m_iBindedTalentEffectes = CorvusJson["TalentEffect"];
+	
 }
