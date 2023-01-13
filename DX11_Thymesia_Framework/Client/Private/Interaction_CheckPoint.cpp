@@ -52,7 +52,7 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
         VTXANIM_DECLARATION::iNumElements
     );
 
-    m_pModelCom.lock()->Init_Model("P_ArchiveChair01_ChecckPoint", "");
+    m_pModelCom.lock()->Init_Model("P_ArchiveChair01", "");
     m_pAnimModelCom.lock()->Init_Model("Aisemy_SavePoint", "");
     m_pTextureCom.lock()->Use_Texture("UVMask");
     m_pDeco.lock()->Init_Model("FuckingOilLamp", TIMESCALE_LAYER::NONE);

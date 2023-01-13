@@ -38,7 +38,7 @@ HRESULT CInteraction_Chair::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
-    m_pModelCom.lock()->Init_Model("P_ArchiveChair01_ChecckPoint", "");
+    m_pModelCom.lock()->Init_Model("P_ArchiveChair01", "");
 
     return S_OK;
 }

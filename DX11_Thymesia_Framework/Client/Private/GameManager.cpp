@@ -603,10 +603,13 @@ void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_p
 		GAMEINSTANCE->PlaySound3D(elem.szSoundFileName, elem.fVolume, In_TransformCom.lock()->Get_Position());
 	}
 
-	_int iRandom = rand() % Key_iter->second.RandomSounds.size();
+	if (!Key_iter->second.RandomSounds.empty())
+	{
+		_int iRandom = rand() % Key_iter->second.RandomSounds.size();
 
-	GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume, In_TransformCom.lock()->Get_Position());
+		GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume, In_TransformCom.lock()->Get_Position());
 
+	}
 }
 
 void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType)
