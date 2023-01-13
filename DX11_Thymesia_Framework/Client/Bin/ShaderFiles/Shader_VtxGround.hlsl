@@ -17,6 +17,7 @@ float g_fAddNo3_Density;
 texture2D g_FilterTexture;
 
 texture2D g_DisplacementTexture;
+texture2D g_SpecularTexture;
 
 float g_fFar = 300.f;
 
@@ -398,6 +399,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
     float3 vPixelNorm = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
 
     if (0.1f < vFilterDiffuse.r)
@@ -439,7 +441,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vNormal     = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vORM        = 0;
+    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
     Out.vExtractBloom = 0.f;
     Out.vRimLight = 0.f;
     return Out;

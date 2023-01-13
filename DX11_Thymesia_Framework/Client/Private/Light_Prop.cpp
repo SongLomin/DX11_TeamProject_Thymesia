@@ -130,13 +130,29 @@ HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_HEIGHT);
-	
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-			m_iPassIndex = 3;
-		else
-			m_iPassIndex = 7;
+		_flag BindTextureFlag = 0;
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+		if ((_uint)-1 == m_iPassIndex)
+		{
+			continue;
+		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 		m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);

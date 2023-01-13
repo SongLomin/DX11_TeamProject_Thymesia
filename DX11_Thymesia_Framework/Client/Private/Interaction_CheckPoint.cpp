@@ -209,11 +209,8 @@ void CInteraction_CheckPoint::Thread_PreLateTick(_float fTimeDelta)
 
 HRESULT CInteraction_CheckPoint::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    if (FAILED(Draw_Chair(pDeviceContext)))
-        return E_FAIL;
-
-    if (FAILED(Draw_Aisemy(pDeviceContext)))
-        return E_FAIL;
+    Draw_Chair(pDeviceContext);
+    Draw_Aisemy(pDeviceContext);
 
     CGameObject::Render(pDeviceContext);
 
@@ -390,11 +387,11 @@ HRESULT CInteraction_CheckPoint::Draw_Chair(ID3D11DeviceContext* pDeviceContext)
     XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(Mat));
 
     if (FAILED(m_pChairTransfromCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-        return E_FAIL;
+        DEBUG_ASSERT;
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
-        return E_FAIL;
+        DEBUG_ASSERT;
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-        return E_FAIL;
+        DEBUG_ASSERT;
 
     _float4 vCamDesc;
     XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
@@ -408,11 +405,11 @@ HRESULT CInteraction_CheckPoint::Draw_Chair(ID3D11DeviceContext* pDeviceContext)
     m_pShaderCom.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));
 
     if (FAILED(m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92)))
-        return E_FAIL;
+        DEBUG_ASSERT;
 
     _vector	vShaderFlag = { 0.f,0.f,0.f,0.f };
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
-        return E_FAIL;
+        DEBUG_ASSERT;
 
     _float fCamFar = GAMEINSTANCE->Get_CameraFar();
     m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
@@ -420,13 +417,52 @@ HRESULT CInteraction_CheckPoint::Draw_Chair(ID3D11DeviceContext* pDeviceContext)
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            m_iPassIndex = 0;
-        else
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+        }
+
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        // DiffuseTexture	NO.
+        if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+        {
+            continue;
+        }
+
+        // Invisibility		OK.
+        // NormalTexture	OK.
+        // ORMTexture		OK.
+        else if (
+            (1 << aiTextureType_NORMALS) & BindTextureFlag &&
+            (1 << aiTextureType_SPECULAR) & BindTextureFlag)
+        {
             m_iPassIndex = 7;
+        }
+
+        // Invisibility		OK.
+        // NormalTexture	OK.
+        // ORMTexture		NO.
+        else if (
+            (1 << aiTextureType_NORMALS) & BindTextureFlag &&
+            !((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+        {
+            m_iPassIndex = 4;
+        }
+        else
+        {
+            m_iPassIndex = 0;
+        }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
@@ -441,15 +477,15 @@ HRESULT CInteraction_CheckPoint::Draw_Aisemy(ID3D11DeviceContext* pDeviceContext
         return S_OK;
 
     if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pAnimShader, "g_WorldMatrix")))
-        return E_FAIL;
+        DEBUG_ASSERT;
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
-        return E_FAIL;
+        DEBUG_ASSERT;
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-        return E_FAIL;
+        DEBUG_ASSERT;
 
     _vector	vShaderFlag = { 0.f,0.f,0.f,0.f };
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
-        return E_FAIL;
+        DEBUG_ASSERT;
 
     _float fCamFar = GAMEINSTANCE->Get_CameraFar();
     m_pAnimShader.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));

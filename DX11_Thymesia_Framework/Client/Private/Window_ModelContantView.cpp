@@ -99,6 +99,11 @@ void CWindow_ModelContantView::Tick(_float fTimeDelta)
         }
     }
 
+    if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::S, KEY_STATE::TAP))
+    {
+        Save_Model();
+    }
+
     
 }
 
@@ -106,6 +111,8 @@ HRESULT CWindow_ModelContantView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;
+
+    ImGui::TextColored(ImVec4{ 1.f, 0.f, 1.f, 1.f }, m_pModelData->szModelFileName.c_str());
 
     if (ImGui::Button("ReLoad Model"))
     {

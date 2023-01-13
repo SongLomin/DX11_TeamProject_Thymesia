@@ -115,34 +115,59 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
 
-	_int iPassIndex = 0;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+		_flag BindTextureFlag = 0;
 
-
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
-
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
-			iPassIndex = 0;
-		}
-		else
-		{
-			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-				iPassIndex = 4;
-			else
-				iPassIndex = 5;
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
 		}
 
-		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
-		if (0 < m_iPassIndex)
-			iPassIndex = m_iPassIndex;
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+			continue;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 5;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		NO.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 4;
+		}
+
+		// NormalTexture	NO.
+		// ORMTexture		NO.
+		else if (
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 0;
+		}
+
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i);
 	}
 
