@@ -1,13 +1,9 @@
 #pragma once
-#include "Base.h"
+#include "Client_Defines.h"
 
 BEGIN(Client)
-
-
 class CUI_Cursor;
 class CItemPopup_Queue;
-
-
 class CUIManager : public CBase
 {
 	DECLARE_SINGLETON(CUIManager)
@@ -85,8 +81,4 @@ private:
 	void		Free();
 
 };
-
-
 END
-
-

@@ -19,7 +19,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     }
 
 #pragma region Corvus
-    /*SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
+    SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
     SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
     SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
     SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
@@ -110,7 +110,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);
 
 	SET_ANIM_SPEED("Corvus_SD_HurtMFL", 2.f);
-	SET_ANIM_SPEED("Corvus_SD_HurtMFR", 2.f);*/
+	SET_ANIM_SPEED("Corvus_SD_HurtMFR", 2.f);
 #pragma endregion // Corvus
 #pragma region Varg
 // SK_C_Varg.ao|

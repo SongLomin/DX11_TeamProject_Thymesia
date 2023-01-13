@@ -121,14 +121,8 @@ void CNorMonState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: RunRUNRUNRUNRUN -> RunRUNRUNRUN" << endl;
-#endif
-#endif
-		if(m_eMonType == MONSTERTYPE::KNIFEWOMAN)
-			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
-
+	if (m_eMonType == MONSTERTYPE::KNIFEWOMAN)
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CNorMonState_Run::OnStateEnd()
@@ -191,7 +185,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 		return true;
 	}
 
-	if (!m_bClosePlayer && fPToMDistance <= 3.f)
+	if (!m_bClosePlayer && fPToMDistance <= 5.f)
 	{
 		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
 		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ClosePlayerCheck(true);
