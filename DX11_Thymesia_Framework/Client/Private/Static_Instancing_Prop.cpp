@@ -189,8 +189,8 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 		else
 		{
-			BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
-			END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+			BEGIN_PERFROMANCE_CHECK(m_pInstanceModelCom.lock()->Get_ModelKey());
+			END_PERFROMANCE_CHECK(m_pInstanceModelCom.lock()->Get_ModelKey());
 		}
 
 		m_iPassIndex = Preset::ShaderPass::ModelInstancingShaderPass(BindTextureFlag, m_bInvisibility, m_bNonCulling, m_bDissolve);

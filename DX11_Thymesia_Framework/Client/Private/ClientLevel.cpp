@@ -71,7 +71,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 	fs::directory_iterator itr(dir_path);
 	std::filesystem::directory_iterator end;
 
-	BEGIN_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 
 	list<pair<string, json>> EffectJsons;
 
@@ -97,7 +96,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 #ifdef _OVERDRIVE_LOAD_EFFECTGROUP_
 	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 #endif // _OVERDRIVE_LOAD_EFFECTGROUP_
-	END_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 }
 
 void CClientLevel::Tick(_float fTimeDelta)

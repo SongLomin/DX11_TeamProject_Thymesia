@@ -49,21 +49,15 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	switch (pLoader->Get_NextLevelID())
 	{
 	case LEVEL_LOGO:
-		BEGIN_PERFROMANCE_CHECK("LOAD_LEVEL_LOGO");
 		hr = pLoader->Loading_ForLogoLevel();
-		END_PERFROMANCE_CHECK("LOAD_LEVEL_LOGO");
 		break;
 
 	case LEVEL_LOBBY:
-		BEGIN_PERFROMANCE_CHECK("LOAD_LEVEL_LOBBY");
 		hr = pLoader->Loading_ForLobby();
-		END_PERFROMANCE_CHECK("LOAD_LEVEL_LOBBY");
 		break;
 
 	case LEVEL_GAMEPLAY:
-		BEGIN_PERFROMANCE_CHECK("LOAD_LEVEL_GAMEPLAY");
 		hr = pLoader->Loading_ForGamePlayLevel();
-		END_PERFROMANCE_CHECK("LOAD_LEVEL_GAMEPLAY");
 		break;
 
 	case LEVEL_STAGE2:
