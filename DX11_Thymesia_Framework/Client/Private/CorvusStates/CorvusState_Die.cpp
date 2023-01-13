@@ -42,17 +42,32 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	m_fGrayScaleValue = max(0.f, m_fGrayScaleValue - fTimeDelta * 0.2f);
+	GAMEINSTANCE->Set_GrayScale(m_fGrayScaleValue);
+
 	if (m_bAnimPlay)
 	{
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	}
+	else if(m_bDissolve)
+	{
+		Get_OwnerPlayer()->Set_PassIndex(7);
+		m_fDissolveTime -= fTimeDelta;
+
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+		Get_OwnerPlayer()->Set_DissolveAmount(fDissolveAmount);
+		if (m_fDissolveTime < -0.1f)
+			m_bDissolve = false;
+	}
 	else
 	{
 		_float4 vOutPos;
-
+		Get_OwnerPlayer()->Set_PassIndex(0);
 		if (FAILED(GET_SINGLE(CGameManager)->Respawn_LastCheckPoint(&vOutPos)))
 		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
+			GAMEINSTANCE->Set_GrayScale(1.f);
+
 		}
 		else
 		{
@@ -65,8 +80,10 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 				0.f,
 				Filters
 			);
+			GAMEINSTANCE->Set_GrayScale(1.f);
 		}
 	}
+
 }
 
 void CCorvusState_Die::LateTick(_float fTimeDelta)
@@ -84,6 +101,10 @@ void CCorvusState_Die::OnDisable()
 void CCorvusState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_fDissolveTime = 4.f;
+	m_bDissolve = true;
+	m_bAnimPlay = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	

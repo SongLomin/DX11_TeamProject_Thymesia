@@ -32,8 +32,7 @@ void CBatBossState_Charge::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Charge");
 
-	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
-	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+	m_pHeadBoneNode = m_pModelCom.lock()->Find_BoneNode("head");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Charge::Call_AnimationEnd, this, placeholders::_1);
 }
@@ -61,9 +60,11 @@ void CBatBossState_Charge::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 	if (In_iKeyIndex >= 80 && In_iKeyIndex <= 225)
 	{
-		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+		_matrix CombinedMatrix = Get_HeadCombinedWorldMatrix();
 
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.13f, 9.f, 3.f);
+		_vector vPosition = CombinedMatrix.r[3];
+
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
 	}
 }
 

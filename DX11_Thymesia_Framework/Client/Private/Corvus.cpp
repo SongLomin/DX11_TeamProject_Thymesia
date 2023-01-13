@@ -398,6 +398,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 
 		m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
 
+		_uint iPassIndex = 0;
 
 		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
@@ -472,15 +473,15 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 				!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
 				!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 			{
-				iPassIndex = 0;
-			}
-
-			if (m_iPassIndex > 0)
-			{
-				iPassIndex = 2 != i ? m_iPassIndex : 13;
+				m_iPassIndex = 0;
 			}
 		}
 
+		if (m_iPassIndex > 0)
+		{
+			iPassIndex = m_iPassIndex;
+			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
+		}
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
 	}
 

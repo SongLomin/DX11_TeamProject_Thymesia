@@ -17,6 +17,7 @@ public:
 	void Free();
 
 protected:
+    virtual HRESULT Initialize(void* pArg) override;
     virtual void Tick(_float fTimeDelta) override;
 
 protected:
@@ -40,6 +41,16 @@ protected:
     virtual _int  Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
     virtual _bool Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
     virtual _bool Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_pGameObject);
+
+private:
+    _float m_fTimeAcc = 0.f;
+
+private:
+    FDelegate<_float> CallBack_WaterWave;
+
+private:
+    void Add_WaveDesc(_float In_fTimeDelta);
+protected:
 
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 

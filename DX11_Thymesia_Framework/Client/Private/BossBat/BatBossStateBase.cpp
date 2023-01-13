@@ -100,6 +100,50 @@ _matrix CBatBossStateBase::Get_RightHandCombinedWorldMatrix()
 	return CombinedMatrix;
 }
 
+_matrix CBatBossStateBase::Get_HeadCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pHeadBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
+}
+
+_matrix CBatBossStateBase::Get_ChestCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pChestBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
+}
+
+_matrix CBatBossStateBase::Get_RightFootCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pRightFootBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
+}
+
+_matrix CBatBossStateBase::Get_LeftFootCombinedWorldMatrix()
+{
+	_float4x4 ModelMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
+
+	_matrix CombinedMatrix = m_pLeftFootBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&ModelMatrix)
+		* m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+
+	return CombinedMatrix;
+}
+
 _bool CBatBossStateBase::Check_CrossAttackState()
 {
 	switch (ComputeDirectionToPlayer())

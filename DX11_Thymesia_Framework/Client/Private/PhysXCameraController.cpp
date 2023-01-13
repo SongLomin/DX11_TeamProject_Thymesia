@@ -177,9 +177,9 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 
 
 	_vector vPlayerPosition = m_pTargetTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
-	_vector vPlayerToCameraDir = -m_pOwner.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	_vector vPlayerToCameraDir = m_pOwner.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK)*-1.f;
 	//_vector vPlayerToCameraDir = m_pOwner.lock()->Get_Transform()->Get_Position() - vPlayerPosition;
-	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
+	//_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
 	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
 
 
@@ -188,7 +188,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 	XMStoreFloat4(&m_RayCamera.vOrigin, vPlayerPosition);
 	XMStoreFloat3(&m_RayCamera.vDirection, vPlayerToCameraDir);
 	m_RayCamera.vOrigin.w = 1.f;
-	m_RayCamera.fLength = fLength * 5.f;
+	m_RayCamera.fLength = 3.5f/*fLength * 1.2f */ ;
 
 
 	PxRaycastHit newHit[2];
@@ -203,7 +203,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 		PxHitFlag::ePOSITION, 2, newHit);
 
 
-	PxVec3 RayDirOffset = (RayDir * -1.f) * 0.8f;
+	PxVec3 RayDirOffset = RayDir * -1.5f;
 
 	// 충돌했는지?
 	if (n > 0)
@@ -212,7 +212,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 
 		// + PxExtendedVec3(RayDirOffset.x, RayDirOffset.y, RayDirOffset.z)
 
-		newHit[0].position += RayDirOffset;
+		//newHit.position += RayDirOffset;
 
 		//PxExtendedVec3 position = m_pController->getPosition();
 

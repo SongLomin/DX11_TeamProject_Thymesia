@@ -36,6 +36,7 @@ void CBatBossState_Bite_2::Start()
 
 	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
 	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+	m_pChestBoneNode = m_pModelCom.lock()->Find_BoneNode("chest");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Bite_2::Call_AnimationEnd, this, placeholders::_1);
 }
@@ -86,10 +87,11 @@ void CBatBossState_Bite_2::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		vPosition = CombinedMatrix.r[3];
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
 
-		vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+	
+		CombinedMatrix = Get_ChestCombinedWorldMatrix();
 
+		vPosition = CombinedMatrix.r[3];
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
-
 	}
 
 }

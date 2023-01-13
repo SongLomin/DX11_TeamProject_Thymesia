@@ -6725,6 +6725,9 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UIEffect.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_ExtractTexture.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Private\Update_Particle.cu">

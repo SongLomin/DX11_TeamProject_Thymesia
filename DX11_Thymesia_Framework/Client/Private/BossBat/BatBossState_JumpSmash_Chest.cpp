@@ -35,6 +35,7 @@ void CBatBossState_JumpSmash_Chest::Start()
 
 	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
 	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
+	m_pChestBoneNode = m_pModelCom.lock()->Find_BoneNode("chest");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this, placeholders::_1);
 }
@@ -87,8 +88,10 @@ void CBatBossState_JumpSmash_Chest::Call_NextAnimationKey(const _uint& In_iKeyIn
 		break;
 	}
 	case 87:
-	{
-		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+	{//chest
+		_matrix CombinedMatrix = Get_ChestCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
 		break;
 	}
@@ -97,12 +100,12 @@ void CBatBossState_JumpSmash_Chest::Call_NextAnimationKey(const _uint& In_iKeyIn
 		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 0.9f, 0.3f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
 		
 		CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		vPosition = CombinedMatrix.r[3];
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.17f, 0.9f, 0.3f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
 
 		break;
 	}
