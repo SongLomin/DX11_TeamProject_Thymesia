@@ -30,22 +30,26 @@
         "g_Texture_AddNo1": {
           "Density": 30.0,
           "Diff": "brick2moss_D",
-          "Norm": "brick2moss_N"
+          "Norm": "brick2moss_N",
+          "ORM": "brick2moss_SRM"
         },
         "g_Texture_AddNo2": {
           "Density": 20.0,
           "Diff": "T_Moss_D",
-          "Norm": "T_Moss_N"
+          "Norm": "T_Moss_N",
+          "ORM": "T_P_Moss01_ORM"
         },
         "g_Texture_AddNo3": {
           "Density": 10.0,
           "Diff": "T_moss_1_a_D",
-          "Norm": "T_moss_1_a_N"
+          "Norm": "T_moss_1_a_N",
+          "ORM": "T_moss_1_a_M"
         },
         "g_Texture_Sorc": {
           "Density": 30.0,
           "Diff": "T_GroundMud_D",
-          "Norm": "T_GroundMud_N"
+          "Norm": "T_GroundMud_N",
+          "ORM": "T_GroundMud_ORM"
         }
       },
       "VIBufferCom": "Stage_Lv3-1",
@@ -6825,22 +6829,26 @@
         "g_Texture_AddNo1": {
           "Density": 30.0,
           "Diff": "T_moss_1_a_D",
-          "Norm": "T_moss_1_a_N"
+          "Norm": "T_moss_1_a_N",
+          "ORM": "T_P_Moss01_ORM"
         },
         "g_Texture_AddNo2": {
           "Density": 30.0,
           "Diff": "T_Moss_D",
-          "Norm": "T_Moss_N"
+          "Norm": "T_Moss_N",
+          "ORM": "T_moss_1_a_M"
         },
         "g_Texture_AddNo3": {
           "Density": 30.0,
           "Diff": "brick2moss_D",
-          "Norm": "brick2moss_N"
+          "Norm": "brick2moss_N",
+          "ORM": "brick2moss_SRM"
         },
         "g_Texture_Sorc": {
           "Density": 30.0,
           "Diff": "T_GroundMud_D",
-          "Norm": "T_GroundMud_N"
+          "Norm": "T_GroundMud_N",
+          "ORM": "T_GroundMud_ORM"
         }
       },
       "VIBufferCom": "Stage_Lv3-1_No2",

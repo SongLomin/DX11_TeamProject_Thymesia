@@ -72,13 +72,13 @@ private:
     weak_ptr<CModel>        m_pAnimModelCom;
     weak_ptr<CShader>       m_pAnimShader;
     weak_ptr<CTexture>      m_pTextureCom;
-    weak_ptr<CTransform>    m_pChairTransfromCom;
+    weak_ptr<CTransform>    m_pAnimTransfromCom;
 
     weak_ptr<CActorDecor>   m_pDeco;
 
     _int                    m_iTexPass      = 84;
     _float2                 m_vAddSpeed     = { -0.2f, 0.2f };
-    _float                  m_fAisemyOffset = 0.2f;
+    _float                  m_fAisemyOffset = 0.4f;
     _float                  m_fAnimSpeed    = 1.f;
     _int                    m_iAnimIndex    = 0;
 
