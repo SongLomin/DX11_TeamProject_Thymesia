@@ -1,13 +1,9 @@
 #pragma once
-#include "Base.h"
+#include "Client_Defines.h"
 
 BEGIN(Client)
-
-
 class CUI_Cursor;
 class CItemPopup_Queue;
-
-
 class CUIManager : public CBase
 {
 	DECLARE_SINGLETON(CUIManager)
@@ -39,14 +35,15 @@ public:
     FDelegate<> Callback_OpenCurtain;
 
 private:
-    void        OpenCurtain(_float fTime);
+    void        OpenCurtain();
 
 
 public:
     BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
     void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
 
-
+    void                Set_Complete_SetUpUI() { m_bCompleteSetUpUI = true; }
+    _bool               Get_Completed_SetUpUI() { return m_bCompleteSetUpUI; }
 
 public:
     void               OnEnterEvolveMenu();
@@ -77,12 +74,11 @@ private:
 private:
 	_bool		m_bOpenedMenu = false;
 	_bool		m_bIsAnimation = false;
+
+    _bool       m_bCompleteSetUpUI = false;
+
 private:
 	void		Free();
 
 };
-
-
 END
-
-

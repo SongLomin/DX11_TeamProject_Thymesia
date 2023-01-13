@@ -305,14 +305,75 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
 
-	_int iPassIndex = 0;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		_flag BindTextureFlag = 0;
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+			continue;
+		}
+
+		m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+
+		// Cloth
+		if ((1 == i || 3 == i) &&
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 9;
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 5;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		NO.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 4;
+		}
+
+		// NormalTexture	NO.
+		// ORMTexture		NO.
+		else if (
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 0;
+		}
+
+
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
+
+		/*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
@@ -333,11 +394,11 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 		else
 		{
 			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
-		}
+		}*/
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		
 		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
@@ -443,7 +504,7 @@ void CVarg::Init_Desc()
 void CVarg::Move_RootMotion_Internal()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 
 	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);

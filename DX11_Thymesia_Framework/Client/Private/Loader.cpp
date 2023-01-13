@@ -1158,6 +1158,19 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("Script_Varg_Tutorial_1"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Tutorial_1.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Script_Varg_Tutorial_Appear"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Appear0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+
+	LOAD_TEXTURES_USE_THREAD(("Script_Bat_Appear"), TEXT("../Bin/Resources/Textures/UI/Scripts/Bat/Appear0.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	LOAD_TEXTURES_USE_THREAD(("Script_Urd_Appear"), TEXT("../Bin/Resources/Textures/UI/Scripts/Urd/Appear0.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Script_Urd_BattleStart0"), TEXT("../Bin/Resources/Textures/UI/Scripts/Urd/BattleStart_0.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Script_Urd_BattleStart1"), TEXT("../Bin/Resources/Textures/UI/Scripts/Urd/BattleStart_1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	LOAD_TEXTURES_USE_THREAD(("Script_Urd_Phase2"), TEXT("../Bin/Resources/Textures/UI/Scripts/Urd/Phase2.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Script_Urd_Dead"), TEXT("../Bin/Resources/Textures/UI/Scripts/Urd/Dead.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 	//DamageFont
 	LOAD_TEXTURES_USE_THREAD(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);

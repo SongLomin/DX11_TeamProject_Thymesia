@@ -33,6 +33,7 @@ private:
 	_float m_fCurrentSpeed = 1.5f;
 	_float m_fAccel = 0.f;
 	_bool  m_bOnce = false;
+	_int   m_iRepeatAnimation = false;
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

@@ -125,6 +125,13 @@ _bool CCorvusState_HurtL::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 			return true;
 		}
+
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
 	}
 
 	return false;

@@ -69,8 +69,8 @@ void CCorvusState_PS_CaneSword::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_CaneSword_SP02");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_CaneSword::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 6.129f,5.f,3.f };
-	m_DecalDesc.vPosition = { -0.16f, 0.f, 4.28f, 1.f };
+	m_DecalDesc.vScale = { 3.f,6.129f,1.f };
+	m_DecalDesc.vPosition = { -0.16f, 0.f, 3.28f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);

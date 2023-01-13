@@ -45,7 +45,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
-
+		
 	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
 	Preset::NvClothMesh::CorvusSetting(NvClothDesc);
 
@@ -69,8 +69,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Ready_Weapon();
 	Ready_States();
 	Ready_Skills();
-
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
@@ -368,13 +366,38 @@ void CCorvus::Before_Render(_float fTimeDelta)
 HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
+
+
+	_flag BindTextureFlag;
+
 	 _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
-#ifdef _DEBUG
-		//if (i == m_iContainerIndex)
-		//	continue;
-#endif // _DEBUG
+		BindTextureFlag = 0;
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+			continue;
+		}
+
+		m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+
 
 		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
@@ -417,39 +440,43 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 
 			m_pShaderCom.lock()->Set_RawValue("g_vRimLightColor", &vRimLightDesc, sizeof(_float4));
 
-			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-				m_iPassIndex = 4;
-			else
+			// Cloth
+			if (2 == i &&
+				(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+				(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 			{
-				if (i == 2)
-					m_iPassIndex = 8;
-				else
-					m_iPassIndex = 5;
+				m_iPassIndex = 9;
+				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
 			}
-		}
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-			m_iPassIndex = 0;
+			// NormalTexture	OK.
+			// ORMTexture		OK.
+			else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+				(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+			{
+				m_iPassIndex = 5;
+			}
 
+			// NormalTexture	OK.
+			// ORMTexture		NO.
+			// NoneCulling		OK.
+			else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+				!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+			{
+				m_iPassIndex = 4;
+			}
 
-		if (2 == i)
-		{
-			m_iPassIndex = 9;
-
-			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
-		}
-		else
-		{
-			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+			// NormalTexture	NO.
+			// ORMTexture		NO.
+			else if (
+				!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+				!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+			{
+				m_iPassIndex = 0;
+			}
 		}
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
-
-#ifdef _DEBUG
-		//if (i == 2)
-		//	continue;
-#endif // _DEBUG
 	}
 
 	m_DissolveDescs.clear();
@@ -798,6 +825,8 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_PS_Scythe_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_Hammer);
 	ADD_STATE_MACRO(CCorvusState_PS_Hammer_Upgrade);
+	ADD_STATE_MACRO(CCorvusState_PS_Halberds);
+	ADD_STATE_MACRO(CCorvusState_PS_Halberds_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_Magician);
 	ADD_STATE_MACRO(CCorvusState_PS_BatRoar);
 	ADD_STATE_MACRO(CCorvusState_PS_BatRoar_Upgrade);
@@ -906,6 +935,8 @@ void CCorvus::Save_ClientComponentData()
 	json	CorvusJson;
 
 	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
+	
+
 
 	m_pStatus.lock()->Write_SaveData(CorvusJson);
 	m_pInventory.lock()->Write_SaveData(CorvusJson);

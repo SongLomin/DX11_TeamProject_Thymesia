@@ -84,27 +84,63 @@ HRESULT CBigHandMan::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
 
-	_int iPassIndex = 0;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		_flag BindTextureFlag = 0;
 
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
-			iPassIndex = 0;
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
 		}
-		else
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		{
-			iPassIndex = 4;
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
 		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+			continue;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 5;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		NO.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 4;
+		}
+
+		// NormalTexture	NO.
+		// ORMTexture		NO.
+		else if (
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 0;
+		}
+
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 

@@ -64,9 +64,9 @@ void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollide
 	{
 
 		m_pReservedColliderList[In_iLayer].push_back(In_pCollider);
-#ifdef _DEBUG
+#ifdef _DEBUG_COUT_
 		cout << In_pCollider.lock()->Get_ColliderIndex() << ": Add Collider" << endl;
-#endif // _DEBUG
+#endif // _DEBUG_COUT_
 	}
 	//lock.unlock();
 }
@@ -111,9 +111,9 @@ void CCollision_Manager::Remove_DeadCollision()
 			}
 			else if(!(*iter).lock().get()->Get_Enable())
 			{
-#ifdef _DEBUG
+#ifdef _DEBUG_COUT_
 				cout << (*iter).lock()->Get_ColliderIndex() << ": Remove Disable Collider" << endl;
-#endif // _DEBUG
+#endif // _DEBUG_COUT_
 				iter = m_pColliderList[i].erase(iter);
 			}
 			else

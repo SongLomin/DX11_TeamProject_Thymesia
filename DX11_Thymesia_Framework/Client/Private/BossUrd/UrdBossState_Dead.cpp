@@ -10,6 +10,7 @@
 #include "BossUrd/UrdStates.h"
 #include "JavelinWeapon.h"
 #include "UrdWeapon.h"
+#include "UI_ScriptQueue.h"
 
 GAMECLASS_C(CUrdBossState_Dead);
 CLONE_C(CUrdBossState_Dead, CComponent)
@@ -87,6 +88,10 @@ void CUrdBossState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,4);
 	
 	
+	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Urd_Dead();
+
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;

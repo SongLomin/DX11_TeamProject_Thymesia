@@ -33,6 +33,10 @@ protected:
 	void Free();
 
 private:
+	DECAL_DESC m_DecalDesc;
+
+
+private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 };
 

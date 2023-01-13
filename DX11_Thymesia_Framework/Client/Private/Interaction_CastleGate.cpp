@@ -137,14 +137,9 @@ HRESULT CInteraction_CastleGate::Render(ID3D11DeviceContext* pDeviceContext)
     if (FAILED(SetUp_ShaderResource_Default(pDeviceContext)))
         return E_FAIL;
 
-    if (FAILED(DrawShader_Body(pDeviceContext)))
-        return E_FAIL;
-   
-    if (FAILED(DrawShader_Door(pDeviceContext)))
-        return E_FAIL;
-
-    if (FAILED(DrawShader_Gear(pDeviceContext)))
-        return E_FAIL;
+    DrawShader_Body(pDeviceContext);
+    DrawShader_Door(pDeviceContext);
+    DrawShader_Gear(pDeviceContext);
 
     CGameObject::Render(pDeviceContext);
 
@@ -352,19 +347,28 @@ HRESULT CInteraction_CastleGate::DrawShader_Body(ID3D11DeviceContext* pDeviceCon
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
-            m_iPassIndex = 0;
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
         }
-        else
+
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
@@ -389,20 +393,31 @@ HRESULT CInteraction_CastleGate::DrawShader_Door(ID3D11DeviceContext* pDeviceCon
     _uint iNumMeshContainers = m_pDoorRightModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pDoorRightModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pDoorRightModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        if (SUCCEEDED(m_pDoorRightModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
-            m_iPassIndex = 0;
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
         }
-        else
+
+        if (SUCCEEDED(m_pDoorRightModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            if (FAILED(m_pDoorRightModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
         }
+
+        if (SUCCEEDED(m_pDoorRightModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
+        }
+
+     
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pDoorRightModelCom.lock()->Render_Mesh(i, pDeviceContext);
@@ -416,19 +431,28 @@ HRESULT CInteraction_CastleGate::DrawShader_Door(ID3D11DeviceContext* pDeviceCon
     iNumMeshContainers = m_pDoorLeftModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pDoorLeftModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pDoorLeftModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        if (SUCCEEDED(m_pDoorLeftModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
-            m_iPassIndex = 0;
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
         }
-        else
+
+        if (SUCCEEDED(m_pDoorLeftModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            if (FAILED(m_pDoorLeftModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pDoorLeftModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
@@ -461,19 +485,28 @@ HRESULT CInteraction_CastleGate::DrawShader_Gear(ID3D11DeviceContext* pDeviceCon
     _uint iNumMeshContainers = m_pGearModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pGearModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pGearModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        if (SUCCEEDED(m_pGearModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
-            m_iPassIndex = 0;
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
         }
-        else
+
+        if (SUCCEEDED(m_pGearModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            if (FAILED(m_pGearModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pGearModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);

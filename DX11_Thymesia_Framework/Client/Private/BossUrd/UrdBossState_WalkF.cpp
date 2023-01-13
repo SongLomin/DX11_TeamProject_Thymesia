@@ -68,9 +68,11 @@ void CUrdBossState_WalkF::OnStateStart(const _float& In_fAnimationBlendTime)
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Start>().lock())
 	{
 		m_bOnce = true;
+		m_iRepeatAnimation = 2;
 	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	
 	
 	
 #ifdef _DEBUG
@@ -87,7 +89,7 @@ void CUrdBossState_WalkF::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_bOnce = false;
+	m_iRepeatAnimation += 1;
 
 }
 
@@ -98,7 +100,7 @@ void CUrdBossState_WalkF::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+	//Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
 void CUrdBossState_WalkF::OnDestroy()
@@ -117,7 +119,7 @@ _bool CUrdBossState_WalkF::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_bOnce)
+	if (m_iRepeatAnimation >= 2)
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.95f)
 		{
@@ -125,6 +127,9 @@ _bool CUrdBossState_WalkF::Check_AndChangeNextState()
 			return true;
 		}
 	}
+
+
+	
 
 
 

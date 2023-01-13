@@ -206,6 +206,8 @@
     <ClInclude Include="..\Public\CNvClothCollider.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BatRoar_Upgrade.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Armor_Execution_01.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Armor_Execution_02.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_AromorLV1_Execution.h" />
@@ -550,6 +552,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Suprise_Attack.h" />
     <ClInclude Include="..\Public\PhysXColliderObject_Interior.h" />
     <ClInclude Include="..\Public\Preset_NvClothCollider.h" />
+    <ClInclude Include="..\Public\Preset_ShaderPass.h" />
     <ClInclude Include="..\Public\PreView_InteriorProp.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
@@ -908,6 +911,8 @@
     <ClCompile Include="..\Private\CNvClothCollider.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BatRoar_Upgrade.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_01.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_02.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_AromorLV1_Execution.cpp" />
@@ -1244,6 +1249,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Suprise_Attack.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject_Interior.cpp" />
     <ClCompile Include="..\Private\Preset_NvClothCollider.cpp" />
+    <ClCompile Include="..\Private\Preset_ShaderPass.cpp" />
     <ClCompile Include="..\Private\PreView_InteriorProp.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />

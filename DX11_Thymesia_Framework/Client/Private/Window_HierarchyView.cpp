@@ -275,8 +275,7 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			     typeid(CJoker).hash_code()      == TempDesc.HashCode ||
 			     typeid(CBat).hash_code()        == TempDesc.HashCode ||
 			     typeid(CUrd).hash_code()        == TempDesc.HashCode ||
-			     typeid(CBigHandMan).hash_code() == TempDesc.HashCode
-			)
+			     typeid(CBigHandMan).hash_code() == TempDesc.HashCode)
 		{
 			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
 			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
@@ -345,6 +344,7 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		}
 
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
+
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(Elem_GameObject["Setting"]["Enable"]);
 		m_pGameObjects.back().pInstance.lock()->Load_FromJson(Elem_GameObject);
 	}

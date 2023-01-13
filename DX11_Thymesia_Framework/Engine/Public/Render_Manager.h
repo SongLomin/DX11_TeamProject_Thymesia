@@ -86,6 +86,7 @@ private:
 	HRESULT Render_ShadowDepth();
 	HRESULT Render_NonAlphaBlend();
 	HRESULT Render_Decal();
+	HRESULT Render_Water();
 	HRESULT Render_Lights();
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();

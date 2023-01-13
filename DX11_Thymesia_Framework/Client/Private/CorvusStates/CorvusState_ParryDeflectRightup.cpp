@@ -142,18 +142,16 @@ _bool CCorvusState_ParryDeflectRightup::Check_AndChangeNextState()
 		}
 
 
-		return true;
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.17f)
-	{
 		if (Check_RequirementRunState())
 		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
 		}
 
+
 		return true;
 	}
+
+
 
 
 	return false;

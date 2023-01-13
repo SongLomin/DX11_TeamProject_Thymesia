@@ -25,6 +25,8 @@ HRESULT CLevel_Stage2::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
+
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE2);
 
 	CCamera::CAMERADESC CameraDesc;
@@ -41,7 +43,6 @@ HRESULT CLevel_Stage2::Initialize()
 
 	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 
-	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
 
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_STAGE2);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });

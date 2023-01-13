@@ -43,6 +43,8 @@ private:
 private:
     typedef map<string, TEXTURES_INFO>  TEXTURES;
 
+    weak_ptr<CTexture>              m_pNormTex;
+
 	weak_ptr<CShader>               m_pShaderCom;
 	weak_ptr<CRenderer>             m_pRendererCom;
 	weak_ptr<CVIBuffer_Ground>      m_pVIBufferCom;

@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "ModelData.h"
 #include "Shader.h"
+#include "SubThread_Pool.h"
 
 IMPLEMENT_SINGLETON(CResource_Manager)
 
@@ -558,26 +559,54 @@ void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
 		DEBUG_ASSERT;
 	}
 
-	list<future<void>>	Threads;
+	shared_ptr<CSubThread_Pool> pSubThreads = CSubThread_Pool::Create(NUM_ENGINE_THREAD);
+
+	//list<future<void>>	Threads;
 
 	for (_int i = 0; i < 2; ++i)
 	{
+		pSubThreads->Enqueue_Job(bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
+			In_Json[i]["Model"], (MEMORY_TYPE)i);
+
+		pSubThreads->Enqueue_Job(bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
+			In_Json[i]["Textures"], (MEMORY_TYPE)i);
+
 		/*Load_ModelResourcesFromJson(In_Json[i]["Model"], (MEMORY_TYPE)i);
 		Load_TextureResourcesFromJson(In_Json[i]["Textures"], (MEMORY_TYPE)i);*/
 
-		Threads.push_back(async(launch::async,
+		/*Threads.push_back(async(launch::async,
 			bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Model"], (MEMORY_TYPE)i));
 
 		Threads.push_back(async(launch::async,
 			bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
-			In_Json[i]["Textures"], (MEMORY_TYPE)i));
+			In_Json[i]["Textures"], (MEMORY_TYPE)i));*/
 	}
 
-	for (auto& elem : Threads)
-	{
-		elem.get();
-	}
+	//list<future<void>>	Threads;
+
+	//for (_int i = 0; i < 2; ++i)
+	//{
+	//	/*Load_ModelResourcesFromJson(In_Json[i]["Model"], (MEMORY_TYPE)i);
+	//	Load_TextureResourcesFromJson(In_Json[i]["Textures"], (MEMORY_TYPE)i);*/
+
+	//	Threads.push_back(async(launch::async,
+	//		bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
+	//		In_Json[i]["Model"], (MEMORY_TYPE)i));
+
+	//	Threads.push_back(async(launch::async,
+	//		bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
+	//		In_Json[i]["Textures"], (MEMORY_TYPE)i));
+	//}
+
+	//for (auto& elem : Threads)
+	//{
+	//	elem.get();
+	//}
+
+	pSubThreads->Wait_JobDone();
+	pSubThreads->OnDestroy();
+	pSubThreads.reset();
 }
 
 void CResource_Manager::Load_ModelResourcesFromJson(json& In_ModelJson, const MEMORY_TYPE In_eMemoryType)

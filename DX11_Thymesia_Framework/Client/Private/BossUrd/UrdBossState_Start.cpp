@@ -10,6 +10,8 @@
 #include "BossUrd/UrdStates.h"
 #include "MobWeapon.h"
 #include "UrdWeapon.h"
+#include "UI_ScriptQueue.h"
+
 
 GAMECLASS_C(CUrdBossState_Start);
 CLONE_C(CUrdBossState_Start, CComponent)
@@ -98,6 +100,8 @@ void CUrdBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkF>(0.05f);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Urd_Appear();
 }
 
 void CUrdBossState_Start::OnDestroy()
@@ -118,7 +122,7 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 15.f)
+	if (fPToMDistance <= 25.f)
 	{
 		m_bSinematicStart = true;
 

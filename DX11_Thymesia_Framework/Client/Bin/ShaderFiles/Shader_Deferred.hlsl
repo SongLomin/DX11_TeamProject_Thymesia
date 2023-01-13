@@ -324,7 +324,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     float fDenom = fDistance / g_fRange;
     float fAtt = 1.f / (1.f + fDenom * fDenom);
     
-    clip(fAtt - 0.1f);
+    clip(fAtt - 0.01f);
     
     fAtt *= g_fLightIntensity;
     vector vLook = normalize(g_vCamPosition - vWorldPos);

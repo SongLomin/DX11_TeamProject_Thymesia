@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CModel;
+class CAnimation;
 END
 
 BEGIN(Client)
@@ -32,13 +33,15 @@ private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
+private:
+	DECAL_DESC m_DecalDesc;
+	weak_ptr<CAnimation> m_pThisAnimationCom;
+
 protected:
 	virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 	virtual void OnDestroy() override;
 	void Free();
 
-private:
-	weak_ptr<CAnimation> m_pThisAnimationCom;
 
 };
 

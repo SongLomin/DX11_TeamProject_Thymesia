@@ -67,36 +67,56 @@ HRESULT CPreview_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	m_iPassIndex = 3;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
-#ifdef _DEBUG
-	if (m_iContainerIndex >= iNumMeshContainers)
-		m_iContainerIndex = 0;
-#endif //_DEBUG
+	_flag BindTextureFlag;
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-#ifdef _DEBUG
-		/*if (i == m_iContainerIndex)
-			continue;*/
-#endif
+		BindTextureFlag = 0;
 
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
 
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+			continue;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 7;
+		}
+
+		// NormalTexture	OK.
+		// ORMTexture		NO.
+		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+			m_iPassIndex = 6;
+		}
+
+		// NormalTexture	NO.
+		// ORMTexture		NO.
+		else if (
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 		{
 			m_iPassIndex = 0;
-		}
-		else
-		{
-			if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
-			{
-				if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-					m_iPassIndex = 6;
-				else
-					m_iPassIndex = 7;
-			}
-			else
-			{
-				m_iPassIndex = 3;
-			}
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);

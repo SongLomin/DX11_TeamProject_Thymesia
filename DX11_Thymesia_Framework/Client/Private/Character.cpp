@@ -134,7 +134,8 @@ void CCharacter::LateTick(_float fTimeDelta)
 
 void CCharacter::Before_Render(_float fTimeDelta)
 {
-	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+	if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
+		m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 
 	__super::Before_Render(fTimeDelta);
 }
