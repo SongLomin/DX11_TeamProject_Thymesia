@@ -116,7 +116,6 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 	__super::Render(pDeviceContext);
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-	_uint iPassIndex = 0;
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
@@ -148,7 +147,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
 			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 		{
-			iPassIndex = 5;
+			m_iPassIndex = 5;
 		}
 
 		// NormalTexture	OK.
@@ -156,7 +155,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
 			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 		{
-			iPassIndex = 4;
+			m_iPassIndex = 4;
 		}
 
 		// NormalTexture	NO.
@@ -165,15 +164,10 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
 			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 		{
-			iPassIndex = 0;
+			m_iPassIndex = 0;
 		}
 
-		if (m_iPassIndex > 0)
-		{
-			iPassIndex = m_iPassIndex;
-		}
-
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i);
 	}
 
@@ -210,11 +204,11 @@ void CBat::Init_Desc()
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_BatWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "hand_r");
-	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 2.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 4.5f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_BatWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "hand_l");
-	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 2.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 4.5f, COLLISION_LAYER::MONSTER_ATTACK);
 
 
 
