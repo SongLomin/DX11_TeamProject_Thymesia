@@ -117,6 +117,14 @@ void CGround::Load_FromJson(const json& In_Json)
 					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
 				}
 
+				if ("ORM" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pORMTex = Add_Component<CTexture>();
+					Desc.pORMTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
 				if ("Density" == szDatakey)
 				{
 					Desc.fDensity = iter_data.value();
@@ -183,12 +191,16 @@ HRESULT CGround::SetUp_ShaderResource()
 	{
 		string szDiffTextureName = iter.first + "_Diff";
 		string szNormTextureName = iter.first + "_Norm";
+		string szORMTextureName  = iter.first + "_ORM";
 		string szDensityName     = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 
 		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
 			return E_FAIL;
 
 		if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
+			return E_FAIL;
+
+		if (FAILED(iter.second.pORMTex.lock()->Set_ShaderResourceView(m_pShaderCom, szORMTextureName.c_str(), 0)))
 			return E_FAIL;
 
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
