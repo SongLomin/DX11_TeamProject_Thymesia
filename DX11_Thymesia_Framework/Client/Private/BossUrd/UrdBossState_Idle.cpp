@@ -85,7 +85,7 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	{
 		
 
-		if (m_iPhaseTwoSkillCount >= 8)
+		if (m_iPhaseTwoSkillCount >= 6)
 		{
 			m_bSkillStart = true;
 			m_iPhaseTwoSkillCount = 0;
