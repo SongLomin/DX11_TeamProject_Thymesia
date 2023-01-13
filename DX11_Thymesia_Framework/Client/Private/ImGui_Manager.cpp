@@ -23,6 +23,7 @@
 
 //Model
 #include "Window_ModelContantView.h"
+#include "Window_TextureEditerView.h"
 
 //Editer Camera
 #include "Camera_Free.h"
@@ -363,6 +364,7 @@ void CImGui_Manager::Init_ModelEditer()
 	Release_CurrentEditer();
 
 	m_arrWindows.emplace_back(CWindow_ModelContantView::Create_Instance());
+	m_arrWindows.emplace_back(CWindow_TextureEditerView::Create_Instance());
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -411,6 +413,7 @@ void CImGui_Manager::Release_CurrentEditer()
 	CWindow_EffectHierarchyView::Destroy_Instance();
 
 	CWindow_ModelContantView::Destroy_Instance();
+	CWindow_TextureEditerView::Destroy_Instance();
 
 	if (m_pEditerCamera.lock())
 	{

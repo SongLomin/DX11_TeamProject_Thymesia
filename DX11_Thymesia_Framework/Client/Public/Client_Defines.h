@@ -16,6 +16,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
+#define _OVERDRIVE_LOAD_EFFECTGROUP_
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
@@ -34,8 +35,8 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
-// #define _EFFECT_TOOL_
+//#define _MAP_TOOL_
+#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
@@ -61,6 +62,7 @@
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
 #undef _LOAD_CAPTURED_RESOURCE_
+#undef _OVERDRIVE_LOAD_EFFECTGROUP_
 #pragma endregion // System
 
 #define _SKYBOX_

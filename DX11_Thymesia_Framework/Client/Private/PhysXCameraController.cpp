@@ -177,7 +177,8 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 
 
 	_vector vPlayerPosition = m_pTargetTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
-	_vector vPlayerToCameraDir = m_pOwner.lock()->Get_Transform()->Get_Position() - vPlayerPosition;
+	_vector vPlayerToCameraDir = -m_pOwner.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	//_vector vPlayerToCameraDir = m_pOwner.lock()->Get_Transform()->Get_Position() - vPlayerPosition;
 	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
 	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
 
@@ -187,10 +188,10 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 	XMStoreFloat4(&m_RayCamera.vOrigin, vPlayerPosition);
 	XMStoreFloat3(&m_RayCamera.vDirection, vPlayerToCameraDir);
 	m_RayCamera.vOrigin.w = 1.f;
-	m_RayCamera.fLength = fLength * 1.2f;
+	m_RayCamera.fLength = fLength * 5.f;
 
 
-	PxRaycastHit newHit;
+	PxRaycastHit newHit[2];
 
 	PxVec3 RayPos = SMath::Convert_PxVec3(XMLoadFloat4(&m_RayCamera.vOrigin));
 	PxVec3 RayDir = SMath::Convert_PxVec3(XMLoadFloat3(&m_RayCamera.vDirection));
@@ -199,7 +200,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 		*m_pLastHitShape, *m_pLastHitActor
 		, RayPos, RayDir,
 		(PxReal)m_RayCamera.fLength,
-		PxHitFlag::ePOSITION, 1, &newHit);
+		PxHitFlag::ePOSITION, 2, newHit);
 
 
 	PxVec3 RayDirOffset = (RayDir * -1.f) * 0.8f;
@@ -211,16 +212,16 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 
 		// + PxExtendedVec3(RayDirOffset.x, RayDirOffset.y, RayDirOffset.z)
 
-		newHit.position += RayDirOffset;
+		newHit[0].position += RayDirOffset;
 
-		PxExtendedVec3 position = m_pController->getPosition();
+		//PxExtendedVec3 position = m_pController->getPosition();
 
 		//PxVec3 MovePosition = newHit.position - PxVec3(position.x, position.y, position.z);
 
 		//PxControllerFilters Filters;
 		//Filters.mFilterFlags = PxQueryFlag::Enum(0);
 
-		m_pController->setPosition({ newHit.position.x, newHit.position.y, newHit.position.z });
+		m_pController->setPosition({ newHit[0].position.x, newHit[0].position.y, newHit[0].position.z});
 		m_bCollision = true;
 
 		//Print_Vector(SMath::Convert_PxExtendedVec3ToVector(position));

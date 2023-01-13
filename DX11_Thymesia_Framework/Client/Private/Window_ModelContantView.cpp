@@ -112,9 +112,9 @@ HRESULT CWindow_ModelContantView::Render(ID3D11DeviceContext* pDeviceContext)
     if (FAILED(__super::Begin()))
         return E_FAIL;
 
-    ImGui::TextColored(ImVec4{ 1.f, 0.f, 1.f, 1.f }, m_pModelData->szModelFileName.c_str());
+    ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, m_pModelData->szModelFileName.c_str());
 
-    if (ImGui::Button("ReLoad Model"))
+    if (ImGui::Button("ReLoad Model") || KEY_INPUT(KEY::F5, KEY_STATE::TAP))
     {
         if (m_bAnimModel)
         {

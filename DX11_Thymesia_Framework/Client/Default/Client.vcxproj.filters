@@ -2233,6 +2233,9 @@
     <ClInclude Include="..\Public\Preset_ShaderPass.h">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Window_TextureEditerView.h">
+      <Filter>97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4495,6 +4498,9 @@
     <ClCompile Include="..\Private\Preset_ShaderPass.cpp">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Window_TextureEditerView.cpp">
+      <Filter>97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -6643,6 +6649,9 @@
     </Filter>
     <Filter Include="06. DataPreset\09. Preset_ShaderPass">
       <UniqueIdentifier>{c040abcd-a8ee-49a8-9132-6f0208cfc02c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer">
+      <UniqueIdentifier>{f3361738-3c8e-4796-9947-334c34e437e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

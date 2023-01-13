@@ -719,4 +719,17 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
+
+    pass Default_Normal_Specular_NonCulling_NonBoneMatrix_Dissolve //13
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 3);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL_NONBONEMATRIX();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
+    }
 }

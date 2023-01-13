@@ -367,7 +367,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
 
-
+	_uint iPassIndex;
 	_flag BindTextureFlag;
 
 	 _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -423,7 +423,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 			m_pShaderCom.lock()->Set_RawValue("g_vRimLightColor", &vRimLightColor, sizeof(_float4));
 
-			m_iPassIndex = 6;
+			iPassIndex = 6;
 		}
 		else
 		{
@@ -445,7 +445,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 				(1 << aiTextureType_NORMALS) & BindTextureFlag &&
 				(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 			{
-				m_iPassIndex = 9;
+				iPassIndex = 9;
 				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
 			}
 
@@ -454,7 +454,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
 				(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 			{
-				m_iPassIndex = 5;
+				iPassIndex = 5;
 			}
 
 			// NormalTexture	OK.
@@ -463,7 +463,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
 				!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 			{
-				m_iPassIndex = 4;
+				iPassIndex = 4;
 			}
 
 			// NormalTexture	NO.
@@ -472,11 +472,16 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 				!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
 				!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 			{
-				m_iPassIndex = 0;
+				iPassIndex = 0;
+			}
+
+			if (m_iPassIndex > 0)
+			{
+				iPassIndex = 2 != i ? m_iPassIndex : 13;
 			}
 		}
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
 	}
 
 	m_DissolveDescs.clear();
@@ -512,6 +517,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 	else if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
+		m_iPassIndex = 0;
 	}
 
 	//if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)

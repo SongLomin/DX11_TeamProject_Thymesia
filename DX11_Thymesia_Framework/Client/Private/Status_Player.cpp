@@ -35,14 +35,11 @@ void CStatus_Player::Tick(_float fTimeDelta)
     m_fPotionTime -= fTimeDelta;
 
 
-#ifdef _DEBUG
     if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
     {
         m_tDesc.m_iMemory += 100000;
         Callback_Update_Status();
     }
-  
-#endif // DEBUG
 
   
     //if (m_fPotionTime >= 0.f)

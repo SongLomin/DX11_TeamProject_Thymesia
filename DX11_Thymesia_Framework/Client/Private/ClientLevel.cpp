@@ -8,6 +8,7 @@
 #include "EffectGroup.h"
 #include "UIHeaders.h"
 #include "Static_Instancing_Prop.h"
+#include "SubThread_Pool.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -57,7 +58,14 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
 {
-	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+
+#ifdef _OVERDRIVE_LOAD_EFFECTGROUP_
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+#endif // _OVERDRIVE_LOAD_EFFECTGROUP_
+
+	
+
+	
 
 	std::filesystem::path dir_path = In_FolderPath;
 	std::vector<fs::directory_entry> entries;
@@ -73,22 +81,24 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 		const fs::directory_entry& entry = *itr;
 
 		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+		
+
+#ifdef _OVERDRIVE_LOAD_EFFECTGROUP_
+		GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_LevelIndex, EffectGroup]() {
+			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+	}));
+#else
 		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-
-		//GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_LevelIndex, EffectGroup]() {
-		//	
-		//	//cout << entry.path().filename() << std::endl;
-		//	}));
+#endif // _OVERDRIVE_LOAD_EFFECTGROUP_
 
 		
-#ifdef _DEBUG_COUT_
-		
-#endif
 
 		itr++;
 	}
-	//GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
+#ifdef _OVERDRIVE_LOAD_EFFECTGROUP_
+	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+#endif // _OVERDRIVE_LOAD_EFFECTGROUP_
 	END_PERFROMANCE_CHECK("LOAD_EFFECTGROUP");
 }
 
