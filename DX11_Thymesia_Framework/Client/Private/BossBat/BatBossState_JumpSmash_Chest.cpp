@@ -107,6 +107,8 @@ void CBatBossState_JumpSmash_Chest::Call_NextAnimationKey(const _uint& In_iKeyIn
 		vPosition = CombinedMatrix.r[3];
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 0.9f, 0.3f);
 
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.3f, 1.f, 9.f, 0.5f);
+
 		break;
 	}
 	case 107:

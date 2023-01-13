@@ -250,9 +250,11 @@ HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char
 			vector<ComPtr<ID3D11ShaderResourceView>> NullTexture = GAMEINSTANCE->Get_TexturesFromKey("NullTexture");
 
 			pShader.lock()->Set_ShaderResourceView(pConstantName, NullTexture.front());
+			return S_OK;
 		}
 
-		return S_OK;
+		return E_FAIL;
+
 	}
 
 	return m_Materials[iMaterialIndex].pTextures[eActorType].lock()->Set_ShaderResourceView(pShader, pConstantName);

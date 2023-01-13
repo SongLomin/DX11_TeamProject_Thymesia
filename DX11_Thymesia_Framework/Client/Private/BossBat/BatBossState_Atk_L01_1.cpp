@@ -145,8 +145,9 @@ void CBatBossState_Atk_L01_1::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 		break;
 	}
-	case 196:
+	case 195:
 	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.25f, 1.f, 9.f, 0.4f);
 		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());

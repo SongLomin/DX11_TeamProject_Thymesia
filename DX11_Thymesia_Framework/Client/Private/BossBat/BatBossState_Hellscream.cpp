@@ -48,6 +48,10 @@ void CBatBossState_Hellscream::Tick(_float fTimeDelta)
 		TurnAttack(fTimeDelta);
 	}
 	
+	if (m_bShaking)
+	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.1f, 1.f, 9.f, 0.4f);
+	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -73,7 +77,7 @@ void CBatBossState_Hellscream::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.05f, 9.f, 3.f);
 		break;
 	}
 	case 45:
@@ -84,6 +88,13 @@ void CBatBossState_Hellscream::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 		break;
 	}
+	case 428:
+		m_bShaking = true;
+		break;
+
+	case 653:
+		m_bShaking = false;
+		break;
 	}
 }
 
@@ -92,7 +103,7 @@ void CBatBossState_Hellscream::OnStateStart(const _float& In_fAnimationBlendTime
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_bAttackLookAtLimit = true;
-
+	m_bShaking = false;
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
