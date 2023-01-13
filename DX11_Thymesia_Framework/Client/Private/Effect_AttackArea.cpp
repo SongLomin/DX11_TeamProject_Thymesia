@@ -89,7 +89,7 @@ void CEffect_AttackArea::Before_Render(_float fTimeDelta)
 	//부모 게임 오브젝트가 없음.
 	if (!m_pParentTransformCom.lock())
 	{
-		DEBUG_ASSERT;
+		return;
 	}
 
 	if (((_flag)ATTACKAREA_FLAG::FOLLOW_TRANSFORM) & m_Desc.AttackAreaFlag)

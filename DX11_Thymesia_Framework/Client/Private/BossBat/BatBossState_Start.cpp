@@ -10,6 +10,9 @@
 #include "Character.h"
 #include "BossBat/BatStates.h"
 #include "PhysXCharacterController.h"
+#include "UIManager.h"
+#include "UI_ScriptQueue.h"
+
 
 GAMECLASS_C(CBatBossState_Start);
 CLONE_C(CBatBossState_Start, CComponent)
@@ -152,6 +155,9 @@ void CBatBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 	GET_SINGLE(CGameManager)->End_Cinematic();
 
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Bat_Appear();
+	//GET_SINGLE(CUIManager)->Set_CloseCurtain(1.f);
 }
 
 void CBatBossState_Start::OnDestroy()

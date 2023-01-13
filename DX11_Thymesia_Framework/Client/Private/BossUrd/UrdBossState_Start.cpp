@@ -10,6 +10,8 @@
 #include "BossUrd/UrdStates.h"
 #include "MobWeapon.h"
 #include "UrdWeapon.h"
+#include "UI_ScriptQueue.h"
+
 
 GAMECLASS_C(CUrdBossState_Start);
 CLONE_C(CUrdBossState_Start, CComponent)
@@ -98,6 +100,8 @@ void CUrdBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkF>(0.05f);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Urd_Appear();
 }
 
 void CUrdBossState_Start::OnDestroy()

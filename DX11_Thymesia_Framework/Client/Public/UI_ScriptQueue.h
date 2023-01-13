@@ -26,6 +26,14 @@ public:
     void                    Call_SetScript_Varg_Page2();
     void                    Call_SetScript_Varg_Dead();
 
+    void                    Call_SetScript_Bat_Appear();
+
+    void                    Call_SetScript_Urd_Appear();
+    void                    Call_SetScript_Urd_Phase2();
+    void                    Call_SetScript_Urd_Dead();
+    
+
+
 
 private:
     void        OnEnable(void* pArg) override;
