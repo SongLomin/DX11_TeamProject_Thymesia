@@ -10,7 +10,7 @@
 #pragma warning (disable : 33010)
 
 #define HZ_144 0.006944f
-#define NUM_ENGINE_THREAD 8
+#define NUM_ENGINE_THREAD 20
 
 #define _SIMULATION_NVCLOTH_
 #define _USE_PERFROMANCE_LOG_

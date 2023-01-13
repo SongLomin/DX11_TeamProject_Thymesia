@@ -103,7 +103,7 @@ void CUI_ScriptQueue::Call_SetScript_Bat_Appear()
     tScriptDesc.fLifeTime = 3.f;
     tScriptDesc.fPos = _float2(g_iWinCX / 2.f, g_iWinCY / 2.f);
     tScriptDesc.fSize = _float2(g_iWinCX, g_iWinCY);
-    tScriptDesc.strScriptKey = "Script_Urd_Appear";
+    tScriptDesc.strScriptKey = "Script_Bat_Appear";
     tScriptDesc.bLerp = true;
     m_ScriptDescQueue.push(tScriptDesc);
 }
