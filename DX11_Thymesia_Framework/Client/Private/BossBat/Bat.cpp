@@ -27,7 +27,7 @@ HRESULT CBat::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	CollsionContent(12.f);
+	CollsionContent(14.f);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxAnimModel"),

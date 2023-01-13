@@ -113,6 +113,9 @@ void CNorMonState_GroggyLoop::OnStateStart(const _float& In_fAnimationBlendTime)
 
 void CNorMonState_GroggyLoop::OnStateEnd()
 {
+
+	m_bNextStatepause = false;
+
 	__super::OnStateEnd();
 	
 }
