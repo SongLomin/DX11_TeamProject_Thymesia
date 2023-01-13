@@ -60,6 +60,7 @@
 #include "CorvusStates/CorvusState_PS_Knife.h"
 #include "CorvusStates/CorvusState_PS_Hammer.h"
 #include "CorvusStates/CorvusState_PS_Hammer_Upgrade.h"
+#include "CorvusStates/CorvusState_PS_Halberds.h"
 #include "CorvusStates/CorvusState_PS_Magician.h"
 #include "CorvusStates/CorvusState_PS_VargSword.h"
 #include "CorvusStates/CorvusState_PS_VargSwordStart.h"

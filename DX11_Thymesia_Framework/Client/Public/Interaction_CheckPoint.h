@@ -8,13 +8,12 @@ BEGIN(Engine)
 
 class CCollider;
 class CModel;
-class CActorDecor;
 class CTransform;
 
 END
 
 BEGIN(Client)
-
+class CActorDecor;
 class CInteraction_CheckPoint final :
     public CInteraction_Prop
 {

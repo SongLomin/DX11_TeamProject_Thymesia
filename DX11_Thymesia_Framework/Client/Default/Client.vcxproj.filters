@@ -2224,6 +2224,9 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Halberds.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4476,6 +4479,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Halberds.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
