@@ -198,7 +198,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			}
 			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 			{
-				pOtherCharacter.lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
+				GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
 				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
 			}
 			break;
@@ -272,7 +272,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 				{
-					GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
+					
 					Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
 				}
 			}

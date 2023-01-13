@@ -204,11 +204,11 @@ void CBat::Init_Desc()
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_BatWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "hand_r");
-	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 2.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 4.5f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_BatWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "hand_l");
-	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 2.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 1.f,0.0f,0.f,1.0f }, 4.5f, COLLISION_LAYER::MONSTER_ATTACK);
 
 
 
