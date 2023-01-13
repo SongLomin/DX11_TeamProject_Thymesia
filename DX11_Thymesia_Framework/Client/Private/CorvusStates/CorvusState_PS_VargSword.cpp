@@ -3,7 +3,6 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
-#include "Effect_Decal.h"
 
 GAMECLASS_C(CCorvusState_PS_VargSword);
 CLONE_C(CCorvusState_PS_VargSword, CComponent)
@@ -33,11 +32,6 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
-
-		m_DecalDesc.vPosition = { -0.157f,0.f,2.121f, 1.f };
-		XMStoreFloat4(&m_DecalDesc.vPosition, XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), OwnerWorldMatrix));
-
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	}
 	return;
 	case 172:
@@ -58,14 +52,6 @@ HRESULT CCorvusState_PS_VargSword::Initialize_Prototype()
 HRESULT CCorvusState_PS_VargSword::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-	m_DecalDesc.vScale = { 3.f,5.f,6.129f };
-	m_DecalDesc.vPosition = { -0.157f,0.f,2.121f, 1.f };
-	m_DecalDesc.fTime = 1.f;
-	m_DecalDesc.fDisapearTime = 2.f;
-	m_DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
-	m_DecalDesc.pTextureTag = "DecalLinear";
-
 	return S_OK;
 }
 
