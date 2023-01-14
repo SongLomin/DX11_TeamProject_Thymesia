@@ -34,7 +34,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_szName = "Corvus";
 
-	
+	m_eMostRecentStealedPW = MONSTERTYPE::TYPE_END;
 
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
@@ -662,8 +662,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 void CCorvus::OnStealMonsterSkill(MONSTERTYPE eMonstertype)
 {
 	__super::OnStealMonsterSkill(eMonstertype);
-
-	m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
+	
+	m_eMostRecentStealedMonsterType = eMonstertype;
+	//m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
 }
 
 void CCorvus::Update_KeyInput(_float fTimeDelta)
@@ -731,11 +732,6 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		Change_State<CCorvusState_Die>();
 	}
-	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-	{
-		OnStealMonsterSkill(MONSTERTYPE::AXEMAN);
-	}
-
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	//{
 	//	++m_iContainerIndex;

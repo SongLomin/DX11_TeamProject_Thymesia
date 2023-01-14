@@ -43,6 +43,9 @@ private:
 
 public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
+
+	MONSTERTYPE GetMostRecentStealedMonsterType() { return m_eMostRecentStealedMonsterType; }
+
 private:
 	//TODO: Test For Color Inversion
 	void Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd);
@@ -66,6 +69,9 @@ private:
 	
 	_float m_fInversionStrength = 1.f;
 	_float m_fInversionRatio = 0.f;
+
+	MONSTERTYPE		m_eMostRecentStealedMonsterType;
+
 
 private:
 	FDelegate<_float, _bool&> CallBack_ColorInversion;

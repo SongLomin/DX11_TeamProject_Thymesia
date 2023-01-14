@@ -40,7 +40,7 @@ void CCorvusState_ClawPlunderAttack::Start()
 void CCorvusState_ClawPlunderAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
+	//75정도에 값을  가져올 수 있도록 해야함.
 
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);

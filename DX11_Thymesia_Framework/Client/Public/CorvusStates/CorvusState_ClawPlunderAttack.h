@@ -10,7 +10,6 @@ BEGIN(Client)
 class CCorvusState_ClawPlunderAttack :
     public CCorvusStateBase
 {
-
     GAMECLASS_H(CCorvusState_ClawPlunderAttack);
     SHALLOW_COPY(CCorvusState_ClawPlunderAttack)
         CLONE_H(CCorvusState_ClawPlunderAttack, CComponent)

@@ -93,6 +93,7 @@ void CCorvusState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	pLanding.lock()->Call_Landing(CUI_Landing::LANDING_DEAD);
 
+	m_bAnimPlay = true;
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
