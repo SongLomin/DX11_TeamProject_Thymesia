@@ -125,6 +125,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_SpotLightDesc.bEnable = false;
 
+	m_SpotLightDesc = GAMEINSTANCE->Add_Light(m_SpotLightDesc);
+
 	_uint iNvClothColliderCount;
 	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
 
@@ -210,12 +212,6 @@ void CCorvus::Tick(_float fTimeDelta)
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
 	}
-	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
-	{
-		m_fInversionStrength = 0.5f;
-		m_fInversionRatio = 0.f;
-		CallBack_ColorInversion+= bind(&CCorvus::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
-	}
 
 
 	Update_KeyInput(fTimeDelta);
@@ -232,21 +228,10 @@ void CCorvus::LateTick(_float fTimeDelta)
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 	__super::LateTick(fTimeDelta);
 	
-	_bool bEnd = false;
-	////////colorInversion
-	if (CallBack_ColorInversion.empty())
-		return;
 
-
-	CallBack_ColorInversion(fTimeDelta, bEnd);
-	if (bEnd)
-	{
-		CallBack_ColorInversion.Clear();
-		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
-	}
-	//////////////
 	if (CallBack_LightEvent.empty())
 		return;
+	_bool bEnd = false;
 
 	bEnd = false;
 	
@@ -258,19 +243,6 @@ void CCorvus::LateTick(_float fTimeDelta)
 	
 }
 
-void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
-{
-	if (3.f > m_fInversionStrength)
-		m_fInversionStrength += In_fTimeDelta*0.5f;
-	else if (1.f > m_fInversionRatio)
-	{
-		m_fInversionRatio += In_fTimeDelta;
-	}
-	else
-		In_bEnd = true;
-
-	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
-}
 
 void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 {
