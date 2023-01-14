@@ -42,7 +42,6 @@ void CUI_ItemSlot::Tick(_float fTimeDelta)
 	{
 		__super::Tick(fTimeDelta);
 	}
-
 	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
 
 	if (m_pEasingTransform.lock()->Is_Lerping())
@@ -105,6 +104,8 @@ void CUI_ItemSlot::Bind_Item(weak_ptr<CItem> pItem)
 
 	CPreset_ItemData::SetUITextureFromItemName(m_pIcon, pItem.lock()->Get_Name());
 	Update_TextInfo();
+
+
 }
 
 _bool CUI_ItemSlot::Is_Bind()

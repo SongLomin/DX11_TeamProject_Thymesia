@@ -44,6 +44,17 @@ void CItem::Minus_Quantity()
     m_iCurrentQuantity--;
 }
 
+void CItem::Minus_Quantity(_uint iQuantity)
+{
+    if (m_iCurrentQuantity < iQuantity)
+        m_iCurrentQuantity = 0;
+    else
+    {
+        m_iCurrentQuantity -= iQuantity;
+    }
+}
+
+
 shared_ptr<CItem> CItem::Create(ITEM_NAME eItemName)
 {   
     shared_ptr<CItem>   pItem = make_shared<CItem>();

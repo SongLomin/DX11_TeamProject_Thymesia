@@ -86,7 +86,6 @@ void CStatus_Player::Write_SaveData(json& Out_Json)
 
 void CStatus_Player::Load_SaveData(const json& In_Json)
 {
-
     json LoadedJson;
     string                  m_szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
 
@@ -97,6 +96,7 @@ void CStatus_Player::Load_SaveData(const json& In_Json)
     }
     if (LoadedJson.find("Status_Player") == LoadedJson.end())
     {
+        Callback_Update_Status();
         return;
     }
     json Status_PlayerJson = LoadedJson["Status_Player"];
@@ -158,6 +158,13 @@ void CStatus_Player::Init_Status(const void* pArg)
 
     m_iCurrentPotionIndex = 0;
     Full_Recovery();
+}
+
+void CStatus_Player::Add_Str(_uint iStr)
+{
+    m_tDesc.m_iStr += iStr;
+
+    m_tDesc.m_fNormalAtk = 25 + (((_float)m_tDesc.m_iStr - 1) * 3.f);
 }
 
 void CStatus_Player::Add_Damage(const _float& In_fDamage)

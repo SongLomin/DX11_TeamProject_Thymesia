@@ -20,6 +20,8 @@ HRESULT CClientLevel::Initialize()
 
 	GAMEINSTANCE->Set_CreatedLevelIndex(m_eMyLevel);
 
+	
+
 	return S_OK;
 }
 
@@ -158,7 +160,6 @@ void CClientLevel::SetUp_UI()
 	GAMEINSTANCE->Add_SingleGameObject<CUI_BloodOverlay>(LEVEL_STATIC);
 
 	pUIManager.lock()->CreateItemPopupQueue();
-
 
 	pUIManager.lock()->Set_Complete_SetUpUI();
 	//pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CEvolveMenu_TalentButton>(LEVEL_STATIC));

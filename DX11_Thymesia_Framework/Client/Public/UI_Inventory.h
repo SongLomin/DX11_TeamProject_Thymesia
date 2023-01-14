@@ -86,6 +86,8 @@ private:
     int     m_iHeight;
 
 private:
+    weak_ptr<CItem>         m_pMouseOveredItem;
+
     _float2                 m_fItemSlotStart;
     _float                  m_fSlotOffset;
    

@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "MonsterHPBar_Base.h"
+
 
 GAMECLASS_C(CBatBossState_TakeExecution_End);
 CLONE_C(CBatBossState_TakeExecution_End, CComponent)
@@ -84,6 +86,13 @@ void CBatBossState_TakeExecution_End::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
+
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
+
+	Get_OwnerMonster()->Get_HPBar().lock()->Set_Enable(true);
+
+//	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+
 }
 
 void CBatBossState_TakeExecution_End::OnDestroy()

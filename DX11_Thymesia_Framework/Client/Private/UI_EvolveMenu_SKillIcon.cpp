@@ -81,13 +81,12 @@ _float CUI_EvolveMenu_SKillIcon::Get_Ratio()
 
 void CUI_EvolveMenu_SKillIcon::StartGauge()
 {
-    m_pEasingRatio.lock()->Set_Lerp(m_fRatio, 1.f, 5.f, EASING_TYPE::LINEAR, CEasingComponent::ONCE);
+    m_pEasingRatio.lock()->Set_Lerp(m_fRatio, 1.f, 3.f, EASING_TYPE::LINEAR, CEasingComponent::ONCE);
     m_pEasingRatio.lock()->Add_Condition(0.0f, EASING_FLOAT_CONDITION::BIGGER, 1);
     m_pEasingRatio.lock()->Add_Condition(0.2f, EASING_FLOAT_CONDITION::BIGGER, 2);
     m_pEasingRatio.lock()->Add_Condition(0.4f, EASING_FLOAT_CONDITION::BIGGER, 3);
     m_pEasingRatio.lock()->Add_Condition(0.6f, EASING_FLOAT_CONDITION::BIGGER, 5);
     m_pEasingRatio.lock()->Add_Condition(0.99f, EASING_FLOAT_CONDITION::BIGGER, 7);
-
 
 }
 

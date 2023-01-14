@@ -40,16 +40,17 @@ public:
 	
 	//Delegate
 public:
-	FDelegate<_float>	CallBack_Damged_White;
-	FDelegate<_float>	CallBack_Damged_Green;
-	FDelegate<>			CallBack_UI_Disable;
-	FDelegate<>			CallBack_RecoeoryStart;
-	FDelegate<>			CallBack_RecoeoryAlram;
-	FDelegate<>			CallBack_ReStart;
-	FDelegate<_float, _bool> CallBack_UpdateParryGauge;
-	FDelegate<>				Callback_Full_Recovery;
+	FDelegate<MONSTERDESC>		Callback_UpdateHP;
+	FDelegate<_float>			CallBack_Damged_White;
+	FDelegate<_float>			CallBack_Damged_Green;
+	FDelegate<>					CallBack_UI_Disable;
+	FDelegate<>					CallBack_RecoeoryStart;
+	FDelegate<>					CallBack_RecoeoryAlram;
+	FDelegate<>					CallBack_ReStart;
+	FDelegate<_float, _bool>	CallBack_UpdateParryGauge;
+	FDelegate<>					Callback_Full_Recovery;
 	
-	FDelegate<>				Callback_NextPhase;
+	FDelegate<>					Callback_NextPhase;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -84,10 +85,11 @@ public:
 	void			Add_ParryGauge(const _float In_fDamage);
 	_bool			Is_Groggy() const;
 
+	void			Heal(_float fHealAmount);
+
 protected:
 	void			Decrease_White_HP(const _float In_fDamage);
 	void			Decrease_Green_HP(const _float In_fDamage);
-
 
 	void			Set_ParryRecoveryTime(const _float fRatio);
 

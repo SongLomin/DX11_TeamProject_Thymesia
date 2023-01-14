@@ -47,13 +47,13 @@ HRESULT CLevel_Stage3::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -50.67f, 50.f, 40.f, 1.f }, { 3.45f, 0.f, 40.f });
 
 	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
-    m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
-	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
-
+    
 	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(3.01f, 25.f, 40.2f, 1.f));
 
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_STAGE3);
+
+	SetUp_UI();
 
 	return S_OK;
 }

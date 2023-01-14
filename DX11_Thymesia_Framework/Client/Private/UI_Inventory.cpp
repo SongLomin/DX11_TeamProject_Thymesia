@@ -283,6 +283,25 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
 
         Update_SortImages(m_eSortType);
     }
+
+    if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+    {
+        if (m_pMouseOveredItem.lock())
+        {   
+            if (m_pMouseOveredItem.lock()->Get_Type() == ITEM_TYPE::CONSUMPTION || 
+                m_pMouseOveredItem.lock()->Get_Type() == ITEM_TYPE::INGREDIENT)
+            {
+                GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>
+                    ().lock()->Use_Item(m_pMouseOveredItem.lock()->Get_Name(), 1);
+             
+                Update_ItemSlotFromPlayerInventory();
+                Start_AnimationSorting((_uint)CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK);
+                Call_OnMouseOut();
+
+            }
+        }
+
+    }
 }
 
 void CUI_Inventory::Update_ItemSlotOffset()
@@ -303,13 +322,19 @@ void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
 
     _uint       iIndex = 0;
 
+    for (auto& elem : m_vecItemSlot)
+    {
+        if (!elem.lock()->Get_BindItem().lock())
+            continue;
+
+        if (elem.lock()->Get_BindItem().lock()->Get_CurrentQuantity() < 1)
+        {
+            elem.lock()->UnBind_Item();
+        }
+    }
     for(auto& pair : pMapItem)
     {
         m_vecItemSlot[iIndex++].lock()->Bind_Item(pair.second);
-    }
-    if (pMapItem.size() > 0)
-    {
-        //Sort_ItemList(m_eSortType);
     }
     Update_TextInfoToInventorySize(pMapItem.size());
 }
@@ -477,12 +502,14 @@ void CUI_Inventory::Call_OnWheelMove(_float fAmount)
 
 void CUI_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
 {
+    m_pMouseOveredItem = pItem;
     Callback_OnMouseOver(pItem);
-
 }
 
 void CUI_Inventory::Call_OnMouseOut()
 {
+    m_pMouseOveredItem = weak_ptr<CItem>();
+
     Callback_OnMouseOut();
 }
 

@@ -200,17 +200,15 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
         m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:
-    {
         szClientSavePath = "../Bin/SaveLevelData/SaveData.json";
 
         if (SUCCEEDED(CJson_Utility::Load_Json(szClientSavePath.c_str(), SaveLevelJson)))
         {
             eNextLevel = SaveLevelJson["Level"];
         }
-        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL_TEST);
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(eNextLevel);
         m_bSelect = false;
-    }
-        break;
+        break;   
     case Client::CUI_Logo::LOGO_BUTTON_LOAD_GAME:
         break;
     case Client::CUI_Logo::LOGO_BUTTON_TOOL:

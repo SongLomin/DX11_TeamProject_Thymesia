@@ -79,8 +79,8 @@ void CLevel_Logo::ExitLevel(LEVEL eLevel)
 {
 	m_eNextLevel = eLevel;
 
-	if (eLevel == LEVEL::LEVEL_GAMEPLAY)
-	{
+//	if (eLevel == LEVEL::LEVEL_GAMEPLAY)
+//	{
 		FaderDesc tFaderDesc;
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
@@ -90,7 +90,7 @@ void CLevel_Logo::ExitLevel(LEVEL eLevel)
 		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
-
+	/*
 	}
 	else if (eLevel == LEVEL::LEVEL_GAMEPLAY)
 	{
@@ -116,7 +116,7 @@ void CLevel_Logo::ExitLevel(LEVEL eLevel)
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 	}
-
+	*/
 }
 
 

@@ -1059,7 +1059,9 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
         {
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
+
                 m_tOriginStatus = m_tChangeStatus;
+                m_tOriginStatus.m_fCurrentMP = m_tOriginStatus.m_fMaxMP;
 
                 GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Set_Desc(&m_tOriginStatus);
 

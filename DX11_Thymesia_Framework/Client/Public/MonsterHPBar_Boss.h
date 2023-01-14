@@ -21,7 +21,6 @@ public:
 	virtual void			Set_Target(weak_ptr<CBase> pTarget) override;
 
 
-
 protected:
 	virtual void			Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Monster) override;
 	virtual void			Create_Decoration(weak_ptr<CStatus_Monster> pStatus_Monster);

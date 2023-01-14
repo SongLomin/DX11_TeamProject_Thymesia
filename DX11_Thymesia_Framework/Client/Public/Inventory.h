@@ -27,6 +27,7 @@ public:
 	void		Remove_Item(ITEM_NAME eItemName);
 	_uint		Get_Size();
 
+	void		Use_Item(ITEM_NAME eItemName,  _uint iUseQuantity = 1);
 	weak_ptr<CItem> Find_Item(ITEM_NAME eItemName);
 
 	map<ITEM_NAME, shared_ptr<CItem>>	Get_Inventory() { return m_mapInventory; }
@@ -37,6 +38,7 @@ public:
 	virtual void    Load_SaveData(const json& In_Json) override;
 
 private:
+	typedef map<ITEM_NAME, shared_ptr<CItem>> ITEMMAP;
 	map<ITEM_NAME, shared_ptr<CItem>>	m_mapInventory;
 
 };
