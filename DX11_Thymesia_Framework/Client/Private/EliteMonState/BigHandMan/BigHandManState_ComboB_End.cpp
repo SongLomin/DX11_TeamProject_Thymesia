@@ -8,8 +8,6 @@
 #include "Character.h"
 #include "EliteMonState/BigHandMan/BigHandManStates.h"
 
-
-
 GAMECLASS_C(CBigHandManState_ComboB_End);
 CLONE_C(CBigHandManState_ComboB_End, CComponent)
 
