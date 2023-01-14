@@ -196,19 +196,18 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
         szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
         CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
 
-        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_TEST);
         m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:
     {
-
         szClientSavePath = "../Bin/SaveLevelData/SaveData.json";
 
         if (SUCCEEDED(CJson_Utility::Load_Json(szClientSavePath.c_str(), SaveLevelJson)))
         {
             eNextLevel = SaveLevelJson["Level"];
         }
-        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(eNextLevel);
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL_TEST);
         m_bSelect = false;
     }
         break;

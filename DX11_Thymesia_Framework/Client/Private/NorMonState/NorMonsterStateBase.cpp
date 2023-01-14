@@ -180,6 +180,12 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
 			}
+			else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+			{
+				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
+				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+			}
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 		    if (In_eHitType == HIT_TYPE::STEALMONSTER)

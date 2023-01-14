@@ -39,9 +39,9 @@ void CNorMonState_Petrol::Start()
 
 	m_vecPatrolPosition.resize(3, {});
 
-	XMStoreFloat3(&m_vecPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 4.f, 0.f));
-	XMStoreFloat3(&m_vecPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 8.f, 0.f));
-	XMStoreFloat3(&m_vecPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.2f, 0.f, -4.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(4.f, 0.f, 0.1f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(8.f, 0.f, 0.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(-4.f, 0.f, 0.2f, 0.f));
 
 	switch (m_eMonType)
 	{

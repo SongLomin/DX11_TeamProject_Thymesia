@@ -814,13 +814,13 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, 
 		if (tPhysXColliderDesc.bTrigger)
 		{
 			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-			m_FilterData.word2 = 2;
+			m_FilterData.word2 = 1;
 
 		}
 		else
 		{
 			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-			m_FilterData.word2 = 0;
+			m_FilterData.word2 = 1;
 		}
 
 		PxShape* pShape = nullptr;
@@ -865,12 +865,12 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, P
 		if (tPhysXColliderDesc.bTrigger)
 		{
 			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-			m_FilterData.word2 = 2;
+			m_FilterData.word2 = 1;
 		}
 		else
 		{
 			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-			m_FilterData.word2 = 0;
+			m_FilterData.word2 = 1;
 		}
 
 		PxShape* pShape = nullptr;
@@ -991,6 +991,13 @@ void CPhysXCollider::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);
 
+	m_FilterData.word2 = 1;
+
+	for (auto& elem : m_pShape)
+	{
+		elem->setSimulationFilterData(m_FilterData);
+	}
+
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
 
@@ -1001,6 +1008,13 @@ void CPhysXCollider::OnEnable(void* pArg)
 void CPhysXCollider::OnDisable()
 {
 	__super::OnDisable();
+
+	m_FilterData.word2 = 0;
+
+	for (auto& elem : m_pShape)
+	{
+		elem->setSimulationFilterData(m_FilterData);
+	}
 
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);

@@ -285,6 +285,11 @@ PxFilterFlags CollisionFilterShader(
 	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
 	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
 {
+	if (filterData0.word2 != 1 || filterData1.word2 != 1)
+	{
+		return PxFilterFlag::eKILL;
+	}
+
 	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
 	{
 

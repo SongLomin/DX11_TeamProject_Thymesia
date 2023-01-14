@@ -641,6 +641,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 {
 	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 
+	if (!pOtherCollider.lock())
+		return;
+
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:

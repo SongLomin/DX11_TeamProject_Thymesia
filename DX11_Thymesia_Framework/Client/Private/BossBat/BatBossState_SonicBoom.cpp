@@ -83,7 +83,7 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 	else
 	{
 		m_bAttackLookAtLimit = true;
-		m_iSonicBoomCount = 3;
+		m_iSonicBoomCount = 8;
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
 	
