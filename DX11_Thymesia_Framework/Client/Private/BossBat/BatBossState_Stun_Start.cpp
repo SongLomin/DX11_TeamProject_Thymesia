@@ -63,7 +63,7 @@ void CBatBossState_Stun_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	case 4:
 	{
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.1f, 1.f, 9.f, 0.4f);
-		GAMEINSTANCE->Set_MotionBlur(0.2f);
+		GAMEINSTANCE->Set_MotionBlur(0.05f);
 		break;
 	}
 	case 15:
