@@ -463,6 +463,42 @@ HRESULT CGameInstance::Set_ColorInversion(const _float& In_fInversionStrength, c
 	return m_pRender_Manager->Set_ColorInversion(In_fInversionStrength, In_fInversionRatio);
 }
 
+HRESULT CGameInstance::Set_MotionBlur_Enable(const _bool& In_bMotionBlurEnable)
+{
+	return m_pRender_Manager->Set_MotionBlur_Enable(In_bMotionBlurEnable);
+}
+HRESULT CGameInstance::Set_GodRay_Enable(const _bool& In_bGodRayEnable)
+{
+	return m_pRender_Manager->Set_GodRay_Enable(In_bGodRayEnable);
+}
+HRESULT CGameInstance::Set_Chromatic_Enable(const _bool& In_bChromaticEnable)
+{
+	return m_pRender_Manager->Set_Chromatic_Enable(In_bChromaticEnable);
+}
+HRESULT CGameInstance::Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable)
+{
+	return m_pRender_Manager->Set_RadialBlur_Enable(In_bRadialBlurEnable);
+}
+
+HRESULT CGameInstance::Set_BrightnessOffset(const _float& In_fBrightnessOffset)
+{
+	return m_pRender_Manager->Set_BrightnessOffset(In_fBrightnessOffset);
+}
+HRESULT CGameInstance::Set_SaturationOffset(const _float& In_fSaturationOffset)
+{
+	return m_pRender_Manager->Set_SaturationOffset(In_fSaturationOffset);
+}
+HRESULT CGameInstance::Set_ContrastOffset(const _float& In_fContrastOffset)
+{
+	return m_pRender_Manager->Set_ContrastOffset(In_fContrastOffset);
+
+}
+
+HRESULT CGameInstance::Set_SSRLevel(const _uint& In_iSSRLevel)
+{
+	return m_pRender_Manager->Set_SSRLevel(In_iSSRLevel);
+}
+
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
 	return m_pRender_Manager->Get_BeforeRenderContext();
@@ -489,9 +525,9 @@ HRESULT CGameInstance::Add_DebugSRT(const _tchar* In_szMRTName)
 	return m_pRender_Manager->Add_DebugSRT(In_szMRTName);
 }
 
-HRESULT CGameInstance::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha)
+HRESULT CGameInstance::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue)
 {
-	return m_pRender_Manager->Render_EditTexture(pSRV, In_Red, In_Green, In_Blue, In_Alpha);
+	return m_pRender_Manager->Render_EditTexture(pSRV, In_Red, In_Green, In_Blue);
 }
 
 HRESULT CGameInstance::Extract_Texture(const tstring& In_szFilePath)

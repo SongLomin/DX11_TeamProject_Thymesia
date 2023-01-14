@@ -81,6 +81,70 @@ public:
 
 	HRESULT Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio);
 
+	HRESULT Set_MotionBlur_Enable(const _bool& In_bMotionBlurEnable)
+	{
+		m_bMotionBlur = In_bMotionBlurEnable;
+
+		return S_OK;
+	}
+	HRESULT Set_GodRay_Enable(const _bool& In_bGodRayEnable)
+	{
+		m_bGodRayEnable = In_bGodRayEnable;
+		return S_OK;
+	}
+	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable)
+	{
+		m_bChromaticAberation = In_bChromaticEnable;
+		return S_OK;
+	}
+	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable)
+	{
+		m_bRadialBlur = In_bRadialBlurEnable;
+		return S_OK;
+	}
+	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable)
+	{
+		m_bSSAAEnable = In_bSSAAEnable;
+		return S_OK;
+	}
+	HRESULT Set_AmbientOcclusion_Enable(const _bool& In_bAmbientOcclusionEnable)
+	{
+		m_bAmbientOcclusion = In_bAmbientOcclusionEnable;
+		return S_OK;
+	}
+	HRESULT Set_ImageScaling_Enable(const _bool& In_bImageScalingEnable)
+	{
+		m_bImageScaling = In_bImageScalingEnable;
+		return S_OK;
+	}
+	HRESULT Set_PBR_Enable(const _bool& In_bPBR)
+	{
+		m_bPBR = In_bPBR;
+		return S_OK;
+	}
+
+	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset)
+	{
+		m_fBrightnessOffset = In_fBrightnessOffset;
+		return S_OK;
+	}
+	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset)
+	{
+		m_fSaturationOffset= In_fSaturationOffset;
+		return S_OK;
+	}
+	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset)
+	{
+		m_fContrastOffset = In_fContrastOffset;
+		return S_OK;
+	}
+
+	HRESULT Set_SSRLevel(const _uint& In_iSSRLevel);
+	HRESULT Set_StaticShadow_Enable(const _bool& In_bStaticShadowEnable)
+	{
+		m_bStaticShadowEnable = In_bStaticShadowEnable;
+	}
+
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_ShadowDepth();
@@ -134,7 +198,7 @@ public:
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
 
 public:
-	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha);
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
 	HRESULT Extract_Texture(const tstring& In_szFilePath);
 
 private:
@@ -226,6 +290,23 @@ private:
 
 	_float		m_fInversionRatio = 1.f;
 	_float		m_fInversionStrength = 1.f;
+
+	_bool		m_bMotionBlur = true;
+	_bool		m_bGodRayEnable = true;
+	_bool		m_bChromaticAberation = true;
+	_bool		m_bRadialBlur = true;
+	_bool		m_bSSAAEnable = true;
+	_bool		m_bAmbientOcclusion = true;
+	_bool		m_bImageScaling = true;
+	_bool		m_bPBR = true;
+	_bool		m_bStaticShadowEnable = true;
+
+	_float		m_fSaturationOffset = 0.f;
+	_float		m_fBrightnessOffset = 0.f;
+	_float		m_fContrastOffset = 0.f;
+
+	_float		m_fSSRStep = 0.01f;
+	_int		m_iSSRStepDistance = 50;
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];

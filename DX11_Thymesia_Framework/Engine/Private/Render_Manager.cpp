@@ -787,6 +787,26 @@ HRESULT CRender_Manager::Set_ColorInversion(const _float& In_fInversionStrength,
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_SSRLevel(const _uint& In_iSSRLevel)
+{
+	switch (In_iSSRLevel)
+	{
+	case 0 :
+		m_fSSRStep = 0.01f;
+		m_iSSRStepDistance = 50;
+		break;
+	case 1:
+		m_fSSRStep = 0.0075f;
+		m_iSSRStepDistance = 65;
+		break;
+	case 2:
+		m_fSSRStep = 0.005f;
+		m_iSSRStepDistance = 75;
+		break;
+	}
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
 	m_LiftGammaGainDesc.vLift = In_vLift;
@@ -850,7 +870,7 @@ HRESULT CRender_Manager::Render_Priority()
 }
 
 #ifdef _DEBUG
-HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha)
+HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue)
 {
 
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_ExtractTextureMRT(TEXT("MRT_ExtractTexture"))))
@@ -860,9 +880,14 @@ HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSR
 	m_pEditTextureShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pEditTextureShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 	
-	_uint4 iChannelIndex{ (_uint)In_Red, (_uint)In_Green, (_uint)In_Blue, In_Alpha };
+	_vector vRChannel{}, vGChannel{}, vBChannel{};
+	vRChannel.m128_f32[In_Red] = 1.f;
+	vGChannel.m128_f32[In_Green] = 1.f;
+	vBChannel.m128_f32[In_Blue] = 1.f;
 
-	m_pEditTextureShaderCom->Set_RawValue("g_ChannelIndex", &iChannelIndex, sizeof(_uint4));
+	_uint3 iChannelIndex{ (_uint)In_Red, (_uint)In_Green, (_uint)In_Blue };
+
+	m_pEditTextureShaderCom->Set_RawValue("g_ChannelIndex", &iChannelIndex, sizeof(_uint3));
 	/*m_pEditTextureShaderCom->Set_RawValue("g_GChannelUse", &vRChannel, sizeof(_vector));
 	m_pEditTextureShaderCom->Set_RawValue("g_BChannelUse", &vRChannel, sizeof(_vector));*/
 
@@ -1295,7 +1320,11 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
-	m_pShader->Set_RawValue("g_fExposure", &m_fExposure, sizeof(_float));
+	_float fExposure = m_fExposure + m_fBrightnessOffset;
+
+	m_pShader->Set_RawValue("g_fSSRStep", &m_fSSRStep, sizeof(_float));
+	m_pShader->Set_RawValue("g_iSSRStepDistance", &m_iSSRStepDistance, sizeof(_int));
+	m_pShader->Set_RawValue("g_fExposure", &fExposure, sizeof(_float));
 
 
 	m_pShader->Begin(3, pDeviceContext);
@@ -2026,9 +2055,12 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_LiftGammaGainDesc.vGamma, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_LiftGammaGainDesc.vGain, sizeof(_float4));
 
+	_float fSaturation = m_fSaturation + m_fSaturationOffset;
+	_float fContrastValue = m_fContrastValue + m_fContrastOffset;
+
 	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
-	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &m_fSaturation, sizeof(_float));
-	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &fSaturation, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &fContrastValue, sizeof(_float));
 
 	/*_float fPixelWidth = 1 / 1600.f;
 	_float fPixelHeight = 1 / 900.f;
@@ -2087,6 +2119,10 @@ HRESULT CRender_Manager::PostProcessing()
 
 	for (_int i = 0; i < 7; ++i)
 	{
+		if ((i == 0 && !m_bGodRayEnable) || (i == 4 && !m_bChromaticAberation) || (i == 4 && !m_bChromaticAberation) || (i == 5 && !m_bMotionBlur)
+			|| (i == 6 && !m_bRadialBlur))
+			continue;
+
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
 			DEBUG_ASSERT;
@@ -2101,6 +2137,9 @@ HRESULT CRender_Manager::PostProcessing()
 
 HRESULT CRender_Manager::AntiAliasing()
 {
+	if (!m_bSSAAEnable)
+		return S_OK;
+
 	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	Bake_OriginalRenderTexture();
@@ -2135,6 +2174,9 @@ HRESULT CRender_Manager::AntiAliasing()
 
 HRESULT CRender_Manager::Render_HBAO_PLUS()
 {
+	if (!m_bAmbientOcclusion)
+		return S_OK;
+
 	if (!GET_SINGLE(CPipeLine)->Is_Binded())
 		return S_OK;
 
@@ -2176,6 +2218,9 @@ HRESULT CRender_Manager::Render_HBAO_PLUS()
 
 HRESULT CRender_Manager::Render_NvidiaImageScaling()
 {
+	if (!m_bImageScaling)
+		return S_OK;
+
 	Bake_OriginalRenderTexture();
 
 	shared_ptr<CGraphic_Device> pGraphic_Device = GET_SINGLE(CGraphic_Device);

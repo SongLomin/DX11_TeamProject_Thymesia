@@ -156,6 +156,15 @@ public: /* For.Render_Manager */
 	HRESULT Set_Sharpness(const _float In_fSharpness);
 	HRESULT Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio);
 
+	HRESULT Set_MotionBlur_Enable(const _bool& In_bMotionBlurEnable);
+	HRESULT Set_GodRay_Enable(const _bool& In_bGodRayEnable);
+	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable);
+	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable);
+	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset);
+	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset);
+	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset);
+	HRESULT Set_SSRLevel(const _uint& In_iSSRLevel);
+
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 
@@ -163,7 +172,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_DebugSize(const _float2 vSize);
 	HRESULT Set_OldSchoolView(const _bool bOldSchool);
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
-	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha);
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
 	HRESULT Extract_Texture(const tstring& In_szFilePath);
 #endif // _DEBUG
 
