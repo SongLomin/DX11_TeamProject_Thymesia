@@ -41,8 +41,7 @@ void CCorvusState_PS_BatRoar::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_RadialBlur(0.2f, vPlayerPos);
 
 		//스킬 효과
-		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CStatus_Player>().lock()
-			->Heal_PlayerFromMaxHP(0.3f);
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CStatus_Player>().lock()->Heal_PlayerFromMaxHP(0.3f);
 	}
 		return;
 	case 108:
