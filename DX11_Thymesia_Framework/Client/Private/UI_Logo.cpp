@@ -9,6 +9,9 @@
 #include "Fader.h"
 #include "Level_Logo.h"
 #include "Level_Loading.h"
+#include "UIManager.h"
+
+
 
 GAMECLASS_C(CUI_Logo)
 CLONE_C(CUI_Logo, CGameObject)
@@ -115,6 +118,8 @@ void CUI_Logo::Tick(_float fTimeDelta)
 
     if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
     {
+        GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
         if (m_iSelect == 0)
             m_iSelect = LOGO_BUTTON_END - 1;
         else
@@ -123,6 +128,8 @@ void CUI_Logo::Tick(_float fTimeDelta)
     }
     else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
     {
+        GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
         if (m_iSelect == (_uint)LOGO_BUTTON_QUIT)
             m_iSelect = 0;
         else
@@ -130,7 +137,11 @@ void CUI_Logo::Tick(_float fTimeDelta)
          ChageButtonIndex(m_iSelect);
     }
     if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && m_bSelect)
+    {
+        GAMEINSTANCE->PlaySound2D("UI_Select0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
         SelectButton(m_iSelect);
+
+    }
 
 }
 

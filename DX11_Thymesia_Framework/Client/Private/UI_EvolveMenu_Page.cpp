@@ -45,6 +45,7 @@ void CUI_EvolveMenu_Page::Call_ExitTap()
     Set_Enable(false);
     m_pFadeMask.lock()->Set_Enable(false);
     GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+    GAMEINSTANCE->PlaySound2D("Fantasy_Game_UI_Ice_Select.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
 
 }
 

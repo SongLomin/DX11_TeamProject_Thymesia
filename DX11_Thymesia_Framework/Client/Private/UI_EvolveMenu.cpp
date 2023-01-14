@@ -203,6 +203,9 @@ void CUI_EvolveMenu::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	{
+		GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
+
 		if (m_iSelectedIndex <= 0)
 			m_iSelectedIndex = (_uint)EVOLVEMENU_TYPE::EVOLVE_END - 1;
 		else
@@ -212,6 +215,9 @@ void CUI_EvolveMenu::Tick(_float fTimeDelta)
 
 	else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
 	{
+		GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
+
 		if (m_iSelectedIndex >= (_uint)EVOLVEMENU_TYPE::EVOLVE_END - 1)
 			m_iSelectedIndex = 0;
 		else
@@ -220,9 +226,10 @@ void CUI_EvolveMenu::Tick(_float fTimeDelta)
 		ChangeButtonIndex();
 	}
 	if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->PlaySound2D("Fantasy_Game_UI_Ice_Select.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
 		SelectButton();
-
-
+	}
 	m_bEnabledThisFrame = false;
 	
 }

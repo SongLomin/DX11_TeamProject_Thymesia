@@ -77,6 +77,8 @@ HRESULT CLevel_Logo::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CLevel_Logo::ExitLevel(LEVEL eLevel)
 {
+	__super::ExitLevel(eLevel);
+
 	m_eNextLevel = eLevel;
 
 //	if (eLevel == LEVEL::LEVEL_GAMEPLAY)

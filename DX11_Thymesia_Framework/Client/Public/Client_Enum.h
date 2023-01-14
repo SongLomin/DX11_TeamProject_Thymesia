@@ -623,5 +623,10 @@ namespace Client
 		LOAD = 501,
 	};
 
-
+	enum class UI_SOUND_TYPE
+	{
+		SOUND_BGM,
+		SOUND_CHANGE_SELECT,
+		SOUND_CHOOSE_SELECT
+	};
 }

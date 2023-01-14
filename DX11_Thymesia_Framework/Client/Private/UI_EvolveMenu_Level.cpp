@@ -6,7 +6,7 @@
 #include "FadeMask.h"
 #include "UI_EvolveMenu.h"
 #include "EasingComponent_Alpha.h"
-
+#include "UIManager.h"
 #include "EasingComponent_Transform.h"
 #include "State_Player.h"
 #include "Player.h"
@@ -97,6 +97,8 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
     {
         if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
         {
+            GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
             if (m_iSelectedIndex > 0)
             {
                 m_iSelectedIndex--;
@@ -105,6 +107,8 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
         }
         if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
         {
+            GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
             if (m_iSelectedIndex <= (_uint)EVOLVE_LEVEL_TYPE::PLA)
             {
                 m_iSelectedIndex++;
@@ -113,6 +117,8 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
         }
         if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
         {
+            GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
             if (Check_Changeable((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex, KEY::LEFT))
             {
                 DecreaseStatus((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex);
@@ -121,6 +127,8 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
         }
         if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
         {
+            GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+             
             if (Check_Changeable((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex, KEY::RIGHT))
             {
                 IncreaseStatus((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex);
@@ -132,6 +140,7 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
         {
             if (m_bOpenableReconfirmWindow == true && m_iSelectedIndex == (_uint)EVOLVE_LEVEL_TYPE::APPLY)
             {
+                GAMEINSTANCE->PlaySound2D("Fantasy_Game_UI_Lightning_Select.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
                 OpenReconfirmWindow();
             }
         }
@@ -1040,8 +1049,11 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
 
     if (m_bOpenableReconfirmWindow == false)
     {
+
         if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
         {
+            GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
             if (m_iReconfirmWindowIndex > 0)
             {
                 m_iReconfirmWindowIndex--;
@@ -1049,7 +1061,9 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
         }
         if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
         {
-            if (m_iReconfirmWindowIndex <= (_uint)LEVEL_RECONFIRM_TYPE::NO)
+            GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
+            if (m_iReconfirmWindowIndex < (_uint)LEVEL_RECONFIRM_TYPE::NO)
             {
                 m_iReconfirmWindowIndex++;
                 ChangeSelectedIndex();
@@ -1057,6 +1071,9 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
         }
         if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && m_bOpenReconfirmWindowThisFrame == false)
         {
+            GAMEINSTANCE->PlaySound2D("Fantasy_Game_UI_Fire_Select.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
+
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
 
