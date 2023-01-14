@@ -5,8 +5,6 @@
 #include "GameManager.h"
 #include "Status_Player.h"
 
-
-
 GAMECLASS_C(CCorvusState_PS_BatRoar);
 CLONE_C(CCorvusState_PS_BatRoar, CComponent)
 

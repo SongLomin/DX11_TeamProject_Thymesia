@@ -13,6 +13,21 @@
 GAMECLASS_C(CBigHandManState_ComboB_End);
 CLONE_C(CBigHandManState_ComboB_End, CComponent)
 
+void CBigHandManState_ComboB_End::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 16:
+	{
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
+	}
+		return;	
+	}
+}
+
 HRESULT CBigHandManState_ComboB_End::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -77,21 +92,18 @@ void CBigHandManState_ComboB_End::OnStateStart(const _float& In_fAnimationBlendT
 	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "BigHandManState: Idle -> OnStateStart" << endl;
-#endif
-#endif
-
-
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBigHandManState_ComboB_End::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CBigHandManState_ComboB_End::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBigHandManState_ComboB_End::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CBigHandManState_ComboB_End::Call_AnimationEnd(_uint iEndAnimIndex)

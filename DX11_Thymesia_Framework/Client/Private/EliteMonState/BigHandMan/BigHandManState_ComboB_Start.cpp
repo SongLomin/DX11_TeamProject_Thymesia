@@ -8,10 +8,23 @@
 #include "Character.h"
 #include "EliteMonState/BigHandMan/BigHandManStates.h"
 
-
-
 GAMECLASS_C(CBigHandManState_ComboB_Start);
 CLONE_C(CBigHandManState_ComboB_Start, CComponent)
+
+void CBigHandManState_ComboB_Start::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 49:
+	{
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
+	}
+		return;
+	}
+}
 
 HRESULT CBigHandManState_ComboB_Start::Initialize_Prototype()
 {
@@ -93,17 +106,12 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CBigHandManState_ComboB_Start::Call_NextKeyFrame, this, placeholders::_1);
 	
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f + (m_iAttackCount * 0.5));
-	
-
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "BigHandManState: Idle -> OnStateStart" << endl;
-#endif
-#endif
-
-
 }
 
 void CBigHandManState_ComboB_Start::OnStateEnd()
@@ -111,6 +119,8 @@ void CBigHandManState_ComboB_Start::OnStateEnd()
 	__super::OnStateEnd();
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CBigHandManState_ComboB_Start::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CBigHandManState_ComboB_Start::Call_AnimationEnd(_uint iEndAnimIndex)

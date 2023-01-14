@@ -13,6 +13,8 @@ class CBigHandManState_ComboB_End :
 	GAMECLASS_H(CBigHandManState_ComboB_End);
 	CLONE_H(CBigHandManState_ComboB_End, CComponent)
 		SHALLOW_COPY(CBigHandManState_ComboB_End)
+public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

@@ -15,6 +15,9 @@ class CBigHandManState_ComboB_Start :
 		SHALLOW_COPY(CBigHandManState_ComboB_Start)
 
 public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
+
+public:
 	void   Set_FourAttackEnd( _bool bFourAttackRun)   { m_bFourAttackEnd = bFourAttackRun; }
 	void   Set_OneAttackEnd( _bool  bOneAttackEnd)  { m_bOneAttackEnd = bOneAttackEnd; }
 	void   Set_OneAttackRun( _bool bOneAttackRun)   { m_bOneAttackRun = bOneAttackRun; }
@@ -41,6 +44,8 @@ private:
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
+
+
 protected:
 	virtual void OnDestroy() override;
 	void Free();
