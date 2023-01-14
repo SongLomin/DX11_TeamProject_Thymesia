@@ -260,3 +260,14 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 	return false;
 }
 
+void CUrdBossState_Attack_Idle::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_iPreCount = 5;
+
+	}
+}
+

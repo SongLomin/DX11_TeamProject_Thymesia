@@ -259,7 +259,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Balloon";
 		break;
 	case Client::MONSTERTYPE::AXEMAN:
-		m_tMonsterDesc.m_fAtk = 30.f;
+		m_tMonsterDesc.m_fAtk = 20.f;
 		m_tMonsterDesc.m_fMaxHP_white = 150.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -267,7 +267,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
 		break;
 	case Client::MONSTERTYPE::KNIFEWOMAN:
-		m_tMonsterDesc.m_fAtk = 45.f;
+		m_tMonsterDesc.m_fAtk = 25.f;
 		m_tMonsterDesc.m_fMaxHP_white = 125.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -278,7 +278,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::GARDENER:
 		//TODO 공격력몰름 임시
-		m_tMonsterDesc.m_fAtk = 30.f;
+		m_tMonsterDesc.m_fAtk = 20.f;
 		m_tMonsterDesc.m_fMaxHP_white = 175.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -287,7 +287,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::VARG:
 		//TODO 공격력몰름 임시
-		m_tMonsterDesc.m_fAtk = 50.f;
+		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 2500.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
@@ -303,7 +303,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Mon_Gardner";
 		break;
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
-		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fAtk = 25.f;
 		m_tMonsterDesc.m_fMaxHP_white = 300.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -319,7 +319,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Skullman";
 		break;
 	case Client::MONSTERTYPE::ARMORSHIELDMAN:
-		m_tMonsterDesc.m_fAtk = 35.f;
+		m_tMonsterDesc.m_fAtk = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white = 350.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 400.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -327,7 +327,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Armorman";
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-		m_tMonsterDesc.m_fAtk = 30.f;
+		m_tMonsterDesc.m_fAtk = 25.f;
 		m_tMonsterDesc.m_fMaxHP_white = 250.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 300.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -335,7 +335,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "WeakArmorMan";
 		break;
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
-		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fAtk = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white = 350.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 400.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -343,7 +343,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Armorman";
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-		m_tMonsterDesc.m_fAtk = 30.f;
+		m_tMonsterDesc.m_fAtk = 25.f;
 		m_tMonsterDesc.m_fMaxHP_white = 250.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 300.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -359,7 +359,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Skullman";
 		break;
 	case Client::MONSTERTYPE::JOKER:
-		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fAtk = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white = 500.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -367,7 +367,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Elite_Joker";
 		break;
 	case Client::MONSTERTYPE::BIGHANDMAN:
-		m_tMonsterDesc.m_fAtk = 30.f;
+		m_tMonsterDesc.m_fAtk = 25.f;
 		m_tMonsterDesc.m_fMaxHP_white = 400.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 400.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -375,7 +375,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Elite_BigHandman";
 		break;
 	case Client::MONSTERTYPE::BAT:
-		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fAtk = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white = 1000.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
@@ -383,8 +383,8 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Boss_Bat";
 		break;
 	case Client::MONSTERTYPE::URD:
-		m_tMonsterDesc.m_fAtk = 40.f;
-		m_tMonsterDesc.m_fMaxHP_white = 2000.f;
+		m_tMonsterDesc.m_fAtk = 23.f;
+		m_tMonsterDesc.m_fMaxHP_white = 1500.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 15000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;

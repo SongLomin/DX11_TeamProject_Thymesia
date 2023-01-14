@@ -108,6 +108,7 @@ void CBatBossState_ChargeIdle::OnDestroy()
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_ChargeIdle::Call_AnimationEnd, this, placeholders::_1);
 }
 
+
 _bool CBatBossState_ChargeIdle::Check_AndChangeNextState()
 {
 

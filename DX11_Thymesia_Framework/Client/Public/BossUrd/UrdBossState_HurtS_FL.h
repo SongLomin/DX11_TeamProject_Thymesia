@@ -28,6 +28,7 @@ protected:
 protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
+	virtual void OnEventMessage(_uint iArg) override;
 	virtual _bool Check_AndChangeNextState() override;
 
 private:

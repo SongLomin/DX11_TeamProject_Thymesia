@@ -77,6 +77,7 @@ void CUrdBossState_HurtM_FL::OnStateEnd()
 
 
 
+
 void CUrdBossState_HurtM_FL::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())

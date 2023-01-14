@@ -421,7 +421,7 @@ if (!m_bPatrol)
 			case Client::NORMONSTERIDLETYPE::SUPRISEATTACK:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Suprise_Attack>(0.05f);
 				break;
-				
+
 			}
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
@@ -1072,7 +1072,7 @@ if (!m_bPatrol)
 		return true;
 	}
 
-    }
+}
     else
     {
         Get_OwnerCharacter().lock()->Change_State<CNorMonState_Petrol>(0.05f);

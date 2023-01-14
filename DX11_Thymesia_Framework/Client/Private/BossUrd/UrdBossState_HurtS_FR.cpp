@@ -104,3 +104,14 @@ _bool CUrdBossState_HurtS_FR::Check_AndChangeNextState()
 	return false;
 }
 
+void CUrdBossState_HurtS_FR::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_iParryCount = 0;
+
+	}
+}
+

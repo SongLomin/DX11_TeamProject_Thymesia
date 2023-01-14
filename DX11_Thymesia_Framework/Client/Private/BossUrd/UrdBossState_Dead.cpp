@@ -35,6 +35,10 @@ void CUrdBossState_Dead::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Dead|BaseLayer");
 
+	m_fDissolveTime = 4.f;
+
+	m_bAnimEnd = false;
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Dead::Call_AnimationEnd, this, placeholders::_1);
 
 
@@ -50,12 +54,14 @@ void CUrdBossState_Dead::Tick(_float fTimeDelta)
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	else
 	{
-		//Get_OwnerMonster()->Set_PassIndex(7);
-		//m_fDissolveTime -= fTimeDelta;
-		//
-		//_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
-		//Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
+		Get_OwnerMonster()->Set_PassIndex(7);
+		m_fDissolveTime -= fTimeDelta;
+
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
 	}
+
+	
 }
 
 
@@ -76,10 +82,6 @@ void CUrdBossState_Dead::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 void CUrdBossState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
-	m_fDissolveTime = 4.f;
-
-	m_bAnimEnd = false;
 
 	m_bOnce = true;
 
@@ -105,6 +107,8 @@ void CUrdBossState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 void CUrdBossState_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_bAnimEnd = true;
 
 	Get_OwnerMonster()->Release_Monster();
 

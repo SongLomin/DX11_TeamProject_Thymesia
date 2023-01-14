@@ -108,6 +108,16 @@ void CBatBossState_AttackIdle::OnDestroy()
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_AttackIdle::Call_AnimationEnd, this, placeholders::_1);
 }
 
+void CBatBossState_AttackIdle::OnEventMessage(_uint iArg)
+{
+      __super::OnEventMessage(iArg);
+      
+      if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+      {
+		  m_iAttackCount = 0;
+      }	
+}
+
 _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 {
 

@@ -30,6 +30,7 @@ private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;
+	virtual void OnEventMessage(_uint iArg) override;
 	void Free();
 
 };

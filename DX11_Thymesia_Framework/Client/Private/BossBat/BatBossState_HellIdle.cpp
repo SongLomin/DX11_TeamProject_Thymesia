@@ -108,6 +108,17 @@ void CBatBossState_HellIdle::OnDestroy()
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_HellIdle::Call_AnimationEnd, this, placeholders::_1);
 }
 
+void CBatBossState_HellIdle::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_iAttackCount = 0;
+		
+	}
+}
+
 _bool CBatBossState_HellIdle::Check_AndChangeNextState()
 {
 

@@ -765,3 +765,17 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 	return false;
 }
 
+void CUrdBossState_Step_Idle::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_iStepFarCount = 0;
+		m_iStepCloseCount = 0;
+		m_bNoParryAttack = false;
+		m_bStepClose = false;
+
+	}
+}
+

@@ -39,9 +39,9 @@ void CNorMonState_Petrol::Start()
 
 	m_vecPatrolPosition.resize(3, {});
 
-	XMStoreFloat3(&m_vecPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 5.f, 0.f));
-	XMStoreFloat3(&m_vecPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 10.f, 0.f));
-	XMStoreFloat3(&m_vecPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.2f, 0.f, -5.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[0], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.1f, 0.f, 4.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[1], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.f, 0.f, 8.f, 0.f));
+	XMStoreFloat3(&m_vecPatrolPosition[2], XMLoadFloat4(&m_fStartPosition) + XMVectorSet(0.2f, 0.f, -4.f, 0.f));
 
 	switch (m_eMonType)
 	{
@@ -163,6 +163,11 @@ void CNorMonState_Petrol::OnStateEnd()
 void CNorMonState_Petrol::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_iPatrolCount = 0;
+		m_iCorssResult = 0;
+	}
 
 
 }
@@ -209,13 +214,24 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 		return false;
 
 	_float fDistance = Get_DistanceWithPlayer();
-
 	_float4 MonsterPosion;
 	XMStoreFloat4(&MonsterPosion, Get_OwnerMonster()->Get_WorldPosition());
 	_vector vMonsterPos = XMLoadFloat4(&MonsterPosion);
 	_vector vOtherPos = XMLoadFloat3(&m_vecPatrolPosition[m_iPatrolCount]);
 
 	_float fMonDistance = XMVector3Length(vMonsterPos - vOtherPos).m128_f32[0];
+
+	if (fDistance <= 3.f)
+	{
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_IdleType(1);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ChanegePatrol(true);
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+		return true;
+	}
+
+	
 
 	if (m_iPatrolCount <= 2)
 	{
@@ -238,15 +254,6 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 		m_iCorssResult = Compute_DirectionToOtherPosition(m_vecPatrolPosition[m_iPatrolCount]);
 	}
 
-	if (fDistance <= 3.f)
-	{
-		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_IdleType(1);
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ChanegePatrol(true);
-		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
-		return true;
-	}
 
 	if (Cul_DotResult() > 0.94f && m_bTurnCheck)
 	{

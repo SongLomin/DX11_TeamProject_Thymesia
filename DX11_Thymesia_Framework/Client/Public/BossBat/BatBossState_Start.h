@@ -38,10 +38,7 @@ private:
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
 
-private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
-	_bool    m_bFirstFoot = true;
+
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

@@ -11,6 +11,7 @@
 #include "MonsterHPBar_Boss.h"
 #include "GameManager.h"
 #include "UI_Landing.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CBatBossState_TakeExecution_Loop);
 CLONE_C(CBatBossState_TakeExecution_Loop, CComponent)
@@ -60,6 +61,7 @@ void CBatBossState_TakeExecution_Loop::LateTick(_float fTimeDelta)
 	if (0.f > m_fDissolveTime)
 	{
 		m_pOwner.lock()->Set_Enable(false);
+		m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
 	}
 
 	Check_AndChangeNextState();

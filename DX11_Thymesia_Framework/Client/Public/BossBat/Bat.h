@@ -41,6 +41,7 @@ private:
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     //객체의 상태가 활성화 상태로 변경될 때, 호출되는 이벤트입니다.
+    virtual void OnEventMessage(_uint iArg) override;
     virtual void OnEnable(void* _Arg = nullptr) override;
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnDisable() override;
