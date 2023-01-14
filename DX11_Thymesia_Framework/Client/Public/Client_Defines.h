@@ -44,7 +44,7 @@
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
-//#define _BAT_EFFECT_
+#define _BAT_EFFECT_
 #define _URD_EFFECT_
 #define _INTERACTION_EFFECT_
 #pragma endregion // Effects
