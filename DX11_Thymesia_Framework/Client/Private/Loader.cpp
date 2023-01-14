@@ -482,10 +482,10 @@ HRESULT CLoader::Loading_ForStage3Level()
 #endif // _SKYBOX_
 
 	//GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
-	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(0.95f, 0.95f, 0.97f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
-	GAMEINSTANCE->Set_Exposure(1.f);
+	GAMEINSTANCE->Set_Exposure(1.2f);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
@@ -533,6 +533,12 @@ HRESULT CLoader::Loading_ForHomeLevel()
 #endif // _EFFECT_TOOL_
 
 	Load_AllMapModel();
+
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(0.95f, 0.95f, 0.97f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+
+	GAMEINSTANCE->Set_Contrast(1.f);
+	GAMEINSTANCE->Set_Saturation(1.f);
+	GAMEINSTANCE->Set_Exposure(1.2f);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);

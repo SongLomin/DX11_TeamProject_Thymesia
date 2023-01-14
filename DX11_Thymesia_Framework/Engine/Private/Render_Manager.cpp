@@ -1300,7 +1300,9 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
-	m_pShader->Set_RawValue("g_fExposure", &m_fExposure, sizeof(_float));
+	_float fExposure = m_fExposure + m_fBrightnessOffset;
+
+	m_pShader->Set_RawValue("g_fExposure", &fExposure, sizeof(_float));
 
 
 	m_pShader->Begin(3, pDeviceContext);
@@ -2031,9 +2033,12 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_LiftGammaGainDesc.vGamma, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_LiftGammaGainDesc.vGain, sizeof(_float4));
 
+	_float fSaturation = m_fSaturation + m_fSaturationOffset;
+	_float fContrastValue = m_fContrastValue + m_fContrastOffset;
+
 	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
-	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &m_fSaturation, sizeof(_float));
-	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &fSaturation, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &fContrastValue, sizeof(_float));
 
 	/*_float fPixelWidth = 1 / 1600.f;
 	_float fPixelHeight = 1 / 900.f;
@@ -2092,6 +2097,10 @@ HRESULT CRender_Manager::PostProcessing()
 
 	for (_int i = 0; i < 7; ++i)
 	{
+		if ((i == 0 && !m_bGodRayEnable) || (i == 4 && !m_bChromaticAberation) || (i == 4 && !m_bChromaticAberation) || (i == 5 && !m_bMotionBlur)
+			|| (i == 6 && !m_bRadialBlur))
+			continue;
+
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
 			DEBUG_ASSERT;

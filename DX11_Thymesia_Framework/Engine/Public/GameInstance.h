@@ -156,6 +156,14 @@ public: /* For.Render_Manager */
 	HRESULT Set_Sharpness(const _float In_fSharpness);
 	HRESULT Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio);
 
+	HRESULT Set_MotionBlur_Enable(const _bool& In_bMotionBlurEnable);
+	HRESULT Set_GodRay_Enable(const _bool& In_bGodRayEnable);
+	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable);
+	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable);
+	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset);
+	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset);
+	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset);
+
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 

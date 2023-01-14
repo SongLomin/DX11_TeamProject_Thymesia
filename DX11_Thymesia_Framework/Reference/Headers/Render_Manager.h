@@ -81,6 +81,44 @@ public:
 
 	HRESULT Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio);
 
+	HRESULT Set_MotionBlur_Enable(const _bool& In_bMotionBlurEnable)
+	{
+		m_bMotionBlur = In_bMotionBlurEnable;
+
+		return S_OK;
+	}
+	HRESULT Set_GodRay_Enable(const _bool& In_bGodRayEnable)
+	{
+		m_bGodRayEnable = In_bGodRayEnable;
+		return S_OK;
+	}
+	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable)
+	{
+		m_bChromaticAberation = In_bChromaticEnable;
+		return S_OK;
+	}
+	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable)
+	{
+		m_bRadialBlur = In_bRadialBlurEnable;
+		return S_OK;
+	}
+
+	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset)
+	{
+		m_fBrightnessOffset = In_fBrightnessOffset;
+		return S_OK;
+	}
+	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset)
+	{
+		m_fSaturationOffset= In_fSaturationOffset;
+		return S_OK;
+	}
+	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset)
+	{
+		m_fContrastOffset = In_fContrastOffset;
+		return S_OK;
+	}
+
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_ShadowDepth();
@@ -226,6 +264,15 @@ private:
 
 	_float		m_fInversionRatio = 1.f;
 	_float		m_fInversionStrength = 1.f;
+
+	_bool		m_bMotionBlur = true;
+	_bool		m_bGodRayEnable = true;
+	_bool		m_bChromaticAberation = true;
+	_bool		m_bRadialBlur = true;
+
+	_float		m_fSaturationOffset = 0.f;
+	_float		m_fBrightnessOffset = 0.f;
+	_float		m_fContrastOffset = 0.f;
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
