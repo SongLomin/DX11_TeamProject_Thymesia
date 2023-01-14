@@ -102,6 +102,18 @@ void CBatBossState_Idle::OnDestroy()
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Idle::Call_AnimationEnd, this, placeholders::_1);
 }
 
+void CBatBossState_Idle::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bHeelScream = false;
+		m_bChestCheck = false;
+	}
+
+}
+
 _bool CBatBossState_Idle::Check_AndChangeNextState()
 {
 

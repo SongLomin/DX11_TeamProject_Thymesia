@@ -37,7 +37,7 @@ void CAIStateBase::Init_Desc(void* In_pDesc)
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
 	m_eBossStartType  = StateLinkDesc.eBossStartType;
-	m_bPatrol = false;///StateLinkDesc.bPatrol;
+	m_bPatrol = StateLinkDesc.bPatrol;
 }
 
 void CAIStateBase::Start()

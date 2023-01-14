@@ -113,11 +113,12 @@ void CNorMonState_Die::Tick(_float fTimeDelta)
 	}
 
 	LIGHTDESC LightDesc = Get_OwnerMonster()->Get_LightDesc();
-	if (LightDesc.bEnable)
+
+	LightDesc.fIntensity = LightDesc.fIntensity - fTimeDelta;
+	if (LightDesc.fIntensity <= 0.f)
 	{
-		LightDesc.bEnable = GAMEINSTANCE->Remove_Light(LightDesc.Get_LightIndex());
+		LightDesc.bEnable = false;
 	}
-	LightDesc.fIntensity = max(0.f, LightDesc.fIntensity - fTimeDelta);
 	Get_OwnerMonster()->Set_LightDesc(LightDesc);
 
 }

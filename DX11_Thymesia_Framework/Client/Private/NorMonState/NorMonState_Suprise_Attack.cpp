@@ -135,7 +135,7 @@ _bool CNorMonState_Suprise_Attack::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (fDistance <= 2.f)
+	if (fDistance <= 4.f)
 	{
 		switch (m_eMonType)
 		{

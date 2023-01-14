@@ -27,7 +27,7 @@ HRESULT CBat::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	CollsionContent(12.f);
+	CollsionContent(14.f);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxAnimModel"),
@@ -284,11 +284,30 @@ void CBat::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 void CBat::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionStay(pMyCollider, pOtherCollider);
+
 }
 
 void CBat::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionExit(pMyCollider, pOtherCollider);
+}
+
+void CBat::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		Change_State<CBatBossState_Start_Loop>();
+		Set_Enable(false);
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+		m_pStatus.lock()->Full_Recovery();
+
+	}
 }
 
 void CBat::OnEnable(void* _Arg)

@@ -86,11 +86,12 @@ void CNorMonState_TakeExecution::Tick(_float fTimeDelta)
 	}
 
 	LIGHTDESC LightDesc = Get_OwnerMonster()->Get_LightDesc();
-	if (LightDesc.bEnable)
+
+	LightDesc.fIntensity = LightDesc.fIntensity - fTimeDelta;
+	if (LightDesc.fIntensity <= 0.f)
 	{
-		LightDesc.bEnable = GAMEINSTANCE->Remove_Light(LightDesc.Get_LightIndex());
+		LightDesc.bEnable = false;
 	}
-	LightDesc.fIntensity = max(0.f, LightDesc.fIntensity - fTimeDelta);
 	Get_OwnerMonster()->Set_LightDesc(LightDesc);
 
 }
@@ -180,10 +181,7 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 
 	Get_OwnerMonster()->Release_Monster();
 
-	
-
-
-	
+		
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 

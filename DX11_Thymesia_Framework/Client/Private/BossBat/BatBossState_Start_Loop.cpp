@@ -97,3 +97,4 @@ _bool CBatBossState_Start_Loop::Check_AndChangeNextState()
 	return false;
 }
 
+

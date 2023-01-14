@@ -359,3 +359,21 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	return false;
 }
 
+void CUrdBossState_Idle::OnEventMessage(_uint iArg)
+{
+
+	__super::OnEventMessage(iArg);
+
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bSkillStart = false;
+		m_bTurnCheck = false;
+		m_bWalkStart = false;
+		m_bSpecailAttack = false;
+		m_bAttack = false;
+		m_iPhaseTwoJavlinCount = 0;
+		m_iPhaseTwoSkillCount = 0;
+	}
+}
+

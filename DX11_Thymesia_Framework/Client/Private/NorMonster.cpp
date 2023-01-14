@@ -581,6 +581,10 @@ void CNorMonster::OnEventMessage(_uint iArg)
 		Change_State<CNorMonState_Idle>();
 		Set_Enable(false);
 		m_pStatus.lock()->Full_Recovery();
+
+		m_LightDesc.fIntensity = 0.4f;
+		m_LightDesc.bEnable = true;
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	}
 }
 

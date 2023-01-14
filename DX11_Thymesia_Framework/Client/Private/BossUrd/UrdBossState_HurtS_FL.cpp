@@ -78,6 +78,17 @@ void CUrdBossState_HurtS_FL::OnStateEnd()
 
 }
 
+void CUrdBossState_HurtS_FL::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_iParryCount = 0;
+
+	}
+}
+
 
 
 void CUrdBossState_HurtS_FL::Call_AnimationEnd(_uint iEndAnimIndex)

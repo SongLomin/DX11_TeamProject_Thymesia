@@ -14,6 +14,7 @@
 #include "UI_ScriptQueue.h"
 
 
+
 GAMECLASS_C(CBatBossState_Start);
 CLONE_C(CBatBossState_Start, CComponent)
 
@@ -95,6 +96,9 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		Print_Vector(vPosition);
 		break;
 	}
+	case 1434:
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+		break;
 	case 1442:
 	{
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
@@ -165,6 +169,8 @@ void CBatBossState_Start::OnDestroy()
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Start::Call_AnimationEnd, this, placeholders::_1);
 }
 
+
+
 void CBatBossState_Start::Free()
 {
 
@@ -176,7 +182,7 @@ _bool CBatBossState_Start::Check_AndChangeNextState()
 		return false;
 
 	
-
+	
 	return false;
 }
 

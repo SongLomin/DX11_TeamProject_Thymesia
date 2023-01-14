@@ -153,7 +153,7 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 			}
 			
 			//¿©±â¼­ ¶ì¶ì¶ìÇØÁà¾ßÇÔ
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Long_AvoidF>();
 			return false;
 		}
 	}

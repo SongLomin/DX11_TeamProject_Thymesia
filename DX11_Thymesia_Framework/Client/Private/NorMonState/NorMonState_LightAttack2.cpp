@@ -224,7 +224,7 @@ void CNorMonState_LightAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 		break;
 		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		{
@@ -237,7 +237,7 @@ void CNorMonState_LightAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
 		}
-		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 		break;
 		case Client::MONSTERTYPE::ARMORSPEARMAN:
 		{
