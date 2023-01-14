@@ -62,6 +62,8 @@
 #include "CorvusStates/CorvusState_PS_Hammer_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_Halberds.h"
 #include "CorvusStates/CorvusState_PS_Halberds_Upgrade.h"
+#include "CorvusStates/CorvusState_PS_BigHand.h"
+#include "CorvusStates/CorvusState_PS_BigHand_End.h"
 #include "CorvusStates/CorvusState_PS_Magician.h"
 #include "CorvusStates/CorvusState_PS_VargSword.h"
 #include "CorvusStates/CorvusState_PS_VargSwordStart.h"

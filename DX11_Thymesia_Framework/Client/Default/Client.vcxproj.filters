@@ -1976,7 +1976,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\CaneSword_Start</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02. GameObject\03. Actor\Character</Filter>
@@ -2236,6 +2236,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Window_TextureEditerView.h">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BigHand.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BigHand_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand\BigHand_End</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -4234,7 +4240,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword_Start.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\CaneSword_Start</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02. GameObject\03. Actor\Character</Filter>
@@ -4498,6 +4504,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Preset_ShaderPass.cpp">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BigHand.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_BigHand_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand\BigHand_End</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Skill_Halberds.cpp" />
     <ClCompile Include="..\Private\Window_TextureEditerView.cpp">
@@ -6478,9 +6490,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\03.Idle2Fight">
       <UniqueIdentifier>{df141bf0-d6af-4d3c-9ef7-1342e73aa9c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\Start">
-      <UniqueIdentifier>{1690cca4-177b-4c90-85b1-be76d3094f3f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\Character\Player\Talent">
       <UniqueIdentifier>{b1925acb-a8f6-4420-a9a0-d0c236df9ecc}</UniqueIdentifier>
     </Filter>
@@ -6651,6 +6660,18 @@
     </Filter>
     <Filter Include="06. DataPreset\09. Preset_ShaderPass">
       <UniqueIdentifier>{c040abcd-a8ee-49a8-9132-6f0208cfc02c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand">
+      <UniqueIdentifier>{700abbeb-957d-44aa-adc9-7dbccbe7fdd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand\BigHand_End">
+      <UniqueIdentifier>{39f6c07d-7c04-41fc-a96b-7c3887c27bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand\Upgrade">
+      <UniqueIdentifier>{af59ddb0-5c8e-424f-b767-f04c98ee1ddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword\CaneSword_Start">
+      <UniqueIdentifier>{1690cca4-177b-4c90-85b1-be76d3094f3f}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer">
       <UniqueIdentifier>{f3361738-3c8e-4796-9947-334c34e437e3}</UniqueIdentifier>

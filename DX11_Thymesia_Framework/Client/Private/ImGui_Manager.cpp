@@ -338,7 +338,7 @@ void CImGui_Manager::Init_EffectEditer()
 	CameraDesc.vAt = _float4(0.f, 1.5f, 0.f, 1.f);
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
+	CameraDesc.fNear = 0.01f;
 	CameraDesc.fFar = 300.f;
 
 	m_pEditerCamera = GAMEINSTANCE->Add_GameObject<CCamera_Free>(LEVEL_EDIT, &CameraDesc);
@@ -372,7 +372,7 @@ void CImGui_Manager::Init_ModelEditer()
 	CameraDesc.vAt = _float4(0.f, 1.5f, 0.f, 1.f);
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
+	CameraDesc.fNear = 0.01f;
 	CameraDesc.fFar = 300.f;
 
 	m_pEditerCamera = GAMEINSTANCE->Add_GameObject<CCamera_Free>(LEVEL_EDIT, &CameraDesc);

@@ -813,6 +813,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectLeftup);
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectRight);
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectRightup);
+
 	ADD_STATE_MACRO(CCorvusState_PS_Axe);
 	ADD_STATE_MACRO(CCorvusState_PS_CaneSword);
 	ADD_STATE_MACRO(CCorvusState_PS_CaneSword_Start);
@@ -823,12 +824,15 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_PS_Hammer_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_Halberds);
 	ADD_STATE_MACRO(CCorvusState_PS_Halberds_Upgrade);
+	ADD_STATE_MACRO(CCorvusState_PS_BigHand);
+	ADD_STATE_MACRO(CCorvusState_PS_BigHand_End);
 	ADD_STATE_MACRO(CCorvusState_PS_Magician);
 	ADD_STATE_MACRO(CCorvusState_PS_BatRoar);
 	ADD_STATE_MACRO(CCorvusState_PS_BatRoar_Upgrade);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSword);
 	ADD_STATE_MACRO(CCorvusState_PS_UrdSword);
+
 	ADD_STATE_MACRO(CCorvusState_AVoidSalsh);
 	ADD_STATE_MACRO(CCorvusState_AVoidThrust);
 	ADD_STATE_MACRO(CCorvusState_Climb_L_Down);
