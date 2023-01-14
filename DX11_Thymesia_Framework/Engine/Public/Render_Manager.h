@@ -134,7 +134,7 @@ public:
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
 
 public:
-	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha);
 	HRESULT Extract_Texture(const tstring& In_szFilePath);
 
 private:

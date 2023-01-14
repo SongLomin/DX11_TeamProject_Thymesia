@@ -58,6 +58,8 @@ namespace Engine
 		unsigned int ix, iy, iz;
 	} _uint3;
 
+	typedef XMINT4						_uint4;
+
 
 
 	

@@ -850,7 +850,7 @@ HRESULT CRender_Manager::Render_Priority()
 }
 
 #ifdef _DEBUG
-HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue)
+HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha)
 {
 
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_ExtractTextureMRT(TEXT("MRT_ExtractTexture"))))
@@ -860,14 +860,9 @@ HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSR
 	m_pEditTextureShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pEditTextureShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 	
-	_vector vRChannel{}, vGChannel{}, vBChannel{};
-	vRChannel.m128_f32[In_Red] = 1.f;
-	vGChannel.m128_f32[In_Green] = 1.f;
-	vBChannel.m128_f32[In_Blue] = 1.f;
+	_uint4 iChannelIndex{ (_uint)In_Red, (_uint)In_Green, (_uint)In_Blue, In_Alpha };
 
-	_uint3 iChannelIndex{ (_uint)In_Red, (_uint)In_Green, (_uint)In_Blue };
-
-	m_pEditTextureShaderCom->Set_RawValue("g_ChannelIndex", &iChannelIndex, sizeof(_uint3));
+	m_pEditTextureShaderCom->Set_RawValue("g_ChannelIndex", &iChannelIndex, sizeof(_uint4));
 	/*m_pEditTextureShaderCom->Set_RawValue("g_GChannelUse", &vRChannel, sizeof(_vector));
 	m_pEditTextureShaderCom->Set_RawValue("g_BChannelUse", &vRChannel, sizeof(_vector));*/
 
