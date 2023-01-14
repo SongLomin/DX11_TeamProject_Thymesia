@@ -29,13 +29,13 @@ HRESULT CInteraction_CheckPoint::Initialize_Prototype()
 
 HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
 {
-    __super::Initialize(pArg);
+__super::Initialize(pArg);
 
     m_pColliderCom       = Add_Component<CCollider>();
     m_pAnimShader        = Add_Component<CShader>();
     m_pTextureCom        = Add_Component<CTexture>();
     m_pAnimModelCom      = Add_Component<CModel>();
-    m_pAnimTransfromCom  = Add_Component<CTransform>();
+    m_pChairTransfromCom = Add_Component<CTransform>();
     m_pDeco              = GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel);
     
     m_pShaderCom.lock()->Set_ShaderInfo
@@ -93,7 +93,7 @@ HRESULT CInteraction_CheckPoint::Start()
     
     _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
     OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * -m_fAisemyOffset;
-    m_pAnimTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
+    m_pChairTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
 
 	m_tLightDesc   = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
@@ -238,11 +238,11 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EDIT_UDATE:
         {
-            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+            /*m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
             _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
-            OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * -m_fAisemyOffset;
-            m_pAnimTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
+            OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * m_fAisemyOffset;
+            m_pAnimTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);*/
         }
         break;
 
@@ -380,7 +380,7 @@ void CInteraction_CheckPoint::SetUpColliderDesc()
 
 HRESULT CInteraction_CheckPoint::Draw_Chair(ID3D11DeviceContext* pDeviceContext)
 {
-    if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+    if (FAILED(m_pChairTransfromCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         DEBUG_ASSERT;
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
         DEBUG_ASSERT;
@@ -470,8 +470,8 @@ HRESULT CInteraction_CheckPoint::Draw_Aisemy(ID3D11DeviceContext* pDeviceContext
     if (!m_bAisemyRender)
         return S_OK;
 
-    if (FAILED(m_pAnimTransfromCom.lock()->Set_ShaderResource(m_pAnimShader, "g_WorldMatrix")))
-        DEBUG_ASSERT;
+    if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pAnimShader, "g_WorldMatrix")))
+        return E_FAIL;
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
         DEBUG_ASSERT;
     if (FAILED(m_pAnimShader.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
@@ -510,6 +510,8 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
             m_pDeco.lock()->Set_Enable(true);
 
+            //GAMEINSTANCE->PlaySound2D("VOC_Aisemy_EquipOff.ogg", 1.f);
+
             m_bAisemyRender = true;
 
         }
@@ -536,6 +538,9 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->Set_CurrentAnimation(EQUIP_END);
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.5f);
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
+
+            GAMEINSTANCE->PlaySound2D("EVM_Aisemy_EquipOn.ogg" , 1.f);
+            GAMEINSTANCE->PlaySound2D("VOC_Aisemy_EquipOff.ogg", 1.f);
         }
         break;
 
@@ -544,6 +549,8 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->Set_CurrentAnimation(EQUIP_LOOP);
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.f);
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
+
+            GAMEINSTANCE->PlaySound2D("VOC_Aisemy_EquipOff.ogg", 1.f);
         }
         break;
 
@@ -557,6 +564,8 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             CallBack_DeleteEffect += bind(&CInteraction_CheckPoint::Call_DeleteEffect, this, placeholders::_1, placeholders::_2, "ChairEffect_Deactivate");
             CallBack_CreateEffect += bind(&CInteraction_CheckPoint::Call_CreateEffect, this, "ChairEffect_Activate");
 #endif
+
+            GAMEINSTANCE->PlaySound2D("EVM_Aisemy_EquipOn.ogg", 1.f);
         }
         break;
 
@@ -708,7 +717,7 @@ void CInteraction_CheckPoint::Call_CreateEffect(string _szEffectTag)
             m_iUnUseEffectIndex = -1;
         }
 
-        m_iUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pTransformCom, (_uint)TIMESCALE_LAYER::NONE);
+        m_iUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Activate", m_pChairTransfromCom, (_uint)TIMESCALE_LAYER::NONE);
     }
 
     else if (string("ChairEffect_Deactivate") == _szEffectTag)
@@ -719,7 +728,7 @@ void CInteraction_CheckPoint::Call_CreateEffect(string _szEffectTag)
             m_iUseEffectIndex = -1;
         }
 
-        m_iUnUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Deactivate", m_pTransformCom, (_uint)TIMESCALE_LAYER::NONE);;
+        m_iUnUseEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ChairEffect_Deactivate", m_pChairTransfromCom, (_uint)TIMESCALE_LAYER::NONE);;
     }
 }
 

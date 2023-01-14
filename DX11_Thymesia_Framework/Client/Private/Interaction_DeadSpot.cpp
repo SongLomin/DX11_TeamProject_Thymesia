@@ -126,8 +126,9 @@ void CInteraction_DeadSpot::Init_DeadSpot(_vector In_vPos, _uint In_iMemory)
 void CInteraction_DeadSpot::Act_Interaction()
 {
     //GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL::LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
-    GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Add_Memory(m_iMemory);
 
+    GAMEINSTANCE->PlaySound2D("EVM_ItemPickUp.ogg", 1.f);
+    GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Add_Memory(m_iMemory);
     
     GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front().lock()->Call_CollisionExit();
 

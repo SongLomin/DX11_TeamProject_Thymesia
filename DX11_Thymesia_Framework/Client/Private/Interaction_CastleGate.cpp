@@ -94,6 +94,7 @@ HRESULT CInteraction_CastleGate::Start()
 
         XMStoreFloat4x4(&m_RightDoorMatrix, RightWorldMatrix);
         XMStoreFloat4x4(&m_LeftDoorMatrix , LeftWorldMatrix);
+
 #ifdef _GENERATE_PROP_COLLIDER_
         PhysXColliderDesc tDesc;
         m_pRightPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorRightModelCom.lock()->Get_ModelData(), true);
@@ -223,7 +224,7 @@ void CInteraction_CastleGate::Load_FromJson(const json& In_Json)
 void CInteraction_CastleGate::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
 {
     m_fGearRotationRadian += XMConvertToRadians(160.f) * fTimeDelta;
-    m_fDoorRotationRadian += XMConvertToRadians(10.f)  * fTimeDelta;
+    m_fDoorRotationRadian += XMConvertToRadians(7.f)  * fTimeDelta;
 
     if (XMConvertToRadians(80.f) <= m_fDoorRotationRadian)
     {
@@ -238,7 +239,7 @@ void CInteraction_CastleGate::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
 void CInteraction_CastleGate::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
 {
     m_fGearRotationRadian -= XMConvertToRadians(160.f) * fTimeDelta;
-    m_fDoorRotationRadian -= XMConvertToRadians(10.f)  * fTimeDelta;
+    m_fDoorRotationRadian -= XMConvertToRadians(7.f)  * fTimeDelta;
 
     if (0.f >= m_fDoorRotationRadian)
     {
@@ -259,7 +260,11 @@ void CInteraction_CastleGate::Act_Interaction()
 
     }
     else
+    {
         Callback_ActUpdate += bind(&CInteraction_CastleGate::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
+    }
+
+    GAMEINSTANCE->PlaySound3D("EVM_Door_Industrial_Open_01.wav", 1.f, m_pTransformCom.lock()->Get_Position());
 }
 
 void CInteraction_CastleGate::Requirement_Key(_bool& Out_bRequirement)
@@ -279,7 +284,7 @@ void CInteraction_CastleGate::Requirement_Key(_bool& Out_bRequirement)
     if (!Out_bRequirement)
     {
         GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_ItemRequireMent(m_iKeyID);
-        Callback_ActFail();
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 
@@ -410,14 +415,12 @@ HRESULT CInteraction_CastleGate::DrawShader_Door(ID3D11DeviceContext* pDeviceCon
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
 
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {
             continue;
-        }
-
-     
+        }   
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pDoorRightModelCom.lock()->Render_Mesh(i, pDeviceContext);

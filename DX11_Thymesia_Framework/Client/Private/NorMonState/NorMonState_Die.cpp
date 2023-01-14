@@ -18,6 +18,7 @@
 #include "Player.h"
 #include "UI_Utils.h"
 
+#include "Interaction_Item.h"
 
 
 GAMECLASS_C(CNorMonState_Die);
@@ -175,7 +176,9 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 		break;
 	}
 
-	
+	weak_ptr<CInteraction_Item> pItem = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(m_CreatedLevel);
+	pItem.lock()->Get_Transform()->Set_Position(m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.f, 0.f, 0.f));
+	pItem.lock()->Add_Item(CUI_Utils::ConvertMonsterTypeToSkillPiece(m_eMonType));
 
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
@@ -188,11 +191,7 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::MEMORY01);
 
-	ITEM_NAME eSkillPiece;
-
-	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
-	eSkillPiece = CUI_Utils::ConvertMonsterTypeToSkillPiece(pMonster.lock()->Get_MonsterType());
+	ITEM_NAME eSkillPiece = CUI_Utils::ConvertMonsterTypeToSkillPiece(m_eMonType);
 
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(eSkillPiece);
@@ -208,6 +207,9 @@ void CNorMonState_Die::OnStateEnd()
 	__super::OnStateEnd();
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
 		bind(&CNorMonState_Die::Call_NextKeyFrame, this, placeholders::_1);
+
+	weak_ptr<CInteraction_Item> pItem = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(m_CreatedLevel);
+	pItem.lock()->Add_Item(ITEM_NAME::BASIL);
 }
 
 void CNorMonState_Die::OnDestroy()

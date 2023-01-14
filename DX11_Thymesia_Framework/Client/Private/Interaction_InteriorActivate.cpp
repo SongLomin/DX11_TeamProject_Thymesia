@@ -182,6 +182,7 @@ void CInteraction_InteriorActivate::Act_Interaction()
     if (ANIM_EVENT::STAY == m_eAnimEvent)
     {    
         SetAnimState(ANIM_EVENT::EQUIP_BEGINE);
+        GAMEINSTANCE->PlaySound2D("EVM_prop_summoningstone_activate.wav", 1.f);
 
         CallBack_AnimPlay += bind(&CInteraction_InteriorActivate::Call_PlayAnimState, this);
         CallBack_Activate += bind(&CInteraction_InteriorActivate::Call_ActivateInterior, this);

@@ -149,6 +149,7 @@ void CInteraction_Elevator::Act_Interaction()
         return;
 
     Weak_Cast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(m_eNextLevel);
+    GAMEINSTANCE->PlaySound2D("EVM_Fantasy_Game_Door_Close.ogg", 1.f);
 }
 
 void CInteraction_Elevator::SetUpColliderDesc()

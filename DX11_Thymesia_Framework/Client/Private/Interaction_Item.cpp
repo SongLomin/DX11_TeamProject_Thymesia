@@ -46,6 +46,7 @@ HRESULT CInteraction_Item::Initialize(void* pArg)
 HRESULT CInteraction_Item::Start()
 {
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+    m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("ItemEffect", m_pTransformCom, (_uint)TIMESCALE_LAYER::NONE);
 
     return __super::Start();
 }
@@ -164,7 +165,9 @@ void CInteraction_Item::Act_Interaction()
     for (auto elem : m_Items)
         pPlayer.lock()->Get_Component<CInventory>().lock()->Push_Item(elem);
 
+    GAMEINSTANCE->PlaySound2D("EVM_ItemPickUp.ogg", 1.f);
     m_pColliderCom.lock()->Set_Enable(false);
+    Set_Dead();
 }
 
 void CInteraction_Item::SetUpColliderDesc(_float* _pColliderDesc)
@@ -178,6 +181,11 @@ void CInteraction_Item::SetUpColliderDesc(_float* _pColliderDesc)
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_Item::OnDestroy()
+{
+    GET_SINGLE(CGameManager)->UnUse_EffectGroup("ItemEffect", m_iEffectIndex);
 }
 
 void CInteraction_Item::Free()

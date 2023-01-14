@@ -86,6 +86,8 @@ void CInteraction_MapTable::Load_FromJson(const json& In_Json)
 
 void CInteraction_MapTable::Act_Interaction()
 {
+    GAMEINSTANCE->PlaySound2D("EVM_Fantasy_Game_Door_Close.ogg", 1.f);
+
     switch (GET_SINGLE(CGameManager)->Get_PreLevel())
     {
         case LEVEL::LEVEL_STAGE2:

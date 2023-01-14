@@ -1484,9 +1484,6 @@
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_DeadSpot.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Interaction_CastleGate.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
@@ -2232,6 +2229,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Preset_ShaderPass.h">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_DeadSpot.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Window_TextureEditerView.h">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer</Filter>

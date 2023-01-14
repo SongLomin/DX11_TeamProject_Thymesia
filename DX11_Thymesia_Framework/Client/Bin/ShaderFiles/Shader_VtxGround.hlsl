@@ -398,42 +398,42 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
-    float3 vPixelNorm = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
+    float3 vPixelNorm     = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
 
     if (0.1f < vFilterDiffuse.r)
     {
         vector AddTex_Diff = g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
         vector AddTex_Norm = g_Texture_AddNo1_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
-        vector AddTex_ORM = g_Texture_AddNo1_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
+        vector AddTex_ORM  = g_Texture_AddNo1_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
         vector vFilter = vector(vFilterDiffuse.r, vFilterDiffuse.r, vFilterDiffuse.r, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-        Out.vORM = AddTex_ORM;
-        vPixelNorm = AddTex_Norm.xyz;
+        Out.vORM     = AddTex_ORM;
+        vPixelNorm   = AddTex_Norm.xyz;
     }
 
     if (0.1f < vFilterDiffuse.g)
     {
         vector AddTex_Diff = g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
         vector AddTex_Norm = g_Texture_AddNo2_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
-        vector AddTex_ORM = g_Texture_AddNo2_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
+        vector AddTex_ORM  = g_Texture_AddNo2_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
         vector vFilter = vector(vFilterDiffuse.g, vFilterDiffuse.g, vFilterDiffuse.g, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-        Out.vORM = AddTex_ORM;
-        vPixelNorm = AddTex_Norm.xyz;
+        Out.vORM     = AddTex_ORM;
+        vPixelNorm   = AddTex_Norm.xyz;
     }
 
     if (0.1f < vFilterDiffuse.b)
     {
         vector AddTex_Diff = g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
         vector AddTex_Norm = g_Texture_AddNo3_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
-        vector AddTex_ORM = g_Texture_AddNo3_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
+        vector AddTex_ORM  = g_Texture_AddNo3_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
         vector vFilter = vector(vFilterDiffuse.b, vFilterDiffuse.b, vFilterDiffuse.b, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-        Out.vORM = AddTex_ORM;
-        vPixelNorm = AddTex_Norm.xyz;
+        Out.vORM     = AddTex_ORM;
+        vPixelNorm   = AddTex_Norm.xyz;
     }
     //물쉐이더 테스트 용 
 
