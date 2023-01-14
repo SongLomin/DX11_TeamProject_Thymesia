@@ -3,7 +3,7 @@
 
 _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const _bool In_bMasking, const _bool In_bNoneCulling, const _bool In_bDissolve)
 {
-    _uint iPassResult = -1;
+    _uint iPassResult = 0;
 
     if (!((1 << aiTextureType_DIFFUSE) & In_BindTextureFlag))
     {
@@ -35,7 +35,7 @@ _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const 
 		(1 << aiTextureType_NORMALS) & In_BindTextureFlag &&
 		(1 << aiTextureType_SPECULAR) & In_BindTextureFlag)
 	{
-		return 1;
+		return 7;
 	}
 
 	// Invisibility		NO.
@@ -57,7 +57,7 @@ _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const 
 		(1 << aiTextureType_NORMALS) & In_BindTextureFlag &&
 		(1 << aiTextureType_SPECULAR) & In_BindTextureFlag)
 	{
-		return 5;
+		return 7;
 	}
 
 	// Invisibility		OK.
@@ -69,7 +69,7 @@ _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const 
 		(1 << aiTextureType_NORMALS) & In_BindTextureFlag &&
 		(1 << aiTextureType_SPECULAR) & In_BindTextureFlag)
 	{
-		return 7;
+		return 17;
 	}
 
 	// Invisibility		OK.
@@ -81,7 +81,7 @@ _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const 
 		(1 << aiTextureType_NORMALS) & In_BindTextureFlag &&
 		(1 << aiTextureType_SPECULAR) & In_BindTextureFlag)
 	{
-		return 6;
+		return 17;
 	}
 
 	// Invisibility		OK.
@@ -92,7 +92,7 @@ _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const 
 		!((1 << aiTextureType_NORMALS) & In_BindTextureFlag))
 	{
 
-		return 4;
+		return 0;
 	}
 
 	// Invisibility		OK.
@@ -108,8 +108,31 @@ _uint Preset::ShaderPass::ModelShaderPass(const _flag In_BindTextureFlag, const 
 		//cout << "The correct pass does not define. : " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG
 
-		return 4;
+		return 6;
 	}
+
+	// Invisibility		OK.
+	// NonCulling		NO.
+	// NormalTexture	OK.
+	// ORMTexture		NO.
+	else if (In_bMasking &&
+	!In_bNoneCulling &&
+	(1 << aiTextureType_NORMALS) & In_BindTextureFlag &&
+	!((1 << aiTextureType_SPECULAR) & In_BindTextureFlag))
+	{
+#ifdef _DEBUG
+	//cout << "The correct pass does not define. : " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+
+		return 16;
+	}
+
+	else if (!((1 << aiTextureType_NORMALS) & In_BindTextureFlag))
+	{
+		return 0;
+	}
+
+	
 
 
     return iPassResult;

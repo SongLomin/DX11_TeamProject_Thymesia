@@ -383,6 +383,45 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     return Out;
 }
 
+PS_OUT PS_MAIN_NORMAL_PBR_MASKING(PS_IN_NORMAL In)
+{
+    PS_OUT Out = (PS_OUT)0;
+    float2 vPixelTexUV;
+    vPixelTexUV.x = (In.vProjPos.x / In.vProjPos.w) * 0.5f + 0.5f;
+    vPixelTexUV.y = (In.vProjPos.y / In.vProjPos.w) * -0.5f + 0.5f;
+    vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
+
+    float fCamToPixelWorld = length(g_vCamPosition - In.vWorldPos);
+    float fCamToPlayer = length(g_vCamPosition - g_vPlayerPosition);
+
+    clip(fCamToPixelWorld / fCamToPlayer - vMaskTexture.r);
+
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    clip(Out.vDiffuse.a - 0.1f);
+
+    /* 0 ~ 1 */
+    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+    /* -1 ~ 1 */
+     /* -1 ~ 1 */
+    vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+    vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+    Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
+    Out.vShaderFlag = g_vShaderFlag;
+
+    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+
+    Out.vExtractBloom = 0;
+    Out.vRimLight = 0;
+
+    return Out;
+}
+
 PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR_PBR(PS_IN_NORMAL In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -685,7 +724,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
     }
 
-    pass Pass13_InterioriPick
+    pass Pass13_InterioriPick //15
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -696,5 +735,31 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_INTERIOR_PICK();
+    }
+
+    pass MaskingCulling //16
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
+    }
+
+    pass Default_Normal_PBR_Masking //17
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_PBR_MASKING();
     }
 }

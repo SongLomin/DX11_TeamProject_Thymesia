@@ -52,6 +52,7 @@ HRESULT CEditGround::Initialize(void* pArg)
 	TEXTURES_INFO Desc;
 	Desc.pDiffTex = Add_Component<CTexture>();
 	Desc.pNormTex = Add_Component<CTexture>();
+	Desc.pORMTex  = Add_Component<CTexture>();
 	m_pTextureCom.emplace(TexVarDesc[0], Desc);
 
 	Load_ResourceList(m_MeshNames   , "../Bin/GroundInfo/Mesh/", ".bin");
@@ -107,6 +108,7 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	{
 		string szDiffTextureName = iter.first + "_Diff";
 		string szNormTextureName = iter.first + "_Norm";
+		string szORMTextureName  = iter.first + "_ORM";
 		string szDensityName	 = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 	
 		if ("" != iter.second.pDiffTex.lock()->Get_TextureKey())
@@ -118,6 +120,12 @@ HRESULT CEditGround::SetUp_ShaderResource()
 		if ("" != iter.second.pNormTex.lock()->Get_TextureKey())
 		{
 			if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
+				return E_FAIL;
+		}
+
+		if ("" != iter.second.pORMTex.lock()->Get_TextureKey())
+		{
+			if (FAILED(iter.second.pORMTex.lock()->Set_ShaderResourceView(m_pShaderCom, szORMTextureName.c_str(), 0)))
 				return E_FAIL;
 		}
 
@@ -1086,6 +1094,7 @@ void CEditGround::Write_Json(json& Out_Json)
 
 		Texture.emplace("Diff", iter.second.pDiffTex.lock()->Get_TextureKey());
 		Texture.emplace("Norm", iter.second.pNormTex.lock()->Get_TextureKey());
+		Texture.emplace("ORM" , iter.second.pORMTex.lock()->Get_TextureKey());
 		Texture.emplace("Density", iter.second.fDensity);
 
 		TexInfo.emplace(iter.first, Texture);
@@ -1108,8 +1117,8 @@ void CEditGround::Write_Json(json& Out_Json)
 	if (Out_Json.end() != Out_Json.find("Name"))
 		Out_Json["Name"] = typeid(CGround).name();
 
-	Bake_Mesh();  
-	Bake_FilterTexture();
+	//Bake_Mesh();  
+	//Bake_FilterTexture();
 }
 
 void CEditGround::Load_FromJson(const json& In_Json)
@@ -1139,6 +1148,7 @@ void CEditGround::Load_FromJson(const json& In_Json)
 					TEXTURES_INFO Desc;
 					Desc.pDiffTex = Add_Component<CTexture>();
 					Desc.pNormTex = Add_Component<CTexture>();
+					Desc.pORMTex  = Add_Component<CTexture>();
 
 					m_pTextureCom.emplace(szDatakey, Desc);
 					iter_find = m_pTextureCom.find(szDatakey);
@@ -1158,6 +1168,12 @@ void CEditGround::Load_FromJson(const json& In_Json)
 					{
 						string szTextureName = iter_item.value();
 						iter_find->second.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+					}
+
+					if ("ORM" == szitemkey)
+					{
+						string szTextureName = iter_item.value();
+						iter_find->second.pORMTex.lock()->Use_Texture(szTextureName.c_str());
 					}
 
 					if ("Density" == szitemkey)

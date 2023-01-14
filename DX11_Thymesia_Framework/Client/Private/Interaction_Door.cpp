@@ -457,10 +457,14 @@ void CInteraction_Door::Act_Interaction()//여기서 Use
         GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_UseItem(m_iKeyID);
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
         m_pPhysXColliderCom.lock()->Set_Enable(false);
+
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Open.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
     }
     else
     {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
+
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 
@@ -468,24 +472,21 @@ void CInteraction_Door::Requirement_Key(_bool& Out_bRequirement)
 {
     if (ITEM_NAME::ITEM_NAME_END == m_iKeyID)
     {
-#ifdef _DEBUG
-        MSG_BOX("Err KeyID : KeyID Value is [ITEM_NAME::ITEM_NAME_END]");
-#endif
-
         Out_bRequirement = false;
+
         return;
     }
     
     // 나중에 인벤토리 컴포넌트 찾아서 검색하기
     weak_ptr<CInventory> pInventory = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock();
-    weak_ptr<CItem> pItem = pInventory.lock()->Find_Item(m_iKeyID);
+    weak_ptr<CItem>      pItem      = pInventory.lock()->Find_Item(m_iKeyID);
 
     Out_bRequirement = (nullptr != pItem.lock());
 
     if (!Out_bRequirement)
     {
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
         GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_ItemRequireMent(m_iKeyID);
-        Callback_ActFail();
     }
 }
 
@@ -509,7 +510,7 @@ void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
 
     if (!Out_bRequirement)
     {
-        Callback_ActFail();
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 

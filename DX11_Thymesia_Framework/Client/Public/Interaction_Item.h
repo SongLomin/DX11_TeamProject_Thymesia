@@ -44,8 +44,10 @@ private:
     weak_ptr<CCollider>     m_pColliderCom;
 
     list<ITEM_NAME>         m_Items;
+    _int                    m_iEffectIndex = -1;
 
 private:
+    virtual void OnDestroy() override;
     void Free();
 };
 

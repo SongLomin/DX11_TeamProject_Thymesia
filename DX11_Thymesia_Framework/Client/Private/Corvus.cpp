@@ -722,14 +722,14 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_BLOODSTORM);
 	}
-	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+	/*if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
 		Save_ClientComponentData();
 	}
 	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
 	{
 		Load_ClientComponentData();
-	}
+	}*/
 	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(

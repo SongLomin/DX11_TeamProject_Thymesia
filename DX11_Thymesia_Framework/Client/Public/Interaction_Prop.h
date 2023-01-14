@@ -52,7 +52,6 @@ protected:
 public:
     FDelegate<>                 Callback_ActStart;
     FDelegate<>                 Callback_ActEnd;
-    FDelegate<>                 Callback_ActFail;
     FDelegate<_float, _bool&>   Callback_ActUpdate;
 
 private:

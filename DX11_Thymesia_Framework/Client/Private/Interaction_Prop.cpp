@@ -84,7 +84,7 @@ HRESULT CInteraction_Prop::Render(ID3D11DeviceContext* pDeviceContext)
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
 
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {

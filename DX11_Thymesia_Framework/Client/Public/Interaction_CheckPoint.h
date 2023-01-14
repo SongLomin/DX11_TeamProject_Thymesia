@@ -72,13 +72,13 @@ private:
     weak_ptr<CModel>        m_pAnimModelCom;
     weak_ptr<CShader>       m_pAnimShader;
     weak_ptr<CTexture>      m_pTextureCom;
-    weak_ptr<CTransform>    m_pAnimTransfromCom;
+    weak_ptr<CTransform>    m_pChairTransfromCom;
 
     weak_ptr<CActorDecor>   m_pDeco;
 
     _int                    m_iTexPass      = 84;
     _float2                 m_vAddSpeed     = { -0.2f, 0.2f };
-    _float                  m_fAisemyOffset = 0.4f;
+    _float                  m_fAisemyOffset = 0.2f;
     _float                  m_fAnimSpeed    = 1.f;
     _int                    m_iAnimIndex    = 0;
 
@@ -93,6 +93,9 @@ private:
     _bool                   m_bAnimEnd      = false;
     _bool                   m_bInteraction  = false;
     _float                  m_fAccTime      = 0.f;
+
+    _int                    m_iVOCChannel = -1;
+    _int                    m_iEVMChannel = -1;
 
     FDelegate<_bool&>                   CallBack_EquipEnd;
     FDelegate<string>                   CallBack_CreateEffect;

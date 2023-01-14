@@ -30,7 +30,8 @@
         "g_Texture_Sorc": {
           "Density": 30.0,
           "Diff": "T_P_Gravel_floor01_D",
-          "Norm": "T_P_Gravel_floor01_N"
+          "Norm": "T_P_Gravel_floor01_N",
+          "ORM": "T_P_Gravel_floor01_ORM"
         }
       },
       "VIBufferCom": "Test2",
