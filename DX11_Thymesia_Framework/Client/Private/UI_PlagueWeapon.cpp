@@ -7,6 +7,8 @@
 #include "GameManager.h"
 #include "Client_GameObjects.h"
 #include "CustomUI.h"
+#include "UI_Utils.h"
+
 
 GAMECLASS_C(CUI_PlagueWeapon)
 CLONE_C(CUI_PlagueWeapon, CGameObject)
@@ -110,6 +112,11 @@ void CUI_PlagueWeapon::Set_SkillInfo(const char* pKey, const _tchar* pSkillName)
 
 	m_WeaponTextInfo.szText = pSkillName;
 	
+}
+
+void CUI_PlagueWeapon::Set_SkillIcon(SKILL_NAME eSkillName)
+{
+	CUI_Utils::Set_SkillIcon(m_pIcon, eSkillName);
 }
 
 void CUI_PlagueWeapon::Set_IconSize(_float fSizeX, _float fSizeY)

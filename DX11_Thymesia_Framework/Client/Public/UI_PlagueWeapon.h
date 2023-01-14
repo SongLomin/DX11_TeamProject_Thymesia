@@ -21,6 +21,7 @@ public:
 public:
     void                Set_MainText(const _tchar* pKey);
     void                Set_SkillInfo(const char*   pKey, const _tchar* pSkillName);
+    void                Set_SkillIcon(SKILL_NAME eSkillName);
     void                Set_IconSize(_float fSizeX, _float fSizeY);
 
 private:

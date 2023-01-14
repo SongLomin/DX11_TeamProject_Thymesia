@@ -10,14 +10,12 @@
 #include "Player.h"
 #include "Status_Player.h"
 
-
 GAMECLASS_C(CUI_PauseMenu_Tap_Status)
 CLONE_C(CUI_PauseMenu_Tap_Status, CGameObject)
 
 HRESULT CUI_PauseMenu_Tap_Status::Initialize_Prototype()
 {
     __super::Initialize_Prototype();
-
 
     return S_OK;
 }
@@ -36,9 +34,9 @@ HRESULT CUI_PauseMenu_Tap_Status::Initialize(void* pArg)
 
     m_pStatusBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pStatusBG.lock()->Set_Texture("Tap_Status_BG");
+    m_pStatusBG.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
     Add_Child(m_pStatusBG);
-
 
     return S_OK;
 }
@@ -167,7 +165,7 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
         m_TextInfo[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
         m_TextInfo[i].vPosition = _float2(157.f, 253.f + ((_float)i * 43.f));
         m_TextInfo[i].vScale = _float2(0.5f, 0.5f);
-
+        m_TextInfo[i].eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
         m_StatusTextInfo[i].bAlways = false;
         m_StatusTextInfo[i].bCenterAlign = false;
@@ -176,8 +174,7 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
         m_StatusTextInfo[i].vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
         m_StatusTextInfo[i].vPosition = _float2(458.f, 253.f + ((_float)i * 43.f));
         m_StatusTextInfo[i].vScale = _float2(0.5f, 0.5f);
-
-
+        m_StatusTextInfo[i].eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
     }
 
     m_CorvusTextInfo.bAlways = false;
@@ -187,7 +184,7 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
     m_CorvusTextInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
     m_CorvusTextInfo.vPosition = _float2(311.f, 174.f);
     m_CorvusTextInfo.vScale = _float2(1.3f, 1.3f);
-    
+    m_CorvusTextInfo.eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
 /*
     UI_DESC tUIDesc;
@@ -196,8 +193,6 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
 
     m_pUICorvusTextDecoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
     
-
-
     m_pFontDecoration->lock()->Set_Texture("PageIndex_Indicator_Decoration");
 
     m_vecChildUI.push_back(m_pUICorvusTextDecoration);

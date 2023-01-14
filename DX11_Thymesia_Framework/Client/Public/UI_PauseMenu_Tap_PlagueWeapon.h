@@ -28,6 +28,9 @@ private:
 
     TEXTINFO            m_PlagueWeaponText;
 
+private:
+    void                    OnEnable(void* pArg) override;
+
 
 private:
     

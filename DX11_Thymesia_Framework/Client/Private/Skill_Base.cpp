@@ -31,7 +31,7 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 
 	m_pRequirementChecker = CRequirementChecker::Create();
 	
-	m_fExpansionTime = 0.5f;
+	m_fExpansionTime = 0.3f;
 
 
 	m_pRequirementMana = CRequirementBase::Create< CRequirement_PlayerStatusMana>();
@@ -149,6 +149,7 @@ _float CSkill_Base::Get_RatioCoolDown()
 void CSkill_Base::Reset_Skill()
 {
 	Init_SkillInfo();
+	Callback_EndCoolDown();
 }
 
 void CSkill_Base::Clear_Callback()

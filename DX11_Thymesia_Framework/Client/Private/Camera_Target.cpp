@@ -39,6 +39,8 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Registration_Camera("Camera_Target", Weak_Cast<CCamera>(m_this));
 
+	m_bMouseMoveEnable = true;
+
 	return S_OK;
 }
 
@@ -116,10 +118,12 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		}
 		else
 		{
-			Free_MouseMove(fTimeDelta);
+			if (m_bMouseMoveEnable == true)
+			{
+				Free_MouseMove(fTimeDelta);
+			}
+
 		}
-
-
 		Calculate_ShakingOffSet(fTimeDelta);
 		Calculate_ZoomOffSet(fTimeDelta);
 		Interpolate_Camera(fTimeDelta);
@@ -260,6 +264,7 @@ void CCamera_Target::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc
 	m_fZoomEndOffSet = 0.f;
 	m_fZoomTime = fZoomTime;
 	m_fZoomTimeAcc = 0.f;
+	m_eZoomLerpFunc = eZoomLerpFunc;
 	m_eMoveDirection = DIRECTION::TYPE_END;
 }
 

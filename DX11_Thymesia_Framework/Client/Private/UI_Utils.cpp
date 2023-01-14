@@ -191,6 +191,9 @@ ITEM_NAME CUI_Utils::ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName)
 	case Client::SKILL_NAME::SKILL_BLOODSTORM:
 		eItemName = ITEM_NAME::SKILLPIECE_BLOODSTORM;
 		break;
+	case Client::SKILL_NAME::SKILL_HALBERDS:
+		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
+		break;
 	case Client::SKILL_NAME::SKILL_END:
 		break;
 	default:

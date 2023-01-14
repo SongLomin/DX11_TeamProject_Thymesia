@@ -45,6 +45,8 @@ public:
 
 	void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio);//특정 방향으로
 
+	void Set_MouseMove(_bool bMouseMove) { m_bMouseMoveEnable = bMouseMove; }
+	_bool Get_MouseMove() { return m_bMouseMoveEnable; }
 
 public:
 	_bool Get_IsFocused() { return m_bIsFocused; }
@@ -66,6 +68,8 @@ private:
 	void Update_PhysXCollider(_float fTimeDelta);
 
 
+
+
 private:
 
 	weak_ptr<CPhysXCameraController> m_pPhysXCameraControllerCom;
@@ -74,6 +78,8 @@ private:
 	CINEMATIC_TYPE					m_eCinematicType = CINEMATIC_TYPE::TYPE_END;
 
 	_bool					m_bCinematic = false;
+	_bool					m_bMouseMoveEnable = true;
+
 	weak_ptr<CTransform>	m_pCameraBoneParentTransform;
 	weak_ptr<CBoneNode>		m_pCameraBoneNode;
 	_float4x4				m_TransformationMatrix;
