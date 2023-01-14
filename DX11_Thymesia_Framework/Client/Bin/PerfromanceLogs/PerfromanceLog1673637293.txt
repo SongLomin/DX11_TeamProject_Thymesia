@@ -27,7 +27,7 @@ __________________________________________________
 
 Resource Rank 1.
 __________________________________________________
-CHECK NAME		: SM_GP_PlantGround2F1
+CHECK NAME		: SM_GP_PlantGround2F1 <-orm
 AVG TIME		: 3837
 MIN TIME		: 3400
 MAX TIME		: 10900
@@ -137,7 +137,7 @@ __________________________________________________
 
 Resource Rank 12.
 __________________________________________________
-CHECK NAME		: Railing_pillar01 <-orm없음 fortress
+CHECK NAME		: Railing_pillar01 o
 AVG TIME		: 3415
 MIN TIME		: 3100
 MAX TIME		: 16100
@@ -197,7 +197,7 @@ __________________________________________________
 
 Resource Rank 18.
 __________________________________________________
-CHECK NAME		: SM_Ballustrade_Ruined_01 <-orm없음 fortress
+CHECK NAME		: SM_Ballustrade_Ruined_01 o
 AVG TIME		: 3389
 MIN TIME		: 3000
 MAX TIME		: 14000
@@ -257,7 +257,7 @@ __________________________________________________
 
 Resource Rank 24.
 __________________________________________________
-CHECK NAME		: SM_Tree_Tropic_02
+CHECK NAME		: SM_Tree_Tropic_02 o
 AVG TIME		: 3362
 MIN TIME		: 3000
 MAX TIME		: 68600
@@ -267,7 +267,7 @@ __________________________________________________
 
 Resource Rank 25.
 __________________________________________________
-CHECK NAME		: SM_Tree_Tropic_03
+CHECK NAME		: SM_Tree_Tropic_03 o
 AVG TIME		: 3359
 MIN TIME		: 2900
 MAX TIME		: 15400
@@ -277,7 +277,7 @@ __________________________________________________
 
 Resource Rank 26.
 __________________________________________________
-CHECK NAME		: SM_Tree_Medium_02
+CHECK NAME		: SM_Tree_Medium_02 o
 AVG TIME		: 3358
 MIN TIME		: 2900
 MAX TIME		: 40500
@@ -287,7 +287,7 @@ __________________________________________________
 
 Resource Rank 27.
 __________________________________________________
-CHECK NAME		: SM_Ballustrade_Ruined_02 <-orm없음 
+CHECK NAME		: SM_Ballustrade_Ruined_02 o
 AVG TIME		: 3356
 MIN TIME		: 3000
 MAX TIME		: 7700
@@ -337,7 +337,7 @@ __________________________________________________
 
 Resource Rank 32.
 __________________________________________________
-CHECK NAME		: SM_GP_PlantsGroundB2
+CHECK NAME		: SM_GP_PlantsGroundB2 <-orm
 AVG TIME		: 3339
 MIN TIME		: 3000
 MAX TIME		: 13700
@@ -357,7 +357,7 @@ __________________________________________________
 
 Resource Rank 34.
 __________________________________________________
-CHECK NAME		: SM_Rock_sharp_02
+CHECK NAME		: SM_Rock_sharp_02 o
 AVG TIME		: 3336
 MIN TIME		: 3000
 MAX TIME		: 8900
@@ -377,8 +377,8 @@ __________________________________________________
 
 Resource Rank 36.
 __________________________________________________
-CHECK NAME		: SM_Tree_Medium_01
-AVG TIME		: 3331
+CHECK NAME		: SM_Tree_Medium_01 o
+AVG TIME		: 3331 
 MIN TIME		: 3000
 MAX TIME		: 5800
 ACC TIME		: 586400
@@ -407,7 +407,7 @@ __________________________________________________
 
 Resource Rank 39.
 __________________________________________________
-CHECK NAME		: SM_Hanging_Cage_02a
+CHECK NAME		: SM_Hanging_Cage_02a o
 AVG TIME		: 3317
 MIN TIME		: 3000
 MAX TIME		: 12900
@@ -427,7 +427,7 @@ __________________________________________________
 
 Resource Rank 41.
 __________________________________________________
-CHECK NAME		: P_ShortWeed01_Optimized
+CHECK NAME		: P_ShortWeed01_Optimized <-orm
 AVG TIME		: 3307
 MIN TIME		: 3000
 MAX TIME		: 5900
@@ -507,7 +507,7 @@ __________________________________________________
 
 Resource Rank 49.
 __________________________________________________
-CHECK NAME		: SM_Rock_cliff_01
+CHECK NAME		: SM_Rock_cliff_01 o
 AVG TIME		: 3292
 MIN TIME		: 2900
 MAX TIME		: 26200
@@ -517,7 +517,7 @@ __________________________________________________
 
 Resource Rank 50.
 __________________________________________________
-CHECK NAME		: SM_Hanging_Cage_01a
+CHECK NAME		: SM_Hanging_Cage_01a o
 AVG TIME		: 3285
 MIN TIME		: 3000
 MAX TIME		: 16100
@@ -567,7 +567,7 @@ __________________________________________________
 
 Resource Rank 55.
 __________________________________________________
-CHECK NAME		: SM_Rock_Sharp_01
+CHECK NAME		: SM_Rock_Sharp_01 o
 AVG TIME		: 3239
 MIN TIME		: 2900
 MAX TIME		: 40000
@@ -767,7 +767,7 @@ __________________________________________________
 
 Resource Rank 75.
 __________________________________________________
-CHECK NAME		: SM_rock_03
+CHECK NAME		: SM_rock_03 o
 AVG TIME		: 2869
 MIN TIME		: 2500
 MAX TIME		: 76100
@@ -825,9 +825,9 @@ ACC TIME		: 535100
 CALL COUNT		: 188
 __________________________________________________
 
-Resource Rank 81.
+Resource Rank 81.DryBranch3_Volume119_copy000_gloss_T.png
 __________________________________________________
-CHECK NAME		: SM_FF_08 <-orm없음
+CHECK NAME		: SM_FF_08 o
 AVG TIME		: 2846
 MIN TIME		: 2500
 MAX TIME		: 12500
@@ -967,7 +967,7 @@ __________________________________________________
 
 Resource Rank 95.
 __________________________________________________
-CHECK NAME		: SM_Rock_Flat_01
+CHECK NAME		: SM_Rock_Flat_01 o
 AVG TIME		: 2808
 MIN TIME		: 2500
 MAX TIME		: 10500
@@ -1367,7 +1367,7 @@ __________________________________________________
 
 Resource Rank 135.
 __________________________________________________
-CHECK NAME		: SM_FF_11 <-orm없음
+CHECK NAME		: SM_FF_11 o
 AVG TIME		: 2663
 MIN TIME		: 2400
 MAX TIME		: 4100

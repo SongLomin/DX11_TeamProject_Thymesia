@@ -107,7 +107,7 @@ void CBatBossState_JumpSmash_ForwardL::Call_NextAnimationKey(const _uint& In_iKe
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
 
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.4f);
-
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
 
 	}
 }

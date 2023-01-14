@@ -117,6 +117,7 @@ void CBatBossState_JumpSmash_SmarhL::Call_NextAnimationKey(const _uint& In_iKeyI
 	}
 	case 179:
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
 
 		break;
 	case 182:

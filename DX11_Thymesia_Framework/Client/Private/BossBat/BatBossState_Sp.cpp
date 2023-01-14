@@ -57,10 +57,12 @@ void CBatBossState_Sp::Tick(_float fTimeDelta)
 	if (m_bShaking)
 	{
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.15f, 1.f, 9.f, 0.9f);
+		GAMEINSTANCE->Set_MotionBlur(0.2f);
 	}
 	else if (m_bScreamShaking)
 	{
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.17f, 1.f, 7.f, 0.9f);
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
 
 	}
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);

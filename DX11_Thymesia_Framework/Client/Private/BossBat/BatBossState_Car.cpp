@@ -103,6 +103,7 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.1f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.1f);
 
 		break;
 	}
@@ -115,7 +116,7 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.07f, 1.f, 9.f, 0.4f);
-
+		GAMEINSTANCE->Set_MotionBlur(0.1f);
 
 		break;
 	}
@@ -127,6 +128,7 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.05f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
 
 		break;
 	}
@@ -138,6 +140,7 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.15f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.2f);
 		break;
 	}
 	case 490:

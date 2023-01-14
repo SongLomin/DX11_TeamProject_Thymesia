@@ -100,6 +100,7 @@ void CBatBossState_Bite_1::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
 
 		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(1.f, 0.f, 0.f, 0.f), 0.05f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
 
 	}
 
