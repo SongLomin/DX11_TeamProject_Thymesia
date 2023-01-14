@@ -101,6 +101,9 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.05f, 1.f, 9.f, 0.4f);
+
 		break;
 	}
 
@@ -110,6 +113,9 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.05f, 1.f, 9.f, 0.4f);
+
 		break;
 	}
 	case 265:
@@ -118,6 +124,10 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.05f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.15f);
+
 		break;
 	}
 	case 315:
@@ -126,6 +136,8 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.1f, 1.f, 9.f, 0.4f);
 		break;
 	}
 	case 490:
@@ -134,6 +146,7 @@ void CBatBossState_Car::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+
 		break;
 	}
 	case 587:

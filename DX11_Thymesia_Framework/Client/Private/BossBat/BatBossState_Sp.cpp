@@ -54,6 +54,17 @@ void CBatBossState_Sp::Tick(_float fTimeDelta)
 		TurnAttack(fTimeDelta);
 	}
 
+	if (m_bShaking)
+	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.15f, 1.f, 9.f, 0.9f);
+		GAMEINSTANCE->Set_MotionBlur(0.05f);
+	}
+	else if (m_bScreamShaking)
+	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.1f, 1.f, 7.f, 0.9f);
+		GAMEINSTANCE->Set_MotionBlur(0.05f);
+
+	}
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -79,6 +90,19 @@ void CBatBossState_Sp::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 		break;
 	}
+	case 43:
+		m_bScreamShaking = true;
+		break;
+	case 137:
+		m_bScreamShaking = false;
+		break;
+	case 272:
+		m_bShaking = true;
+		break;
+	case 349:
+		m_bShaking = false;
+		break;
+
 	case 365:
 	{
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();

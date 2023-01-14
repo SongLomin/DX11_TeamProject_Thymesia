@@ -35,6 +35,8 @@ public:
 private:
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
+	_bool		m_bShaking = false; 
+
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

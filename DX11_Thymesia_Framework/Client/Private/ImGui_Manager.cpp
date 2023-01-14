@@ -528,13 +528,21 @@ _bool CImGui_Manager::Open_File(string& Out_szSelectedFile, string& Out_szFilePa
 		return FALSE;
 	}
 
-	//  SHOW OPEN FILE DIALOG WINDOW
-	f_SysHr = f_FileSystem->Show(NULL);
-	if (FAILED(f_SysHr)) {
-		f_FileSystem->Release();
-		CoUninitialize();
-		return FALSE;
+	try
+	{
+		//  SHOW OPEN FILE DIALOG WINDOW
+		f_SysHr = f_FileSystem->Show(NULL);
+		if (FAILED(f_SysHr)) {
+			f_FileSystem->Release();
+			CoUninitialize();
+			return FALSE;
+		}
 	}
+	catch(exception e)
+	{
+		return false;
+	}
+	
 
 	//  RETRIEVE FILE NAME FROM THE SELECTED ITEM
 	IShellItem* f_Files;
@@ -551,7 +559,7 @@ _bool CImGui_Manager::Open_File(string& Out_szSelectedFile, string& Out_szFilePa
 	if (FAILED(f_SysHr)) {
 		f_Files->Release();
 		f_FileSystem->Release();
-		CoUninitialize();
+		CoUninitialize(); 
 		return FALSE;
 	}
 
