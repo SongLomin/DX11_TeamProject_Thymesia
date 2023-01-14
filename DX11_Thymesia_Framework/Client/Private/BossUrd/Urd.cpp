@@ -110,7 +110,7 @@ HRESULT CUrd::Start()
 	__super::Start();
 
 
-	//CBase::Set_Enable(true);
+	CBase::Set_Enable(true);
 	Change_State<CUrdBossState_Start>();
 
 	m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
@@ -366,7 +366,6 @@ void CUrd::OnEventMessage(_uint iArg)
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
 
 		Change_State<CUrdBossState_Start>();
-		Set_Enable(false);
 
 		Reset_Weapon();
 		m_pStatus.lock()->Full_Recovery();

@@ -35,8 +35,8 @@
 #pragma endregion // Map
 
 #pragma region Tool
-//#define _MAP_TOOL_
-#define _EFFECT_TOOL_
+#define _MAP_TOOL_
+//#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   

@@ -265,7 +265,7 @@ void CCamera_Target::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc
 	m_fZoomTime = fZoomTime;
 	m_fZoomTimeAcc = 0.f;
 	m_eZoomLerpFunc = eZoomLerpFunc;
-	m_eMoveDirection = DIRECTION::TYPE_END;
+	
 }
 
 void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio)

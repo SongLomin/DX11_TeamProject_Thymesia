@@ -14,7 +14,7 @@ PxCapsuleControllerDesc Preset::PhysXControllerDesc::PlayerSetting(weak_ptr<CTra
 	//Out_Desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 	_vector vPos = pTransform.lock()->Get_Position();
 	PxExtendedVec3 vPosFromPx = { vPos.m128_f32[0], vPos.m128_f32[1], vPos.m128_f32[2] };
-	//vPosFromPx.y += Out_Desc.height * 0.5f;
+	vPosFromPx.y += Out_Desc.height * 0.5f;
 	Out_Desc.position = vPosFromPx;
 	Out_Desc.stepOffset = 0.5f;
 

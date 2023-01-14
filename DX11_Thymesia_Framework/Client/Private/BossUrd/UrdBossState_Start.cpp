@@ -89,6 +89,8 @@ void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 void CUrdBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	if(m_bSinematicStart)
 	GET_SINGLE(CGameManager)->End_Cinematic();
 }
 
