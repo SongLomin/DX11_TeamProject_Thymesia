@@ -34,7 +34,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_szName = "Corvus";
 
-	m_eMostRecentStealedPW = MONSTERTYPE::TYPE_END;
+	m_eMostRecentStealedMonsterType = MONSTERTYPE::TYPE_END;
 
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 

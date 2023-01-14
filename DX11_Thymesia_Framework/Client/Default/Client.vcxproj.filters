@@ -2233,6 +2233,7 @@
     <ClInclude Include="..\Public\Preset_ShaderPass.h">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_Halberds.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4495,6 +4496,7 @@
     <ClCompile Include="..\Private\Preset_ShaderPass.cpp">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Skill_Halberds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

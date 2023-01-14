@@ -121,6 +121,9 @@ void CPreset_ItemData::SetUITextureFromItemName(weak_ptr<class CUI> Out_pUI, ITE
 	case Client::ITEM_NAME::SKILLPIECE_BLOODSTORM:
 		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
 		break;
+	case Client::ITEM_NAME::SKILLPIECE_HALBERDS:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
+		break;
 	default:
 		break;
 	}

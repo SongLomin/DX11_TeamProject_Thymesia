@@ -9,7 +9,9 @@
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXController.h"
 #include "Weapon.h"
-
+#include "Player.h"
+#include "Corvus.h"
+#include "PlayerSkill_System.h"
 
 GAMECLASS_C(CCorvusState_ClawPlunderAttack);
 CLONE_C(CCorvusState_ClawPlunderAttack, CComponent)
@@ -40,10 +42,27 @@ void CCorvusState_ClawPlunderAttack::Start()
 void CCorvusState_ClawPlunderAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	//75정도에 값을  가져올 수 있도록 해야함.
+	
 
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+		
+	//75정도에 값을  가져올 수 있도록 해야함.
+	//Mons
+	if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() == m_iStealTiming && m_bStealCompleteCurrentState == false)
+	{
+		m_bStealCompleteCurrentState = true;//추가적인 
+
+		weak_ptr<CCorvus> pCorvus = Weak_StaticCast<CCorvus>(m_pOwner);
+
+		//가장 최근에 흡수한 몬스터의 타입
+		MONSTERTYPE eMonsterType = pCorvus.lock()->GetMostRecentStealedMonsterType();
+
+		pCorvus.lock()->Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonsterType);
+
+		pCorvus.lock()->OnStealMonsterSkill(MONSTERTYPE::TYPE_END);
+	}
 
 	//DISSOLVE_DESC	ArmDissolveDesc;
 	//ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
@@ -168,7 +187,7 @@ void CCorvusState_ClawPlunderAttack::OnStateStart(const _float& In_fAnimationBle
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-
+	m_bStealCompleteCurrentState = false;
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += 
 	//	bind(&CCorvusState_ClawPlunderAttack::Call_NextAnimationKey, this, placeholders::_1);

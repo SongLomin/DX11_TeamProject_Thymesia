@@ -608,6 +608,7 @@
     <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\Skill_BloodStorm.h" />
     <ClInclude Include="..\Public\Skill_Hammer.h" />
+    <ClInclude Include="..\Public\Skill_Halberds.h" />
     <ClInclude Include="..\Public\Skill_Knife.h" />
     <ClInclude Include="..\Public\Skill_Scythe.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
@@ -1290,6 +1291,7 @@
     <ClCompile Include="..\Private\Skill_Base.cpp" />
     <ClCompile Include="..\Private\Skill_BloodStorm.cpp" />
     <ClCompile Include="..\Private\Skill_Hammer.cpp" />
+    <ClCompile Include="..\Private\Skill_Halberds.cpp" />
     <ClCompile Include="..\Private\Skill_Knife.cpp" />
     <ClCompile Include="..\Private\Skill_Scythe.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />

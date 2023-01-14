@@ -32,8 +32,11 @@ public:
 
 private:
     _bool m_IsNextAttack = false;
+    _bool m_bStealCompleteCurrentState; //현재 동작에서 이미 한번 뺏었음.
 
     
+    _uint   m_iStealTiming = 75;
+
 
     _int m_iEndAttackEffectIndex = -1;
 

@@ -330,6 +330,10 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_BloodStorm_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
         break;
+    case Client::ITEM_NAME::SKILLPIECE_HALBERDS:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_Halberd_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
     default:
         break;
     }
@@ -398,6 +402,9 @@ void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM
         break;
     case Client::ITEM_NAME::SKILLPIECE_BLOODSTORM:
         pUI.lock()->Set_Texture("Popup_SkillPiece_BloodStorm");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_HALBERDS:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_Halberd");
         break;
     default:
         break;
