@@ -34,7 +34,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_szName = "Corvus";
 
-	
+	m_eMostRecentStealedMonsterType = MONSTERTYPE::TYPE_END;
 
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
@@ -669,8 +669,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 void CCorvus::OnStealMonsterSkill(MONSTERTYPE eMonstertype)
 {
 	__super::OnStealMonsterSkill(eMonstertype);
-
-	m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
+	
+	m_eMostRecentStealedMonsterType = eMonstertype;
+	//m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
 }
 
 void CCorvus::Update_KeyInput(_float fTimeDelta)
@@ -728,15 +729,8 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_BLOODSTORM);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_HALBERDS);
 	}
-	/*if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
-	{
-		Save_ClientComponentData();
-	}
-	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
-	{
-		Load_ClientComponentData();
-	}*/
 	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(
@@ -746,11 +740,6 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		Change_State<CCorvusState_Die>();
 	}
-	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-	{
-		OnStealMonsterSkill(MONSTERTYPE::AXEMAN);
-	}
-
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	//{
 	//	++m_iContainerIndex;
@@ -930,6 +919,7 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Hammer>();
 	Add_Component<CSkill_Scythe>();
 	Add_Component<CSkill_BloodStorm>();
+	Add_Component<CSkill_Halberds>();
 }
 
 void CCorvus::Free()

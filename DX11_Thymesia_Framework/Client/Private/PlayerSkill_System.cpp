@@ -260,6 +260,9 @@ void CPlayerSkill_System::SetUp_SkillMapFromMonsterType()
    m_MonsterSkillMap.emplace(MONSTERTYPE::GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::ENHANCE_GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::BAT, m_pOwner.lock()->Get_Component<CSkill_BloodStorm>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::ARMORSPEARMAN, m_pOwner.lock()->Get_Component<CSkill_Halberds>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::SKULLSPEARMAN, m_pOwner.lock()->Get_Component<CSkill_Halberds>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::WEAKARMORSPEARMAN, m_pOwner.lock()->Get_Component<CSkill_Halberds>());
 
 }
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)
@@ -282,5 +285,5 @@ void CPlayerSkill_System::WriteSaveData_Skill(json& Out_json, weak_ptr<CSkill_Ba
 
 void CPlayerSkill_System::Free()
 {
-    int a = 0;
+
 }

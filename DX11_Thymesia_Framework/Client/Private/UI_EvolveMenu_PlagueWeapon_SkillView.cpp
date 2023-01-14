@@ -70,7 +70,7 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_SkillPos()
 		m_vecSkillPos.push_back(_float2(fStartPos.x + i * fOffsetX, fStartPos.y));
 	}
 
-	fStartPos = { 150.f, 354.f};
+	fStartPos = { 150.f, 384.f};
 	fOffsetX = 156.f;
 	for (_uint i = 0; i < 4; i++)
 	{

@@ -8,6 +8,8 @@
 #include "Client_GameObjects.h"
 #include "CustomUI.h"
 #include "UI_PlagueWeapon.h"
+#include "Player.h"
+#include "PlayerSkillHeader.h"
 
 GAMECLASS_C(CUI_PauseMenu_Tap_PlagueWeapon)
 CLONE_C(CUI_PauseMenu_Tap_PlagueWeapon, CGameObject)
@@ -30,7 +32,7 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 	MainDesc.fDepth = 0.4f;
 	MainDesc.fSizeX = 114.f;
 	MainDesc.fSizeY = 114.f;
-	MainDesc.fX = 656.f;
+	MainDesc.fX = 1000.f;
 	MainDesc.fY = 306.f;
 
 	m_PlagueWeaponMain = GAMEINSTANCE->Add_GameObject<CUI_PlagueWeapon>(LEVEL_STATIC, &MainDesc);
@@ -63,10 +65,9 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 	m_PlagueWeaponText.fRotation = 0.f;
 	m_PlagueWeaponText.szText = L"Plague Weapon";
 	m_PlagueWeaponText.vColor = _float4(1.f, 1.f, 1.f, 1.f);
-	m_PlagueWeaponText.vPosition = _float2(800.f, 174.f);
+	m_PlagueWeaponText.vPosition = _float2(1000.f, 174.f);
 	m_PlagueWeaponText.vScale = _float2(1.3f, 1.3f);
 	m_PlagueWeaponText.eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
-
 
 	Add_Child(m_PlagueWeaponMain);
 	Add_Child(m_PlagueWeaponSub);
@@ -100,5 +101,35 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Render(ID3D11DeviceContext* pDeviceConte
 {
 	//
 	return S_OK;
+}
+
+void CUI_PauseMenu_Tap_PlagueWeapon::OnEnable(void* pArg)
+{
+	__super::OnEnable(pArg);
+
+	weak_ptr<CPlayer>	pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
+	
+	if (pPlayer.lock())
+	{
+		weak_ptr<CPlayerSkill_System>	 pSkillSystem = pPlayer.lock()->Get_Component<CPlayerSkill_System>();
+
+		weak_ptr<CSkill_Base> pMainSkill = pSkillSystem.lock()->Get_EquipSkill(CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+		weak_ptr<CSkill_Base> pSubSkill = pSkillSystem.lock()->Get_EquipSkill(CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+		weak_ptr<CSkill_Base> pStealSkill = pSkillSystem.lock()->Get_StealSkill();
+
+		if (pMainSkill.lock())
+		{
+			m_PlagueWeaponMain.lock()->Set_SkillIcon(pMainSkill.lock()->Get_SkillName());
+		}
+		if (pSubSkill.lock())
+		{
+			m_PlagueWeaponSub.lock()->Set_SkillIcon(pSubSkill.lock()->Get_SkillName());
+		}
+		if (pStealSkill.lock())
+		{
+			m_PlagueWeaponSteal.lock()->Set_SkillIcon(pStealSkill.lock()->Get_SkillName());
+		}
+	}
+	
 }
 

@@ -166,6 +166,9 @@ void CUI_EvolveMenu_Option::OnEnable(void* pArg)
     
     //m_pEasingAlpha.lock()->Set_Lerp_once(0.f, 1.f, 0.5f, EASING_TYPE::QUAD_IN, false);
 
+    GET_SINGLE(CGameManager)->Activate_Zoom(-1.5f, 0.5f, EASING_TYPE::CUBIC_OUT, DIRECTION::RIGHT);
+    GET_SINGLE(CGameManager)->Set_MoveTargetCamera(false);
+
 
     GET_SINGLE(CUIManager)->EnableCursor();
 }
@@ -175,7 +178,8 @@ void CUI_EvolveMenu_Option::OnDisable()
     __super::OnDisable();
 
     GET_SINGLE(CUIManager)->DisableCursor();
-
+    GET_SINGLE(CGameManager)->Deactivate_Zoom(1.5f, EASING_TYPE::QUINT_OUT);
+    GET_SINGLE(CGameManager)->Set_MoveTargetCamera(true);
 }
 
 void CUI_EvolveMenu_Option::Free()

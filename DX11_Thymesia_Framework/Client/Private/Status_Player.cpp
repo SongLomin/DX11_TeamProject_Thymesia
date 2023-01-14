@@ -119,10 +119,9 @@ void CStatus_Player::Load_SaveData(const json& In_Json)
     Callback_Update_Status();
 }
 
-
 _bool CStatus_Player::Is_Dead()
 {
-    return m_tDesc.m_fCurrentHP <= 0.f + DBL_EPSILON ? true : false;
+    return m_tDesc.m_fCurrentHP < 1.f ? true : false;
 }
 
 void CStatus_Player::Init_Status(const void* pArg)

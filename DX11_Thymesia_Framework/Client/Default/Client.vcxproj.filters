@@ -2230,6 +2230,7 @@
     <ClInclude Include="..\Public\Preset_ShaderPass.h">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_Halberds.h" />
     <ClInclude Include="..\Public\Interaction_DeadSpot.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClInclude>
@@ -4498,6 +4499,7 @@
     <ClCompile Include="..\Private\Preset_ShaderPass.cpp">
       <Filter>06. DataPreset\09. Preset_ShaderPass</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Skill_Halberds.cpp" />
     <ClCompile Include="..\Private\Window_TextureEditerView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer</Filter>
     </ClCompile>

@@ -136,7 +136,6 @@ void CUI_PauseMenu::OnPaging()
 		m_pPauseMenuBackground_MainFrame.lock()->Set_Enable(false);
 		m_pPauseMenuBackground.lock()->Set_Enable(false);
 
-		
 		m_pInventoryBG.lock()->Set_Enable(true);
 		
 	}
@@ -181,7 +180,7 @@ void CUI_PauseMenu::Update_KeyInput()
 	}
 	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
 	{
-		if (m_iPageIndex < (_uint)PAUSE_MENU_QUIT)
+		if (m_iPageIndex < (_uint)PAUSE_MENU_TYPE::PAUSE_MENU_ITEM)
 		{
 			m_iPageIndex++;
 			OnPaging();
@@ -254,11 +253,7 @@ void CUI_PauseMenu::Create_Pages()
 void CUI_PauseMenu::Create_PageText()
 {
 	m_szPageTextData[PAUSE_MENU_STATUS] = L"STATUS";
-	m_szPageTextData[PAUSE_MENU_TALENT] = L"TALENT";
 	m_szPageTextData[PAUSE_MENU_ITEM] = L"ITEM";
-	m_szPageTextData[PAUSE_MENU_COLLETION] = L"COLLECTION";
-	m_szPageTextData[PAUSE_MENU_OPTION] = L"OPTION";
-	m_szPageTextData[PAUSE_MENU_QUIT] = L"QUIT";
 
 	for (_uint i = 0; i < (_uint)PAUSE_MENU_END; i++)
 	{
@@ -267,10 +262,9 @@ void CUI_PauseMenu::Create_PageText()
 		m_PageTexInfo[i].fRotation = 0.f;
 		m_PageTexInfo[i].szText = m_szPageTextData[i];
 		m_PageTexInfo[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
-		m_PageTexInfo[i].vPosition = _float2(440.f + (140.f * (_float)i), 30.f);
+		m_PageTexInfo[i].vPosition = _float2(720.f + (140.f * (_float)i), 30.f);
 		m_PageTexInfo[i].vScale = _float2(0.8f, 0.8f);
 		m_PageTexInfo[i].eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
-
 
 		/*
 		UI_DESC	tUIDesc;

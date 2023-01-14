@@ -34,8 +34,8 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_LEVELUP], "EvolveMenu_Text_LevelUp");
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_UNLOCKTALENT], "EvolveMenu_Text_UnlockTalent");
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_PLAGUEWEAPON], "EvolveMenu_Text_PlagueWeapon");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_POTION], "EvolveMenu_Text_Potion");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_FEATHER], "EvolveMenu_Text_UseForgottenFeather");
+	//strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_POTION], "EvolveMenu_Text_Potion");
+	//strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_FEATHER], "EvolveMenu_Text_UseForgottenFeather");
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL], "EvolveMenu_Text_Cease_Recall");
 	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME], "EvolveMenu_Text_ResumeGame");
 
@@ -172,9 +172,9 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 	for (_uint i = 0; i < (_uint)EVOLVEMENU_TYPE::EVOLVE_END; i++)
 	{
-		if (i == (_uint)EVOLVEMENU_TYPE::EVOLVE_FEATHER)
-			tTextDesc.fSizeX = 180.f;
-		else if (i == (_uint)EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL)
+		//if (i == (_uint)EVOLVEMENU_TYPE::EVOLVE_FEATHER)
+		//	tTextDesc.fSizeX = 180.f;
+		if (i == (_uint)EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL)
 			tTextDesc.fSizeX = 200.f;
 		else
 			tTextDesc.fSizeX = 103.f;
@@ -245,6 +245,8 @@ void CUI_EvolveMenu::OnEnable(void* _Arg)
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	ChangeButtonIndex();
 
+	GET_SINGLE(CGameManager)->Set_MoveTargetCamera(false);
+
 }
 
 void CUI_EvolveMenu::OnDisable()
@@ -252,6 +254,8 @@ void CUI_EvolveMenu::OnDisable()
 	__super::OnDisable();
 
 	GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
+
+	GET_SINGLE(CGameManager)->Set_MoveTargetCamera(true);
 }
 
 void CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu()
@@ -406,10 +410,6 @@ void CUI_EvolveMenu::SelectButton()
 		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_PlagueWeapon, this);
-		break;
-	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_POTION:
-		break;
-	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_FEATHER:
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL:
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;

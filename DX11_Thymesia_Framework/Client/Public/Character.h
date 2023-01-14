@@ -96,7 +96,7 @@ protected:
 private:
     _bool m_isEdit = false;
     _bool     m_bSuperArmor = false;
-
+    
 protected:
     PxControllerCollisionFlags m_LastCollisionFlags;
 

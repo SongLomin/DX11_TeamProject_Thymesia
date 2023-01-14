@@ -126,6 +126,7 @@ void CNorMonState_Die::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	//Monster Die
 	if (m_fDissolveTime < 0.f)
 	{
 		m_pOwner.lock()->Set_Enable(false);
@@ -133,8 +134,9 @@ void CNorMonState_Die::LateTick(_float fTimeDelta)
 		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
 		for (auto& elem : pWeapons)
 			elem.lock()->Set_Enable(false);
-	}
 
+		Get_OwnerMonster()->Set_PassIndex(0);
+	}
 	Check_AndChangeNextState();
 }
 
@@ -148,6 +150,7 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
 		bind(&CNorMonState_Die::Call_NextKeyFrame, this, placeholders::_1);
 
+	m_fDissolveTime = 4.f;
 
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->CallBack_UI_Disable();
 

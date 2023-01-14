@@ -155,6 +155,9 @@ void CUI_Utils::Set_SkillIcon(weak_ptr<CUI> pUI, SKILL_NAME eSkillName)
 	case Client::SKILL_NAME::SKILL_BLOODSTORM:
 		pUI.lock()->Set_Texture("SkillIcon_BloodStorm");
 		break;
+	case Client::SKILL_NAME::SKILL_HALBERDS:
+		pUI.lock()->Set_Texture("SkillIcon_Halberd");
+		break;
 	case Client::SKILL_NAME::SKILL_END:
 		pUI.lock()->Set_Texture("None");
 		break;
@@ -187,6 +190,9 @@ ITEM_NAME CUI_Utils::ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName)
 		break;
 	case Client::SKILL_NAME::SKILL_BLOODSTORM:
 		eItemName = ITEM_NAME::SKILLPIECE_BLOODSTORM;
+		break;
+	case Client::SKILL_NAME::SKILL_HALBERDS:
+		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
 		break;
 	case Client::SKILL_NAME::SKILL_END:
 		break;
@@ -221,16 +227,23 @@ ITEM_NAME CUI_Utils::ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType)
 		eItemName = ITEM_NAME::SKILLPIECE_SCYTHE;		
 		break;
 	case Client::MONSTERTYPE::SKULLSHIELDMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_KNIFE;
 		break;
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
 		break;
 	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_KNIFE;
 		break;
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_KNIFE;
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
+
 		break;	
 	default:
 		break;

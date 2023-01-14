@@ -346,7 +346,8 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			}
 			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 			{
-				GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
+				MONSTERTYPE eMonsterType = Get_OwnerMonster()->Get_MonsterType();
+				pOtherCharacter.lock()->OnStealMonsterSkill(eMonsterType);
 				Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_L>();
 			}
 			break;

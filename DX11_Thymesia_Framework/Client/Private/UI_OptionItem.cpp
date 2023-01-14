@@ -170,6 +170,10 @@ void CUI_OptionItem::Create_Element(OPTION_TYPE eOptionType)
 
 void CUI_OptionItem::Call_OnChangeOption(_int iAmount)
 {
+    if (m_iAmount == iAmount)
+        return;
+
+    m_iAmount = iAmount;
     Callback_OnChangeOption(m_eOptionType, (_uint)iAmount);
 }
 

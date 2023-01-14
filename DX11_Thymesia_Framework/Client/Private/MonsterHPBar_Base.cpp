@@ -140,8 +140,13 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 	Add_Child(m_pBorder);
 	Add_Child(m_pWhite);
 	Add_Child(m_pGreen);
+	Add_Child(m_pTrack);
 	Add_Child(m_pDecoration_Head);
 	Add_Child(m_pParryingBar);
+	Add_Child(m_pGreenTrack);
+	Add_Child(m_pRecovery);
+	Add_Child(m_pStunned);
+
 
 	Set_Enable(false);
 
@@ -159,15 +164,24 @@ void CMonsterHPBar_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	FollowTarget();
+
 	Set_ChildPosFromThis();
 	Check_Track();
 
+	FollowTarget();
+
+
+	for (auto& elem : m_vecChildUI)
+	{
+		elem.lock()->Set_Render(m_bRender);
+	}
+
 	if (!Get_Enable())
 	{
+		m_pTrack.lock()->Set_Enable(false);
 		m_pRecovery.lock()->Set_Enable(false);
 		m_pStunned.lock()->Set_Enable(false);
-
+		m_pGreenTrack.lock()->Set_Enable(false);
 	}
 }
 
@@ -304,7 +318,7 @@ void CMonsterHPBar_Base::Call_Damaged_Parry(_float _fRatio)
 
 void CMonsterHPBar_Base::Call_RecoveryAlram()
 {
-	if (!m_pRecovery.lock()->Get_Enable())
+	if (!m_pRecovery.lock()->Get_Enable() && Get_Enable())
 		Set_RecoveryAlram(true);
 }
 
@@ -339,7 +353,6 @@ void CMonsterHPBar_Base::Call_Restart()
 	weak_ptr<CStatus_Monster> pStatus_Monster;
 	pStatus_Monster = Weak_Cast<CStatus_Monster>(m_pTarget.lock()->Get_Status());
 
-
 	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
 	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
 	m_pParryingBar.lock()->Set_Ratio(0.f, false);
@@ -359,6 +372,10 @@ void CMonsterHPBar_Base::OnEnable(void* pArg)
 		return;
 
 	__super::OnEnable(pArg);
+
+	m_pTrack.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+	m_pStunned.lock()->Set_Enable(false);
 }
 
 void CMonsterHPBar_Base::OnDisable()
@@ -373,7 +390,6 @@ void CMonsterHPBar_Base::OnDisable()
 		m_pStunned.lock()->Set_Enable(false);
 
 	m_pRecovery.lock()->Set_Enable(false);
-
 	m_pBorder.lock()->Set_Enable(false);
 
 	Set_RecoveryAlram(false);
@@ -387,23 +403,17 @@ void CMonsterHPBar_Base::FollowTarget()
 	_vector vViewPosition;
 	_matrix ViewProjMatrix;
 
-
 	vViewPosition = m_pTarget.lock()->Get_WorldPosition();
 	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vViewPosition))
 	{
-		m_bRender = true;
+		m_bRender   = true;
 	}
 	else
 	{
 		m_bRender = false;
 	}
-
-
 	vViewPosition += XMVectorSet(0.f,2.f, 0.f, 1.f);
-	
-
 	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
-		
 	vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
 	
 	/* -1 ~ 1 to 0 ~ ViewPort */
@@ -480,16 +490,11 @@ void CMonsterHPBar_Base::Set_Target(weak_ptr<CBase> pMonster)
 	Reset_UI();
 	Set_Enable(false);
 
-
-
 }
-
-
 
 void CMonsterHPBar_Base::Set_Stun(bool _bStun)
 {
 	m_bStun = _bStun;
-
 
 	if (m_bStun)
 	{
@@ -538,6 +543,9 @@ void CMonsterHPBar_Base::Add_Child(weak_ptr<CUI> pChild)
 
 void CMonsterHPBar_Base::Check_Track()
 {
+	if (!Get_Enable())
+		return;
+
 	_float fRatio = m_pWhite.lock()->Get_Ratio();
 
 	UI_DESC WhiteDesc = m_pWhite.lock()->Get_UIDESC();

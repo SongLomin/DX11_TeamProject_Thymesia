@@ -19,6 +19,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 
 public:
+	//For Scroll
 	virtual void	Set_OriginCenterPosFromThisPos();
 	void			Set_ScrollOffsetY(_float fOffsetY);
 	void			Add_ScrollOffsetY(_float fOffsetY);
@@ -29,6 +30,7 @@ public:
 	void			Create_Element(OPTION_TYPE eOptionType);
 
 public:
+	//Å¸ÀÔ, °ª
 	FDelegate<OPTION_TYPE, _uint> Callback_OnChangeOption;
 	void			Call_OnChangeOption(_int iAmount);
 
@@ -39,6 +41,8 @@ protected:
 
 private:
 	weak_ptr<CCustomUI>			m_pOptionName;
+	_int						m_iAmount = 0;
+
 
 	weak_ptr<CUI_OptionElementBase> m_pElement;
 

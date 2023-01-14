@@ -624,12 +624,13 @@ void CGameManager::End_Cinematic()
 
 void CGameManager::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc, DIRECTION eMoveDir)
 {
-	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime, eZoomLerpFunc,eMoveDir);
+	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime, eZoomLerpFunc, eMoveDir);
 }
 
 void CGameManager::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc)
 {
 	m_pTargetCamera.lock()->Deactivate_Zoom(fZoomTime, eZoomLerpFunc);
+
 }
 
 _vector CGameManager::Get_PlayerPos()
@@ -975,6 +976,11 @@ void  CGameManager::Activate_Fog(_uint In_iFogIndex)
 		return;
 
 	m_FogObject.lock()->Activate_Fog(In_iFogIndex);
+}
+
+void CGameManager::Set_MoveTargetCamera(_bool bTargetCamera)
+{
+	m_pTargetCamera.lock()->Set_MouseMove(bTargetCamera);
 }
 
 void CGameManager::Register_Water(weak_ptr<CWater> pWater)

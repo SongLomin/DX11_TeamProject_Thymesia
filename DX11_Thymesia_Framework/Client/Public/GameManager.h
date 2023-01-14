@@ -226,6 +226,9 @@ public:
     void Set_PreLevel(LEVEL eLevel) { m_ePreLevel = eLevel; }
     LEVEL Get_PreLevel() { return m_ePreLevel; }
 
+    void                    Set_MoveTargetCamera(_bool bTargetCamera);
+
+
 public:
     void Register_Water(weak_ptr<CWater> pWater);
     void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq, const _float In_fSpeed);

@@ -30,11 +30,11 @@ HRESULT CUI_PauseMenu_Page_Status::Initialize(void* pArg)
 
 	m_pStatusTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Status>(LEVEL_STATIC);
 	m_pPlagueWeaponTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_PlagueWeapon>(LEVEL_STATIC);
-	m_pPotionTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Potion>(LEVEL_STATIC);
+//	m_pPotionTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Potion>(LEVEL_STATIC);
 
 	Add_Child(m_pStatusTap);
 	Add_Child(m_pPlagueWeaponTap);
-	Add_Child(m_pPotionTap);
+//	Add_Child(m_pPotionTap);
 
 	return S_OK;
 }

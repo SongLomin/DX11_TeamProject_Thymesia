@@ -43,6 +43,10 @@ private:
 
 public:
 	void Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
+
+	MONSTERTYPE		GetMostRecentStealedMonsterType() { return m_eMostRecentStealedMonsterType; }
+	virtual void	OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
+
 private:
 	//TODO: Test For Color Inversion
 	void Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd);
@@ -67,6 +71,9 @@ private:
 	_float m_fInversionStrength = 1.f;
 	_float m_fInversionRatio = 0.f;
 
+	MONSTERTYPE		m_eMostRecentStealedMonsterType;
+
+
 private:
 	FDelegate<_float, _bool&> CallBack_ColorInversion;
 	FDelegate< _float, _bool&> CallBack_LightEvent;
@@ -79,7 +86,6 @@ private:
 	virtual void OnEnable(void* pArg) override;
 	virtual void OnDisable() override;
 
-	virtual void OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
 	virtual void OnEventMessage(_uint iArg) override;
 
 	virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

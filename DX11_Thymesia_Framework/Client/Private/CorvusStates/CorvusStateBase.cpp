@@ -580,7 +580,11 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		case Client::ATTACK_OPTION::KNOCKBACK:
 			m_pTransformCom.lock()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+			
+
+
 			Get_OwnerPlayer()->Change_State<CCorvusState_KnockBack>();
+
 			break;
 		default:
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);

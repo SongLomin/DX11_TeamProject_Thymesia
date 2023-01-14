@@ -273,6 +273,11 @@ void CUI_EvolveMenu_PlagueWeapon_SkillInformation::Set_SkillInformationUI()
         m_pSkillInfoActionTitle.lock()->Set_Texture("PW_BloodStorm_Title");
         m_pSkillInfoActionDescription.lock()->Set_Texture("PW_BloodStorm_Information");
         break;
+    case Client::SKILL_NAME::SKILL_HALBERDS:
+        m_pSkillInfoActionTitle.lock()->Set_Texture("PW_Halberds_Title");
+        m_pSkillInfoActionDescription.lock()->Set_Texture("PW_Halberds_Information");
+        break;
+    
     case Client::SKILL_NAME::SKILL_END:
         break;
     default:
