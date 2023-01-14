@@ -244,13 +244,14 @@ void CCamera_Target::End_Cinematic()
 	m_bCinematic = false;
 }
 
-void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc)
+void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc, DIRECTION eMoveDir)
 {
 	m_fZoomEndOffSet = fRatio;
 	m_fZoomStartOffSet = m_fZoom;
 	m_fZoomTimeAcc = 0.f;
 	m_fZoomTime = fZoomTime;
 	m_eZoomLerpFunc = eZoomLerpFunc;
+	m_eMoveDirection = eMoveDir;
 }
 
 void CCamera_Target::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc)
@@ -259,6 +260,7 @@ void CCamera_Target::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc
 	m_fZoomEndOffSet = 0.f;
 	m_fZoomTime = fZoomTime;
 	m_fZoomTimeAcc = 0.f;
+	m_eMoveDirection = DIRECTION::TYPE_END;
 }
 
 void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio)
@@ -282,7 +284,6 @@ void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fSha
 	m_fShakingTimeAcc = 0.f;
 	m_fShakingQuarterFrequency = 0.f;
 	m_fShakingDecreaseTime = 0.f;
-
 
 }
 
@@ -484,8 +485,6 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 
 		m_fSpeed += m_fAccel * fTimeDelta;
 
-
-
 		if (5.f + fDistance < m_fSpeed)
 			m_fSpeed = 5.f + fDistance;
 
@@ -505,8 +504,9 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPos);
 	}
 
+	_vector vZoomDir = m_pTransformCom.lock()->Get_State((CTransform::STATE)m_eMoveDirection);
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * (-3.25f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -3.25f + vZoomDir*m_fZoom + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
 	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));

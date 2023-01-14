@@ -36,6 +36,9 @@ void CBatBossState_JumpSmash_ForwardL::Start()
 	m_pLeftHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_l");
 	m_pRightHandBoneNode = m_pModelCom.lock()->Find_BoneNode("hand_r");
 
+	m_pLeftFootBoneNode = m_pModelCom.lock()->Find_BoneNode("foot_l");
+	m_pRightFootBoneNode = m_pModelCom.lock()->Find_BoneNode("foot_r");
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd, this, placeholders::_1);
 }
 
@@ -79,10 +82,29 @@ void CBatBossState_JumpSmash_ForwardL::Call_NextAnimationKey(const _uint& In_iKe
 		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
 	}
-	else if (176 == In_iKeyIndex)
+	else if (172 == In_iKeyIndex)
 	{
-		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
+
+		CombinedMatrix = Get_LeftFootCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
+	}
+	else if (176 == In_iKeyIndex)
+	{//172 righthand/leftfoot 176 lefthand/rightfoot
+		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
+
+		CombinedMatrix = Get_RightFootCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.2f, 9.f, 3.f);
 	}
 }
 

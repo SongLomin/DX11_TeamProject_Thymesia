@@ -7,7 +7,8 @@ matrix	g_Points;
 float2 g_vUVMask;
 float fWrapWeight;
 
-texture2D	g_MaskTexture;
+texture2D	g_MaskTexture1;
+texture2D   g_MaskTexture2;
 
 struct VS_IN
 {
@@ -73,7 +74,7 @@ struct GS_OUT
 void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> Stream)
 {
 	GS_OUT			Out[4];
-    float fStrangth = 0.05f;
+    float fStrangth = 0.03f;
 	
     float3 vLook = normalize(g_Points[2].xyz - g_Points[1].xyz);
     float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook));
@@ -144,10 +145,13 @@ PS_OUT PS_MAIN(PS_IN In)
 
     Out.vColor = 1.f;
 
+    float fMaskDesc = g_MaskTexture1.Sample(DefaultSampler, In.vTexUV - g_vUVMask).r*0.2f;
+    //clip(fMaskDesc - 0.01f);
+      
     half2 vTexUV = In.vTexUV;
-    vTexUV.x *= fWrapWeight;
-  
-    Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, vTexUV - g_vUVMask).r*0.6f;
+    vTexUV.x *= fWrapWeight*0.8f;
+ 
+    Out.vColor.a *= (g_MaskTexture2.Sample(DefaultSampler, vTexUV - g_vUVMask).r * 0.4f + fMaskDesc);
     Out.vColor.a *= Out.vColor.a;
     Out.vColor.a = max(0.01f, Out.vColor.a);
     

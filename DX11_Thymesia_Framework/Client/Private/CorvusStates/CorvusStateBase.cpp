@@ -40,7 +40,15 @@ void CCorvusStateBase::OnEventMessage(_uint iArg)
 {
 	/*if ((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CCorvusState_NorMob_Execution>();
+		Get_OwnerCharacter().lock()->Change_State<CCorvusState_NorMob_Execution_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.25f, 9.f, 3.f);
+
+		CombinedMatrix = Get_RightFootCombinedWorldMatrix();
+
+		vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.25f, 9.f, 3.f);>();
 	}*/
 }
 
@@ -48,14 +56,22 @@ void CCorvusStateBase::Free()
 {
 }
 
+HRESULT CCorvusStateBase::Initialize(void* pArg)
+{
+	__super::Initialize(pArg);
+
+	if(Get_Owner().lock()->Get_CreatedLevel() == LEVEL_STAGE2)
+		CallBack_WaterWave+= bind(&CCorvusStateBase::Add_WaveDesc, this, placeholders::_1);
+	
+
+	return S_OK;
+}
+
 void CCorvusStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
-
-	GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 0.9f, 3.f);
-
+	CallBack_WaterWave(fTimeDelta);
 }
 
 _bool CCorvusStateBase::Check_RequirementAttackState()
@@ -504,6 +520,19 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 		return false;
 
 	return false;
+}
+
+void CCorvusStateBase::Add_WaveDesc(_float In_fTimeDelta)
+{
+	m_fTimeAcc += In_fTimeDelta;
+
+	if (m_fTimeAcc > 0.05f)
+	{
+		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
+
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 0.9f, 3.f);
+		m_fTimeAcc = 0.f;
+	}
 }
 
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)

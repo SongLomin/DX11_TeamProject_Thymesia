@@ -60,8 +60,25 @@ void CBatBossState_Atk_R01_2a::Tick(_float fTimeDelta)
 
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue);
 	}
+	
+	if (m_bWaterWave)
+	{
+		m_fTimeAcc += fTimeDelta;
+		if (m_fTimeAcc >= 0.03f)
+		{
+			_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
+			_vector vPosition = CombinedMatrix.r[3];
+			GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
 
+			CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
+
+			vPosition = CombinedMatrix.r[3];
+			GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+			m_fTimeAcc = 0.f;
+
+		}
+	}
 		
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -78,22 +95,10 @@ void CBatBossState_Atk_R01_2a::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 {
 	if (!Get_Enable())
 		return;
-
-	if(In_iKeyIndex >= 167 && In_iKeyIndex <= 186)
+	//172~195
+	if(In_iKeyIndex == 172 || In_iKeyIndex == 195)
 	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.05f, 9.f, 3.f);
-		return;
-	}
-
-	else if (187 <= In_iKeyIndex && 201 >= In_iKeyIndex)
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
+		m_bWaterWave = !m_bWaterWave;
 		return;
 	}
 
@@ -124,6 +129,9 @@ void CBatBossState_Atk_R01_2a::OnStateStart(const _float& In_fAnimationBlendTime
 	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
 		bind(&CBatBossState_Atk_R01_2a::Call_NextAnimationKey, this, placeholders::_1);
+
+	m_bWaterWave = false;
+	m_fTimeAcc = 0.f;
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

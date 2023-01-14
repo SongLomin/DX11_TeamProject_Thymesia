@@ -221,6 +221,10 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true)))
 		DEBUG_ASSERT;
 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractTexture"),
+		(_uint)1024, (_uint)1024, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+
 	/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurShadow"),
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;*/
@@ -329,6 +333,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_CopyOriginalRender"), TEXT("Target_CopyOriginalRender"))))
 		DEBUG_ASSERT;
 
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractTexture"), TEXT("Target_ExtractTexture"))))
+		DEBUG_ASSERT;
 
 	_float fSize = 150.f;
 	_float fHalf = fSize * 0.5f;
@@ -436,6 +442,12 @@ HRESULT CRender_Manager::Initialize()
 	m_pNIS_Shader = CNIS_Shader::Create();
 	m_pNIS_Shader->Initialize(nullptr);
 	m_pNIS_Shader->Update(0.f, (uint32_t)ViewPortDesc.Width, (uint32_t)ViewPortDesc.Height);
+
+#ifdef _DEBUG
+	m_pEditTextureShaderCom = CShader::Create();
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_ExtractTexture"), TEXT("../Bin/Shaderfiles/Shader_ExtractTexture.hlsl"));
+	m_pEditTextureShaderCom->Set_ShaderInfo(TEXT("Shader_ExtractTexture"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
+#endif //_DEBUG
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 
@@ -629,6 +641,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Final()))
 		DEBUG_ASSERT;
 
+	
 #ifdef _DEBUG
 
 	if (FAILED(Render_Debug()))
@@ -833,6 +846,43 @@ HRESULT CRender_Manager::Render_Priority()
 
 	return S_OK;
 }
+
+#ifdef _DEBUG
+HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue)
+{
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_ExtractTextureMRT(TEXT("MRT_ExtractTexture"))))
+		DEBUG_ASSERT;
+
+	m_pEditTextureShaderCom->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pEditTextureShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pEditTextureShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	
+	_vector vRChannel{}, vGChannel{}, vBChannel{};
+	vRChannel.m128_f32[In_Red] = 1.f;
+	vGChannel.m128_f32[In_Green] = 1.f;
+	vBChannel.m128_f32[In_Blue] = 1.f;
+
+	m_pEditTextureShaderCom->Set_RawValue("g_RChannelUse", &vRChannel, sizeof(_vector));
+	m_pEditTextureShaderCom->Set_RawValue("g_GChannelUse", &vRChannel, sizeof(_vector));
+	m_pEditTextureShaderCom->Set_RawValue("g_BChannelUse", &vRChannel, sizeof(_vector));
+
+	m_pEditTextureShaderCom->Set_ShaderResourceView("g_SourTexture", pSRV);
+
+	m_pEditTextureShaderCom->Begin(0, DEVICECONTEXT);
+	m_pVIBuffer->Render(DEVICECONTEXT);
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_ExtractTextureMRT()))
+		DEBUG_ASSERT;
+
+	return S_OK;
+}
+HRESULT CRender_Manager::Extract_Texture(const tstring& In_szFilePath)
+{
+	//png굽기
+	return S_OK;
+}
+#endif //_DEBUG
 
 HRESULT CRender_Manager::Render_ShadowDepth()
 {
@@ -2137,6 +2187,8 @@ HRESULT CRender_Manager::Render_NvidiaImageScaling()
 
 	return S_OK;
 }
+
+
 
 HRESULT CRender_Manager::Render_Final()
 {

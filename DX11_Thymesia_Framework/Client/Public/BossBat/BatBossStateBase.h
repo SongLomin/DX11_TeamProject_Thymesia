@@ -29,6 +29,10 @@ protected:
 
     _matrix Get_LeftHandCombinedWorldMatrix();
     _matrix Get_RightHandCombinedWorldMatrix();
+    _matrix Get_HeadCombinedWorldMatrix();
+    _matrix Get_ChestCombinedWorldMatrix();
+    _matrix Get_RightFootCombinedWorldMatrix();
+    _matrix Get_LeftFootCombinedWorldMatrix();
 
 protected:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
@@ -44,6 +48,10 @@ protected:
 
     weak_ptr<CBoneNode> m_pLeftHandBoneNode;
     weak_ptr<CBoneNode> m_pRightHandBoneNode;
+    weak_ptr<CBoneNode> m_pHeadBoneNode;
+    weak_ptr<CBoneNode> m_pChestBoneNode;
+    weak_ptr<CBoneNode> m_pLeftFootBoneNode;
+    weak_ptr<CBoneNode> m_pRightFootBoneNode;
 
 public:
     virtual void OnEventMessage(_uint iArg) override;

@@ -180,7 +180,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			}
 			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 			{
-				pOtherCharacter.lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
+				GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
 				Get_OwnerMonster()->Change_State<CVargBossState_Hurt>();
 			}
 			break;

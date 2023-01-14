@@ -65,6 +65,19 @@ void CBatBossState_Atk_R01_2b::Tick(_float fTimeDelta)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
 	}
 	
+	if (m_bWaterWave)
+	{
+		m_fTimeAcc += fTimeDelta;
+		if (m_fTimeAcc >= 0.03f)
+		{
+			_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
+			_vector vPosition = CombinedMatrix.r[3];
+			GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
+			m_fTimeAcc = 0.f;
+
+		}
+	}
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -83,31 +96,15 @@ void CBatBossState_Atk_R01_2b::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	if (!Get_Enable())
 		return;
 
-	if (In_iKeyIndex >= 70 && In_iKeyIndex <= 74)
+	if (In_iKeyIndex == 70 || 90 == In_iKeyIndex)
 	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.05f, 9.f, 3.f);
+		m_bWaterWave = !m_bWaterWave;
 		return;
 	}
-	else if (76 <= In_iKeyIndex && 90 >= In_iKeyIndex)
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
-		return;
-	}
+
 
 	switch (In_iKeyIndex)
 	{
-	case 75:
-	{
-		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
-
-		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.1f, 9.f, 3.f);
-		break;
-	}
 
 	case 206:
 	{
@@ -146,6 +143,9 @@ void CBatBossState_Atk_R01_2b::OnStateStart(const _float& In_fAnimationBlendTime
 	{
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.65f);
 	}
+
+	m_bWaterWave = false;
+	m_fTimeAcc = 0.f;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
