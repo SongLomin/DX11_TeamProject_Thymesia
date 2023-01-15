@@ -16,6 +16,9 @@ void CCorvusState_PS::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
+	if (m_iAnimIndex != iEndAnimIndex)
+		return;
+
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 }
 
