@@ -11,7 +11,7 @@
 #include "MobWeapon.h"
 #include "UrdWeapon.h"
 #include "UI_ScriptQueue.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CUrdBossState_Start);
 CLONE_C(CUrdBossState_Start, CComponent)
@@ -73,7 +73,8 @@ void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
-	
+	GAMEINSTANCE->PlaySound2D("STAGE3_BOSS_0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG

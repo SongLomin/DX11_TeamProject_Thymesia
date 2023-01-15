@@ -14,6 +14,9 @@
 #include "FadeMask.h"
 #include "DissolveUI.h"
 #include "LoadingTextUI.h"
+#include "UIManager.h"
+
+
 
 GAMECLASS_C(CUI_Loading)
 CLONE_C(CUI_Loading, CGameObject)
@@ -183,8 +186,9 @@ _bool CUI_Loading::Get_Finish()
 	{
 		if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && !m_bIsChangeLevel)
 		{
+			GAMEINSTANCE->PlaySound2D("Fantasy_Game_Organic_Magic_Poof_Buff_Hit_3.ogg",
+				GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT));
 			//GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
-
 			m_bIsChangeLevel = true;
 			FaderDesc tFaderDesc;
 			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
