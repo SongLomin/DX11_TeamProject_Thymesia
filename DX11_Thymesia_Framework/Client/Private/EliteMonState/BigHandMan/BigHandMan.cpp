@@ -239,7 +239,7 @@ void CBigHandMan::OnEventMessage(_uint iArg)
 		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
 
-		//Change_State<CBigHandManState_Sp_Open>();
+		Change_State<CBigHandManState_Idle>();
 		Set_Enable(false);
 		m_pStatus.lock()->Full_Recovery();
 	}

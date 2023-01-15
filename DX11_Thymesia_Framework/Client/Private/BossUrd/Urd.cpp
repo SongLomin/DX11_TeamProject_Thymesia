@@ -402,8 +402,7 @@ void CUrd::Reset_Weapon()
 	for (auto& elem : m_pJavelinWeapons)
 	{
 		elem.lock()->Set_Enable(false);
-		elem.lock()->Set_RenderCheck(false);
-		elem.lock()->Set_RenderOnOff(false);
+		elem.lock()->Set_RenderCheck(false);		
 	}
 
 	for (auto& elem : m_pDecoWeapons)

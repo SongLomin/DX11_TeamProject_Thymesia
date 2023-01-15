@@ -10,7 +10,7 @@
 #ifdef _DEBUG
 
 #pragma region System
-//#define _BAKE_MIPMAPS_
+//#define _BAKE_MIPMAPS_define
 #define _USE_THREAD_
 #define _144HZ_
 #define _RENDER_FPS_
@@ -35,13 +35,13 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _EFFECT_TOOL_
+//#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   
 #pragma region Effects
 // #define _DAGGER_TRAIL_
-//#define _CORVUS_EFFECT_
+#define _CORVUS_EFFECT_
 //#define _VARG_EFFECT_
 //#define _BAT_EFFECT_
 //#define _URD_EFFECT_

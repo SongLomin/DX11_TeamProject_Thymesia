@@ -143,3 +143,14 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	return false;
 }
 
+void CUrdBossState_Start::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bSinematicStart = false;
+	}
+}
+
