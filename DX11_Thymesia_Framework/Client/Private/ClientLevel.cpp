@@ -115,7 +115,6 @@ void CClientLevel::Tick(_float fTimeDelta)
 	*/
 	if (!m_bLading)
 	{
-
 		switch (m_eMyLevel)
 		{
 		case Client::LEVEL_LOGO:
