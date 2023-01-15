@@ -89,20 +89,10 @@ void CUrdBossState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,4);
 	
-	
 	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Urd_Dead();
 
-
-
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
-}	
-
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Urd_WeaponShine_Phase2", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Urd_WeaponShine_Phase2"));
+}
 
 void CUrdBossState_Dead::OnStateEnd()
 {
@@ -113,8 +103,6 @@ void CUrdBossState_Dead::OnStateEnd()
 	Get_OwnerMonster()->Release_Monster();
 
 }
-
-
 
 void CUrdBossState_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 {
@@ -159,9 +147,6 @@ _bool CUrdBossState_Dead::Check_AndChangeNextState()
 		{
 			elnm.lock()->Set_RenderOnOff(false);
 		}
-
-
-		
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.9f)

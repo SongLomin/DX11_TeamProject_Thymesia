@@ -32,10 +32,16 @@ void CUrdBossState_Attack03_DashSting_R::Call_NextKeyFrame(const _uint& In_KeyIn
 	switch (In_KeyIndex)
 	{
 	case 48:
-		TurnOn_Effect("Urd_WeaponShine");
+		if (Is_Urd_Phase1())
+		{
+			TurnOn_Effect("Urd_WeaponShine");
+		}
 		return;
 	case 107:
-		TurnOff_Effect("Urd_WeaponShine");
+		if (Is_Urd_Phase1())
+		{
+			TurnOff_Effect("Urd_WeaponShine");
+		}
 		return;
 	}
 }

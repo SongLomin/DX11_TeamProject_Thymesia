@@ -66,15 +66,6 @@ void CUrdBossState_AttackComboB1::OnStateStart(const _float& In_fAnimationBlendT
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	
-	
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
 }	
 
 

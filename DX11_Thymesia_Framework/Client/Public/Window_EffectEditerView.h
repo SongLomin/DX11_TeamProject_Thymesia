@@ -59,11 +59,13 @@ private:
 	weak_ptr<CPreviewAnimationModel> m_pPreViewModel;
 
 	_int m_iSoundSyncKey = 0;
+	_bool m_bIsSound3d = true;
 
 public:
 	_int Get_SoundSyncKey() const { return m_iSoundSyncKey; }
 	std::string Get_SoundFileName() const { return m_szSoundFileName; }
 	_float Get_SoundVolume() const { return m_fVolume; }
+	const _bool Is_Sound3D() const { return m_bIsSound3d; }
 
 private: /* For. Sound */
 	string						m_szSoundFileName;

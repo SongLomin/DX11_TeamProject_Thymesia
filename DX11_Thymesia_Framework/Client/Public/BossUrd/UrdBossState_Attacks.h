@@ -25,6 +25,8 @@ protected:
 
 	void Set_MoveScale(const _float fRatio = 1.f);
 
+	_bool Is_Urd_Phase1();
+
 	void TurnOn_Effect(const std::string& szEffectKey);
 	void TurnOff_Effect(const std::string& szEffectKey);
 

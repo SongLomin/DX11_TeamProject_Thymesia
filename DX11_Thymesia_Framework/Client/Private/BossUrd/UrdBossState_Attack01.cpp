@@ -6,6 +6,7 @@
 #include "BossUrd/UrdBossState_Attack02LV2C1.h"
 #include "MobWeapon.h"
 #include "Monster.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CUrdBossState_Attack01);
 CLONE_C(CUrdBossState_Attack01, CComponent)
@@ -24,10 +25,16 @@ void CUrdBossState_Attack01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 34:
-		TurnOn_Effect("Urd_WeaponShine");
+		if (Is_Urd_Phase1())
+		{
+			TurnOn_Effect("Urd_WeaponShine");
+		}
 		return;
 	case 105:
-		TurnOff_Effect("Urd_WeaponShine");
+		if (Is_Urd_Phase1())
+		{
+			TurnOff_Effect("Urd_WeaponShine");
+		}
 		return;
 	}
 }
