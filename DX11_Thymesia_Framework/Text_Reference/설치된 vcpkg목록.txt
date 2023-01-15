@@ -12,3 +12,5 @@ vcpkg install DirectXTex:x64-windows
 1. Cuda 12.0 설치
 2. https://hiuaa.tistory.com/39 참고
 3. 나머지는 내가 세팅해둠
+
+vcpkg install boost-process:x64-windows

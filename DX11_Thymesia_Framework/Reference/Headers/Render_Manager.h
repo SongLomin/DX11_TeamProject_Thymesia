@@ -103,6 +103,24 @@ public:
 		return S_OK;
 	}
 
+	HRESULT Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable)
+	{
+		m_bDynamicShadow = In_bDynamicShadowEnable;
+		return S_OK;
+	}
+
+	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable)
+	{
+		m_bSSAA = In_bSSAAEnable;
+		return S_OK;
+	}
+
+	HRESULT Set_HBAO_Enable(const _bool& In_bHBAOEnable)
+	{
+		m_bHBAO = In_bHBAOEnable;
+		return S_OK;
+	}
+
 	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset)
 	{
 		m_fBrightnessOffset = In_fBrightnessOffset;
@@ -118,6 +136,8 @@ public:
 		m_fContrastOffset = In_fContrastOffset;
 		return S_OK;
 	}
+
+	
 
 private:
 	HRESULT Render_Priority();
@@ -269,6 +289,9 @@ private:
 	_bool		m_bGodRayEnable = true;
 	_bool		m_bChromaticAberation = true;
 	_bool		m_bRadialBlur = true;
+	_bool		m_bDynamicShadow = true;
+	_bool		m_bSSAA = true;
+	_bool		m_bHBAO = true;
 
 	_float		m_fSaturationOffset = 0.f;
 	_float		m_fBrightnessOffset = 0.f;

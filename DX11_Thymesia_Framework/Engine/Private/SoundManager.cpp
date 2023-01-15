@@ -32,39 +32,6 @@ void CSound_Manager::Release()
 	FMOD_System_Close(m_pSystem);
 }
 
-_int CSound_Manager::VolumeUp(CHANNELID eID, _float _vol)
-{
-	if (m_volume < SOUND_MAX) {
-		m_volume += _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[eID], m_volume);
-
-	return 0;
-}
-
-_int CSound_Manager::VolumeDown(CHANNELID eID, _float _vol)
-{
-	if (m_volume > SOUND_MIN) {
-		m_volume -= _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[eID], m_volume);
-
-	return 0;
-}
-
-_int CSound_Manager::BGMVolumeUp(_float _vol)
-{
-	if (m_BGMvolume < SOUND_MAX) {
-		m_BGMvolume += _vol;
-	}
-
-	FMOD_Channel_SetVolume(m_pChannelArr[BGM], m_BGMvolume);
-
-	return 0;
-}
-
 void CSound_Manager::Tick()
 {
 	_matrix CameraWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
@@ -78,15 +45,41 @@ void CSound_Manager::Tick()
 	FMOD_System_Update(m_pSystem);
 }
 
-_int CSound_Manager::BGMVolumeDown(_float _vol)
+
+
+void CSound_Manager::Update_VolumeScale(const _float In_VolumeScale)
 {
-	if (m_BGMvolume > SOUND_MIN) {
-		m_BGMvolume -= _vol;
+	_float CurrentVolume;
+
+	for (_uint i = 0; i < MAX_CHANNEL; ++i)
+	{
+		if (!m_pChannelArr[i])
+			continue;
+
+		if (BGM == i)
+		{
+			continue;
+		}
+
+		FMOD_Channel_GetVolume(m_pChannelArr[i], &CurrentVolume);
+		CurrentVolume /= m_fEffectvolume;
+		FMOD_Channel_SetVolume(m_pChannelArr[i], CurrentVolume * In_VolumeScale);
 	}
 
-	FMOD_Channel_SetVolume(m_pChannelArr[BGM], m_BGMvolume);
+	m_fEffectvolume = In_VolumeScale;
+}
 
-	return 0;
+void CSound_Manager::Update_BGMVolumeScale(const _float In_VolumeScale)
+{
+	if (!m_pChannelArr[BGM])
+		return;
+
+	_float CurrentVolume;
+
+	FMOD_Channel_GetVolume(m_pChannelArr[BGM], &CurrentVolume);
+	CurrentVolume /= m_fBGMvolume;
+	FMOD_Channel_SetVolume(m_pChannelArr[BGM], CurrentVolume * In_VolumeScale);
+	m_fBGMvolume = In_VolumeScale;
 }
 
 _int CSound_Manager::Pause(CHANNELID eID)
@@ -126,7 +119,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 
 		FMOD_Channel_Set3DAttributes(m_pChannelArr[_iIndex], &vPosition, &vVelocity);
 		FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[_iIndex], 1.0f, 100.0f);
-		FMOD_Channel_SetVolume(m_pChannelArr[_iIndex], _vol);
+		FMOD_Channel_SetVolume(m_pChannelArr[_iIndex], _vol * m_fEffectvolume);
 
 		if ((_uint)ENVIRONMENT == _iIndex)
 		{
@@ -191,7 +184,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 
 			FMOD_Channel_Set3DAttributes(m_pChannelArr[i], &vPosition, &vVelocity);
 			FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[i], 1.0f, 100.0f);
-			FMOD_Channel_SetVolume(m_pChannelArr[i], _vol);
+			FMOD_Channel_SetVolume(m_pChannelArr[i], _vol * m_fEffectvolume);
 			iResult = i;
 			break;
 		}
@@ -224,7 +217,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _f
 		else if (_vol <= SOUND_MIN)
 			_vol = 0.f;
 
-		FMOD_Channel_SetVolume(m_pChannelArr[_iIndex], _vol);
+		FMOD_Channel_SetVolume(m_pChannelArr[_iIndex], _vol * m_fEffectvolume);
 
 		if ((_uint)ENVIRONMENT == _iIndex)
 		{
@@ -284,7 +277,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol)
 			else if (_vol <= SOUND_MIN)
 				_vol = 0.f;
 
-			FMOD_Channel_SetVolume(m_pChannelArr[i], _vol);
+			FMOD_Channel_SetVolume(m_pChannelArr[i], _vol * m_fEffectvolume);
 			iResult = i;
 			break;
 		}
@@ -310,6 +303,8 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
 	FMOD_Channel_Stop(m_pChannelArr[BGM]);
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[BGM]);
 	FMOD_Channel_SetMode(m_pChannelArr[BGM], FMOD_LOOP_NORMAL);
+	FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
+
 
 	if (_vol >= SOUND_MAX)
 		_vol = 1.f;
@@ -317,9 +312,16 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
 		_vol = 0.f;
 
 
-	m_BGMvolume = _vol;
-	FMOD_Channel_SetVolume(m_pChannelArr[BGM], _vol);
+	FMOD_Channel_SetVolume(m_pChannelArr[BGM], _vol * m_fBGMvolume);
 	FMOD_System_Update(m_pSystem);
+}
+
+void CSound_Manager::StopBGM()
+{
+	if (!m_pChannelArr[BGM])
+		return;
+
+	FMOD_Channel_Stop(m_pChannelArr[BGM]);
 }
 
 void CSound_Manager::StopSound(_uint _iChannelIndex)

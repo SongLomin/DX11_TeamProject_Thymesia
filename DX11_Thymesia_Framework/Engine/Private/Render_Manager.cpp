@@ -214,11 +214,11 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_HBAO+"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_NIS"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true)))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f), true)))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractTexture"),
@@ -541,8 +541,16 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Render_HBAO_PLUS()))
-		DEBUG_ASSERT;
+	if (m_bHBAO)
+	{
+		if (FAILED(Render_HBAO_PLUS()))
+			DEBUG_ASSERT;
+	}
+	else
+	{
+		GET_SINGLE(CRenderTarget_Manager)->Find_RenderTarget(TEXT("Target_HBAO+"))->Clear(DEVICECONTEXT);
+	}
+	
 
 
 	if (FAILED(Render_Blend()))
@@ -602,8 +610,12 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(PostProcessing()))
 		DEBUG_ASSERT;
 
-	if (FAILED(AntiAliasing()))
-		DEBUG_ASSERT;
+
+	if (m_bSSAA)
+	{
+		if (FAILED(AntiAliasing()))
+			DEBUG_ASSERT;
+	}
 
 	if (FAILED(Render_NvidiaImageScaling()))
 		DEBUG_ASSERT;
@@ -957,11 +969,16 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	//m_pShader->Set_RawValue("g_ViewMatrix", &LightViewMatrix, sizeof(_float4x4));
 	//m_pShader->Set_RawValue("g_ProjMatrix", &LightProjMatrix, sizeof(_float4x4));
 
-	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_SHADOWDEPTH])
+	if (m_bDynamicShadow)
 	{
-		if (pGameObject.lock())
-			pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix, pDeviceContext);
+		for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_SHADOWDEPTH])
+		{
+			if (pGameObject.lock())
+				pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix, pDeviceContext);
+		}
 	}
+
+	
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_SHADOWDEPTH].clear();
 
 

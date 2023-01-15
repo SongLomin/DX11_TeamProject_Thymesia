@@ -38,6 +38,7 @@ void CUI_EvolveMenu_Page::Update_KeyInput(_float fTimeDelta)
 
     m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
     m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu_Page::Call_ExitTap, this);
+    GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
 }
 
 void CUI_EvolveMenu_Page::Call_ExitTap()

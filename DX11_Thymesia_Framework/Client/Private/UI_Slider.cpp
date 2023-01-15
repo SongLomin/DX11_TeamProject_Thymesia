@@ -18,7 +18,7 @@ HRESULT CUI_Slider::Initialize(void* pArg)
         363.f,
         225.f,
         230.f,
-        30.f,
+        45.f,
         ALIGN_LEFTTOP
     );
 
@@ -95,6 +95,8 @@ void CUI_Slider::OnLButtonDown()
     CalcAmount();
     CheckAmount();
     SetToAmount();
+
+    Callback_ChangeSliderAmount(m_iAmount);
 
     m_bDragAble = true;
 }

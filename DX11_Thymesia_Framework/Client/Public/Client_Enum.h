@@ -591,7 +591,7 @@ namespace Client
 	//Slider 0~100
 	//Slider 0 ~100
 	//On off 0~1(false, true)
-	//Level 0~3(off, Low, Middle, High)
+	//Level 0~2(Low, Middle, High)
 	
 	*/
 	enum class OPTION_TYPE
@@ -599,7 +599,6 @@ namespace Client
 		SOUND_TYPE_BG	= 0,			//Slider
 		SOUND_TYPE_EFFECT,				//Slider
 		SSAA,							//On off
-		PARTICLE_QUALITY,				//Level 
 		AMBIENT_OCCLUSION,				//On off
 		NVIDIA_IMAGE_SCALING,			//On off
 		SCALING_SHARPNESS,				//Slider

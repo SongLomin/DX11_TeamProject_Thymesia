@@ -233,6 +233,10 @@ public:
     void Register_Water(weak_ptr<CWater> pWater);
     void Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVibrationScale, const _float In_fFreq, const _float In_fSpeed);
 
+public: /* Change Game Options */
+    void Change_Option(OPTION_TYPE eOption, _uint iAmount);
+
+
  public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;

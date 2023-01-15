@@ -480,6 +480,21 @@ HRESULT CGameInstance::Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable)
 	return m_pRender_Manager->Set_RadialBlur_Enable(In_bRadialBlurEnable);
 }
 
+HRESULT CGameInstance::Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable)
+{
+	return m_pRender_Manager->Set_DynamicShadow_Enable(In_bDynamicShadowEnable);
+}
+
+HRESULT CGameInstance::Set_SSAA_Enable(const _bool& In_bSSAAEnable)
+{
+	return m_pRender_Manager->Set_SSAA_Enable(In_bSSAAEnable);
+}
+
+HRESULT CGameInstance::Set_HBAO_Enable(const _bool& In_bHBAOEnable)
+{
+	return m_pRender_Manager->Set_HBAO_Enable(In_bHBAOEnable);
+}
+
 HRESULT CGameInstance::Set_BrightnessOffset(const _float& In_fBrightnessOffset)
 {
 	return m_pRender_Manager->Set_BrightnessOffset(In_fBrightnessOffset);
@@ -562,11 +577,6 @@ HRESULT  CGameInstance::Set_FogDesc(_float4 In_vFogColor, const _float In_fFogRa
 {
 	return m_pRender_Manager->Set_FogDesc(In_vFogColor,In_fFogRange);
 	//return E_FAIL;
-}
-
-_int CGameInstance::BGMVolumeDown(_float _vol)
-{
-	return _int();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix TransformState)
@@ -779,19 +789,14 @@ ComPtr<ID3D11ShaderResourceView> CGameInstance::Get_RenderTarget_SRV(const _tcha
 	return m_pTarget_Manager->Get_SRV(pTargetTag);
 }
 
-_int CGameInstance::VolumeUp(CHANNELID eID, _float _vol)
+void CGameInstance::Update_VolumeScale(const _float In_VolumeScale)
 {
-	return m_pSound_Manager->VolumeUp(eID, _vol);
+	m_pSound_Manager->Update_VolumeScale(In_VolumeScale);
 }
 
-_int CGameInstance::VolumeDown(CHANNELID eID, _float _vol)
+void CGameInstance::Update_BGMVolumeScale(const _float In_VolumeScale)
 {
-	return m_pSound_Manager->VolumeDown(eID, _vol);
-}
-
-_int CGameInstance::BGMVolumeUp(_float _vol)
-{
-	return m_pSound_Manager->BGMVolumeUp(_vol);
+	m_pSound_Manager->Update_BGMVolumeScale(In_VolumeScale);
 }
 
 _int CGameInstance::Pause(CHANNELID eID)
@@ -822,6 +827,11 @@ _uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _float _vol)
 void CGameInstance::PlayBGM(const string& In_szSoundKey, _float _vol)
 {
 	m_pSound_Manager->PlayBGM(In_szSoundKey, _vol);
+}
+
+void CGameInstance::StopBGM()
+{
+	m_pSound_Manager->StopBGM();
 }
 
 void CGameInstance::StopSound(_uint _iChannelIndex)

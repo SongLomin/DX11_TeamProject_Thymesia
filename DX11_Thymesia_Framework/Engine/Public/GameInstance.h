@@ -160,6 +160,11 @@ public: /* For.Render_Manager */
 	HRESULT Set_GodRay_Enable(const _bool& In_bGodRayEnable);
 	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable);
 	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable);
+	HRESULT Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable);
+	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable);
+	HRESULT Set_HBAO_Enable(const _bool& In_bHBAOEnable);
+
+
 	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset);
 	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset);
 	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset);
@@ -242,16 +247,15 @@ public: /* For.Target_Manager */
 	ComPtr<ID3D11ShaderResourceView> Get_RenderTarget_SRV(const _tchar* pTargetTag);
 
 public: /* For.Sound_Manager */
-	_int  VolumeUp(CHANNELID eID, _float _vol);
-	_int  VolumeDown(CHANNELID eID, _float _vol);
-	_int  BGMVolumeUp(_float _vol);
-	_int  BGMVolumeDown(_float _vol);
+	void Update_VolumeScale(const _float In_VolumeScale);
+	void Update_BGMVolumeScale(const _float In_VolumeScale);
 	_int  Pause(CHANNELID eID);
 	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
 	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
+	void StopBGM();
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
 	void Load_SoundFileFromFolderPath(const string& In_szFolderPath);

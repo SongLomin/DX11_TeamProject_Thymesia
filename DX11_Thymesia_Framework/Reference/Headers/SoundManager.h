@@ -29,10 +29,9 @@ public:
 	void Release();
 
 public:
-	_int  VolumeUp(CHANNELID eID, _float _vol);
-	_int  VolumeDown(CHANNELID eID, _float _vol);
-	_int  BGMVolumeUp(_float _vol);
-	_int  BGMVolumeDown(_float _vol);
+	void Update_VolumeScale(const _float In_VolumeScale);
+	void Update_BGMVolumeScale(const _float In_VolumeScale);
+
 	_int  Pause(CHANNELID eID);
 	// Play sound with attenuation rate based on perspective with index.
 	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
@@ -43,9 +42,12 @@ public:
 	// Play sound without perspective. (e.g. environmental sound, UI sound)
 	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
+	void StopBGM();
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
+	
 
+public:
 	vector<const string*> Get_AllSoundNames();
 
 public:
@@ -53,8 +55,8 @@ public:
 	void LoadSoundFile(const string& In_szFile);
 
 private:
-	_float m_volume = SOUND_DEFAULT;
-	_float m_BGMvolume = SOUND_DEFAULT;
+	_float m_fEffectvolume = SOUND_DEFAULT;
+	_float m_fBGMvolume = SOUND_DEFAULT;
 	FMOD_BOOL m_bool;
 
 
@@ -63,7 +65,7 @@ private:
 	// 사운드 리소스 정보를 갖는 객체 
 	map<_hashcode, SOUND_DESC> m_mapSound;
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
-	FMOD_CHANNEL* m_pChannelArr[MAX_CHANNEL];
+	FMOD_CHANNEL* m_pChannelArr[MAX_CHANNEL]{};
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
 	FMOD_SYSTEM* m_pSystem{};
 	_bool		m_bPause = false;
