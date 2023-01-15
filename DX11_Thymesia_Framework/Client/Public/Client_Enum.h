@@ -104,6 +104,7 @@ namespace Client
 		PARRY_HIT,
 		STEALMONSTER,
 		NOPARRYATTACK,
+		MULTI_HIT,
 		TYPE_END
 	};
 
@@ -274,6 +275,7 @@ namespace Client
 		FALLDOWN,
 		STEALMONSTER,
 		NOPARRYATTACK,
+		MULTI_HIT,
 		OPTION_END
 	};
 

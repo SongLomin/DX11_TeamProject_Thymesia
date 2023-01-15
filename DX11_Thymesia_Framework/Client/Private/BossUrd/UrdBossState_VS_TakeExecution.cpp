@@ -75,7 +75,7 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,50);
 	m_pModelCom.lock()->Set_AnimationSpeed(1.03f);
-	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.8f, 2.8f, 2.8f));
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
 
 	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
 	{
@@ -95,7 +95,7 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
 		vOtherWorldMatrix.r[3] = XMVectorSet(-42.5696678f, -18.8200150f, 266.893677f, 1.f);
 		_matrix                    vResultOtherWorldMatrix;
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.6f, 0.f, 2.1f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.08f, 0.f, 2.88f, 0.f));
 		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),

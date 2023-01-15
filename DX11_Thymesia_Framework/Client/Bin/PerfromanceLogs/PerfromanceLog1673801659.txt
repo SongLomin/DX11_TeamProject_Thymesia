@@ -1,0 +1,877 @@
+██████╗░███████╗██████╗░███████╗██████╗░░█████╗░███╗░░░███╗░█████╗░███╗░░██╗░█████╗░███████╗
+██╔══██╗██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗████╗░████║██╔══██╗████╗░██║██╔══██╗██╔════╝
+██████╔╝█████╗░░██████╔╝█████╗░░██████╔╝██║░░██║██╔████╔██║███████║██╔██╗██║██║░░╚═╝█████╗░░
+██╔═══╝░██╔══╝░░██╔══██╗██╔══╝░░██╔══██╗██║░░██║██║╚██╔╝██║██╔══██║██║╚████║██║░░██╗██╔══╝░░
+██║░░░░░███████╗██║░░██║██║░░░░░██║░░██║╚█████╔╝██║░╚═╝░██║██║░░██║██║░╚███║╚█████╔╝███████╗
+╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚══════╝
+
+░█████╗░██╗░░██╗███████╗░█████╗░██╗░░██╗███████╗██████╗░
+██╔══██╗██║░░██║██╔════╝██╔══██╗██║░██╔╝██╔════╝██╔══██╗
+██║░░╚═╝███████║█████╗░░██║░░╚═╝█████═╝░█████╗░░██████╔╝
+██║░░██╗██╔══██║██╔══╝░░██║░░██╗██╔═██╗░██╔══╝░░██╔══██╗
+╚█████╔╝██║░░██║███████╗╚█████╔╝██║░╚██╗███████╗██║░░██║
+░╚════╝░╚═╝░░╚═╝╚══════╝░╚════╝░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝
+__________________________________________________
+For parts that require performance checks, 
+you can record them using GAMEINSTANCE's 'Begin_PerformanceTime' and 'End_PerformanceTime' functions.
+__________________________________________________
+Resource Rank 0.
+__________________________________________________
+CHECK NAME		: P_BossAtriumCircleRailing_Down04
+AVG TIME		: 3330
+MIN TIME		: 2400
+MAX TIME		: 35900
+ACC TIME		: 9107700
+CALL COUNT		: 2735
+__________________________________________________
+
+Resource Rank 1.
+__________________________________________________
+CHECK NAME		: SM_Table_1
+AVG TIME		: 2945
+MIN TIME		: 2300
+MAX TIME		: 18000
+ACC TIME		: 300400
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 2.
+__________________________________________________
+CHECK NAME		: P_ChurchLobbyPillar01
+AVG TIME		: 2867
+MIN TIME		: 1900
+MAX TIME		: 65400
+ACC TIME		: 36450800
+CALL COUNT		: 12711
+__________________________________________________
+
+Resource Rank 3.
+__________________________________________________
+CHECK NAME		: P_BossAtriumCircleRailing_Down02
+AVG TIME		: 2738
+MIN TIME		: 2300
+MAX TIME		: 20500
+ACC TIME		: 7535100
+CALL COUNT		: 2752
+__________________________________________________
+
+Resource Rank 4.
+__________________________________________________
+CHECK NAME		: SM_wall_short_brick_2_a
+AVG TIME		: 2684
+MIN TIME		: 2100
+MAX TIME		: 12100
+ACC TIME		: 273800
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 5.
+__________________________________________________
+CHECK NAME		: P_BossAtriumCircleRailing_Down03
+AVG TIME		: 2662
+MIN TIME		: 2200
+MAX TIME		: 96200
+ACC TIME		: 36932400
+CALL COUNT		: 13869
+__________________________________________________
+
+Resource Rank 6.
+__________________________________________________
+CHECK NAME		: SM_Roof_12m_Ruined_03
+AVG TIME		: 2659
+MIN TIME		: 1800
+MAX TIME		: 82000
+ACC TIME		: 813700
+CALL COUNT		: 306
+__________________________________________________
+
+Resource Rank 7.
+__________________________________________________
+CHECK NAME		: P_ChurchWindowGrilles01
+AVG TIME		: 2534
+MIN TIME		: 2100
+MAX TIME		: 21700
+ACC TIME		: 6722300
+CALL COUNT		: 2652
+__________________________________________________
+
+Resource Rank 8.
+__________________________________________________
+CHECK NAME		: SM_Roof_12m_Ruined_04
+AVG TIME		: 2468
+MIN TIME		: 1800
+MAX TIME		: 33000
+ACC TIME		: 755300
+CALL COUNT		: 306
+__________________________________________________
+
+Resource Rank 9.
+__________________________________________________
+CHECK NAME		: SM_Ruins_Arches_01
+AVG TIME		: 2458
+MIN TIME		: 1800
+MAX TIME		: 52600
+ACC TIME		: 1755400
+CALL COUNT		: 714
+__________________________________________________
+
+Resource Rank 10.
+__________________________________________________
+CHECK NAME		: DryTreeT3_branches_1_SM_02
+AVG TIME		: 2433
+MIN TIME		: 1900
+MAX TIME		: 58600
+ACC TIME		: 13705700
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 11.
+__________________________________________________
+CHECK NAME		: SM_Wooden_Box_2_Cap
+AVG TIME		: 2421
+MIN TIME		: 2000
+MAX TIME		: 17100
+ACC TIME		: 247000
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 12.
+__________________________________________________
+CHECK NAME		: SM_Scaffolding_06
+AVG TIME		: 2408
+MIN TIME		: 1900
+MAX TIME		: 34600
+ACC TIME		: 245700
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 13.
+__________________________________________________
+CHECK NAME		: P_ChurchLobbyFloor01
+AVG TIME		: 2404
+MIN TIME		: 1900
+MAX TIME		: 44100
+ACC TIME		: 48676500
+CALL COUNT		: 20245
+__________________________________________________
+
+Resource Rank 14.
+__________________________________________________
+CHECK NAME		: SM_Wall_8x8_Broken_01g
+AVG TIME		: 2392
+MIN TIME		: 1900
+MAX TIME		: 18500
+ACC TIME		: 13232100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 15.
+__________________________________________________
+CHECK NAME		: P_ChurchLowerBody01
+AVG TIME		: 2386
+MIN TIME		: 1900
+MAX TIME		: 31900
+ACC TIME		: 41261900
+CALL COUNT		: 17288
+__________________________________________________
+
+Resource Rank 16.
+__________________________________________________
+CHECK NAME		: DryTreeT3_2_SM_03
+AVG TIME		: 2377
+MIN TIME		: 1900
+MAX TIME		: 157900
+ACC TIME		: 27268000
+CALL COUNT		: 11470
+__________________________________________________
+
+Resource Rank 17.
+__________________________________________________
+CHECK NAME		: SM_Wall_8x8_Broken_01d
+AVG TIME		: 2376
+MIN TIME		: 1900
+MAX TIME		: 34400
+ACC TIME		: 13146000
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 18.
+__________________________________________________
+CHECK NAME		: SM_BaseWall_01_Corner
+AVG TIME		: 2346
+MIN TIME		: 1900
+MAX TIME		: 11900
+ACC TIME		: 478600
+CALL COUNT		: 204
+__________________________________________________
+
+Resource Rank 19.
+__________________________________________________
+CHECK NAME		: SM_Ruins_Arches_07
+AVG TIME		: 2339
+MIN TIME		: 1800
+MAX TIME		: 79300
+ACC TIME		: 51764100
+CALL COUNT		: 22124
+__________________________________________________
+
+Resource Rank 20.
+__________________________________________________
+CHECK NAME		: SM_BaseWall_02_Plain
+AVG TIME		: 2332
+MIN TIME		: 1900
+MAX TIME		: 12800
+ACC TIME		: 237900
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 21.
+__________________________________________________
+CHECK NAME		: SM_Rock_cliff_01
+AVG TIME		: 2329
+MIN TIME		: 1900
+MAX TIME		: 60300
+ACC TIME		: 13119300
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 22.
+__________________________________________________
+CHECK NAME		: SM_Tree_Medium_01
+AVG TIME		: 2326
+MIN TIME		: 1900
+MAX TIME		: 82700
+ACC TIME		: 25735900
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 23.
+__________________________________________________
+CHECK NAME		: SM_Ballustrade_Ruined_02
+AVG TIME		: 2323
+MIN TIME		: 1900
+MAX TIME		: 50800
+ACC TIME		: 12849100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 24.
+__________________________________________________
+CHECK NAME		: SM_Wallkit_Corner_01a
+AVG TIME		: 2313
+MIN TIME		: 1900
+MAX TIME		: 28200
+ACC TIME		: 13033700
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 25.
+__________________________________________________
+CHECK NAME		: DryTreeT3_branches_2_SM
+AVG TIME		: 2311
+MIN TIME		: 1900
+MAX TIME		: 41900
+ACC TIME		: 13021200
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 26.
+__________________________________________________
+CHECK NAME		: DryTreeT3_branches_3_SM_2
+AVG TIME		: 2304
+MIN TIME		: 1900
+MAX TIME		: 35800
+ACC TIME		: 12746000
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 27.
+__________________________________________________
+CHECK NAME		: Railing_pillar01
+AVG TIME		: 2303
+MIN TIME		: 1900
+MAX TIME		: 58400
+ACC TIME		: 12743300
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 28.
+__________________________________________________
+CHECK NAME		: SM_Tree_Tropic_02
+AVG TIME		: 2300
+MIN TIME		: 1800
+MAX TIME		: 76700
+ACC TIME		: 38870200
+CALL COUNT		: 16899
+__________________________________________________
+
+Resource Rank 29.
+__________________________________________________
+CHECK NAME		: SM_Rock_Sharp_01
+AVG TIME		: 2299
+MIN TIME		: 1800
+MAX TIME		: 36400
+ACC TIME		: 12954600
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 30.
+__________________________________________________
+CHECK NAME		: SM_Candles_01a_2
+AVG TIME		: 2298
+MIN TIME		: 1900
+MAX TIME		: 24700
+ACC TIME		: 12712100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 31.
+__________________________________________________
+CHECK NAME		: SM_TowerPillar_02a
+AVG TIME		: 2293
+MIN TIME		: 1800
+MAX TIME		: 107500
+ACC TIME		: 25370500
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 32.
+__________________________________________________
+CHECK NAME		: SM_Tree_Medium_02
+AVG TIME		: 2286
+MIN TIME		: 1800
+MAX TIME		: 88300
+ACC TIME		: 25759400
+CALL COUNT		: 11266
+__________________________________________________
+
+Resource Rank 33.
+__________________________________________________
+CHECK NAME		: SM_Wall_8x8_Broken_01a
+AVG TIME		: 2281
+MIN TIME		: 1900
+MAX TIME		: 27600
+ACC TIME		: 12618600
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 34.
+__________________________________________________
+CHECK NAME		: SM_Wall_8x8_Broken_01e
+AVG TIME		: 2281
+MIN TIME		: 1900
+MAX TIME		: 105700
+ACC TIME		: 12848900
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 35.
+__________________________________________________
+CHECK NAME		: SM_Ballustrade_Ruined_01
+AVG TIME		: 2270
+MIN TIME		: 1900
+MAX TIME		: 25100
+ACC TIME		: 12559100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 36.
+__________________________________________________
+CHECK NAME		: SM_Wall_Stone_03_3m_Windowed
+AVG TIME		: 2267
+MIN TIME		: 1800
+MAX TIME		: 30500
+ACC TIME		: 925200
+CALL COUNT		: 408
+__________________________________________________
+
+Resource Rank 37.
+__________________________________________________
+CHECK NAME		: SM_Barrel_Ceiling_02
+AVG TIME		: 2266
+MIN TIME		: 1900
+MAX TIME		: 46400
+ACC TIME		: 12535200
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 38.
+__________________________________________________
+CHECK NAME		: P_ChurchRoof01
+AVG TIME		: 2261
+MIN TIME		: 1800
+MAX TIME		: 28800
+ACC TIME		: 5766200
+CALL COUNT		: 2550
+__________________________________________________
+
+Resource Rank 39.
+__________________________________________________
+CHECK NAME		: SM_Wall_8x8_Broken_01b
+AVG TIME		: 2259
+MIN TIME		: 1900
+MAX TIME		: 57700
+ACC TIME		: 12500000
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 40.
+__________________________________________________
+CHECK NAME		: SM_Covered_Barrels
+AVG TIME		: 2258
+MIN TIME		: 1800
+MAX TIME		: 29400
+ACC TIME		: 24979100
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 41.
+__________________________________________________
+CHECK NAME		: SM_Wall_Stone_01_6m_Plain
+AVG TIME		: 2248
+MIN TIME		: 1900
+MAX TIME		: 12500
+ACC TIME		: 229300
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 42.
+__________________________________________________
+CHECK NAME		: SM_WoodenShade_01
+AVG TIME		: 2244
+MIN TIME		: 1900
+MAX TIME		: 13200
+ACC TIME		: 228900
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 43.
+__________________________________________________
+CHECK NAME		: SM_Shelf
+AVG TIME		: 2221
+MIN TIME		: 1600
+MAX TIME		: 36700
+ACC TIME		: 226600
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 44.
+__________________________________________________
+CHECK NAME		: SM_Wall_Plaster_03
+AVG TIME		: 2209
+MIN TIME		: 1900
+MAX TIME		: 17100
+ACC TIME		: 901300
+CALL COUNT		: 408
+__________________________________________________
+
+Resource Rank 45.
+__________________________________________________
+CHECK NAME		: SM_Tub_01
+AVG TIME		: 2200
+MIN TIME		: 1700
+MAX TIME		: 24100
+ACC TIME		: 224500
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 46.
+__________________________________________________
+CHECK NAME		: SM_Scaffolding_02
+AVG TIME		: 2162
+MIN TIME		: 1900
+MAX TIME		: 3400
+ACC TIME		: 220600
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 47.
+__________________________________________________
+CHECK NAME		: SM_Wall_Shelf
+AVG TIME		: 2060
+MIN TIME		: 1700
+MAX TIME		: 27200
+ACC TIME		: 210200
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 48.
+__________________________________________________
+CHECK NAME		: barrel_4
+AVG TIME		: 2036
+MIN TIME		: 1600
+MAX TIME		: 22500
+ACC TIME		: 207700
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 49.
+__________________________________________________
+CHECK NAME		: SM_Ruins_02
+AVG TIME		: 2015
+MIN TIME		: 1600
+MAX TIME		: 39900
+ACC TIME		: 2056300
+CALL COUNT		: 1020
+__________________________________________________
+
+Resource Rank 50.
+__________________________________________________
+CHECK NAME		: Stairs01
+AVG TIME		: 2009
+MIN TIME		: 1500
+MAX TIME		: 30000
+ACC TIME		: 22227500
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 51.
+__________________________________________________
+CHECK NAME		: SM_Fence_04
+AVG TIME		: 1995
+MIN TIME		: 1700
+MAX TIME		: 16000
+ACC TIME		: 203500
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 52.
+__________________________________________________
+CHECK NAME		: SM_Roof_12m_01
+AVG TIME		: 1991
+MIN TIME		: 1600
+MAX TIME		: 13100
+ACC TIME		: 609500
+CALL COUNT		: 306
+__________________________________________________
+
+Resource Rank 53.
+__________________________________________________
+CHECK NAME		: SM_Window_03b
+AVG TIME		: 1981
+MIN TIME		: 1600
+MAX TIME		: 24700
+ACC TIME		: 10961400
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 54.
+__________________________________________________
+CHECK NAME		: SM_FF_08
+AVG TIME		: 1972
+MIN TIME		: 1600
+MAX TIME		: 89400
+ACC TIME		: 10910800
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 55.
+__________________________________________________
+CHECK NAME		: SM_Chunk_01a
+AVG TIME		: 1965
+MIN TIME		: 1600
+MAX TIME		: 23700
+ACC TIME		: 10872700
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 56.
+__________________________________________________
+CHECK NAME		: SM_Tent_01
+AVG TIME		: 1965
+MIN TIME		: 1600
+MAX TIME		: 15000
+ACC TIME		: 200500
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 57.
+__________________________________________________
+CHECK NAME		: SM_Rock_Flat_01
+AVG TIME		: 1964
+MIN TIME		: 1600
+MAX TIME		: 17200
+ACC TIME		: 10867100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 58.
+__________________________________________________
+CHECK NAME		: SM_Gate_05a
+AVG TIME		: 1960
+MIN TIME		: 1600
+MAX TIME		: 27400
+ACC TIME		: 10842600
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 59.
+__________________________________________________
+CHECK NAME		: SM_Chunk_03a
+AVG TIME		: 1958
+MIN TIME		: 1600
+MAX TIME		: 36300
+ACC TIME		: 10830200
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 60.
+__________________________________________________
+CHECK NAME		: SM_fence_13
+AVG TIME		: 1956
+MIN TIME		: 1600
+MAX TIME		: 17200
+ACC TIME		: 199600
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 61.
+__________________________________________________
+CHECK NAME		: P_LongStairs01
+AVG TIME		: 1954
+MIN TIME		: 1500
+MAX TIME		: 25500
+ACC TIME		: 21619200
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 62.
+__________________________________________________
+CHECK NAME		: SM_Ivy01
+AVG TIME		: 1951
+MIN TIME		: 1600
+MAX TIME		: 42400
+ACC TIME		: 10793600
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 63.
+__________________________________________________
+CHECK NAME		: SM_Window_01b
+AVG TIME		: 1950
+MIN TIME		: 1600
+MAX TIME		: 38500
+ACC TIME		: 10789900
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 64.
+__________________________________________________
+CHECK NAME		: SM_Candles_02b
+AVG TIME		: 1941
+MIN TIME		: 1600
+MAX TIME		: 27000
+ACC TIME		: 10741100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 65.
+__________________________________________________
+CHECK NAME		: DryTreeT3_1_SM
+AVG TIME		: 1939
+MIN TIME		: 1500
+MAX TIME		: 39800
+ACC TIME		: 42907100
+CALL COUNT		: 22124
+__________________________________________________
+
+Resource Rank 66.
+__________________________________________________
+CHECK NAME		: SM_Ivy05
+AVG TIME		: 1938
+MIN TIME		: 1600
+MAX TIME		: 24600
+ACC TIME		: 10724000
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 67.
+__________________________________________________
+CHECK NAME		: SM_Planks_01
+AVG TIME		: 1937
+MIN TIME		: 1600
+MAX TIME		: 22000
+ACC TIME		: 10914200
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 68.
+__________________________________________________
+CHECK NAME		: barrel_1
+AVG TIME		: 1937
+MIN TIME		: 1600
+MAX TIME		: 9600
+ACC TIME		: 197600
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 69.
+__________________________________________________
+CHECK NAME		: SM_Tower
+AVG TIME		: 1933
+MIN TIME		: 1600
+MAX TIME		: 27900
+ACC TIME		: 10894000
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 70.
+__________________________________________________
+CHECK NAME		: SM_Ruins_04
+AVG TIME		: 1930
+MIN TIME		: 1500
+MAX TIME		: 167400
+ACC TIME		: 97888600
+CALL COUNT		: 50697
+__________________________________________________
+
+Resource Rank 71.
+__________________________________________________
+CHECK NAME		: SM_Gate_05b
+AVG TIME		: 1930
+MIN TIME		: 1600
+MAX TIME		: 42000
+ACC TIME		: 10680200
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 72.
+__________________________________________________
+CHECK NAME		: Railing_base02
+AVG TIME		: 1921
+MIN TIME		: 1600
+MAX TIME		: 23400
+ACC TIME		: 10627800
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 73.
+__________________________________________________
+CHECK NAME		: SM_rock_03
+AVG TIME		: 1919
+MIN TIME		: 1600
+MAX TIME		: 18900
+ACC TIME		: 10815300
+CALL COUNT		: 5633
+__________________________________________________
+
+Resource Rank 74.
+__________________________________________________
+CHECK NAME		: SM_Ivy06
+AVG TIME		: 1912
+MIN TIME		: 1600
+MAX TIME		: 37200
+ACC TIME		: 10580100
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 75.
+__________________________________________________
+CHECK NAME		: StairsDamage01
+AVG TIME		: 1911
+MIN TIME		: 1500
+MAX TIME		: 123900
+ACC TIME		: 31723000
+CALL COUNT		: 16593
+__________________________________________________
+
+Resource Rank 76.
+__________________________________________________
+CHECK NAME		: Railing_base01
+AVG TIME		: 1911
+MIN TIME		: 1600
+MAX TIME		: 35100
+ACC TIME		: 10572500
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 77.
+__________________________________________________
+CHECK NAME		: Jail01
+AVG TIME		: 1911
+MIN TIME		: 1600
+MAX TIME		: 16500
+ACC TIME		: 10575200
+CALL COUNT		: 5531
+__________________________________________________
+
+Resource Rank 78.
+__________________________________________________
+CHECK NAME		: SM_Stair_1
+AVG TIME		: 1906
+MIN TIME		: 1700
+MAX TIME		: 7200
+ACC TIME		: 194500
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 79.
+__________________________________________________
+CHECK NAME		: Railing03_1
+AVG TIME		: 1901
+MIN TIME		: 1500
+MAX TIME		: 27800
+ACC TIME		: 21039500
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 80.
+__________________________________________________
+CHECK NAME		: SM_fence_21
+AVG TIME		: 1881
+MIN TIME		: 1700
+MAX TIME		: 7100
+ACC TIME		: 191900
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 81.
+__________________________________________________
+CHECK NAME		: SM_Wood_Chops_C
+AVG TIME		: 1876
+MIN TIME		: 1700
+MAX TIME		: 3400
+ACC TIME		: 191400
+CALL COUNT		: 102
+__________________________________________________
+
+Resource Rank 82.
+__________________________________________________
+CHECK NAME		: Railing01_1
+AVG TIME		: 1875
+MIN TIME		: 1500
+MAX TIME		: 20000
+ACC TIME		: 20749100
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 83.
+__________________________________________________
+CHECK NAME		: Railing02_1
+AVG TIME		: 1874
+MIN TIME		: 1500
+MAX TIME		: 83000
+ACC TIME		: 20733400
+CALL COUNT		: 11062
+__________________________________________________
+
+Resource Rank 84.
+__________________________________________________
+CHECK NAME		: SM_Ruins_10
+AVG TIME		: 1843
+MIN TIME		: 1500
+MAX TIME		: 109400
+ACC TIME		: 61182400
+CALL COUNT		: 33186
+__________________________________________________
+
+Resource Rank 85.
+__________________________________________________
+CHECK NAME		: SM_Ruins_08
+AVG TIME		: 1804
+MIN TIME		: 1500
+MAX TIME		: 10300
+ACC TIME		: 1104500
+CALL COUNT		: 612
+__________________________________________________
+

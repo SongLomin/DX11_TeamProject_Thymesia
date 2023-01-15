@@ -80,6 +80,8 @@ void CCorvusState_PS_VargSword::Start()
 void CCorvusState_PS_VargSword::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+
 }
 
 void CCorvusState_PS_VargSword::LateTick(_float fTimeDelta)
@@ -103,6 +105,10 @@ _bool CCorvusState_PS_VargSword::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
 			return true;
 		}
+	}
+	else
+	{
+		Rotation_TargetToLookDir();
 	}
 
 	return false;

@@ -93,6 +93,10 @@ _bool CCorvusState_PS_Hammer::Check_AndChangeNextState()
 			return true;
 		}
 	}
+	else
+	{
+		Rotation_TargetToLookDir();
+	}
 
 	return false;
 }
