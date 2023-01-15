@@ -135,7 +135,7 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	LightDesc.bEnable = false;
 
-	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+	// m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
 	
 	LightDesc.eActorType = LIGHTDESC::TYPE_DIRECTIONAL;
@@ -537,7 +537,7 @@ void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
 	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
 	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
 
-	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	//GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 }
 
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)

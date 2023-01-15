@@ -102,16 +102,7 @@ public:
 		m_bRadialBlur = In_bRadialBlurEnable;
 		return S_OK;
 	}
-	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable)
-	{
-		m_bSSAAEnable = In_bSSAAEnable;
-		return S_OK;
-	}
-	HRESULT Set_AmbientOcclusion_Enable(const _bool& In_bAmbientOcclusionEnable)
-	{
-		m_bAmbientOcclusion = In_bAmbientOcclusionEnable;
-		return S_OK;
-	}
+	
 	HRESULT Set_ImageScaling_Enable(const _bool& In_bImageScalingEnable)
 	{
 		m_bImageScaling = In_bImageScalingEnable;
@@ -313,6 +304,7 @@ private:
 	_bool		m_bGodRayEnable = true;
 	_bool		m_bChromaticAberation = true;
 	_bool		m_bRadialBlur = true;
+	_bool		m_bAmbientOcclusion = true;
 	_bool		m_bImageScaling = true;
 	_bool		m_bPBR = true;
 	_bool		m_bStaticShadowEnable = true;

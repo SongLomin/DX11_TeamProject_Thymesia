@@ -2149,7 +2149,7 @@ HRESULT CRender_Manager::PostProcessing()
 
 HRESULT CRender_Manager::AntiAliasing()
 {
-	if (!m_bSSAAEnable)
+	if (!m_bSSAA)
 		return S_OK;
 
 	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
