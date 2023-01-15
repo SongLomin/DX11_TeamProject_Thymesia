@@ -260,7 +260,8 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
 
     m_HardwareInfos[GPU_MEMORYUSAGE].szText = szMemoryText;
     
-
+    //std::cout << "Total global memory: " << deviceProperties.totalGlobalMem / (1024 * 1024) << "MB" << std::endl;
+    //std::cout << "Shared memory per block: " << deviceProperties.sharedMemPerBlock / 1024 << "KB" << std::endl;
     
     //boost::process::system_info
 
