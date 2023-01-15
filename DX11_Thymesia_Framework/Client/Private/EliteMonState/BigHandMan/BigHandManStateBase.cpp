@@ -197,6 +197,8 @@ void CBigHandManStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//�Ϲ� ����
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
+
+		Get_OwnerMonster()->Set_RimLightDesc(4.5f, { 0.6f,0.f,0.f }, 0.9f);
 	}
 }
 
