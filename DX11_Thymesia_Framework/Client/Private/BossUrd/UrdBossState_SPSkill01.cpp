@@ -59,8 +59,35 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
+
+	////////colorInversion
+	if (CallBack_ColorInversion.empty())
+		return;
+
+
+	_bool bEnd = false;
+	CallBack_ColorInversion(fTimeDelta, bEnd);
+	if (bEnd)
+	{
+		CallBack_ColorInversion.Clear();
+		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
+	}
+
 }
 
+void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
+{
+	if (3.5f > m_fInversionStrength)
+		m_fInversionStrength += In_fTimeDelta * 1.2f;
+	else if (1.f > m_fInversionRatio)
+	{
+		m_fInversionRatio += In_fTimeDelta;
+	}
+	else
+		In_bEnd = true;
+
+	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
+}
 
 
 void CUrdBossState_SPSkill01::OnStateStart(const _float& In_fAnimationBlendTime)
@@ -168,6 +195,17 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		}
 	}
 		return;
+	case 220:
+	{
+		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+		return;
+	}
+
+	//case 400:
+	//{
+	//	CallBack_ColorInversion.Clear();
+	//	return;
+	//}
 	}
 }
 

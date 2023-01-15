@@ -52,7 +52,7 @@ HRESULT CLevel_Stage2::Initialize()
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
 	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_STAGE2);
-	GAMEINSTANCE->Set_GodRayScale(0.f);
+	GAMEINSTANCE->Set_GodRay_Enable(false);
 
 	return S_OK;
 }

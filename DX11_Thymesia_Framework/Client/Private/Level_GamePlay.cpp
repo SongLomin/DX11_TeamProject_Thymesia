@@ -59,7 +59,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
-
+	GAMEINSTANCE->Set_GodRay_Enable(false);
 
 	SetWindowText(g_hWnd, TEXT("Setting up UI..."));
 	SetUp_UI();

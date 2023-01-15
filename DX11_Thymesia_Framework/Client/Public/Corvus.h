@@ -47,9 +47,7 @@ public:
 	MONSTERTYPE		GetMostRecentStealedMonsterType() { return m_eMostRecentStealedMonsterType; }
 	virtual void	OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
 
-private:
-	//TODO: Test For Color Inversion
-	void Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd);
+
 
 private:
 	weak_ptr<CNvClothCollider> m_pNvClothColliderCom;
@@ -67,15 +65,13 @@ private:
 	weak_ptr<CTransform> m_pCameraTransform;
 
 	_float4x4 m_TransformationMatrix;
-	
-	_float m_fInversionStrength = 1.f;
-	_float m_fInversionRatio = 0.f;
+
 
 	MONSTERTYPE		m_eMostRecentStealedMonsterType;
 
 
 private:
-	FDelegate<_float, _bool&> CallBack_ColorInversion;
+
 	FDelegate< _float, _bool&> CallBack_LightEvent;
 
 private:

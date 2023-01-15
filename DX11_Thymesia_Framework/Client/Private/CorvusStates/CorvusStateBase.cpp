@@ -530,7 +530,7 @@ void CCorvusStateBase::Add_WaveDesc(_float In_fTimeDelta)
 	{
 		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
 
-		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 0.9f, 3.f);
+		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.05f, 0.9f, 3.f);
 		m_fTimeAcc = 0.f;
 	}
 }

@@ -123,8 +123,8 @@ HRESULT CVarg::Initialize(void* pArg)
 	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
 	LightDesc.fIntensity = 10.f;
 	LightDesc.fRange = 10.f;
-	LightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
-	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(50.f));
+	LightDesc.fCutOff = cosf(XMConvertToRadians(20.f));
+	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(30.f));
 	_vector vOwnerPos = m_pTransformCom.lock()->Get_Position();
 
 	_vector vLightPos = vOwnerPos + XMVectorSet(0.f, 5.f, 0.f, 0.f);
