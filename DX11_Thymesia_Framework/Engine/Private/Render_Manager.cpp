@@ -1159,7 +1159,7 @@ HRESULT CRender_Manager::Render_Lights()
 
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
-	m_pShader->Set_RawValue("g_bPBR", &m_pVIBuffer, sizeof(_bool));
+	m_pShader->Set_RawValue("g_bPBR", &m_bPBR, sizeof(_bool));
 
 	GET_SINGLE(CLight_Manager)->Render_Lights(m_pShader, m_pVIBuffer, pDeviceContext);
 
