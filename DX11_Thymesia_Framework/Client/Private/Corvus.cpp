@@ -708,6 +708,11 @@ void CCorvus::OnStealMonsterSkill(MONSTERTYPE eMonstertype)
 	__super::OnStealMonsterSkill(eMonstertype);
 	
 	m_eMostRecentStealedMonsterType = eMonstertype;
+
+	Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonstertype);
+
+	GAMEINSTANCE->PlaySound2D("Fantasy_Game_Water_Bolt_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
+
 	//m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
 }
 

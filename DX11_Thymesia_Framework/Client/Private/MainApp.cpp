@@ -43,10 +43,10 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::Create_Instance();
 	CUIManager::Create_Instance();
 
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.0f);
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT, 0.3f);
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 0.3f);
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 0.3f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.7f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT, 0.5f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 0.5f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 0.5f);
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
 		return E_FAIL;	
