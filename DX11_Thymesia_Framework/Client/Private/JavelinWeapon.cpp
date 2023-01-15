@@ -27,7 +27,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		m_pCurrentModelCom = m_pModelCom;
 		cout << Weak_Cast<CUrd>(m_pParentTransformCom.lock()->Get_Owner()).lock()->Get_CurState().lock()->Get_StateIndex() << endl;
 		LookAt_Player();
-	}
+	};
 	break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
 	{

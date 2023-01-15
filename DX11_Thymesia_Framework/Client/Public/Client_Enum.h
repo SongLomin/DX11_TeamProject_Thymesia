@@ -6,8 +6,13 @@ namespace Client
 	static const _uint	g_iScreenCY = GetSystemMetrics(SM_CYSCREEN);
 	static const _float g_fScreenCenterX = g_iScreenCX / 2.f;
 	static const _float g_fScreenCenterY = g_iScreenCY / 2.f;
+#ifdef _DEBUG
+	static const _uint	g_iWinCX = g_iScreenCX - 25;
+	static const _uint	g_iWinCY = g_iScreenCY - 25;
+#else
 	static const _uint	g_iWinCX = 1600;
 	static const _uint	g_iWinCY = 900;
+#endif // _DEBUG
 
 	enum LEVEL {
 		LEVEL_STATIC,
