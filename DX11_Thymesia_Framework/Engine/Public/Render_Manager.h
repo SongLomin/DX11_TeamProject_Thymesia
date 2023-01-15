@@ -102,6 +102,17 @@ public:
 		m_bRadialBlur = In_bRadialBlurEnable;
 		return S_OK;
 	}
+	
+	HRESULT Set_ImageScaling_Enable(const _bool& In_bImageScalingEnable)
+	{
+		m_bImageScaling = In_bImageScalingEnable;
+		return S_OK;
+	}
+	HRESULT Set_PBR_Enable(const _bool& In_bPBR)
+	{
+		m_bPBR = In_bPBR;
+		return S_OK;
+	}
 
 	HRESULT Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable)
 	{
@@ -137,7 +148,11 @@ public:
 		return S_OK;
 	}
 
-	
+	HRESULT Set_SSRLevel(const _uint& In_iSSRLevel);
+	HRESULT Set_StaticShadow_Enable(const _bool& In_bStaticShadowEnable)
+	{
+		m_bStaticShadowEnable = In_bStaticShadowEnable;
+	}
 
 private:
 	HRESULT Render_Priority();
@@ -289,6 +304,10 @@ private:
 	_bool		m_bGodRayEnable = true;
 	_bool		m_bChromaticAberation = true;
 	_bool		m_bRadialBlur = true;
+	_bool		m_bAmbientOcclusion = true;
+	_bool		m_bImageScaling = true;
+	_bool		m_bPBR = true;
+	_bool		m_bStaticShadowEnable = true;
 	_bool		m_bDynamicShadow = true;
 	_bool		m_bSSAA = true;
 	_bool		m_bHBAO = true;
@@ -296,6 +315,9 @@ private:
 	_float		m_fSaturationOffset = 0.f;
 	_float		m_fBrightnessOffset = 0.f;
 	_float		m_fContrastOffset = 0.f;
+
+	_float		m_fSSRStep = 0.01f;
+	_int		m_iSSRStepDistance = 50;
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];

@@ -13,6 +13,9 @@ float  g_fRange;
 
 float g_fCutOff;
 float g_fOuterCutOff;
+
+float g_fSSRStep;
+int   g_iSSRStepDistance;
        
 vector g_vCamPosition;
        
@@ -886,7 +889,7 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
     vector vRayDir = normalize(reflect(vViewDir, vNormal));
     vRayDir.w = 0.f;
     
-    float fStep = 0.01f;
+    float fStep = g_fSSRStep;
     
     matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
     

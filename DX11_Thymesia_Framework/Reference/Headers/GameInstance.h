@@ -168,6 +168,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset);
 	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset);
 	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset);
+	HRESULT Set_SSRLevel(const _uint& In_iSSRLevel);
 
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);

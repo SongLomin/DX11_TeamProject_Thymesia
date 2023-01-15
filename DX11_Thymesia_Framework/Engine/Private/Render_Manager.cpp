@@ -799,6 +799,26 @@ HRESULT CRender_Manager::Set_ColorInversion(const _float& In_fInversionStrength,
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_SSRLevel(const _uint& In_iSSRLevel)
+{
+	switch (In_iSSRLevel)
+	{
+	case 0 :
+		m_fSSRStep = 0.01f;
+		m_iSSRStepDistance = 50;
+		break;
+	case 1:
+		m_fSSRStep = 0.0075f;
+		m_iSSRStepDistance = 65;
+		break;
+	case 2:
+		m_fSSRStep = 0.005f;
+		m_iSSRStepDistance = 75;
+		break;
+	}
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
 	m_LiftGammaGainDesc.vLift = In_vLift;
@@ -871,7 +891,7 @@ HRESULT CRender_Manager::Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSR
 	m_pEditTextureShaderCom->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pEditTextureShaderCom->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pEditTextureShaderCom->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-	
+
 	_uint4 iChannelIndex{ (_uint)In_Red, (_uint)In_Green, (_uint)In_Blue, In_Alpha };
 
 	m_pEditTextureShaderCom->Set_RawValue("g_ChannelIndex", &iChannelIndex, sizeof(_uint4));
@@ -1314,6 +1334,8 @@ HRESULT CRender_Manager::Render_Blend()
 
 	_float fExposure = m_fExposure + m_fBrightnessOffset;
 
+	m_pShader->Set_RawValue("g_fSSRStep", &m_fSSRStep, sizeof(_float));
+	m_pShader->Set_RawValue("g_iSSRStepDistance", &m_iSSRStepDistance, sizeof(_int));
 	m_pShader->Set_RawValue("g_fExposure", &fExposure, sizeof(_float));
 
 
@@ -2127,6 +2149,9 @@ HRESULT CRender_Manager::PostProcessing()
 
 HRESULT CRender_Manager::AntiAliasing()
 {
+	if (!m_bSSAAEnable)
+		return S_OK;
+
 	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	Bake_OriginalRenderTexture();
@@ -2161,6 +2186,9 @@ HRESULT CRender_Manager::AntiAliasing()
 
 HRESULT CRender_Manager::Render_HBAO_PLUS()
 {
+	if (!m_bAmbientOcclusion)
+		return S_OK;
+
 	if (!GET_SINGLE(CPipeLine)->Is_Binded())
 		return S_OK;
 
@@ -2202,6 +2230,9 @@ HRESULT CRender_Manager::Render_HBAO_PLUS()
 
 HRESULT CRender_Manager::Render_NvidiaImageScaling()
 {
+	if (!m_bImageScaling)
+		return S_OK;
+
 	Bake_OriginalRenderTexture();
 
 	shared_ptr<CGraphic_Device> pGraphic_Device = GET_SINGLE(CGraphic_Device);

@@ -40,6 +40,7 @@ private:
     _float4x4                     m_TransformationMatrix;
 
     LIGHTDESC                     m_LightDesc;
+    LIGHTDESC                     m_DirLightDesc;
 
 private:
     FDelegate<_float, _bool&>    CallBack_LightEvent;

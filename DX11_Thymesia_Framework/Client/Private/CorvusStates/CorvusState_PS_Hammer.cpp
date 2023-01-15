@@ -58,7 +58,7 @@ void CCorvusState_PS_Hammer::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Hammer_A");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Hammer::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 5.f,5.f,5.f };
+	m_DecalDesc.vScale = { 5.f,5.f,0.1f };
 	m_DecalDesc.vPosition = { -0.137f,0.f,1.656f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;

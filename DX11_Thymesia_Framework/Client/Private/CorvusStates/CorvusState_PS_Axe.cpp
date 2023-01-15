@@ -60,7 +60,7 @@ void CCorvusState_PS_Axe::Start()
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this, placeholders::_1);
 
 
-	m_DecalDesc.vScale = { 5.f,5.f,5.f };
+	m_DecalDesc.vScale = { 5.f,5.f,0.1f };
 	m_DecalDesc.vPosition = {0.180, 0, 1.246, 1.f};
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;

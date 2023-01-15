@@ -59,7 +59,7 @@ HRESULT CCorvusState_PS_VargSword::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_DecalDesc.vScale = { 3.f,5.f,6.129f };
+	m_DecalDesc.vScale = { 3.f,6.129f, 0.1f};
 	m_DecalDesc.vPosition = { -0.157f,0.f,2.121f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;

@@ -218,6 +218,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DecalTexture"), TEXT("../Bin/Resources/Textures/Decal/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DecalLinear"), TEXT("../Bin/Resources/Textures/DecalLinear/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DecalUrd"), TEXT("../Bin/Resources/Textures/DecalUrd/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -234,6 +235,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
 	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
+
 
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 

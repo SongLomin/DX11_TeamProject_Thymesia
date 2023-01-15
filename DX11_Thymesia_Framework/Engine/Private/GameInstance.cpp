@@ -509,6 +509,11 @@ HRESULT CGameInstance::Set_ContrastOffset(const _float& In_fContrastOffset)
 
 }
 
+HRESULT CGameInstance::Set_SSRLevel(const _uint& In_iSSRLevel)
+{
+	return m_pRender_Manager->Set_SSRLevel(In_iSSRLevel);
+}
+
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
 	return m_pRender_Manager->Get_BeforeRenderContext();
