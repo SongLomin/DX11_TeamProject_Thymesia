@@ -108,7 +108,7 @@ public:
 		m_bImageScaling = In_bImageScalingEnable;
 		return S_OK;
 	}
-	HRESULT Set_PBR_Enable(const _bool& In_bPBR)
+	const HRESULT Set_PBR_Enable(const _bool& In_bPBR)
 	{
 		m_bPBR = In_bPBR;
 		return S_OK;

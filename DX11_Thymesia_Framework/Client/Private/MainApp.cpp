@@ -43,7 +43,7 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::Create_Instance();
 	CUIManager::Create_Instance();
 
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.1f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.2f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT, 0.3f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 0.3f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 0.3f);
@@ -147,7 +147,7 @@ HRESULT CMainApp::Initialize()
 void CMainApp::Tick(float fTimeDelta)
 {
 #ifndef _EFFECT_TOOL_
-	/*if (GetFocus())
+	if (GetFocus())
 	{
 		if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::ALT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
 		{
@@ -166,7 +166,7 @@ void CMainApp::Tick(float fTimeDelta)
 			RECT ClientRect = { -99999, -99999, 99999, 99999 };
 			ClipCursor(&ClientRect);
 		}
-	}*/
+	}
 #endif // _EFFECT_TOOL_
 
 #ifdef _DEBUG
