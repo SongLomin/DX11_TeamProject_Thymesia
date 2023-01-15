@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-#define MAX_CHANNEL 256
+#define MAX_CHANNEL 1024
 
 class CSound_Manager final : public CBase
 {
@@ -53,6 +53,9 @@ public:
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
 	
+
+private:
+	_bool	Is_PlayingChannel(FMOD_CHANNEL* pChannel);
 
 public:
 	vector<const string*> Get_AllSoundNames();
