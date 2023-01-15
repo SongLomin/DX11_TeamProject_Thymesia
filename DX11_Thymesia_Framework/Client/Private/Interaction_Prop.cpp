@@ -150,8 +150,6 @@ void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_pt
 
     weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
 
-  
-
     if (!pUI_Interaction.lock())
         return;
 
@@ -175,6 +173,7 @@ void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_pt
 
 void CInteraction_Prop::Act_Interaction()
 {
+    GAMEINSTANCE->PlaySound2D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f);
 }
 
 HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)

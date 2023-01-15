@@ -88,6 +88,8 @@ void CInteraction_Chair::Load_FromJson(const json& In_Json)
 
 void CInteraction_Chair::Act_Interaction()
 {
+    __super::Act_Interaction();
+
     Callback_ActUpdate += bind(&CInteraction_Chair::Call_CheckEndSit, this, placeholders::_1, placeholders::_2);
 }
 
