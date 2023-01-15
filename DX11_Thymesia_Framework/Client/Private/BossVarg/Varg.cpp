@@ -147,6 +147,16 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	
+	LightDesc.eActorType = LIGHTDESC::TYPE_DIRECTIONAL;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 1.f;
+	LightDesc.bEnable = false;
+
+	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+
 	return S_OK;
 }
 
@@ -388,6 +398,7 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 
 
+
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 
 		/*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
@@ -542,15 +553,15 @@ void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
 
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
 {
-	m_LightDesc.fIntensity -= fTimeDelta*5.f;
-	m_DirLightDesc.fIntensity = min(m_DirLightDesc.fIntensity+fTimeDelta,1.f);
+	//m_LightDesc.fIntensity -= fTimeDelta*5.f;
+	m_DirLightDesc.fIntensity = min(m_DirLightDesc.fIntensity + fTimeDelta * 0.2f , 1.f);
 	GAMEINSTANCE->Set_IrradianceColorScale(_float3(m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity));
 	if (0.f > m_LightDesc.fIntensity)
 	{
 		m_LightDesc.bEnable = false;
 		In_bEnd = true;
 	}
-	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	//GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	GAMEINSTANCE->Set_LightDesc(m_DirLightDesc);
 }
 

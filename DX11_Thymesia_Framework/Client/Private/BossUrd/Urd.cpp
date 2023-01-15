@@ -370,11 +370,12 @@ void CUrd::OnEventMessage(_uint iArg)
 	{
 		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+		Reset_Weapon();
+		m_pStatus.lock()->Full_Recovery();
 
 		Change_State<CUrdBossState_Start>();
 
-		Reset_Weapon();
-		m_pStatus.lock()->Full_Recovery();
+		
 
 	}
 }
@@ -401,19 +402,17 @@ void CUrd::Reset_Weapon()
 	for (auto& elem : m_pJavelinWeapons)
 	{
 		elem.lock()->Set_Enable(false);
-		elem.lock()->Set_RenderCheck(false);
-		elem.lock()->Set_RenderOnOff(false);
+		elem.lock()->Set_RenderCheck(false);		
 	}
 
 	for (auto& elem : m_pDecoWeapons)
 	{
-		elem.lock()->Set_Enable(false);
 		elem.lock()->Set_RenderOnOff(true);
 		Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(false);
 	}
 
 	m_pWeapons.front().lock()->Weapon_BoneChange(m_pModelCom, "AnimTargetPoint");
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(true);
+
 }
 
 

@@ -374,6 +374,7 @@ void CUrdBossState_Idle::OnEventMessage(_uint iArg)
 		m_bAttack = false;
 		m_iPhaseTwoJavlinCount = 0;
 		m_iPhaseTwoSkillCount = 0;
+		m_iSkillCount = 0;
 	}
 }
 

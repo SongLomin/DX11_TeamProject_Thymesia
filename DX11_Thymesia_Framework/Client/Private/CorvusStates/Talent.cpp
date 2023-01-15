@@ -85,6 +85,10 @@ HRESULT CTalent::Start()
     m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
     m_pEffect = Get_ComponentByType<CTalent_Effect>();
 
+	GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
+		bind(&CTalent::Bind_Player, this);
+
+
     return S_OK;
 }
 

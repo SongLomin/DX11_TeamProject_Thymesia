@@ -396,6 +396,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
+    Out.vORM     = g_Texture_Sorc_ORM.Sample(DefaultSampler , In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
     float3 vPixelNorm     = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
@@ -404,11 +405,11 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     {
         vector AddTex_Diff = g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
         vector AddTex_Norm = g_Texture_AddNo1_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
-        vector AddTex_ORM  = g_Texture_AddNo1_ORM.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
+        vector AddTex_ORM  = g_Texture_AddNo1_ORM.Sample(DefaultSampler , In.vTexUV * g_fAddNo1_Density);
         vector vFilter = vector(vFilterDiffuse.r, vFilterDiffuse.r, vFilterDiffuse.r, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-        Out.vORM     = AddTex_ORM;
+        Out.vORM     = AddTex_ORM  * vFilter + Out.vORM * (1.f - vFilter);
         vPixelNorm   = AddTex_Norm.xyz;
     }
 
@@ -420,7 +421,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
         vector vFilter = vector(vFilterDiffuse.g, vFilterDiffuse.g, vFilterDiffuse.g, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-        Out.vORM     = AddTex_ORM;
+        Out.vORM     = AddTex_ORM  * vFilter + Out.vORM * (1.f - vFilter);
         vPixelNorm   = AddTex_Norm.xyz;
     }
 
@@ -432,18 +433,18 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
         vector vFilter = vector(vFilterDiffuse.b, vFilterDiffuse.b, vFilterDiffuse.b, 1.f);
 
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-        Out.vORM     = AddTex_ORM;
+        Out.vORM     = AddTex_ORM  * vFilter + Out.vORM * (1.f - vFilter);
         vPixelNorm   = AddTex_Norm.xyz;
     }
     //물쉐이더 테스트 용 
-
+          
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
     vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
        
     Out.vDiffuse.a  = 1.f;
     Out.vNormal     = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
+    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     
     Out.vExtractBloom = 0.f;

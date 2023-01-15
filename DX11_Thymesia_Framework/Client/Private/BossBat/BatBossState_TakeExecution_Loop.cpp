@@ -46,8 +46,10 @@ void CBatBossState_TakeExecution_Loop::Tick(_float fTimeDelta)
 
 	m_fDissolveTime -= fTimeDelta;
 
-	_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+	_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 3.f);
 	Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
+
+	Get_OwnerMonster()->Set_PassIndex(7);
 }
 
 
@@ -59,9 +61,9 @@ void CBatBossState_TakeExecution_Loop::LateTick(_float fTimeDelta)
 	{
 		m_pOwner.lock()->Set_Enable(false);
 		m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
+		Check_AndChangeNextState();
 	}
 
-	Check_AndChangeNextState();
 }
 
 
@@ -70,7 +72,7 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_fDissolveTime = 4.5f;
+	m_fDissolveTime = 3.f;
 	enum class SHADER_PASS {PASS_DISSOLVE = 7 };
 
 	Get_OwnerMonster()->Set_PassIndex((_uint)SHADER_PASS::PASS_DISSOLVE);

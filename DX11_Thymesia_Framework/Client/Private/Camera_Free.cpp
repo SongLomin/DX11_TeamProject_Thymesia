@@ -90,7 +90,7 @@ const void CCamera_Free::ReadyText()
 	m_tCameraSpeedText.szText = CameraText;
 
 	m_tCameraSpeedText.vColor = { 1.f, 0.f, 0.f, 1.f };
-	m_tCameraSpeedText.vPosition = { g_iWinCX >> 1, g_iWinCY - 25.f };
+	m_tCameraSpeedText.vPosition = { _float(g_iWinCX >> 1), _float(g_iWinCY) - 25.f };
 	m_tCameraSpeedText.vScale = { 0.5f, 0.5f };
 }
 

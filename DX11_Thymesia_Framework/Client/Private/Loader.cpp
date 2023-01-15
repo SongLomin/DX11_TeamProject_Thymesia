@@ -307,6 +307,10 @@ HRESULT CLoader::Loading_ForTestLevel()
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 
+	GAMEINSTANCE->Set_Contrast(1.07f);
+	GAMEINSTANCE->Set_Saturation(1.5f);
+	GAMEINSTANCE->Set_Exposure(1.f);
+
 	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");

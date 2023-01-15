@@ -163,6 +163,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable);
 	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable);
 	HRESULT Set_HBAO_Enable(const _bool& In_bHBAOEnable);
+	HRESULT Set_PBR_Enable(const _bool& In_bPBR);
 
 
 	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset);

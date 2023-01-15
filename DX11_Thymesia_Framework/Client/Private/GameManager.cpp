@@ -24,6 +24,7 @@ void CGameManager::Initialize()
 	GAMEINSTANCE->Set_Chromatic_Enable(false);
 	GAMEINSTANCE->Set_RadialBlur_Enable(false);
 	GAMEINSTANCE->Set_DynamicShadow_Enable(false);
+	GAMEINSTANCE->Set_PBR_Enable(false);
 }
 
 void CGameManager::LateTick(_float fTimeDelta)
@@ -1039,7 +1040,7 @@ void CGameManager::Change_Option(OPTION_TYPE eOption, _uint iAmount)
 
 		break;
 	case Client::OPTION_TYPE::PBR:
-		//GAMEINSTANCE->Set_PBR();
+		GAMEINSTANCE->Set_PBR_Enable(_bool(iAmount));
 		break;
 	case Client::OPTION_TYPE::MOTION_BLUR:
 		GAMEINSTANCE->Set_MotionBlur_Enable(_bool(iAmount));
@@ -1050,14 +1051,14 @@ void CGameManager::Change_Option(OPTION_TYPE eOption, _uint iAmount)
 	case Client::OPTION_TYPE::CHROMATIC_ABRRATION:
 		if (_bool(iAmount))
 		{
-			GAMEINSTANCE->Set_Chromatic(0.1f);
+			GAMEINSTANCE->Set_Chromatic(0.5f);
 		}
 		GAMEINSTANCE->Set_Chromatic_Enable(_bool(iAmount));
 		break;
 	case Client::OPTION_TYPE::RADIAL_BLUR:
 		if (_bool(iAmount))
 		{
-			GAMEINSTANCE->Add_RadialBlur(0.2f);
+			GAMEINSTANCE->Add_RadialBlur(0.5f);
 		}
 
 		GAMEINSTANCE->Set_RadialBlur_Enable(_bool(iAmount));

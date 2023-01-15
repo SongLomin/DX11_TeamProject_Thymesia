@@ -90,7 +90,6 @@ void CUrdBossState_FightStart::OnStateStart(const _float& In_fAnimationBlendTime
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CUrdBossState_FightStart::Call_NextKeyFrame, this, placeholders::_1);
 
-	
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;

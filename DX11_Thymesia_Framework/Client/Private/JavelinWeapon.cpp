@@ -27,11 +27,11 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		m_pCurrentModelCom = m_pModelCom;
 		cout << Weak_Cast<CUrd>(m_pParentTransformCom.lock()->Get_Owner()).lock()->Get_CurState().lock()->Get_StateIndex() << endl;
 		LookAt_Player();
-	}
+	};
 	break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
 	{
-#ifdef _URD_EFFECT_
+//#ifdef _URD_EFFECT_
 		switch (m_iWeaponNum)
 		{
 		case 2:
@@ -62,7 +62,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		}
 		break;
 		}
-#endif // _URD_EFFECT_
+//#endif // _URD_EFFECT_
 	}
 	break;
 	}
@@ -321,9 +321,9 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= XMVectorGetY(pCurrentPlayer.lock()->Get_WorldPosition()) + 0.56f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.23f)
 	{
-#ifdef _URD_EFFECT_
+//#ifdef _URD_EFFECT_
 		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
 		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
 		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
@@ -343,14 +343,14 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 10.f,10.f, 0.1f };
+		m_DecalDesc.vScale = { 10.f,10.f, 5.f };
 		m_DecalDesc.fAppearTime = 0.f;
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 
 
-#endif // _URD_EFFECT_
+//#endif // _URD_EFFECT_
 
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;
@@ -390,7 +390,7 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 0.1f };
+	m_DecalDesc.vScale = { 19.f,19.f, 5.f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
 

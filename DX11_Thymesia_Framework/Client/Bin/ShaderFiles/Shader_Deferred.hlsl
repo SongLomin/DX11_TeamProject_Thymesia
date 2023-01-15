@@ -6,6 +6,8 @@ matrix g_ProjMatrixInv  , g_ViewMatrixInv;
 matrix g_LightViewMatrix, g_LightProjMatrix;
 matrix g_DynamicLightViewMatrix, g_DynamicLightProjMatrix;
 
+bool g_bPBR;
+
 // For Light Render
 vector g_vLightDir;
 vector g_vLightPos;
@@ -224,7 +226,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     float fRoughness = vORMDesc.y;
     float fMetalness = vORMDesc.z;
     
-    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    if (g_bPBR &&(fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f))
     {
         fRoughness = max(fRoughness, 0.001f);
         fMetalness = max(fMetalness, 0.001f);
@@ -336,7 +338,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     float fMetalness = vORMDesc.z;
     float fOcclusion = vORMDesc.x;
 
-    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    if (g_bPBR && (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f))
     {
         fRoughness = max(fRoughness, 0.001f);
         fMetalness = max(fMetalness, 0.001f);
@@ -454,7 +456,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
     float fMetalness = vORMDesc.z;
     float fOcclusion = vORMDesc.x;
 
-    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    if (g_bPBR && (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f))
     {
         fRoughness = max(fRoughness, 0.001f);
         fMetalness = max(fMetalness, 0.001f);
@@ -550,7 +552,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     
     bool bIsInShadow = 0.9f > vViewShadow.r;
   
-    if (vORMDesc.r > 0.f || vORMDesc.g > 0.f || vORMDesc.b > 0.f)
+    if (g_bPBR && (vORMDesc.r > 0.f || vORMDesc.g > 0.f || vORMDesc.b > 0.f))
     {
         vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
         vNormal = normalize(vNormal);

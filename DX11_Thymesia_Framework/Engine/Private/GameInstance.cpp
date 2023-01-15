@@ -495,6 +495,11 @@ HRESULT CGameInstance::Set_HBAO_Enable(const _bool& In_bHBAOEnable)
 	return m_pRender_Manager->Set_HBAO_Enable(In_bHBAOEnable);
 }
 
+HRESULT CGameInstance::Set_PBR_Enable(const _bool& In_bPBR)
+{
+	return m_pRender_Manager->Set_PBR_Enable(In_bPBR);
+}
+
 HRESULT CGameInstance::Set_BrightnessOffset(const _float& In_fBrightnessOffset)
 {
 	return m_pRender_Manager->Set_BrightnessOffset(In_fBrightnessOffset);

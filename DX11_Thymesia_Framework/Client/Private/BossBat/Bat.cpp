@@ -168,7 +168,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 0;
 		}
 
-		if(m_iPassIndex >0)
+		if(m_iPassIndex > 0)
 		{
 			iPassIndex = m_iPassIndex;
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
@@ -302,6 +302,11 @@ void CBat::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> 
 void CBat::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
+	{
+		Change_State<CBatBossState_Stun_Start>();
+	}
 
 	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
 	{

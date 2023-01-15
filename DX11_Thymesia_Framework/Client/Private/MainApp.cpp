@@ -43,7 +43,7 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::Create_Instance();
 	CUIManager::Create_Instance();
 
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.4f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.2f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT, 0.3f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 0.3f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 0.3f);
@@ -93,9 +93,9 @@ HRESULT CMainApp::Initialize()
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv2_Fortress\\Binary");
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv3_Garden\\Binary");
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Else\\Binary");
-	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
-	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
-	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Bat");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Bat");
 
 #ifdef _BAKE_MIPMAPS_
 	Bake_MipMaps();

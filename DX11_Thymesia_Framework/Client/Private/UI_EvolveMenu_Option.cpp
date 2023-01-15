@@ -209,11 +209,13 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
         return;
     }
 
+    _float xPosition = 770.f;
+
     m_HardwareInfos[GPU_NAME].bAlways = false;
     m_HardwareInfos[GPU_NAME].bCenterAlign = false;
     m_HardwareInfos[GPU_NAME].eRenderGroup = RENDERGROUP::RENDER_UI;
     m_HardwareInfos[GPU_NAME].vColor = _float4(1.f, 1.f, 1.f, 1.f);
-    m_HardwareInfos[GPU_NAME].vPosition = _float2(1200.f, 10.f);
+    m_HardwareInfos[GPU_NAME].vPosition = _float2(xPosition, 10.f);
     m_HardwareInfos[GPU_NAME].vScale = _float2(0.7f, 0.7f);
 
     /*m_HardwareInfos[GPU_LOAD].bAlways = false;
@@ -227,7 +229,7 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
     m_HardwareInfos[GPU_MEMORYUSAGE].bCenterAlign = false;
     m_HardwareInfos[GPU_MEMORYUSAGE].eRenderGroup = RENDERGROUP::RENDER_UI;
     m_HardwareInfos[GPU_MEMORYUSAGE].vColor = _float4(1.f, 1.f, 1.f, 1.f);
-    m_HardwareInfos[GPU_MEMORYUSAGE].vPosition = _float2(1200.f, 30.f);
+    m_HardwareInfos[GPU_MEMORYUSAGE].vPosition = _float2(xPosition, 30.f);
     m_HardwareInfos[GPU_MEMORYUSAGE].vScale = _float2(0.7f, 0.7f);
 
 
@@ -258,7 +260,8 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
 
     m_HardwareInfos[GPU_MEMORYUSAGE].szText = szMemoryText;
     
-
+    //std::cout << "Total global memory: " << deviceProperties.totalGlobalMem / (1024 * 1024) << "MB" << std::endl;
+    //std::cout << "Shared memory per block: " << deviceProperties.sharedMemPerBlock / 1024 << "KB" << std::endl;
     
     //boost::process::system_info
 
@@ -276,7 +279,7 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
             m_CPU_RateInfos[i].bCenterAlign = false;
             m_CPU_RateInfos[i].eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
             m_CPU_RateInfos[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
-            m_CPU_RateInfos[i].vPosition = _float2(1200.f, 60.f + i * 20.f);
+            m_CPU_RateInfos[i].vPosition = _float2(xPosition, 60.f + i * 20.f);
             m_CPU_RateInfos[i].vScale = _float2(0.7f, 0.7f);
             m_CPU_RateInfos[i].szText = L"CPU" + to_wstring(i) + L": " + to_wstring((_int)(m_CPU_usages[i] / iCapturedCallCount)) + L" % ";
             m_CPU_usages[i] = 0.0;
