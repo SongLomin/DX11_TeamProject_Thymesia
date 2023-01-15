@@ -61,7 +61,7 @@ void CVargBossState_Attack1a::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack1_1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack1a::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 3.4f,3.4f, 1.f};
+	m_DecalDesc.vScale = { 3.4f,3.4f, 0.1f};
 	m_DecalDesc.vPosition = { -0.18f,0.f,2.540f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;

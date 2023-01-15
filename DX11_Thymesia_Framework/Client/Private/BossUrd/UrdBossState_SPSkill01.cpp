@@ -37,7 +37,7 @@ void CUrdBossState_SPSkill01::Start()
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = {3.f,3.f, 1.f };
+	m_DecalDesc.vScale = {19.f,19.f, 0.1f };
 	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
 	m_DecalDesc.fAppearTime = 0.f;
 	m_DecalDesc.fTime = 1.f;

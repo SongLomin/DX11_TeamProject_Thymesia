@@ -71,7 +71,7 @@ void CVargBossState_Exe_Dead::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	if (!Get_Enable())
 		return;
 
-	if (In_KeyIndex == 40)
+	if (In_KeyIndex == 10)
 	{
 		m_pOwner.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT);
 		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT);

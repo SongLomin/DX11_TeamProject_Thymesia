@@ -65,7 +65,7 @@ void CVargBossState_RaidAttack::Start()
 	m_bAttackLookAtLimit = true;
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 3.4f,3.4f, 1.f };
+	m_DecalDesc.vScale = { 3.4f,3.4f, 0.1f };
 	m_DecalDesc.vPosition = { -0.687,0.f,3.187f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;

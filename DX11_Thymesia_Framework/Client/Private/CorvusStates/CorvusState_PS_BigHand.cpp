@@ -62,7 +62,7 @@ void CCorvusState_PS_BigHand::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_BigHand_Start");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_BigHand::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 15.f, 15.f, 15.f };
+	m_DecalDesc.vScale = { 15.f, 15.f, 0.1f };
 	m_DecalDesc.vPosition = {0.1f, 0.01f, 0.5f, 1.f};
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
