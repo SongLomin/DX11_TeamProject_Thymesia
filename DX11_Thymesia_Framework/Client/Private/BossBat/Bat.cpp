@@ -168,7 +168,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 0;
 		}
 
-		if(m_iPassIndex >0)
+		if(m_iPassIndex > 0)
 		{
 			iPassIndex = m_iPassIndex;
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
