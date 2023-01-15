@@ -132,14 +132,17 @@ void CUrdBossState_SPSkill01::OnStateEnd()
 	}
 
 	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
-	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
-	if (1 == iPhase)
+	_uint iLifeCount(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (1 == iLifeCount)
 	{
 #ifdef _URD_EFFECT_
 		if ("Boss_Urd" == Weak_Cast<CUrd>(m_pOwner).lock()->Get_KeyEventName())
 		{
 			Weak_Cast<CUrd>(m_pOwner).lock()->Unbind_KeyEvent("Boss_Urd");
 			Weak_Cast<CUrd>(m_pOwner).lock()->Bind_KeyEvent("Boss_Urd_Phase2");
+
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup("Urd_WeaponShine", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Urd_WeaponShine"));
+			GET_SINGLE(CGameManager)->Store_EffectIndex("Urd_WeaponShine_Phase2", GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_WeaponShine_Phase2", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 		}
 #endif // _URD_EFFECT_
 	}

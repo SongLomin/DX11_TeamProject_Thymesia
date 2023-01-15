@@ -2,6 +2,7 @@
 #include "BossUrd/UrdBossState_Attacks.h"
 #include "GameManager.h"
 #include "BossUrd/Urd.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CUrdBossState_Attacks);
 
@@ -30,7 +31,7 @@ void CUrdBossState_Attacks::Tick(_float fTimeDelta)
 	{
 		TurnAttack(fTimeDelta * m_fTurnAtkSpeedRatio);
 	}
-	
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -52,6 +53,13 @@ void CUrdBossState_Attacks::OnStateEnd()
 void CUrdBossState_Attacks::Set_MoveScale(const _float fRatio)
 {
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(fRatio, fRatio, fRatio));
+}
+
+_bool CUrdBossState_Attacks::Is_Urd_Phase1()
+{
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+	_uint iLifeCount(pStatus.lock()->Get_Desc().m_iLifeCount);
+	return ((2 == iLifeCount) ? true : false);
 }
 
 void CUrdBossState_Attacks::TurnOn_Effect(const std::string& szEffectKey)

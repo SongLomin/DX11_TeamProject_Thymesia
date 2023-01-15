@@ -77,15 +77,6 @@ void CUrdBossState_AttackComboC2::OnStateStart(const _float& In_fAnimationBlendT
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoSkillCount(1);
 
 	m_bAttackLookAtLimit = true;
-	
-	
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
 }	
 
 
