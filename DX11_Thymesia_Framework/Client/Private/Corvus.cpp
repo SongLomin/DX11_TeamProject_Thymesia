@@ -199,19 +199,19 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
-		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
-		//GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
-		DECAL_DESC DecalDesc;
+		//_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+		////GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
+		//DECAL_DESC DecalDesc;
 
-		DecalDesc.vScale = { 5.f,5.f,5.f };
-		XMStoreFloat4(&DecalDesc.vPosition,XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
-		XMStoreFloat4x4(&DecalDesc.WorldMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
-		DecalDesc.fTime = 3.f;
-		DecalDesc.fDisapearTime = 1.f;
-		DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
-		DecalDesc.strTextureTag= "DecalUrd";
+		//DecalDesc.vScale = { 5.f,5.f,5.f };
+		//XMStoreFloat4(&DecalDesc.vPosition,XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
+		//XMStoreFloat4x4(&DecalDesc.WorldMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
+		//DecalDesc.fTime = 3.f;
+		//DecalDesc.fDisapearTime = 1.f;
+		//DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
+		//DecalDesc.strTextureTag= "DecalUrd";
 
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
+		//GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
 	}
 
 
@@ -253,6 +253,7 @@ void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 
 	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
 
+	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
 	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
 
 	m_SpotLightDesc.fIntensity = max(0.f, m_SpotLightDesc.fIntensity - fTimeDelta * 5.f);
@@ -264,6 +265,7 @@ void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 	}
 
 	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
+	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 }
 
 void CCorvus::Use_SpotLight(_float fTimeDelta, _bool& Out_End)
@@ -550,19 +552,13 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-
-
-
-
-
-
-	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = false;
 		m_LightDesc.fIntensity = 0.f;
 		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	}
-	else if (EVENT_TYPE::ON_PLAYERSPOTLIGHT == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_PLAYERSPOTLIGHT == (EVENT_TYPE)iArg)
 	{
 		m_SpotLightDesc.bEnable = true;
 		CallBack_LightEvent += bind(&CCorvus::Use_SpotLight, this, placeholders::_1, placeholders::_2);

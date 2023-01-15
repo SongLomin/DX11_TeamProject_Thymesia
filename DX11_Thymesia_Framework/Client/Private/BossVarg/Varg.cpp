@@ -137,6 +137,16 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	
+	LightDesc.eActorType = LIGHTDESC::TYPE_DIRECTIONAL;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 1.f;
+	LightDesc.bEnable = false;
+
+	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+
 	return S_OK;
 }
 
@@ -526,13 +536,15 @@ void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
 {
 	m_LightDesc.fIntensity -= fTimeDelta*5.f;
-
+	m_DirLightDesc.fIntensity = min(m_DirLightDesc.fIntensity+fTimeDelta,1.f);
+	GAMEINSTANCE->Set_IrradianceColorScale(_float3(m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity));
 	if (0.f > m_LightDesc.fIntensity)
 	{
 		m_LightDesc.bEnable = false;
 		In_bEnd = true;
 	}
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	GAMEINSTANCE->Set_LightDesc(m_DirLightDesc);
 }
 
 void CVarg::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -600,6 +612,7 @@ void CVarg::OnEventMessage(_uint iArg)
 	//²¨Áö´Â Á¶°Ç
 	if ((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == iArg)
 	{
+		m_DirLightDesc.bEnable = true;
 		CallBack_LightEvent.Clear();
 		CallBack_LightEvent+= bind(&CVarg::TurnOff_Light, this, placeholders::_1, placeholders::_2);
 	}

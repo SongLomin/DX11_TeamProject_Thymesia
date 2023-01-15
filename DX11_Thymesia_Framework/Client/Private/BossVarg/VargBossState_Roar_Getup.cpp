@@ -134,6 +134,7 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		break;
 	case 132:
 		GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
+		GAMEINSTANCE->Set_IrradianceColorScale(_float3(0.f, 0.f, 0.f));
 		m_bStopAnimation = true;
 		break;
 	}
