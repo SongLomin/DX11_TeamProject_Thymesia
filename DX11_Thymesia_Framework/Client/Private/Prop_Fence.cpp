@@ -164,8 +164,12 @@ void CProp_Fence::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_RESET_OBJ:
         {
+            m_pTransformCom.lock()->Set_Position(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+            m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
             m_pPhysXColliderCom.lock()->Set_Enable(false);
             Set_Enable(false);
+
+            m_fDelayTime = 0.f;
         }
         break;
 

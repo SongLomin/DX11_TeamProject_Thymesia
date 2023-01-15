@@ -117,17 +117,17 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
 
             _bool bCheckState_Event[] =
             {
-                (m_EventFlag & EVENT_FLAG::EVENT_ENTER),
-                (m_EventFlag & EVENT_FLAG::EVENT_STAY),
-                (m_EventFlag & EVENT_FLAG::EVENT_EXIT)
+                (_bool)(m_EventFlag & EVENT_FLAG::EVENT_ENTER),
+                (_bool)(m_EventFlag & EVENT_FLAG::EVENT_STAY),
+                (_bool)(m_EventFlag & EVENT_FLAG::EVENT_EXIT)
             };
 
             _bool bCheckState_Act[] =
             {
-                (m_ActFlag & ACT_FLAG::ACT_SECTION),
-                (m_ActFlag & ACT_FLAG::ACT_MONSTER_TRIGGER),
-                (m_ActFlag & ACT_FLAG::ACT_LIGHT),
-                (m_ActFlag & ACT_FLAG::ACT_FOG),
+                (_bool)(m_ActFlag & ACT_FLAG::ACT_SECTION),
+                (_bool)(m_ActFlag & ACT_FLAG::ACT_MONSTER_TRIGGER),
+                (_bool)(m_ActFlag & ACT_FLAG::ACT_LIGHT),
+                (_bool)(m_ActFlag & ACT_FLAG::ACT_FOG),
             };
 
             if (ImGui::Checkbox("EVENT_ENTER", &bCheckState_Event[0]))
