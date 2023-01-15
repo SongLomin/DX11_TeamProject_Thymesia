@@ -36,8 +36,8 @@ HRESULT CLevel_Test::Initialize()
 
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
-	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage_Home.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage_Home.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -52,12 +52,6 @@ HRESULT CLevel_Test::Initialize()
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
-
-	/*weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);*/
-
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 2.f, 5.f });
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 2.f, 15.f });
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
