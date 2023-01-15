@@ -229,6 +229,8 @@ void CWindow_EffectResourceView::Load_Sound()
     m_szSoundNames.clear();
 
     m_szSoundNames = GAMEINSTANCE->Get_AllSoundNames();
+
+    std::sort(m_szSoundNames.begin(), m_szSoundNames.end());
 }
 
 

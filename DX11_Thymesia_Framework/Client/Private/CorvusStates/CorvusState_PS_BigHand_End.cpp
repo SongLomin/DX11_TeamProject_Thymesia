@@ -72,4 +72,7 @@ void CCorvusState_PS_BigHand_End::OnEventMessage(weak_ptr<CBase> pArg)
 void CCorvusState_PS_BigHand_End::Free()
 {
 	__super::Free();
+
+	if (m_pModelCom.lock())
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_BigHand_End::Call_AnimationEnd, this, placeholders::_1);
 }

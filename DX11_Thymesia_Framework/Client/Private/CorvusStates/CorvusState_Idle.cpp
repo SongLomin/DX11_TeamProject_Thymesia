@@ -289,16 +289,16 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_BigHand>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Halberds_Upgrade>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
 			break;
 		case 3:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword_Start>();
 			break;
 		case 4:
-			Get_OwnerPlayer()->Change_State<CCorvusState_LV2M_Execution>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Halberds>();
 			break;
 		case 5:
-			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_BatRoar>();
 			break;
 		case 6:
 			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_NCamera_Execution>();

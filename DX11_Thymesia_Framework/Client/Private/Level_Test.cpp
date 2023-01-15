@@ -56,10 +56,8 @@ HRESULT CLevel_Test::Initialize()
 	/*weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);*/
 
-#ifdef _TEST_DYNAMIC_PROPS_
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 2.f, 5.f });
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 2.f, 15.f });
-#endif // _TEST_DYNAMIC_PROPS_
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);

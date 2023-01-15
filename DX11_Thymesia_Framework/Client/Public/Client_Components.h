@@ -21,8 +21,3 @@
 #include "RequirementChecker.h"
 #include "StateBase.h"
 #include "CNvClothCollider.h"
-
-
-//#include "LuxiyaBehavior.h"
-//#include "BiankaBehavior.h"
-//#include "DubianBehavior.h"

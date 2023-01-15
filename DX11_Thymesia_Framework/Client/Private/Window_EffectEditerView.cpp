@@ -265,9 +265,6 @@ void CWindow_EffectEditerView::Update_Sound()
     {
         GAMEINSTANCE->PlaySound3D(m_szSoundFileName, m_fVolume, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
     }
-
-
-
 }
 
 
