@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "Weapon.h"
 #include "Effect_Decal.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CCorvusState_PS_CaneSword);
 CLONE_C(CCorvusState_PS_CaneSword, CComponent)
@@ -69,8 +70,8 @@ void CCorvusState_PS_CaneSword::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_CaneSword_SP02");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_CaneSword::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 3.f,6.129f,1.f };
-	m_DecalDesc.vPosition = { -0.16f, 0.f, 3.28f, 1.f };
+	m_DecalDesc.vScale = { 3.f,7.129f,0.1f };
+	m_DecalDesc.vPosition = { -0.16f, 0.f, 3.78f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
@@ -86,7 +87,28 @@ void CCorvusState_PS_CaneSword::Tick(_float fTimeDelta)
 void CCorvusState_PS_CaneSword::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Check_AndChangeNextState();
 }
+
+_bool CCorvusState_PS_CaneSword::Check_AndChangeNextState()
+{
+	if (!Check_Requirement())
+		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 209)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 void CCorvusState_PS_CaneSword::OnStateStart(const _float& In_fAnimationBlendTime)
 {

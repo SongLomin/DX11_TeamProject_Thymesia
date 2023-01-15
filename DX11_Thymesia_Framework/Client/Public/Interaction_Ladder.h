@@ -37,13 +37,19 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override; 
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     virtual void OnEventMessage(_uint iArg) override;
 
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
+
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+
+    void Set_RenderOutLine(_bool bState);
 
 private:
     virtual HRESULT SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext) override;
@@ -64,6 +70,8 @@ private:
     _float                              m_fOffset         = 0.4f;
     _int                                m_iMidSize        = 4.5;
     _float                              m_fUpLadderHeight = 0.f;
+    _bool                               m_bRenderOutLine  = false;
+    LADDER_COL_TYPE                     m_eEnterLadder    = LADDER_COL_TYPE::DOWN_USE;
 
 private:
     void Free();

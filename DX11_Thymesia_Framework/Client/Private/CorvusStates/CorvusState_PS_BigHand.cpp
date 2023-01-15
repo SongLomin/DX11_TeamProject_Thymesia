@@ -5,6 +5,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Effect_Decal.h"
+#include "CorvusStates/CorvusStates.h"
 
 
 GAMECLASS_C(CCorvusState_PS_BigHand);
@@ -25,7 +26,7 @@ void CCorvusState_PS_BigHand::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	case 60:
 		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
-	case 101:
+	case 103:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
@@ -62,7 +63,7 @@ void CCorvusState_PS_BigHand::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_BigHand_Start");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_BigHand::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 15.f, 15.f, 15.f };
+	m_DecalDesc.vScale = { 15.f, 15.f, 0.1f };
 	m_DecalDesc.vPosition = {0.1f, 0.01f, 0.5f, 1.f};
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
@@ -79,6 +80,8 @@ void CCorvusState_PS_BigHand::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
+
+
 
 void CCorvusState_PS_BigHand::OnStateStart(const _float& In_fAnimationBlendTime)
 {

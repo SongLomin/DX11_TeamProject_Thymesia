@@ -86,8 +86,6 @@ public:
     virtual void    Write_SaveData(json& Out_Json) override;
     virtual void    Load_SaveData(const json& In_Json) override;
 
-
-
 public:
     FDelegate<>         Callback_Update_Status;
     FDelegate<_float>   Callback_ChangeHP;
@@ -99,6 +97,8 @@ public:
 public:
     virtual _bool   Is_Dead();
     virtual void    Init_Status(const void* pArg);
+
+    void            Add_Str(_uint iStr);
     virtual void    Add_Damage(const _float& In_fDamage);
     void            Add_Memory(_uint    iRootedMemory);
     void            Set_Memory(_uint      iMemory);

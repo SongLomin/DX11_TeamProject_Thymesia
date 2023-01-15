@@ -61,8 +61,8 @@ void CCorvusState_Execution_R_R::OnStateStart(const _float& In_fAnimationBlendTi
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
-	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_Execution_R_R::Call_NextAnimationKey, this, placeholders::_1);
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_Execution_R_R::Call_NextAnimationKey, this, placeholders::_1);
 
 
 	//GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
@@ -78,6 +78,9 @@ void CCorvusState_Execution_R_R::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_bExcution = false;
+	m_eExcutionTargetType = MONSTERTYPE::TYPE_END;
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_Execution_R_R::Call_NextAnimationKey, this, placeholders::_1);
 	
 }
 
@@ -87,9 +90,6 @@ void CCorvusState_Execution_R_R::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
-	m_eExcutionTargetType = MONSTERTYPE::TYPE_END;
-
 }
 
 void CCorvusState_Execution_R_R::Call_NextAnimationKey(const _uint& In_iKeyIndex)
@@ -97,10 +97,24 @@ void CCorvusState_Execution_R_R::Call_NextAnimationKey(const _uint& In_iKeyIndex
 	if (!Get_Enable())
 		return;
 
+	switch (In_iKeyIndex)
+	{
+	case 27:
+		m_bExcution = true;
+		break;
+	}
+        
+	
+
 
 }
 
 
+
+void CCorvusState_Execution_R_R::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
 
 void CCorvusState_Execution_R_R::Free()
 {
@@ -124,15 +138,10 @@ void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)
 		m_eExcutionTargetType = MONSTERTYPE::BIGHANDMAN;
 	}
 
-	if (EVENT_TYPE::ON_ARMOREXECUTIONSHIELD == (EVENT_TYPE)iArg)
-	{
-		m_eExcutionTargetType = MONSTERTYPE::ARMORSHIELDMAN;
-	}
 	if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
 	{
 		m_eExcutionTargetType = MONSTERTYPE::ARMORSPEARMAN;
 	}
-
 
 	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
 	{
@@ -158,18 +167,11 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 27)
+	
+	if (m_bExcution)
 	{
 		switch (m_eExcutionTargetType)
 		{
-		case Client::MONSTERTYPE::ARMORSHIELDMAN:
-			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
-			break;
-		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-			Get_OwnerPlayer()->Change_State<CCorvusState_Armor_Execution_02>();
-			break;
 		case Client::MONSTERTYPE::ARMORSPEARMAN:
 		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 			GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
@@ -200,105 +202,7 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 		}
 
 		return true;
-		
-		//if (m_eExcutionTargetType != MONSTERTYPE::TYPE_END)
-		//{
-		//	list<weak_ptr <CGameObject>> pBossMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BOSSMONSTER);
-
-		//	for (auto& elem : pBossMonsters)
-		//	{
-		//		elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART);
-		//	}
-		//	switch (eBossName)
-		//	{
-		//	case Client::BOSSNAME::VARG:
-		//		Get_OwnerPlayer()->Change_State<CCorvusState_Varg_Execution>();
-		//		break;
-		//	case Client::BOSSNAME::BAT:
-		//		break;
-		//	case Client::BOSSNAME::URD:
-		//		Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
-		//		break;
-		//	}
-		//}
-
-		//if (eExeMonName != EXECUTIONMONSTERNAME::NAMEEND)
-		//{
-		//	list<weak_ptr <CGameObject>> pEliteMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::ELITEMONSTER);
-
-		//	for (auto& elem : pEliteMonsters)
-		//	{
-		//		elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTION);
-		//		elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTIONSTART);
-		//	}
-
-		//	switch (eExeMonName)
-		//	{
-		//	case Client::EXECUTIONMONSTERNAME::BIGHANDMAN:
-		//		Get_OwnerPlayer()->Change_State<CCorvusState_BigHandman_Execution>();
-		//		break;
-		//	case Client::EXECUTIONMONSTERNAME::JOKER:
-		//		Get_OwnerPlayer()->Change_State<CCorvusState_Joker_Execution>();
-		//		break;
-		//	}
-		//}
-
-		//if (eExeNorName != EXECUTIONNORMONSTERNAME::NORNAMEEND)
-		//{
-		//	switch (eExeNorName)
-		//	{
-		//	case Client::EXECUTIONNORMONSTERNAME::SHIELDMAN:
-		//		//elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-		//		GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-		//		Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
-
-		//		break;
-		//	case Client::EXECUTIONNORMONSTERNAME::SPEARMAN:
-		//		GET_SINGLE(CGameManager)->OnEventMessageForLayer(OBJECT_LAYER::MONSTER, EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-		//		Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_NCamera_Execution>();
-		//		break;
-		//	case Client::EXECUTIONNORMONSTERNAME::NORNAMEEND:
-		//		break;
-		//	default:
-		//		break;
-		//	}
-
-			//list<weak_ptr <CGameObject>> pNorMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER);
-
-			//for (auto& elem : pNorMonsters)
-			//{
-			//	//몬스터 몬스텇자아서 
-			//	if (Weak_StaticCast<CMonster>(elem).lock()->Get_ArmorMonStunCheck())
-			//	{
-			//		
-			//		MONSTERTYPE eMonstype = Weak_StaticCast<CMonster>(elem).lock()->Get_MonsterType();
-
-			//		switch (eMonstype)
-			//		{
-			//		case Client::MONSTERTYPE::ARMORSHIELDMAN:
-			//			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-			//			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
-			//			break;
-			//		case Client::MONSTERTYPE::ARMORSPEARMAN:
-			//			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-			//			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_NCamera_Execution>();
-			//			break;
-			//		case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-			//			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-			//			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_Execution>();
-			//			break;
-			//		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-			//			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSTART);
-			//			Get_OwnerPlayer()->Change_State<CCorvusState_AromorLV1_NCamera_Execution>();
-			//			break;
-			//		default:
-			//			break;
-			//		}
-			//		break;
-			//	}
-			
 	}
-
-	return false;
+		
 }
 

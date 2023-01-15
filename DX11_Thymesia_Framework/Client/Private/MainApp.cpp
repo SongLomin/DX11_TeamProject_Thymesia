@@ -41,11 +41,17 @@ HRESULT CMainApp::Initialize()
 #endif // _RENDER_FPS_
 
 	CGameInstance::Create_Instance();
-	CGameManager::Create_Instance()->Initialize();
 	CUIManager::Create_Instance();
+
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.4f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT, 0.3f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 0.3f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 0.3f);
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
 		return E_FAIL;	
+
+	CGameManager::Create_Instance()->Initialize();
 
 	GAMEINSTANCE->Reserve_Event((_uint)EVENT_TYPE::EVENT_END);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK , (_uint)COLLISION_LAYER::MONSTER);
@@ -83,7 +89,14 @@ HRESULT CMainApp::Initialize()
 
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Corvus");
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
-	
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv1_Circus\\Binary");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv2_Fortress\\Binary");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv3_Garden\\Binary");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Else\\Binary");
+	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
+	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
+	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Bat");
+
 #ifdef _BAKE_MIPMAPS_
 	Bake_MipMaps();
 	MSG_BOX("BAKE SUCCEEDED.");

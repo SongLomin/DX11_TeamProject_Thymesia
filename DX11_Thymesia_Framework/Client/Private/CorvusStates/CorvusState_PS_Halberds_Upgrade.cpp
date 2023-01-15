@@ -4,6 +4,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Effect_Decal.h"
+#include "CorvusStates/CorvusStates.h"
 
 
 GAMECLASS_C(CCorvusState_PS_Halberds_Upgrade);
@@ -63,7 +64,30 @@ void CCorvusState_PS_Halberds_Upgrade::Tick(_float fTimeDelta)
 void CCorvusState_PS_Halberds_Upgrade::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Check_AndChangeNextState();
+
 }
+
+_bool CCorvusState_PS_Halberds_Upgrade::Check_AndChangeNextState()
+{
+	if (!Check_Requirement())
+		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 204)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 
 void CCorvusState_PS_Halberds_Upgrade::OnStateStart(const _float& In_fAnimationBlendTime)
 {

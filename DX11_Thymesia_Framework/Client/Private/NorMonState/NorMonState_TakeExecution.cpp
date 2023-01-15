@@ -26,6 +26,26 @@ void CNorMonState_TakeExecution::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		return;
 
 
+	switch (In_KeyIndex)
+	{
+	case 18:
+		m_bTargetLook = false;
+		break;
+	case 60:
+		switch (m_eMonType)
+		{
+		case Client::MONSTERTYPE::ARMORSPEARMAN:
+			m_bAnimEnd = true;
+			break;
+		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+			m_bAnimEnd = true;
+			break;
+		default:
+			break;
+		}
+		break;
+	}
+
 }
 
 HRESULT CNorMonState_TakeExecution::Initialize_Prototype()
@@ -48,14 +68,8 @@ void CNorMonState_TakeExecution::Start()
 
 	switch (m_eMonType)
 	{
-	case Client::MONSTERTYPE::ARMORSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|LArmor_VS_TakeExecution_02");
-		break;
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_VS_TakeExecution");
-		break;
-	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|LArmor_VS_TakeExecution_02");
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_VS_TakeExecution");
@@ -120,31 +134,24 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 	//UI안까지고 디졸브해야되요 무기;까지포함해서
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_bTargetLook = true;
+
 	switch (m_eMonType)
 	{
-	case Client::MONSTERTYPE::ARMORSHIELDMAN:	
-		m_pModelCom.lock()->Set_AnimationSpeed(2.1f);
-		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
-		m_fOffSetX = 0.f;
-		m_fOffSetZ = 1.1f;
-		break;
 	case Client::MONSTERTYPE::ARMORSPEARMAN:
 		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(0.75f, 0.75f, 0.75f));
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 		m_fOffSetX = -0.5f;
-		m_fOffSetZ = 1.f;
+		m_fOffSetZ = 1.1f;
 		break;
 		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
-	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-		m_pModelCom.lock()->Set_AnimationSpeed(2.1f);
-		m_fOffSetX = 0.f;
-		m_fOffSetZ = 0.8f;
-		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(0.75f, 0.75f, 0.75f));
 		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 		m_fOffSetX = -0.5f;
-		m_fOffSetZ = 1.f;
+		m_fOffSetZ = 1.1f;
 		break;
 	}
 
@@ -159,30 +166,28 @@ void CNorMonState_TakeExecution::OnStateStart(const _float& In_fAnimationBlendTi
 	PxControllerFilters Filters;
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+	_matrix Monstermatrix = Get_OwnerMonster()->Get_Transform()->Get_WorldMatrix();
 
-	_matrix MonsterMatrix = Get_OwnerMonster()->Get_Transform()->Get_WorldMatrix();
-
-	_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-	vOtherWorldMatrix.r[3] = MonsterMatrix.r[3];
+	_matrix PlayerPosMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+	//_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
 	_matrix                    vResultOtherWorldMatrix;
-	vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(m_fOffSetX, 0.f, m_fOffSetZ, 0.f));
-	pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+	vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(PlayerPosMatrix, XMVectorSet(m_fOffSetX, 0.f, m_fOffSetZ, 0.f));
+	Weak_StaticCast<CCharacter>(Get_OwnerMonster()).lock()->Get_PhysX().lock()->Set_Position(
 		vResultOtherWorldMatrix.r[3],
 		GAMEINSTANCE->Get_DeltaTime(),
 		Filters);
 
 
 
-	pCurrentPlayer.lock()->Get_Transform()->Set_Look2D(-MonsterMatrix.r[2]);
+	pCurrentPlayer.lock()->Get_Transform()->Set_Look2D(-Monstermatrix.r[2]);
 
-	
+	Get_OwnerMonster()->Release_Monster();
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
 
-	Get_OwnerMonster()->Release_Monster();
 
 		
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	
 
 
 
@@ -200,6 +205,7 @@ void CNorMonState_TakeExecution::OnStateEnd()
 	__super::OnStateEnd();
 
 	Weak_StaticCast<CNorMonster>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+
 
 	m_fOffSetX = 0.f;
 	m_fOffSetZ = 0.f;
@@ -238,41 +244,26 @@ _bool CNorMonState_TakeExecution::Check_AndChangeNextState()
 		return false;
 
 
-	//올라가는애니메이션부터해야될듯
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 10 &&
-		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() < 30)
+	////올라가는애니메이션부터해야될듯
+	if (m_bTargetLook)
 	{
 		switch (m_eMonType)
 		{
 		case Client::MONSTERTYPE::ARMORSPEARMAN:
 			m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
+			//Rotation_TargetToLookDir();
 			break;
 		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 			m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
+			//Rotation_TargetToLookDir();
 			break;
 		default:
 			break;
-
-		}
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 60)
-	{
-		switch (m_eMonType)
-		{
-		case Client::MONSTERTYPE::ARMORSPEARMAN:
-			m_bAnimEnd = true;
-			break;
-		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-			m_bAnimEnd = true;
-			break;
-		default:
-			break;
-
-		}
-	}
-
 	
+		}  
+	}
+
+
 
 
 	return false;

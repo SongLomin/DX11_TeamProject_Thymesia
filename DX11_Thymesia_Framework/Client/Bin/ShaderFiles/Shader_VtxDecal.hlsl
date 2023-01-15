@@ -105,7 +105,7 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
     
     vector vDiffuseDesc =g_DiffuseTexture.Sample(DefaultSampler, vDecalUV);
     vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, vDecalUV);
-    vector vORMDesc = g_NormalTexture.Sample(DefaultSampler, vDecalUV);
+    vector vORMDesc = g_ORMTexture.Sample(DefaultSampler, vDecalUV);
     vector EmissiveDesc1 = g_EmissiveTexture1.Sample(DefaultSampler, vDecalUV);
     vector EmissiveDesc2 = g_EmissiveTexture2.Sample(DefaultSampler, vDecalUV);
     
@@ -120,9 +120,9 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
           
     Out.vORM = vORMDesc;
     Out.vORM.a = EmissiveDesc1.a * g_fAlphaValue;
-      
-    Out.vShaderFlag = 0.f;
-    Out.vShaderFlag.b = 0.f < EmissiveDesc1.r + EmissiveDesc2.r; //일단 보류 emissive넣고 싶은 곳 텍스처로 굽는게 나을듯
+         
+    Out.vShaderFlag = 0.f;       
+    Out.vShaderFlag.b = 0.0f < (EmissiveDesc1.r + EmissiveDesc2.r) * EmissiveDesc1.a;
     Out.vExtractBloom = vector(g_vColor, 1.f);
     Out.vExtractBloom.a = (EmissiveDesc1.r + EmissiveDesc2.r) * g_fAlphaValue;
 	    

@@ -61,6 +61,11 @@ void CCorvusState_Urd_Execution::OnDisable()
 
 }
 
+void CCorvusState_Urd_Execution::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -122,6 +127,7 @@ void CCorvusState_Urd_Execution::Call_NextAnimationKey(const _uint& In_iKeyIndex
 
 void CCorvusState_Urd_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 {
+
 
 }
 

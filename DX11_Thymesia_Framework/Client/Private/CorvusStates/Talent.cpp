@@ -16,8 +16,7 @@
 #include "UI_Button.h"
 #include "UI_EvolveMenu_Talent.h"
 #include "UI_EvolveTalent_Active.h"
-
-
+#include "UIManager.h"
 
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
@@ -173,6 +172,9 @@ void CTalent::OnMouseOver()
 {
     __super::OnMouseOver();
 
+    GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
+
     Callback_OnMouseOver(Weak_StaticCast<CTalent>(m_this));
    
 }
@@ -245,6 +247,8 @@ void CTalent::OnLButtonClick()
         break;
     case Client::TALENT_RESULT::SUCCESS:
     {   
+        GAMEINSTANCE->PlaySound2D("OpenTalent.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
         tPlayerDesc.m_iTalent -= iCost;
         weak_ptr<CTalent> pTalent;
 
@@ -264,6 +268,9 @@ void CTalent::OnLButtonClick()
         break;
     }
     case Client::TALENT_RESULT::SUBSCRIPTPOINT:
+        
+        GAMEINSTANCE->PlaySound2D("CloseTalent.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
         tPlayerDesc.m_iTalent += iCost;//ºÎ¸ð´Â »©°í
         for (auto& elem : visitNodes)
         {

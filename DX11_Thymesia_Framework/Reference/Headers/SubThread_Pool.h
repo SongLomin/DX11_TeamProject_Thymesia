@@ -17,6 +17,7 @@ private:
 public:
 	_bool Check_JobDone();
 	void Wait_JobDone(const _char* In_szConsoleText = nullptr);
+	void Stop_All() { stop_all = true; }
 
 private:
 	// 총 Worker 쓰레드의 개수.

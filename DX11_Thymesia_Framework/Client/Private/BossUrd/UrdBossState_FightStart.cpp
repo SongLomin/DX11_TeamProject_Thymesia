@@ -21,7 +21,7 @@ void CUrdBossState_FightStart::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 	switch (In_KeyIndex)
 	{
-	case 24:
+	case 23:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
@@ -55,7 +55,7 @@ void CUrdBossState_FightStart::Start()
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_FightStart::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	m_DecalDesc.vScale = { 10.f,10.f, 0.1f };
 	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;

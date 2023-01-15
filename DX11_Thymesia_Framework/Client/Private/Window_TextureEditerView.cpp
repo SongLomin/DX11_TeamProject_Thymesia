@@ -14,7 +14,7 @@ HRESULT CWindow_TextureEditerView::Initialize()
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
     // window_flags |= ImGuiWindowFlags_NoResize;
     // window_flags |= ImGuiWindowFlags_NoMove;
-
+    
     m_bEnable = true;
     SetUp_ImGuiDESC("Texture Editer", ImVec2(250.f, 500.f), window_flags);
 
@@ -69,7 +69,7 @@ HRESULT CWindow_TextureEditerView::Render(ID3D11DeviceContext* pDeviceContext)
 #ifdef _DEBUG
     if (m_pSRV.Get())
     {
-        GAMEINSTANCE->Render_EditTexture(m_pSRV, m_RGBs[1][0], m_RGBs[1][1], m_RGBs[1][2]);
+        GAMEINSTANCE->Render_EditTexture(m_pSRV, m_RGBs[1][0], m_RGBs[1][1], m_RGBs[1][2], m_RGBs[1][3]);
     }
 #endif // _DEBUG
 
@@ -151,7 +151,7 @@ _bool CWindow_TextureEditerView::Save_Texture()
 
 void CWindow_TextureEditerView::Render_RGBButton()
 {
-    ImVec4 vColor[3]{ {1.f, 0.f, 0.f, 1.f}, {0.f, 1.f, 0.f, 1.f}, {0.f, 0.f, 1.f, 1.f}};
+    ImVec4 vColor[4]{ {1.f, 0.f, 0.f, 1.f}, {0.f, 1.f, 0.f, 1.f}, {0.f, 0.f, 1.f, 1.f}, {1.f, 1.f, 1.f, 1.f} };
 
     if (ImGui::Button("Reset##RGB"))
     {
@@ -162,10 +162,10 @@ void CWindow_TextureEditerView::Render_RGBButton()
 
     ImGuiIO& io = ImGui::GetIO();
 
-    for (_int n = 0; n < 6; n++)
+    for (_int n = 0; n < 8; n++)
     {
-        _int i = n / 3;
-        _int j = n % 3;
+        _int i = n / 4;
+        _int j = n % 4;
         _int iColorIndex = m_RGBs[i][j];
 
         ImGui::PushID(n);
@@ -198,10 +198,13 @@ void CWindow_TextureEditerView::Render_RGBButton()
                 IM_ASSERT(payload->DataSize == sizeof(int));
                 int payload_n = *(const int*)payload->Data;
 
-                _int payload_i = payload_n / 3;
-                _int payload_j = payload_n % 3;
+                _int payload_i = payload_n / 4;
+                _int payload_j = payload_n % 4;
 
-                m_RGBs[i][j] = m_RGBs[payload_i][payload_j];
+                if (0 != i)
+                {
+                    m_RGBs[i][j] = m_RGBs[payload_i][payload_j];
+                }
             }
             ImGui::EndDragDropTarget();
         }
@@ -220,7 +223,7 @@ void CWindow_TextureEditerView::Reset_RGBs()
 {
     for (_int i = 0; i < 2; ++i)
     {
-        for (_int j = 0; j < 3; ++j)
+        for (_int j = 0; j < 4; ++j)
         {
             m_RGBs[i][j] = j;
         }

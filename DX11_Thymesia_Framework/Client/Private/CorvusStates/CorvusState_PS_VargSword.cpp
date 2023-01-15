@@ -4,6 +4,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Effect_Decal.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CCorvusState_PS_VargSword);
 CLONE_C(CCorvusState_PS_VargSword, CComponent)
@@ -59,7 +60,7 @@ HRESULT CCorvusState_PS_VargSword::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_DecalDesc.vScale = { 3.f,5.f,6.129f };
+	m_DecalDesc.vScale = { 3.f,6.129f, 0.1f};
 	m_DecalDesc.vPosition = { -0.157f,0.f,2.121f, 1.f };
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
@@ -84,6 +85,27 @@ void CCorvusState_PS_VargSword::Tick(_float fTimeDelta)
 void CCorvusState_PS_VargSword::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+	Check_AndChangeNextState();
+	
+}
+
+_bool CCorvusState_PS_VargSword::Check_AndChangeNextState()
+{
+
+	if (!Check_Requirement())
+		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.8f)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTime)

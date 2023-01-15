@@ -105,6 +105,7 @@ void CCorvusState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_fDissolveTime = 4.f;
 	m_bDissolve = true;
 	m_bAnimPlay = true;
+	m_fGrayScaleValue = 1.f;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	

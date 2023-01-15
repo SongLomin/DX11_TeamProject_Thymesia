@@ -18,6 +18,7 @@
 #include "Collider.h"
 #include "Effect_Decal.h"
 #include "CNvClothCollider.h"
+#include "Interaction_Ladder.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -125,6 +126,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_SpotLightDesc.bEnable = false;
 
+	m_SpotLightDesc = GAMEINSTANCE->Add_Light(m_SpotLightDesc);
+
 	_uint iNvClothColliderCount;
 	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
 
@@ -197,24 +200,19 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
-		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
-		//GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
-	/*	DECAL_DESC DecalDesc;
-		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
+		//_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+		////GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
+		//DECAL_DESC DecalDesc;
 
-		DecalDesc.vScale = { 5.f,5.f,5.f };
-		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
-		DecalDesc.fTime = 3.f;
-		DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
-		DecalDesc.pTextureTag = "DecalTexture";
+		//DecalDesc.vScale = { 5.f,5.f,5.f };
+		//XMStoreFloat4(&DecalDesc.vPosition,XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
+		//XMStoreFloat4x4(&DecalDesc.WorldMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
+		//DecalDesc.fTime = 3.f;
+		//DecalDesc.fDisapearTime = 1.f;
+		//DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
+		//DecalDesc.strTextureTag= "DecalUrd";
 
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
-	}
-	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
-	{
-		m_fInversionStrength = 0.5f;
-		m_fInversionRatio = 0.f;
-		CallBack_ColorInversion+= bind(&CCorvus::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+		//GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
 	}
 
 
@@ -232,21 +230,10 @@ void CCorvus::LateTick(_float fTimeDelta)
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
 	__super::LateTick(fTimeDelta);
 	
-	_bool bEnd = false;
-	////////colorInversion
-	if (CallBack_ColorInversion.empty())
-		return;
 
-
-	CallBack_ColorInversion(fTimeDelta, bEnd);
-	if (bEnd)
-	{
-		CallBack_ColorInversion.Clear();
-		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
-	}
-	//////////////
 	if (CallBack_LightEvent.empty())
 		return;
+	_bool bEnd = false;
 
 	bEnd = false;
 	
@@ -258,19 +245,6 @@ void CCorvus::LateTick(_float fTimeDelta)
 	
 }
 
-void CCorvus::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
-{
-	if (3.f > m_fInversionStrength)
-		m_fInversionStrength += In_fTimeDelta*0.5f;
-	else if (1.f > m_fInversionRatio)
-	{
-		m_fInversionRatio += In_fTimeDelta;
-	}
-	else
-		In_bEnd = true;
-
-	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
-}
 
 void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 {
@@ -280,6 +254,7 @@ void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 
 	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
 
+	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
 	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
 
 	m_SpotLightDesc.fIntensity = max(0.f, m_SpotLightDesc.fIntensity - fTimeDelta * 5.f);
@@ -291,6 +266,7 @@ void CCorvus::TurnOn_Light(_float fTimeDelta, _bool& Out_End)
 	}
 
 	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
+	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 }
 
 void CCorvus::Use_SpotLight(_float fTimeDelta, _bool& Out_End)
@@ -515,6 +491,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
+
 	else if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
@@ -551,45 +528,47 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+
+	else if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+
+
+
+	else if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_ParryDeflectLeftup>();
 	}
 
-	if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_ParryDeflectRightup>();
 	}
 
-	if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-
-	if (EVENT_TYPE::ON_ARMOREXECUTIONSHIELD == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-
-
-
-
-
-
-	else if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_EXIT_SECTION == (EVENT_TYPE)iArg)
 	{
 		m_LightDesc.bEnable = false;
 		m_LightDesc.fIntensity = 0.f;
 		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	}
-	else if (EVENT_TYPE::ON_PLAYERSPOTLIGHT == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_PLAYERSPOTLIGHT == (EVENT_TYPE)iArg)
 	{
 		m_SpotLightDesc.bEnable = true;
 		CallBack_LightEvent += bind(&CCorvus::Use_SpotLight, this, placeholders::_1, placeholders::_2);
@@ -610,12 +589,30 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
+	{
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERUP;
 		m_bLadderCheck = true;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(true);
+	}
 		break;
 	case Client::COLLISION_LAYER::LADDER_DOWN:
+	{
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
 		m_bLadderCheck = true;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(true);
+	}
 		break;
 	case Client::COLLISION_LAYER::ELEVATOR:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ELEVATOR;
@@ -647,12 +644,30 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
+	{
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERUP;
 		m_bLadderCheck = false;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(false);
+	}
 		break;
 	case Client::COLLISION_LAYER::LADDER_DOWN:
+	{
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
 		m_bLadderCheck = false;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(false);
+	}
 		break;
 	case Client::COLLISION_LAYER::ELEVATOR:
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ELEVATOR;
@@ -939,8 +954,11 @@ void CCorvus::Save_ClientComponentData()
 	json	CorvusJson;
 
 	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
-	
+	string                  szClientBackUpPath = "../Bin/ClientComponentData/Corvus/SaveDataBackUp";
 
+	
+	szClientBackUpPath += to_string(time(NULL));
+	szClientBackUpPath += ".json";
 
 	m_pStatus.lock()->Write_SaveData(CorvusJson);
 	m_pInventory.lock()->Write_SaveData(CorvusJson);
@@ -950,6 +968,7 @@ void CCorvus::Save_ClientComponentData()
 	CorvusJson["TalentEffect"] = iFlag;
 
 	CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
+	CJson_Utility::Save_Json(szClientBackUpPath.c_str(), CorvusJson);
 }
 
 void CCorvus::Load_ClientComponentData()

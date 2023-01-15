@@ -123,8 +123,8 @@ HRESULT CVarg::Initialize(void* pArg)
 	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
 	LightDesc.fIntensity = 10.f;
 	LightDesc.fRange = 10.f;
-	LightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
-	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(50.f));
+	LightDesc.fCutOff = cosf(XMConvertToRadians(20.f));
+	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(30.f));
 	_vector vOwnerPos = m_pTransformCom.lock()->Get_Position();
 
 	_vector vLightPos = vOwnerPos + XMVectorSet(0.f, 5.f, 0.f, 0.f);
@@ -135,7 +135,17 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	LightDesc.bEnable = false;
 
-	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+	// m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+
+	
+	LightDesc.eActorType = LIGHTDESC::TYPE_DIRECTIONAL;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 1.f;
+	LightDesc.bEnable = false;
+
+	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
 	return S_OK;
 }
@@ -370,6 +380,13 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 			m_iPassIndex = 0;
 		}
 
+		if (1 == i || 3 == i)
+		{
+			m_iPassIndex = 9;
+
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+		}
+
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 
@@ -520,19 +537,21 @@ void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
 	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
 	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
 
-	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	//GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 }
 
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
 {
 	m_LightDesc.fIntensity -= fTimeDelta*5.f;
-
+	m_DirLightDesc.fIntensity = min(m_DirLightDesc.fIntensity+fTimeDelta,1.f);
+	GAMEINSTANCE->Set_IrradianceColorScale(_float3(m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity));
 	if (0.f > m_LightDesc.fIntensity)
 	{
 		m_LightDesc.bEnable = false;
 		In_bEnd = true;
 	}
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	GAMEINSTANCE->Set_LightDesc(m_DirLightDesc);
 }
 
 void CVarg::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -600,6 +619,7 @@ void CVarg::OnEventMessage(_uint iArg)
 	//²¨Áö´Â Á¶°Ç
 	if ((_uint)EVENT_TYPE::ON_VARGTURNOFFSPOTLIGHT == iArg)
 	{
+		m_DirLightDesc.bEnable = true;
 		CallBack_LightEvent.Clear();
 		CallBack_LightEvent+= bind(&CVarg::TurnOff_Light, this, placeholders::_1, placeholders::_2);
 	}

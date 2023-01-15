@@ -11,6 +11,7 @@
 #include "VargStates.h"
 #include "Status_Monster.h"
 #include "Status_Boss.h"
+#include "UIManager.h"
 
 GAMECLASS_C(CVargBossState_SPA_Roar_Getup);
 CLONE_C(CVargBossState_SPA_Roar_Getup, CComponent)
@@ -134,6 +135,7 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		break;
 	case 132:
 		GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
+		GAMEINSTANCE->Set_IrradianceColorScale(_float3(0.f, 0.f, 0.f));
 		m_bStopAnimation = true;
 		break;
 	}
@@ -148,6 +150,10 @@ void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd(_uint iEndAnimIndex)
 
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
+
+	GAMEINSTANCE->PlaySound2D("Varg_Boss_Phase2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+
 }
 
 void CVargBossState_SPA_Roar_Getup::OnDestroy()

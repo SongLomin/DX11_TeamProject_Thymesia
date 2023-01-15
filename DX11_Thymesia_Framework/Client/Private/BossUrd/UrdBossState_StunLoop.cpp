@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "PhysXController.h"
+
 
 GAMECLASS_C(CUrdBossState_StunLoop);
 CLONE_C(CUrdBossState_StunLoop, CComponent)

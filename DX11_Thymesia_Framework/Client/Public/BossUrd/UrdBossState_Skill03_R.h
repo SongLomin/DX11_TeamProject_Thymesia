@@ -15,6 +15,9 @@ class CUrdBossState_Skill03_R :
 	CLONE_H(CUrdBossState_Skill03_R, CComponent)
 		SHALLOW_COPY(CUrdBossState_Skill03_R)
 
+
+public:
+	void Call_NextAnimationKey(const _uint& In_iKeyIndex);
 public:
 	enum CHECKDOT {RESULT_LEFT,RESULTR_RIGHT,RESULT_END};
 
@@ -32,10 +35,11 @@ protected:
 
 
 private:
-	_bool m_bOne = false;
 	CHECKDOT m_eReuslt = CHECKDOT::RESULT_END;
-	_bool m_bDisableWeaponCheck = false;
+	_bool m_bHandAttachKeyIndexCheck = false;
+	_bool m_bHandDettachKeyIndexCheck = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
+	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

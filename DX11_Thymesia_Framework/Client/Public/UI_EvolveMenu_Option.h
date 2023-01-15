@@ -1,6 +1,10 @@
 #pragma once
 #include "UI_EvolveMenu_Page.h"
 
+BEGIN(Engine)
+class CSubThread_Pool;
+END
+
 BEGIN(Client)
 
 class CCustomUI;
@@ -17,6 +21,15 @@ public:
 	GAMECLASS_H(CUI_EvolveMenu_Option)
 	CLONE_H(CUI_EvolveMenu_Option, CGameObject)
 
+
+private:
+    enum HARDWAREINFO_TYPE
+    {
+        GPU_NAME,
+        GPU_MEMORYUSAGE,
+        HARDWAREINFO_END
+    };
+
 public:
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
@@ -32,6 +45,8 @@ public:
 private:
     void                    Init_UI();
     void                    Init_OptionItem();
+    
+    void                    Update_HardwareInfos();
 
 private:
     virtual void            OnEnable(void* pArg);
@@ -48,8 +63,16 @@ private:
 
     vector <weak_ptr<CUI_OptionItem>> m_vecOptionItem;
 
+    vector<TEXTINFO>        m_HardwareInfos;
+    vector<TEXTINFO>        m_CPU_RateInfos;
+    _float                  m_fTextInfo_UpdateTimeAcc{};
+    vector<_double>         m_CPU_usages;
+    _int                    m_iCallCount{};
+    shared_ptr<CSubThread_Pool> m_pCheckCoreUsageThreadPool;
+    _bool                   m_bLoopStop{};
 
 private:
+    _int                    m_iSoundIndex = -999;
     _float                  m_fOptionItemOffsetY;
 
 

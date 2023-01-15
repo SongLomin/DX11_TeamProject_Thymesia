@@ -158,10 +158,24 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
-			fMagnifiedDamage *= tPlayerDesc.m_fParryingAtk;
+			fMagnifiedDamage *= tPlayerDesc.m_fPlagueAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			if (!m_pStatusCom.lock()->Is_Dead())
+			{
+				if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
+
+				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
+			}		
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 			if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -207,36 +221,45 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			//이떄 플레이어한테 이벤트를 던져줍시다
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{			
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
+
+				{
+					pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 
 
-				_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
-				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-					vResultOtherWorldMatrix.r[3],
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
+					_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+					vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
+					pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+						vResultOtherWorldMatrix.r[3],
+						GAMEINSTANCE->Get_DeltaTime(),
+						Filters);
 
 
-				Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);
-				Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
-				
+					Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);
+					Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
+				}
+							
 			}
 			else
 			{
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
+				{
+					pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 
 
-				_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
-				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-					vResultOtherWorldMatrix.r[3],
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
+					_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+					vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
+					pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+						vResultOtherWorldMatrix.r[3],
+						GAMEINSTANCE->Get_DeltaTime(),
+						Filters);
 
-				Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
-				Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(false);
-				
+					Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
+					Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(false);
+
+				}
 			}
 		}
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격

@@ -21,6 +21,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 
 	void		Call_ItemRequireMent(ITEM_NAME eITemName);
+	void		Call_RequirementDir();
+
 
 	void		Call_UseItem(ITEM_NAME eITemName);
 

@@ -272,8 +272,6 @@ void CCollider::End_CollisionCheck()
 	if (m_pOtherColliders.empty())
 		m_isColl = false;
 
-	
-
 	_bool isErase = false;
 
 	for (auto iter = m_pPreOtherColliders.begin(); iter != m_pPreOtherColliders.end();)

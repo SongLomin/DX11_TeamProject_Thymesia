@@ -1,5 +1,7 @@
 #pragma once
 #include "UI.h"
+#include "Status_Monster.h"	
+
 
 BEGIN(Client)
 class CCustomUI;
@@ -35,6 +37,7 @@ protected:
 
 	//CallEventFuncitons
 public:
+	void			Call_UpdateHP(CStatus_Monster::MONSTERDESC tDesc);
 	void			Call_Update_ParryGauge(_float _fRatio, _bool bLerp);
 	void			Call_Damaged_White(_float _fRatio);
 	void			Call_Damaged_Green(_float _fRatio);

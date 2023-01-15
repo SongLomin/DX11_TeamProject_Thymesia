@@ -10,6 +10,9 @@
 #include "VargStates.h"
 #include "UI_ScriptQueue.h"
 #include "MonsterHPBar_Boss.h"
+#include "UIManager.h"
+
+
 GAMECLASS_C(CVargBossState_Start);
 CLONE_C(CVargBossState_Start, CComponent)
 
@@ -115,6 +118,8 @@ void CVargBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(1.f);
+
+	GAMEINSTANCE->PlaySound2D("Varg_Boss_Phase1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 }
  
 void CVargBossState_Start::OnDestroy()

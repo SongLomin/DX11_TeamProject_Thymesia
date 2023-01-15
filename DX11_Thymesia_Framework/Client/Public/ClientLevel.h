@@ -55,7 +55,6 @@ protected:
     weak_ptr<CUI_PauseMenu> m_pPauseMenu;
     weak_ptr<CUI_EvolveMenu> m_pEvolveMenu;
 
-
 protected:
     _bool m_bFadeTrigger = false;
 

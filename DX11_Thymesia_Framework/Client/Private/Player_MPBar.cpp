@@ -120,8 +120,10 @@ void CPlayer_MPBar::Update_MPBar()
 	CStatus_Player::PLAYERDESC tPlayerDesc = m_pPlayerStatus.lock()->Get_PlayerDesc();
 
 	m_fMaxMp = tPlayerDesc.m_fMaxMP;
-	m_fCurrentMp = tPlayerDesc.m_fCurrentMP;
-	m_fLerpedMp = tPlayerDesc.m_fCurrentMP;
+	m_fCurrentMp = m_fMaxMp;
+	m_fLerpedMp = m_fMaxMp;
+
+	m_pMainBar.lock()->Set_Ratio(1.f);
 }
 
 void CPlayer_MPBar::Call_UpdateStatus()

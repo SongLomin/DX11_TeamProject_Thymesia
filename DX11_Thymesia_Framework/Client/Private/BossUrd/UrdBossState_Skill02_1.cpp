@@ -15,6 +15,22 @@
 GAMECLASS_C(CUrdBossState_Skill02_1);
 CLONE_C(CUrdBossState_Skill02_1, CComponent)
 
+void CUrdBossState_Skill02_1::Call_NextAnimationKey(const _uint& In_iKeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_iKeyIndex)
+	{
+	case 39:
+		m_bHandAttachKeyIndexCheck = true;
+		break;
+	case 41:
+		m_bHandDettachKeyIndexCheck = true;
+		break;
+	}
+}
+
 HRESULT CUrdBossState_Skill02_1::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -68,13 +84,17 @@ void CUrdBossState_Skill02_1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_PhaseTwoJavlinCount(1);
 
-	m_bOne = true;
-
-	m_bDisableWeaponCheck = false;
+	m_bHandAttachKeyIndexCheck = false;
+	
+	m_bHandDettachKeyIndexCheck = false;
 
 	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CUrdBossState_Skill02_1::Call_NextAnimationKey, this, placeholders::_1);
 	
 	
 #ifdef _DEBUG
@@ -91,7 +111,14 @@ void CUrdBossState_Skill02_1::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_bHandAttachKeyIndexCheck = false;
+	
+	m_bHandDettachKeyIndexCheck = false;
+
 	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CUrdBossState_Skill02_1::Call_NextAnimationKey, this, placeholders::_1);
 }
 
 
@@ -143,15 +170,10 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 	}
 		
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 39 && m_bOne)
+	if (m_bHandAttachKeyIndexCheck)
 	{
 		//여기서 첫번쨰꺼 안보이게하고 두번쨰거 여기서 바인딩하면될듯
-		m_bOne = false;
-		m_bDisableWeaponCheck = true;
-
-
-
-
+		m_bHandAttachKeyIndexCheck = false;
 
 		pJavelinWeapon = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CJavelinWeapon>(Get_Owner().lock()->Get_CreatedLevel());
 
@@ -172,14 +194,14 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 41 && !m_bOne && m_bDisableWeaponCheck)
+	if (m_bHandDettachKeyIndexCheck)
 	{
 		if (!pJavelinWeapon.lock())
 		{
 			DEBUG_ASSERT;
 			return false;
 		}
-
+		m_bHandDettachKeyIndexCheck = false;
 
 		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::STAKE);
 		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.0f));
@@ -195,7 +217,6 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 			{
 				elem.lock()->Set_RenderOnOff(false);
 				Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(true);
-				m_bDisableWeaponCheck = false;
 				break;
 			}
 			

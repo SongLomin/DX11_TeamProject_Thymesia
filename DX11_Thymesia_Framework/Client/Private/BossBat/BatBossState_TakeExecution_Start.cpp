@@ -166,14 +166,12 @@ void CBatBossState_TakeExecution_Start::Free()
 
 _bool CBatBossState_TakeExecution_Start::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
 
-	
 	if (m_bDieType)
 	{
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 314)
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 314)
 		{
 			m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
 			Get_OwnerCharacter().lock()->Change_State<CBatBossState_TakeExecution_End>(0.05f);

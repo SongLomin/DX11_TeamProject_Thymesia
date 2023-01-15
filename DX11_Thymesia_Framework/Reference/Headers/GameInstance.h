@@ -156,6 +156,20 @@ public: /* For.Render_Manager */
 	HRESULT Set_Sharpness(const _float In_fSharpness);
 	HRESULT Set_ColorInversion(const _float& In_fInversionStrength, const _float& In_fInversionRatio);
 
+	HRESULT Set_MotionBlur_Enable(const _bool& In_bMotionBlurEnable);
+	HRESULT Set_GodRay_Enable(const _bool& In_bGodRayEnable);
+	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable);
+	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable);
+	HRESULT Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable);
+	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable);
+	HRESULT Set_HBAO_Enable(const _bool& In_bHBAOEnable);
+
+
+	HRESULT Set_BrightnessOffset(const _float& In_fBrightnessOffset);
+	HRESULT Set_SaturationOffset(const _float& In_fSaturationOffset);
+	HRESULT Set_ContrastOffset(const _float& In_fContrastOffset);
+	HRESULT Set_SSRLevel(const _uint& In_iSSRLevel);
+
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 
@@ -163,7 +177,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_DebugSize(const _float2 vSize);
 	HRESULT Set_OldSchoolView(const _bool bOldSchool);
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
-	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha);
 	HRESULT Extract_Texture(const tstring& In_szFilePath);
 #endif // _DEBUG
 
@@ -234,16 +248,15 @@ public: /* For.Target_Manager */
 	ComPtr<ID3D11ShaderResourceView> Get_RenderTarget_SRV(const _tchar* pTargetTag);
 
 public: /* For.Sound_Manager */
-	_int  VolumeUp(CHANNELID eID, _float _vol);
-	_int  VolumeDown(CHANNELID eID, _float _vol);
-	_int  BGMVolumeUp(_float _vol);
-	_int  BGMVolumeDown(_float _vol);
+	void Update_VolumeScale(const _float In_VolumeScale);
+	void Update_BGMVolumeScale(const _float In_VolumeScale);
 	_int  Pause(CHANNELID eID);
 	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
 	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
+	void StopBGM();
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
 	void Load_SoundFileFromFolderPath(const string& In_szFolderPath);

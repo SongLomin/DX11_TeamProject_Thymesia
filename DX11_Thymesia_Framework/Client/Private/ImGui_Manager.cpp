@@ -33,6 +33,7 @@
 #include "Transform.h"
 
 #include "Client_GameObjects.h"
+#include "GameManager.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
@@ -253,16 +254,19 @@ HRESULT CImGui_Manager::Render(void)
 		{
 			if (ImGui::MenuItem("Scene Editer"))
 			{
+				GET_SINGLE(CGameManager)->OnLevelExit();
 				Init_SceneEditer();
 			}
 
 			if (ImGui::MenuItem("Effect Editer"))
 			{
+				GET_SINGLE(CGameManager)->OnLevelExit();
 				Init_EffectEditer();
 			}
 
 			if (ImGui::MenuItem("Model Editer"))
 			{
+				GET_SINGLE(CGameManager)->OnLevelExit();
 				Init_ModelEditer();
 			}
 

@@ -38,9 +38,9 @@ private:
     _uint m_iDustEffectIndex;
     weak_ptr<CAnimation> m_ThisStateAnimationCom;
     MONSTERTYPE m_eExcutionTargetType = MONSTERTYPE::TYPE_END;
-    
+    _bool m_bExcution = false;
 protected:
-   
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
     void Free();
     virtual void OnDestroy() override;
     // CNorMonStateBase을(를) 통해 상속됨

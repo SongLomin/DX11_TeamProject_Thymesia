@@ -510,6 +510,7 @@ void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
 
     if (!Out_bRequirement)
     {
+        GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_RequirementDir();
         GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
     }
 }

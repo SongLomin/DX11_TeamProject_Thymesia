@@ -35,18 +35,17 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
-//#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   
 #pragma region Effects
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
-#define _VARG_EFFECT_
-#define _BAT_EFFECT_
+//#define _VARG_EFFECT_
+//#define _BAT_EFFECT_
 #define _URD_EFFECT_
-#define _INTERACTION_EFFECT_
+//#define _INTERACTION_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
@@ -73,7 +72,6 @@
 #pragma region Map
 #undef _BRIGHT_LIGHT_
 #define _GENERATE_PROP_COLLIDER_ true
-#define _MAP_TOOL_
 #undef _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
@@ -112,19 +110,14 @@
 #pragma region Map
 #undef _BRIGHT_LIGHT_
 #undef _GENERATE_PROP_COLLIDER_ true
-#define _STAGE_1_
-#undef _STAGE_2_
-#undef _TEST_STATIC_PROPS_
-#undef _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
-#undef _MAP_TOOL_
- #define _CORVUS_MODEL_
+// #define _CORVUS_MODEL_
 #define _BOSS_MODEL_
 // #define _ELITE_MOB_MODEL_
- #define _NORMAL_MOB_MODEL_
-#undef _ANIMATION_TOOL_WEAPON_
+// #define _NORMAL_MOB_MODEL_
+#define _ANIMATION_TOOL_WEAPON_
 #undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
 

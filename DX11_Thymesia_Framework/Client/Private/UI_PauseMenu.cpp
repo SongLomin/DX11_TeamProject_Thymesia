@@ -82,6 +82,10 @@ void CUI_PauseMenu::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);
 
+	GAMEINSTANCE->PlaySound2D("Fantasy_Game_Book_Page_Turn_1_M.ogg",
+		GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT)
+	);
+
 	m_bOpenThisFrame = true;
 	GET_SINGLE(CUIManager)->Set_OpenedMenu(true);
 
@@ -102,13 +106,17 @@ void CUI_PauseMenu::OnDisable()
 	m_pInventoryBG.lock()->Set_Enable(false);
 
 
+
+
 }
 
 void CUI_PauseMenu::OnPaging()
 {
 	for (_uint i = 0; i < (_uint)PAUSE_MENU_END; i++)
 	{
-		
+		GAMEINSTANCE->PlaySound2D("Fantasy_Game_Book_Page_Turn_2_M.ogg",
+			GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT));
+
 		if (i == m_iPageIndex)//현재 페이지 인덱스
 		{
 			if (m_pPages[i].lock() != nullptr)
@@ -158,6 +166,10 @@ void CUI_PauseMenu::Update_KeyInput()
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP) && m_bOpenThisFrame == false)
 	{
+
+		GAMEINSTANCE->PlaySound2D("Fantasy_Game_Book_Page_Turn_1_M.ogg",
+			GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT));
+
 		FaderDesc tFaderDesc;
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;

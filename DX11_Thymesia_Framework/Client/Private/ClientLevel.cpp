@@ -9,6 +9,9 @@
 #include "UIHeaders.h"
 #include "Static_Instancing_Prop.h"
 #include "SubThread_Pool.h"
+#include "UI_Utils.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CClientLevel)
 
@@ -20,6 +23,10 @@ HRESULT CClientLevel::Initialize()
 
 	GAMEINSTANCE->Set_CreatedLevelIndex(m_eMyLevel);
 
+	if (m_eMyLevel == LEVEL_LOGO)
+	{
+		GAMEINSTANCE->PlayBGM("BGM_LOGO.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	}
 	return S_OK;
 }
 
@@ -31,8 +38,6 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 	{
 		//DEBUG_ASSERT;
 	}
-
-
 	for (auto& Elem_GameObjects : LoadedJson["GameObject"])
 	{
 		weak_ptr<CGameObject> pGameObjectInstance = GAMEINSTANCE->Add_GameObject(Elem_GameObjects["Hash"], (_uint)In_eLevel);
@@ -110,6 +115,31 @@ void CClientLevel::Tick(_float fTimeDelta)
 	*/
 	if (!m_bLading)
 	{
+
+		switch (m_eMyLevel)
+		{
+		case Client::LEVEL_LOGO:
+			GAMEINSTANCE->PlayBGM("BGM_LOGO.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+			break;
+		case Client::LEVEL_LOBBY:
+			break;
+		case Client::LEVEL_GAMEPLAY:
+			GAMEINSTANCE->PlayBGM("BGM_STAGE_1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+			break;
+		case Client::LEVEL_STAGE2:
+			GAMEINSTANCE->PlayBGM("BGM_STAGE_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+			break;
+		case Client::LEVEL_STAGE3:
+			GAMEINSTANCE->PlayBGM("BGM_STAGE_3.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+			break;
+		case Client::LEVEL_TEST:
+			GAMEINSTANCE->PlayBGM("BGM_STAGE_TEST.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+			break;
+		case Client::LEVEL_END:
+			break;
+		default:
+			break;
+		}
 		m_bLading = true;
 		Call_StageLanding();
 		SaveLevel();
@@ -126,6 +156,8 @@ void CClientLevel::SetUp_UI()
 
 	if (pUIManager.lock()->Get_Completed_SetUpUI())
 	{
+		m_pPauseMenu = GAMEINSTANCE->Get_GameObjects< CUI_PauseMenu>(LEVEL_STATIC).front();
+		m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects< CUI_EvolveMenu>(LEVEL_STATIC).front();
 		//이미 셋업된 UI면 리턴한다.
 		return;
 	}
@@ -159,7 +191,6 @@ void CClientLevel::SetUp_UI()
 
 	pUIManager.lock()->CreateItemPopupQueue();
 
-
 	pUIManager.lock()->Set_Complete_SetUpUI();
 	//pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CEvolveMenu_TalentButton>(LEVEL_STATIC));
 	//TODO : MonsterHpBar TestCode
@@ -181,6 +212,9 @@ void CClientLevel::Tick_Key_InputEvent()
 {
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
+		if (m_pEvolveMenu.lock()->Get_Enable() == true)
+			return;
+
 		if (m_pPauseMenu.lock()->Get_Enable() == false)
 		{
 			FaderDesc tFaderDesc;
@@ -280,6 +314,7 @@ void CClientLevel::ExitLevel(LEVEL eLevel)
 	{
 		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Save_ClientComponentData();
 	}
+	GAMEINSTANCE->StopSound(0);
 }
 
 void CClientLevel::Call_Enable_PauseMenu()

@@ -97,9 +97,6 @@ void CUI_OptionItem::Create_Element(OPTION_TYPE eOptionType)
     case Client::OPTION_TYPE::SSAA:
         m_pElement = GAMEINSTANCE->Add_GameObject<CUI_OptionElement_OnOff>(LEVEL_STATIC);
         break;
-    case Client::OPTION_TYPE::PARTICLE_QUALITY:
-        m_pElement = GAMEINSTANCE->Add_GameObject<CUI_OptionElement_Quality>(LEVEL_STATIC);
-        break;
     case Client::OPTION_TYPE::AMBIENT_OCCLUSION:
         m_pElement = GAMEINSTANCE->Add_GameObject<CUI_OptionElement_OnOff>(LEVEL_STATIC);
         break;

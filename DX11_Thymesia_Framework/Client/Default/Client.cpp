@@ -46,7 +46,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-#ifdef _DEBUG_COUT_
     FILE* ConsoleStream;
 
     AllocConsole();
@@ -54,7 +53,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     freopen_s(&ConsoleStream, "CON", "w", stdout);
 
     printf("HELLO!!! I AM THE CONSOLE!\n");
-#endif // _DEBUG_COUT_
 
     srand((_uint)time(nullptr));
     unique_ptr<CMainApp> pMainApp;

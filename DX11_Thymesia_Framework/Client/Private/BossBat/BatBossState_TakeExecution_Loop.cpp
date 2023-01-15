@@ -34,8 +34,6 @@ void CBatBossState_TakeExecution_Loop::Start()
 {
 	__super::Start();
 
-	m_fDissolveTime = 4.5f;
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_TakeExecution_Loop");
 
 }
@@ -46,10 +44,9 @@ void CBatBossState_TakeExecution_Loop::Tick(_float fTimeDelta)
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	Get_OwnerMonster()->Set_PassIndex(7);
 	m_fDissolveTime -= fTimeDelta;
 
-	_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, min(1.f, m_fDissolveTime / 4.f));
+	_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
 	Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
 }
 
@@ -73,7 +70,11 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+	m_fDissolveTime = 4.5f;
+	enum class SHADER_PASS {PASS_DISSOLVE = 7 };
+
+	Get_OwnerMonster()->Set_PassIndex((_uint)SHADER_PASS::PASS_DISSOLVE);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG

@@ -158,7 +158,7 @@ using namespace std;
 
 #define SOUND_MAX 10.0f
 #define SOUND_MIN 0.0f
-#define SOUND_DEFAULT 0.5f
+#define SOUND_DEFAULT 1.f
 #define SOUND_WEIGHT 0.1f
 
 #include <io.h>

@@ -16,6 +16,14 @@ IMPLEMENT_SINGLETON(CGameManager)
 void CGameManager::Initialize()
 {
 	m_pClientThread = CSubThread_Pool::Create(8);
+
+	GAMEINSTANCE->Set_SSAA_Enable(false);
+	GAMEINSTANCE->Set_HBAO_Enable(false);
+	GAMEINSTANCE->Set_MotionBlur_Enable(false);
+	GAMEINSTANCE->Set_GodRay_Enable(false);
+	GAMEINSTANCE->Set_Chromatic_Enable(false);
+	GAMEINSTANCE->Set_RadialBlur_Enable(false);
+	GAMEINSTANCE->Set_DynamicShadow_Enable(false);
 }
 
 void CGameManager::LateTick(_float fTimeDelta)
@@ -56,6 +64,8 @@ void CGameManager::LateTick(_float fTimeDelta)
 	{
 		Set_GameState(GAME_STATE::BATTLE_END);
 	}
+
+	
 }
 
 shared_ptr<CSubThread_Pool> CGameManager::Get_ClientThread()
@@ -1001,6 +1011,78 @@ void CGameManager::Add_WaterWave(_fvector In_vWorldPosition, const _float In_fVi
 	WaveDesc.fTimeAcc = 0.f;
 
 	m_pWater.lock()->Add_WaterWave(WaveDesc);
+}
+
+void CGameManager::Change_Option(OPTION_TYPE eOption, _uint iAmount)
+{
+	switch (eOption)
+	{
+	case Client::OPTION_TYPE::SOUND_TYPE_BG:
+		GAMEINSTANCE->Update_BGMVolumeScale((_float)iAmount / 50.f);
+		break;
+	case Client::OPTION_TYPE::SOUND_TYPE_EFFECT:
+		GAMEINSTANCE->Update_VolumeScale((_float)iAmount / 50.f);
+		break;
+	case Client::OPTION_TYPE::SSAA:
+		GAMEINSTANCE->Set_SSAA_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::AMBIENT_OCCLUSION:
+		GAMEINSTANCE->Set_HBAO_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::NVIDIA_IMAGE_SCALING:
+		//GAMEINSTANCE->Set_MotionBlur_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::SCALING_SHARPNESS:
+		GAMEINSTANCE->Set_Sharpness(iAmount);
+		break;
+	case Client::OPTION_TYPE::WATER_REFLECTION_QUALITY:
+
+		break;
+	case Client::OPTION_TYPE::PBR:
+		//GAMEINSTANCE->Set_PBR();
+		break;
+	case Client::OPTION_TYPE::MOTION_BLUR:
+		GAMEINSTANCE->Set_MotionBlur_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::GODRAY:
+		GAMEINSTANCE->Set_GodRay_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::CHROMATIC_ABRRATION:
+		if (_bool(iAmount))
+		{
+			GAMEINSTANCE->Set_Chromatic(0.1f);
+		}
+		GAMEINSTANCE->Set_Chromatic_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::RADIAL_BLUR:
+		if (_bool(iAmount))
+		{
+			GAMEINSTANCE->Add_RadialBlur(0.2f);
+		}
+
+		GAMEINSTANCE->Set_RadialBlur_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::DYNAMIC_SHADOW:
+		GAMEINSTANCE->Set_DynamicShadow_Enable(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::STATIC_SHADOW:
+		//GAMEINSTANCE->(_bool(iAmount));
+		break;
+	case Client::OPTION_TYPE::BRIGHTLESS:
+		GAMEINSTANCE->Set_BrightnessOffset(((_float)iAmount - 50.f) / 50.f);
+		break;
+	case Client::OPTION_TYPE::SATURATION:
+		GAMEINSTANCE->Set_SaturationOffset(((_float)iAmount - 50.f) / 50.f);
+		break;
+	case Client::OPTION_TYPE::CONTRAST:
+		GAMEINSTANCE->Set_ContrastOffset(((_float)iAmount - 50.f) / 50.f);
+		break;
+	case Client::OPTION_TYPE::OPTION_TYPE_END:
+		break;
+	default:
+		break;
+	}
+
 }
 
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)

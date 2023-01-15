@@ -32,9 +32,9 @@ private:
 	tstring szTextureFilePath;
 	ComPtr<ID3D11ShaderResourceView> m_pSRV;
 
-	_int m_RGBs[2][3];
+	_int m_RGBs[2][4];
 
-	string szRGB[3]{ "Red", "Green", "Blue" };
+	string szRGB[4]{ "Red", "Green", "Blue", "Alpha"};
 
 private:
 	virtual void OnDestroy() override;

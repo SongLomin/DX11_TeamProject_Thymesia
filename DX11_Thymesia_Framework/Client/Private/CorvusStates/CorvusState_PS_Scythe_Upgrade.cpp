@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CCorvusState_PS_Scythe_Upgrade);
 CLONE_C(CCorvusState_PS_Scythe_Upgrade, CComponent)
@@ -58,7 +59,28 @@ void CCorvusState_PS_Scythe_Upgrade::Tick(_float fTimeDelta)
 void CCorvusState_PS_Scythe_Upgrade::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Check_AndChangeNextState();
 }
+
+_bool CCorvusState_PS_Scythe_Upgrade::Check_AndChangeNextState()
+{
+	if (!Check_Requirement())
+		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 211)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 void CCorvusState_PS_Scythe_Upgrade::OnStateStart(const _float& In_fAnimationBlendTime)
 {

@@ -5,6 +5,8 @@
 #include "PlayerSkillHeader.h"
 #include "RequirementChecker.h"
 #include "Requirement_Time.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CPlayerSkill_System);
 CLONE_C(CPlayerSkill_System, CComponent)
@@ -93,6 +95,8 @@ void CPlayerSkill_System::SwapSkillMaintoSub()
 
     OnChangeSkill(pSkillBase_Sub, SOCKET_TYPE::SOCKET_MAIN);
     OnChangeSkill(pSkillBase_Main, SOCKET_TYPE::SOCKET_SUB);
+
+    GAMEINSTANCE->PlaySound2D("CardShot_01.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
 }
 
 HRESULT CPlayerSkill_System::OnStealMonsterSkill(MONSTERTYPE In_eMonsterType)

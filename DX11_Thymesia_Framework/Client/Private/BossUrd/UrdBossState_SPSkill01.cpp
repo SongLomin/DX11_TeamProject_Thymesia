@@ -37,12 +37,13 @@ void CUrdBossState_SPSkill01::Start()
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	m_DecalDesc.vScale = {19.f,19.f, 0.1f };
 	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
+	m_DecalDesc.fAppearTime = 0.f;
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
-	//1Æä µ¥Ä® emissive color
-	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
+
+	m_DecalDesc.vColor = _float3(0.5f, 0.8f, 1.f);
 	m_DecalDesc.strTextureTag = "DecalUrd";
 }
 
@@ -51,6 +52,11 @@ void CUrdBossState_SPSkill01::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	if (m_bCameraShaking)
+	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), m_fShakingRatio, 1.f, 9.f, 0.95f);
+	}
 }
 
 
@@ -59,8 +65,36 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
+
+	////////colorInversion
+	if (CallBack_ColorInversion.empty())
+		return;
+
+
+	_bool bEnd = false;
+	CallBack_ColorInversion(fTimeDelta, bEnd);
+	if (bEnd)
+	{
+		CallBack_ColorInversion.Clear();
+		GAMEINSTANCE->Set_ColorInversion(0.f, 1.f);
+	}
+
 }
 
+void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
+{
+	if (3.5f > m_fInversionStrength)
+		m_fInversionStrength += In_fTimeDelta * 1.2f;
+	else if (1.f > m_fInversionRatio)
+	{
+		m_fInversionRatio += In_fTimeDelta;
+	}
+	else
+	{
+		In_bEnd = true;
+	}
+	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
+}
 
 
 void CUrdBossState_SPSkill01::OnStateStart(const _float& In_fAnimationBlendTime)
@@ -141,7 +175,8 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
-
+		m_bCameraShaking = true;
+		m_fShakingRatio = 0.01f;
 	}
 		return;
 	case 204:
@@ -154,8 +189,14 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
+		m_fShakingRatio = 0.1f;
 	}
 		return;
+	case 220:
+	{
+		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+		return;
+	}
 	case 224:
 	{
 		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
@@ -167,6 +208,9 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 			}
 		}
 	}
+		return;
+	case 350:
+		m_bCameraShaking = false;
 		return;
 	}
 }

@@ -15,7 +15,8 @@ class CUrdBossState_Skill03_L :
 	CLONE_H(CUrdBossState_Skill03_L, CComponent)
 		SHALLOW_COPY(CUrdBossState_Skill03_L)
 
-
+public:
+	void Call_NextAnimationKey(const _uint& In_iKeyIndex);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -29,11 +30,11 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
 private:
-	_bool m_bOne = false;
-	_bool m_bDisableWeaponCheck = false;
+	_bool m_bHandAttachKeyIndexCheck = false;
+	_bool m_bHandDettachKeyIndexCheck = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
+	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

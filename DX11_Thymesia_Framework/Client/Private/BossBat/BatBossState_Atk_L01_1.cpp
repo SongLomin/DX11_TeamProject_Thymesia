@@ -147,7 +147,7 @@ void CBatBossState_Atk_L01_1::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	}
 	case 195:
 	{
-		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.1f, 1.f, 9.f, 0.4f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, -1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.4f);
 		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());

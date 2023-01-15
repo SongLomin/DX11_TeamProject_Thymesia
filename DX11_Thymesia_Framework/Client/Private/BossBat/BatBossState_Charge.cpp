@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "Status.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CBatBossState_Charge);
 CLONE_C(CBatBossState_Charge, CComponent)
@@ -43,6 +45,7 @@ void CBatBossState_Charge::Tick(_float fTimeDelta)
 
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
 }
 
 
@@ -66,6 +69,20 @@ void CBatBossState_Charge::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.03f, 9.f, 3.f);
 	}
+
+	switch (In_iKeyIndex)
+	{
+	case 294://ÀÌ¶§ Èú.
+	{
+ 		weak_ptr<CStatus_Boss> pBossStatus = Get_OwnerMonster()->Get_Component<CStatus_Boss>();
+		pBossStatus.lock()->Heal(pBossStatus.lock()->Get_Desc().m_fMaxHP_white * m_fHeallingRatio);
+		break;
+	}
+
+	default:
+		break;
+	}
+
 }
 
 void CBatBossState_Charge::OnStateStart(const _float& In_fAnimationBlendTime)
@@ -100,7 +117,6 @@ void CBatBossState_Charge::OnStateEnd()
 		bind(&CBatBossState_Charge::Call_NextAnimationKey, this, placeholders::_1);
 
 }
-
 
 
 void CBatBossState_Charge::Call_AnimationEnd(_uint iEndAnimIndex)

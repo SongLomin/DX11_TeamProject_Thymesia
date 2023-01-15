@@ -31,6 +31,8 @@ private:
 public:
 	void			Add_Quantity();
 	void			Minus_Quantity();
+	void			Minus_Quantity(_uint iQuantity);
+
 
 //varriable
 private:

@@ -120,6 +120,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		_flag BindTextureFlag = 0;
+		_uint iPassIndex = 0;
 
 		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
@@ -147,7 +148,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
 			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
 		{
-			m_iPassIndex = 5;
+			iPassIndex = 5;
 		}
 
 		// NormalTexture	OK.
@@ -155,7 +156,7 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 		else if ((1 << aiTextureType_NORMALS) & BindTextureFlag &&
 			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 		{
-			m_iPassIndex = 4;
+			iPassIndex = 4;
 		}
 
 		// NormalTexture	NO.
@@ -164,10 +165,16 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 			!((1 << aiTextureType_NORMALS) & BindTextureFlag) &&
 			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
 		{
-			m_iPassIndex = 0;
+			iPassIndex = 0;
 		}
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
+		if(m_iPassIndex >0)
+		{
+			iPassIndex = m_iPassIndex;
+			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
+		}
+
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i);
 	}
 

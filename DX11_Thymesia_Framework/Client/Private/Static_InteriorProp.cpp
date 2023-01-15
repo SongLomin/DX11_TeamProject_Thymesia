@@ -92,30 +92,29 @@ HRESULT CStatic_InteriorProp::Render(ID3D11DeviceContext* pDeviceContext)
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+		_flag BindTextureFlag(0);
 
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            m_iPassIndex = 0;
-        }
-        else
-        {
-            if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
-            {
-                if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                    m_iPassIndex = 6;
-                else
-                    m_iPassIndex = 7;
-            }
-            else
-            {
-                if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                    m_iPassIndex = 3;
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
 
-                else
-                    m_iPassIndex = 7;
-            }
-        }
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+		else
+		{
+			BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+			END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+		}
+
+		m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, m_bInvisibility, false, false);
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);

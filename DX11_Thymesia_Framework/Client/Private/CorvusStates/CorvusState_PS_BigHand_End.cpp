@@ -48,6 +48,8 @@ void CCorvusState_PS_BigHand_End::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
+
+
 void CCorvusState_PS_BigHand_End::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -70,4 +72,7 @@ void CCorvusState_PS_BigHand_End::OnEventMessage(weak_ptr<CBase> pArg)
 void CCorvusState_PS_BigHand_End::Free()
 {
 	__super::Free();
+
+	if (m_pModelCom.lock())
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_BigHand_End::Call_AnimationEnd, this, placeholders::_1);
 }

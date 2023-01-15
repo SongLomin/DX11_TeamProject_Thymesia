@@ -61,7 +61,7 @@ void CBatBossState_Sp::Tick(_float fTimeDelta)
 	}
 	else if (m_bScreamShaking)
 	{
-		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.1f, 1.f, 7.f, 0.9f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.2f, 1.f, 7.f, 0.9f);
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 	}

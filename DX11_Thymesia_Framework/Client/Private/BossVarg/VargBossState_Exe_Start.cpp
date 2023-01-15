@@ -81,6 +81,9 @@ void CVargBossState_Exe_Start::OnStateStart(const _float& In_fAnimationBlendTime
 
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EXIT_SECTION);
 
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Exe_Start::Call_NextKeyFrame, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_Start -> OnStateStart" << endl;
@@ -94,7 +97,8 @@ void CVargBossState_Exe_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Exe_Start::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 
@@ -130,16 +134,13 @@ void CVargBossState_Exe_Start::Free()
 
 _bool CVargBossState_Exe_Start::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
 
 	//여서조건을줘봐요 어떻게 ? 라이프가 2보다클떄 즉목숨이하나잇으면 여기로들어오고 안들어오면 ㅇㅇ
-	
-
 	if (m_bDieType)
 	{
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 154)
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 154)
 		{
 			m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
 			Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(false);
@@ -147,8 +148,18 @@ _bool CVargBossState_Exe_Start::Check_AndChangeNextState()
 			return true;
 		}
 	}
-
-
 	return false;
+}
+
+void CVargBossState_Exe_Start::Call_NextKeyFrame(const _uint& In_iKeyIndex)
+{
+	switch (In_iKeyIndex)
+	{
+	case 154:
+
+
+	default:
+		break;
+	}
 }
 

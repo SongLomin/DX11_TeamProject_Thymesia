@@ -329,21 +329,22 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//≈∏∞Ÿ ∞Ì¡§
 	if (1.f < fLerpRatio)
 		fLerpRatio = 1.f;
 
-	_float4x4 matTargetModelTransformationMatrix = m_pTargetMonsterModelCom.lock()->Get_TransformationMatrix();
-	_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTargetModelTransformationMatrix);
-	_matrix  matTargetCombined = m_pTargetMonsterBoneNodeCom.lock()->Get_CombinedMatrix();
+	//_float4x4 matTargetModelTransformationMatrix = m_pTargetMonsterModelCom.lock()->Get_TransformationMatrix();
+	//_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTargetModelTransformationMatrix);
+	//_matrix  matTargetCombined = m_pTargetMonsterBoneNodeCom.lock()->Get_CombinedMatrix();
 
 
-	_matrix BoneMatrix = matTargetCombined * matTargetMonsterWorld;
+	//_matrix BoneMatrix = matTargetCombined * matTargetMonsterWorld;
 
-	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	//BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	//BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	//BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
-	_matrix MonsterWorldMatrix = BoneMatrix * m_pTargetMonsterTransformCom.lock()->Get_UnScaledWorldMatrix();
+	//_matrix MonsterWorldMatrix = BoneMatrix * m_pTargetMonsterTransformCom.lock()->Get_UnScaledWorldMatrix();
 
-	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_Position() + XMVectorSet(0.f,1.f,0.f,0.f);
-	_vector vTargetPos = MonsterWorldMatrix.r[3];
+
+	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_Position() /*+ XMVectorSet(0.f,1.f,0.f,0.f)*/;
+	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_Position();
 	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos);
 
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);

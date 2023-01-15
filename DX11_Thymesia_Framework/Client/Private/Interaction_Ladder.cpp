@@ -9,8 +9,12 @@
 #include "Texture.h"
 #include "Collider.h"
 
+#include "UI_Interaction.h"
+
 #include "GameManager.h"
+#include "SMath.h"
 #include "imgui.h"
+
 
 GAMECLASS_C(CInteraction_Ladder);
 CLONE_C(CInteraction_Ladder, CGameObject);
@@ -74,7 +78,20 @@ HRESULT CInteraction_Ladder::Start()
 
 void CInteraction_Ladder::Tick(_float fTimeDelta)
 {
-    __super::Tick(fTimeDelta);
+    CGameObject::Tick(fTimeDelta);
+
+    if (m_bRenderOutLine)
+    {
+        // µø¿€
+
+        m_fOutLineBlurIntensity += fTimeDelta * 2.f;
+        m_fOutLineBlurIntensity = min(1.f, m_fOutLineBlurIntensity);
+    }
+    else
+    {
+        m_fOutLineBlurIntensity -= fTimeDelta * 2.f;
+        m_fOutLineBlurIntensity = max(0.f, m_fOutLineBlurIntensity);
+    }
 }
 
 void CInteraction_Ladder::LateTick(_float fTimeDelta)
@@ -197,6 +214,55 @@ void CInteraction_Ladder::Load_FromJson(const json& In_Json)
     }
 }
 
+void CInteraction_Ladder::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+    m_eEnterLadder = ((_uint)COLLISION_LAYER::LADDER_DOWN == pMyCollider.lock()->Get_CollisionLayer())
+        ? (LADDER_COL_TYPE::DOWN_USE)
+        : (LADDER_COL_TYPE::UP_USE);
+}
+
+void CInteraction_Ladder::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+}
+
+void CInteraction_Ladder::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+}
+
+void CInteraction_Ladder::Set_RenderOutLine(_bool bState)
+{
+    m_bRenderOutLine = bState;
+
+    if (bState)
+    {
+        weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
+
+        if (!pUI_Interaction.lock())
+            return;
+
+        Callback_ActStart += bind(&CUI_Interaction::Call_ActionStart, pUI_Interaction.lock());
+        Callback_ActEnd   += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
+
+        pUI_Interaction.lock()->Call_CollisionEnter
+        (
+            m_pColliderCom[m_eEnterLadder],
+            (_uint)m_eInteractionType
+        );
+    }
+    else
+    {
+        weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
+
+        if (!pUI_Interaction.lock())
+            return;
+
+        pUI_Interaction.lock()->Call_CollisionExit();
+
+        Callback_ActStart.Clear();
+        Callback_ActEnd.Clear();
+    }
+}
+
 HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up(ID3D11DeviceContext* pDeviceContext)
 {
     _float4x4 WorldMatrix;
@@ -234,19 +300,28 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up(ID3D11DeviceContext* pDevic
     _uint iNumMeshContainers = m_pUpModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        if (SUCCEEDED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
-            m_iPassIndex = 0;
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
         }
-        else
+
+        if (SUCCEEDED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            if (FAILED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
@@ -293,13 +368,29 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid(ID3D11DeviceContext* pDevi
 
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pInstanceShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pInstanceShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-            m_iPassIndex = 0;
-        else
-            m_iPassIndex = 1;
+        if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pInstanceShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+        }
+
+        if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pInstanceShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pInstanceShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelInstancingShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
+        }
         
         m_pInstanceShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
@@ -336,19 +427,28 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down(ID3D11DeviceContext* pDev
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
+        _flag BindTextureFlag = 0;
 
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
         {
-            m_iPassIndex = 0;
+            BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
         }
-        else
+
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
-            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;
+            BindTextureFlag |= (1 << aiTextureType_NORMALS);
+        }
+
+        if (SUCCEEDED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+        {
+            BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+        }
+
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+
+        if ((_uint)-1 == m_iPassIndex)
+        {
+            continue;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);

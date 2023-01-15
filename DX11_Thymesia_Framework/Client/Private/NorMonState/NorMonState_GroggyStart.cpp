@@ -9,6 +9,7 @@
 #include "NorMonStateS.h"
 #include "Character.h"
 #include "Monster.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CNorMonState_GroggyStart);
@@ -121,17 +122,12 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 		GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 		break;
 	case Client::MONSTERTYPE::ARMORSHIELDMAN:
-		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
-		break;
-	case Client::MONSTERTYPE::ARMORSPEARMAN:
-		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
-		break;
-	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
-		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
+		GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
-		Get_OwnerMonster()->Set_ArmorMonStunCheck(true);
+		GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 		break;
+
 
 	}
 

@@ -494,14 +494,15 @@ namespace Engine
 	
 	struct DECAL_DESC
 	{
-		_float4 vPosition;
-		_float3 vScale;
-		_float4x4 WorldMatrix;
+		_float4 vPosition{};
+		_float3 vScale{};
+		_float4x4 WorldMatrix{};
 		std::string strTextureTag;
-		_float3 vColor;
+		_float3 vColor{};
 
-		_float  fTime;
-		_float	fDisapearTime;
+		_float  fTime{};
+		_float  fAppearTime{};
+		_float	fDisapearTime{};
 	};
 	
 }

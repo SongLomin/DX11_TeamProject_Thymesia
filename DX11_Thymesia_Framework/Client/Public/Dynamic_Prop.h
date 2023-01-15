@@ -28,10 +28,10 @@ public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 protected:
-    weak_ptr<CCollider>         m_pColliderCom;
-    weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
-    list<weak_ptr<CDynamic_Piece>>    m_pPieces;
-    
+    weak_ptr<CCollider>                 m_pColliderCom;
+    weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
+    list<weak_ptr<CDynamic_Piece>>      m_pPieces;
+    string                              m_szSoundKey = "";
 
 protected:
     virtual void Load_FromJson(const json& In_Json) override;

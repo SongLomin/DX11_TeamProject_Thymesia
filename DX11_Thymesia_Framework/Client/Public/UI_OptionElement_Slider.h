@@ -27,11 +27,8 @@ public:
 public:
 	void						Call_ChangeSliderAmount(_int iAmount);
 
-
 protected:
 	virtual void				SetUp_ArrowPos();
-
-
 
 private:
 	void						ClickArrow();
