@@ -48,6 +48,8 @@ HRESULT CUI_Inventory::Start()
 void CUI_Inventory::Tick(_float fTimeDelta)
 {
     fTimeDelta = CUI_Utils::UI_TimeDelta();
+    m_bSortCurrentFrame = false;
+
 
     __super::Tick(fTimeDelta);
 
@@ -280,17 +282,21 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
         m_eSortType = (INVENTORY_SORTTYPE)iSortTypeIndex;
 
         Start_AnimationSorting((_uint)CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW_BEZIER);
+       
 
         Update_SortImages(m_eSortType);
     }
 
     if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
     {
+
         if (m_pMouseOveredItem.lock())
         {   
             if (m_pMouseOveredItem.lock()->Get_Type() == ITEM_TYPE::CONSUMPTION || 
                 m_pMouseOveredItem.lock()->Get_Type() == ITEM_TYPE::INGREDIENT)
             {
+                m_bSortCurrentFrame = true;
+
                 GAMEINSTANCE->PlaySound2D("ItemUse.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT));
 
                 GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>
@@ -298,11 +304,14 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
              
                 Update_ItemSlotFromPlayerInventory();
                 Start_AnimationSorting((_uint)CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK);
-                Call_OnMouseOut();
+
+                if (m_pMouseOveredItem.lock()->Get_CurrentQuantity() < 1)
+                {
+                    Call_OnMouseOut();
+                }
 
             }
         }
-
     }
 }
 
@@ -326,6 +335,7 @@ void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
 
     for (auto& elem : m_vecItemSlot)
     {
+        elem.lock()->OffMouseHover();
         elem.lock()->UnBind_Item();
     }
 
@@ -499,8 +509,17 @@ void CUI_Inventory::Call_OnWheelMove(_float fAmount)
 
 void CUI_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
 {
-    m_pMouseOveredItem = pItem;
-
+    if (m_pMouseOveredItem.lock())
+    {
+        if (m_pMouseOveredItem.lock()->Get_CurrentQuantity() < 1)
+        {
+            m_pMouseOveredItem = pItem;
+        }
+    }
+    else
+    {
+        m_pMouseOveredItem = pItem;
+    }
 
     if (pItem.lock()->Get_CurrentQuantity() > 0)
     {
@@ -512,9 +531,12 @@ void CUI_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
 
 void CUI_Inventory::Call_OnMouseOut()
 {
-    m_pMouseOveredItem = weak_ptr<CItem>();
+    if (!m_bSortCurrentFrame)
+    {
+        m_pMouseOveredItem = weak_ptr<CItem>();
+        Callback_OnMouseOut();
+    }
 
-    Callback_OnMouseOut();
 }
 
 

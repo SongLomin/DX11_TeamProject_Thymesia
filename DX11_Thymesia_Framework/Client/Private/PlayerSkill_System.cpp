@@ -265,8 +265,13 @@ void CPlayerSkill_System::SetUp_SkillMapFromMonsterType()
    m_MonsterSkillMap.emplace(MONSTERTYPE::ENHANCE_GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::BAT, m_pOwner.lock()->Get_Component<CSkill_BloodStorm>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::ARMORSPEARMAN, m_pOwner.lock()->Get_Component<CSkill_Halberds>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::SKULLSHIELDMAN, m_pOwner.lock()->Get_Component<CSkill_Knife>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::ARMORSHIELDMAN, m_pOwner.lock()->Get_Component<CSkill_Knife>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::WEAKARMORSHIELDMAN, m_pOwner.lock()->Get_Component<CSkill_Knife>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::SKULLSPEARMAN, m_pOwner.lock()->Get_Component<CSkill_Halberds>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::WEAKARMORSPEARMAN, m_pOwner.lock()->Get_Component<CSkill_Halberds>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::BIGHANDMAN, m_pOwner.lock()->Get_Component<CSkill_BigHand>());   
+   m_MonsterSkillMap.emplace(MONSTERTYPE::URD, m_pOwner.lock()->Get_Component<CSkill_Bankai>());
 
 }
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)

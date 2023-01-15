@@ -38,8 +38,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 
-
-
     //해금 가능하고, 최대치로 꾹 누르고 있었다면
     if (((m_pIcon.lock()->Get_Ratio() > 0.99)) && Get_Unlockable())
     {
@@ -206,9 +204,11 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnMouseOver()
 {
+    GAMEINSTANCE->PlaySound2D("UI_Select0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
+
 
      Callback_MouseOver(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
-
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnLButtonUp()
@@ -246,6 +246,7 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::OnLButtonDown()
     }
     if (Get_Unlocked())
     {
+        GAMEINSTANCE->PlaySound2D("UI_Select0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
         Callback_ButtonDown(Weak_StaticCast<CUI_EvolveMenu_PlagueWeapon_SkillButton>(m_this));
     }
 

@@ -2243,6 +2243,8 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_BigHand_End.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_BigHand\BigHand_End</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_Bankai.h" />
+    <ClInclude Include="..\Public\Skill_BigHand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -4515,6 +4517,8 @@
     <ClCompile Include="..\Private\Window_TextureEditerView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Skill_Bankai.cpp" />
+    <ClCompile Include="..\Private\Skill_BigHand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

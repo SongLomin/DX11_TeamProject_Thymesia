@@ -63,8 +63,6 @@ void CUrdBossState_Start::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-
-
 void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -75,7 +73,7 @@ void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
-	GAMEINSTANCE->PlaySound2D("STAGE3_BOSS_0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	GAMEINSTANCE->PlaySound2D("STAGE3_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

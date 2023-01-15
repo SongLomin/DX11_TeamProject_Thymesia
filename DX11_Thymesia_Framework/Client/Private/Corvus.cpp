@@ -142,7 +142,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 #endif // _USE_THREAD_
 
 
-
 	return S_OK;
 }
 
@@ -158,11 +157,12 @@ HRESULT CCorvus::Start()
 
 	Load_ClientComponentData();
 
-
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
 	
+	Get_Component<CStatus_Player>().lock()->Full_Recovery();
+
 	return S_OK;
 }
 
@@ -966,8 +966,10 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Scythe>();
 	Add_Component<CSkill_BloodStorm>();
 	Add_Component<CSkill_Halberds>();
-}
+	Add_Component<CSkill_Bankai>();
+	Add_Component<CSkill_BigHand>();
 
+}
 void CCorvus::Free()
 {
 	int a = 0;

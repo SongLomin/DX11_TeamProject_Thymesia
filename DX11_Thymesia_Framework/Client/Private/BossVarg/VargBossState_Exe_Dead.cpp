@@ -116,6 +116,16 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::VARG_KEY);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::SKILLPIECE_VARGSWORD);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::MEMORY01);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::MEMORY01);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::MEMORY02);
+
+
 
 	GAMEINSTANCE->StopSound(0);
 

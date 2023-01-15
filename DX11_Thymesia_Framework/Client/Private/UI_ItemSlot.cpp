@@ -39,6 +39,7 @@ void CUI_ItemSlot::Tick(_float fTimeDelta)
 {
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
 
+
 	if (m_bRenderIcon)//아이콘이 없을 때는 버튼처리도 무시함.
 	{
 		__super::Tick(fTimeDelta);
@@ -140,14 +141,11 @@ void CUI_ItemSlot::Set_RenderGroup(RENDERGROUP eRenderGroup)
 
 void CUI_ItemSlot::OnMouseOver()
 {
-
 	m_pHover.lock()->Get_Component<CEasingComponent_Alpha>().lock()->Set_Lerp(0.f, 1.f, 0.2f, EASING_TYPE::QUAD_IN, 
 		CEasingComponent::ONCE, false);
 
 	if (m_pBindedItem.lock())
 	{
-
-
 		Callback_OnMouseOver(m_pBindedItem);
 	}
 }
@@ -161,6 +159,15 @@ void CUI_ItemSlot::OnMouseOut()
 
 	Callback_OnMouseOut();
 }
+
+void CUI_ItemSlot::OffMouseHover()
+{
+	m_pHover.lock()->Get_Component<CEasingComponent_Alpha>().lock()->Stop();
+	m_pHover.lock()->Set_AlphaColor(0.f);
+}
+
+
+
 
 void CUI_ItemSlot::Lerp_Transform(_float2 vTargetPos, _float fLerpTime)
 {
