@@ -96,7 +96,7 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		Print_Vector(vPosition);
 		break;
 	}
-	case 1430:
+	case 1420:
 		//m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 		break;
 	case 1442:

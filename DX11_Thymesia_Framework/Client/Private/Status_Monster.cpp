@@ -398,7 +398,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 	case Client::MONSTERTYPE::URD:
 		m_tMonsterDesc.m_fAtk = 23.f;
 		m_tMonsterDesc.m_fMaxHP_white = 1500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 5000.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 15000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Urd";

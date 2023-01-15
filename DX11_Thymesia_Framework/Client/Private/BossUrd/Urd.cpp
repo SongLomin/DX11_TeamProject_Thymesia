@@ -408,7 +408,6 @@ void CUrd::Reset_Weapon()
 
 	for (auto& elem : m_pDecoWeapons)
 	{
-		elem.lock()->Set_Enable(false);
 		elem.lock()->Set_RenderOnOff(true);
 		Weak_StaticCast<CUrdWeapon>(elem).lock()->Set_UsingCheck(false);
 	}
