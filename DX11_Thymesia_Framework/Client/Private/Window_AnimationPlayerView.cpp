@@ -442,7 +442,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     _int iMaxKeyIndex = (_int)m_pCurrentAnimation.lock()->Get_MaxChannelKeyIndex();
 
     m_fCurrentTime = m_pCurrentAnimation.lock()->Get_AbsoluteTimeAcc();
-    ImGui::SetNextItemWidth(800.f);
+    ImGui::SetNextItemWidth(1800.f);
     ImGui::SliderInt("##Animation Time", &iNewKeyIndex, 0, iMaxKeyIndex, "%d", ImGuiSliderFlags_NoInput);
 
     if (iCurrentKeyIndex != iNewKeyIndex)
