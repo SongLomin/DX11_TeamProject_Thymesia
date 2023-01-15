@@ -95,6 +95,9 @@ public:
     virtual void OnEventMessage(weak_ptr<CBase> pArg);
 
 protected:
+    virtual void HitEffectSound();
+
+protected:
     void Free();
     
 };

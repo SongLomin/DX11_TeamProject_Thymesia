@@ -65,7 +65,7 @@ void CNorMonState_Parry::LateTick(_float fTimeDelta)
 
 void CNorMonState_Parry::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
-
+	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 

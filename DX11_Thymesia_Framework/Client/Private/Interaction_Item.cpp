@@ -165,7 +165,7 @@ void CInteraction_Item::Act_Interaction()
     for (auto elem : m_Items)
         pPlayer.lock()->Get_Component<CInventory>().lock()->Push_Item(elem);
 
-    GAMEINSTANCE->PlaySound2D("EVM_ItemPickUp.ogg", 1.f);
+    GAMEINSTANCE->PlaySound2D("EVM_ItemPickUp.ogg", 0.2f);
     m_pColliderCom.lock()->Set_Enable(false);
     Set_Dead();
 }

@@ -29,7 +29,7 @@
 
 #pragma region Map
 //#define _BRIGHT_LIGHT_
-//#define _GENERATE_PROP_COLLIDER_ true
+#define _GENERATE_PROP_COLLIDER_ true
 //#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
@@ -114,8 +114,8 @@
 #pragma region Tool
  #define _CORVUS_MODEL_
 #define _BOSS_MODEL_
-// #define _ELITE_MOB_MODEL_
-// #define _NORMAL_MOB_MODEL_
+#define _ELITE_MOB_MODEL_
+#define _NORMAL_MOB_MODEL_
 #define _ANIMATION_TOOL_WEAPON_
 #undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
