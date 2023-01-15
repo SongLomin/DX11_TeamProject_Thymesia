@@ -12,6 +12,8 @@
 #include "Player.h"
 #include "Corvus.h"
 #include "PlayerSkill_System.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CCorvusState_ClawPlunderAttack);
 CLONE_C(CCorvusState_ClawPlunderAttack, CComponent)
@@ -43,14 +45,11 @@ void CCorvusState_ClawPlunderAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
-		
+	
 	//75정도에 값을  가져올 수 있도록 해야함.
 	//Mons
-	if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() == m_iStealTiming && m_bStealCompleteCurrentState == false)
+	if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() >= m_iStealTiming && m_bStealCompleteCurrentState == false)
 	{
 		m_bStealCompleteCurrentState = true;//추가적인 
 
@@ -62,6 +61,8 @@ void CCorvusState_ClawPlunderAttack::Tick(_float fTimeDelta)
 		pCorvus.lock()->Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonsterType);
 
 		pCorvus.lock()->OnStealMonsterSkill(MONSTERTYPE::TYPE_END);
+
+		GAMEINSTANCE->PlaySound2D("Fantasy_Game_Water_Bolt_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
 	}
 
 	//DISSOLVE_DESC	ArmDissolveDesc;
@@ -156,7 +157,6 @@ void CCorvusState_ClawPlunderAttack::Call_NextAnimationKey(const _uint& In_iKeyI
 		return;
 
 }
-
 
 void CCorvusState_ClawPlunderAttack::Attack()
 {

@@ -313,7 +313,7 @@ void CClientLevel::ExitLevel(LEVEL eLevel)
 	{
 		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Save_ClientComponentData();
 	}
-	GAMEINSTANCE->StopSound(0);
+	//GAMEINSTANCE->StopSound(0);
 }
 
 void CClientLevel::Call_Enable_PauseMenu()
