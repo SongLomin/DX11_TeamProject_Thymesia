@@ -106,8 +106,6 @@ void CVargBossState_Exe_Dead::OnStateEnd()
 
 }
 
-
-
 void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
@@ -126,8 +124,7 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 		->Push_Item(ITEM_NAME::MEMORY02);
 
 
-
-	GAMEINSTANCE->StopSound(0);
+	GAMEINSTANCE->StopBGM();
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 

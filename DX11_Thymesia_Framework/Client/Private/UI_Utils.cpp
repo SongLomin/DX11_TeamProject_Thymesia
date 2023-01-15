@@ -256,6 +256,9 @@ ITEM_NAME CUI_Utils::ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType)
 	case Client::MONSTERTYPE::BIGHANDMAN:
 		eItemName = ITEM_NAME::SKILLPIECE_BIGHAND;
 		break;
+	case Client::MONSTERTYPE::JOKER:
+		eItemName = ITEM_NAME::SKILLPIECE_HAMMER;
+		break;
 	default:
 		break;
 	}
