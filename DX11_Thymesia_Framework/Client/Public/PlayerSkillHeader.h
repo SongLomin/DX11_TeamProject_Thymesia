@@ -9,6 +9,9 @@
 #include "Skill_Scythe.h"
 #include "Skill_BloodStorm.h"
 #include "Skill_Halberds.h"
+#include "Skill_BigHand.h"
+#include "Skill_Bankai.h"
+
 
 //Player Skill State
 #include "CorvusStates/CorvusState_PS_Axe.h"

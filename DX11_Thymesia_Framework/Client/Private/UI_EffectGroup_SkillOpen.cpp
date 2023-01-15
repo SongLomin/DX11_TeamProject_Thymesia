@@ -9,7 +9,7 @@
 #include "UI_CustomEffect.h"
 #include "UI_Utils.h"
 #include "GameManager.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_EffectGroup_SkillOpen)
 CLONE_C(CUI_EffectGroup_SkillOpen, CGameObject)
@@ -156,6 +156,7 @@ void CUI_EffectGroup_SkillOpen::Call_OnEasingFloatConditionEvent(_uint iEventNum
     }
     if (iEventNumber == 1)
     {
+        GAMEINSTANCE->PlaySound2D("UnlockSkill.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
         m_pSkillName.lock()->Set_Enable(true);
         m_pSkillName.lock()->Set_LerpAlpha(0.1f, 1.f, 0.2f, EASING_TYPE::QUAD_OUT);
         m_pSkillName.lock()->Set_LerpTransform(_float2(800.f, 420.f), _float2(800.f, 461.f), 0.2f, EASING_TYPE::QUAD_OUT);

@@ -17,7 +17,7 @@
 #include "Inventory.h"
 #include "Player.h"
 #include "UI_Utils.h"
-
+#include "SMath.h"
 #include "Interaction_Item.h"
 
 
@@ -196,21 +196,32 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	pItem.lock()->Get_Transform()->Set_Position(m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f));
 	pItem.lock()->Add_Item(CUI_Utils::ConvertMonsterTypeToSkillPiece(m_eMonType));
 
+	pItem.lock()->Add_Item(ITEM_NAME::MEMORY01);
+
+	_uint iRandItem = SMath::Random(0, 2);
+
+	switch (iRandItem)
+	{
+	case 0:
+		pItem.lock()->Add_Item(ITEM_NAME::BASIL);
+	case 1:
+		pItem.lock()->Add_Item(ITEM_NAME::CINNAMON);
+	case 2:
+		pItem.lock()->Add_Item(ITEM_NAME::THYME);
+	default:
+		break;
+	}
+
+	pItem.lock()->Add_Item((ITEM_NAME)iRandItem);
+
+
+		
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
 
 	Get_OwnerMonster()->Release_Monster();
 	
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
-		->Push_Item(ITEM_NAME::BASIL);
-
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
-		->Push_Item(ITEM_NAME::MEMORY01);
-
-	ITEM_NAME eSkillPiece = CUI_Utils::ConvertMonsterTypeToSkillPiece(m_eMonType);
-
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
-		->Push_Item(eSkillPiece);
+	
 
 
 #ifdef _DEBUG_COUT_

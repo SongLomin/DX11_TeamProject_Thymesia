@@ -42,6 +42,8 @@ public:
 public:
 	virtual void	OnMouseOver() override;
 	virtual void	OnMouseOut() override;
+	void			OffMouseHover();
+
 
 public:
 	virtual void	Lerp_Transform(_float2	vTargetPos, _float fLerpTime);

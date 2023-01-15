@@ -263,6 +263,17 @@ void CUI_EvolveMenu::OnDisable()
 	GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
 
 	GET_SINGLE(CGameManager)->Set_MoveTargetCamera(true);
+
+	weak_ptr<CPlayer> pPlayer;
+
+	pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (pPlayer.lock())
+	{
+		pPlayer.lock()->Get_Component<CStatus_Player>().lock()->Full_Recovery();
+	}
+
+
 }
 
 void CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu()

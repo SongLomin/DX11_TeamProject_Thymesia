@@ -75,6 +75,11 @@ void CPreset_ItemData::CreateItemData(weak_ptr<class CItem> pItem, ITEM_NAME eIt
 		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
 		pItem.lock()->m_iMaxQuantity = 99;
 		break;
+	case Client::ITEM_NAME::SKILLPIECE_BIGHAND:
+		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	
 	default:
 		break;
 	}
@@ -126,6 +131,9 @@ void CPreset_ItemData::SetUITextureFromItemName(weak_ptr<class CUI> Out_pUI, ITE
 		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
 		break;
 	case Client::ITEM_NAME::SKILLPIECE_HALBERDS:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_BIGHAND:
 		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
 		break;
 	default:

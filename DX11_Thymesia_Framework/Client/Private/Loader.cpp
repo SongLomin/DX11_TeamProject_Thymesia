@@ -1037,6 +1037,10 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("SkillIcon_Scythe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Scythe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("SkillIcon_BloodStorm"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_BatKing.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("SkillIcon_Halberd"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Halberd.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("SkillIcon_BigHand"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_BigHand.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	
+	LOAD_TEXTURES_USE_THREAD(("SkillIcon_Bankai"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_BloodSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 	//Landing
@@ -1412,9 +1416,7 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("Item_SkillPiece_Scythe_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Scythe_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Item_SkillPiece_BloodStorm_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/BloodStorm_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Item_SkillPiece_Halberd_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Halberd_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-
+	LOAD_TEXTURES_USE_THREAD(("Item_SkillPiece_BigHand_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/BigHand_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("Item_SkillPiece_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1436,6 +1438,7 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("Popup_SkillPiece_Varg"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Varg.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Popup_SkillPiece_BloodStorm"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_BloodStorm.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Popup_SkillPiece_Halberd"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Halberds.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Popup_SkillPiece_BigHand"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_BigHandMan.png.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//UI _ ItemRequirement	
 	LOAD_TEXTURES_USE_THREAD(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1495,6 +1498,9 @@ void CLoader::Load_UIResource()
 
 	LOAD_TEXTURES_USE_THREAD(("PW_Halberds_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Halberd/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("PW_Halberds_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Halberd/Informaiton0.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	LOAD_TEXTURES_USE_THREAD(("PW_BigHand_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/BigHand/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("PW_BigHand_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/BigHand/Informaiton0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("SkillOpen_TitleText"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/TitleText.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("SkillOpen_SkillName"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/SkillName%d.png"), MEMORY_TYPE::MEMORY_STATIC);

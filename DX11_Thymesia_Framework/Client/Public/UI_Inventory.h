@@ -100,6 +100,8 @@ private:
 	weak_ptr<CCustomUI>		m_pBG;
 
 private:
+    _bool					m_bSortCurrentFrame = false;
+
     vector<weak_ptr<CUI_ItemSlot>>  m_vecItemSlot;
     weak_ptr<CUI_Scroll>            m_pScroll;
 

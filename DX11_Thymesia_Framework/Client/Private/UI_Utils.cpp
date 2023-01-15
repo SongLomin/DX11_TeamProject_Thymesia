@@ -158,6 +158,12 @@ void CUI_Utils::Set_SkillIcon(weak_ptr<CUI> pUI, SKILL_NAME eSkillName)
 	case Client::SKILL_NAME::SKILL_HALBERDS:
 		pUI.lock()->Set_Texture("SkillIcon_Halberd");
 		break;
+	case Client::SKILL_NAME::SKILL_BIGHAND:
+		pUI.lock()->Set_Texture("SkillIcon_BigHand");
+		break;
+	case Client::SKILL_NAME::SKILL_BANKAI:
+		pUI.lock()->Set_Texture("SkillIcon_Bankai");
+		break;
 	case Client::SKILL_NAME::SKILL_END:
 		pUI.lock()->Set_Texture("None");
 		break;
@@ -193,6 +199,9 @@ ITEM_NAME CUI_Utils::ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName)
 		break;
 	case Client::SKILL_NAME::SKILL_HALBERDS:
 		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
+		break;
+	case Client::SKILL_NAME::SKILL_BIGHAND:
+		eItemName = ITEM_NAME::SKILLPIECE_BIGHAND;
 		break;
 	case Client::SKILL_NAME::SKILL_END:
 		break;
@@ -243,8 +252,10 @@ ITEM_NAME CUI_Utils::ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
 		eItemName = ITEM_NAME::SKILLPIECE_HALBERDS;
-
-		break;	
+		break;
+	case Client::MONSTERTYPE::BIGHANDMAN:
+		eItemName = ITEM_NAME::SKILLPIECE_BIGHAND;
+		break;
 	default:
 		break;
 	}

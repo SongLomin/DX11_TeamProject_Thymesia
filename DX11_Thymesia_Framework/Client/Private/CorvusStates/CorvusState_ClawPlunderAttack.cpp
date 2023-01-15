@@ -49,21 +49,7 @@ void CCorvusState_ClawPlunderAttack::Tick(_float fTimeDelta)
 	
 	//75정도에 값을  가져올 수 있도록 해야함.
 	//Mons
-	if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() >= m_iStealTiming && m_bStealCompleteCurrentState == false)
-	{
-		m_bStealCompleteCurrentState = true;//추가적인 
-
-		weak_ptr<CCorvus> pCorvus = Weak_StaticCast<CCorvus>(m_pOwner);
-
-		//가장 최근에 흡수한 몬스터의 타입
-		MONSTERTYPE eMonsterType = pCorvus.lock()->GetMostRecentStealedMonsterType();
-
-		pCorvus.lock()->Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonsterType);
-
-		pCorvus.lock()->OnStealMonsterSkill(MONSTERTYPE::TYPE_END);
-
-		GAMEINSTANCE->PlaySound2D("Fantasy_Game_Water_Bolt_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
-	}
+	
 
 	//DISSOLVE_DESC	ArmDissolveDesc;
 	//ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
@@ -197,6 +183,17 @@ void CCorvusState_ClawPlunderAttack::OnStateStart(const _float& In_fAnimationBle
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
+
+	weak_ptr<CCorvus> pCorvus = Weak_StaticCast<CCorvus>(m_pOwner);
+
+	//가장 최근에 흡수한 몬스터의 타입
+	MONSTERTYPE eMonsterType = pCorvus.lock()->GetMostRecentStealedMonsterType();
+
+	pCorvus.lock()->Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonsterType);
+
+	pCorvus.lock()->OnStealMonsterSkill(MONSTERTYPE::TYPE_END);
+
+	GAMEINSTANCE->PlaySound2D("Fantasy_Game_Water_Bolt_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
 
 
 	//Disable_Weapons();
@@ -342,8 +339,6 @@ _bool CCorvusState_ClawPlunderAttack::Check_RequirementNextAttackState()
 
 	_uint iTargetKeyFrameFirst = 15;
 	_uint iTargetKeyFrameSecond = 50;
-
-
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
