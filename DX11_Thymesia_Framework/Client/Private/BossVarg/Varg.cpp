@@ -370,6 +370,13 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 			m_iPassIndex = 0;
 		}
 
+		if (1 == i || 3 == i)
+		{
+			m_iPassIndex = 9;
+
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+		}
+
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 
