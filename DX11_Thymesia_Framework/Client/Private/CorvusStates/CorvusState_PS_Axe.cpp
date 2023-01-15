@@ -4,6 +4,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Effect_Decal.h"
+#include "CorvusStates/CorvusStates.h"
 
 
 GAMECLASS_C(CCorvusState_PS_Axe);
@@ -12,6 +13,8 @@ CLONE_C(CCorvusState_PS_Axe, CComponent)
 void CCorvusState_PS_Axe::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	__super::Call_AnimationEnd(iEndAnimIndex);
+
+
 }
 
 void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
@@ -76,7 +79,34 @@ void CCorvusState_PS_Axe::Tick(_float fTimeDelta)
 void CCorvusState_PS_Axe::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Check_AndChangeNextState();
 }
+
+
+
+_bool CCorvusState_PS_Axe::Check_AndChangeNextState()
+{
+
+	if (!Check_Requirement())
+		return false;
+
+
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 
 void CCorvusState_PS_Axe::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -101,6 +131,8 @@ void CCorvusState_PS_Axe::OnStateEnd()
 void CCorvusState_PS_Axe::OnEventMessage(weak_ptr<CBase> pArg)
 {
 	__super::OnEventMessage(pArg);
+
+
 }
 
 void CCorvusState_PS_Axe::Free()

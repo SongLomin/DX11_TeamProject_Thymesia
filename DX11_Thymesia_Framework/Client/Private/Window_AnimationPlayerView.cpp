@@ -119,6 +119,11 @@ void CWindow_AnimationPlayerView::Call_NextAnimationKey(const _uint& In_Key)
         [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
     [In_Key];*/
 
+    if (GET_SINGLE(CWindow_EffectEditerView)->Get_SoundSyncKey() == In_Key)
+    {
+        GAMEINSTANCE->PlaySound3D(GET_SINGLE(CWindow_EffectEditerView)->Get_SoundFileName(), GET_SINGLE(CWindow_EffectEditerView)->Get_SoundVolume(), {});
+    }
+
     if (nullptr == m_KeyEventJson["AnimationIndex"]
         [pCurrentModel.lock()->Get_CurrentAnimationIndex()][In_Key])
     {

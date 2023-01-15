@@ -141,7 +141,7 @@ _bool CBatBossState_SonicBoom::Check_AndChangeNextState()
 
 
 
-	if (m_iSonicBoomCount > 0 && m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 312)
+	if (m_iSonicBoomCount > 0 && m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 312)
 	{	
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBoom>(0.05f);
 		return true;

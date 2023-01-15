@@ -87,6 +87,12 @@ void CNorMonState_Die::Start()
 		break;
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_Dead");
+		break; 
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LArmorLV1_01.ao|HArmorLV1_Halberds_Dead");
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV1_01.ao|HArmorLV1_Halberds_Dead");
 		break;
 	}
 
@@ -176,6 +182,12 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 		break;
 	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::ARMORSHIELDMAN:
+		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+		break;
+	case Client::MONSTERTYPE::WEAKARMORSHIELDMAN:
 		GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 		break;
 	}

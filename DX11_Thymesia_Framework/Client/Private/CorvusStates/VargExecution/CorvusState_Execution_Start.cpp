@@ -56,6 +56,11 @@ void CCorvusState_Execution_Start::OnDisable()
 
 }
 
+void CCorvusState_Execution_Start::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CCorvusState_Execution_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);

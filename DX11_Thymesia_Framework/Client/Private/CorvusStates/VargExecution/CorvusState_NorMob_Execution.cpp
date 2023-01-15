@@ -106,6 +106,11 @@ void CCorvusState_NorMob_Execution::Call_NextAnimationKey(const _uint& In_iKeyIn
 		return;
 }
 
+void CCorvusState_NorMob_Execution::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CCorvusState_NorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 {
 	m_pTargetObject = Weak_Cast<CGameObject>(pArg);

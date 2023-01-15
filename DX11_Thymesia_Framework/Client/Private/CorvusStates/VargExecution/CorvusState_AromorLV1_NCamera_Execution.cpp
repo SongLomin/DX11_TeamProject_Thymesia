@@ -66,7 +66,7 @@ void CCorvusState_AromorLV1_NCamera_Execution::OnStateStart(const _float& In_fAn
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-
+	
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_AromorLV1_NCamera_Execution::Call_NextAnimationKey, this, placeholders::_1);
 
@@ -115,6 +115,11 @@ void CCorvusState_AromorLV1_NCamera_Execution::Call_NextAnimationKey(const _uint
 void CCorvusState_AromorLV1_NCamera_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 {
 
+}
+
+void CCorvusState_AromorLV1_NCamera_Execution::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
 void CCorvusState_AromorLV1_NCamera_Execution::Free()

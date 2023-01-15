@@ -226,7 +226,7 @@ _bool CNorMonState_Petrol::Check_AndChangeNextState()
 		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
 		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_IdleType(1);
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ChanegePatrol(true);
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ChanegePatrol(false);
 		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 		return true;
 	}

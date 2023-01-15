@@ -138,6 +138,22 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			if (!m_pStatusCom.lock()->Is_Dead())
+			{
+				if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CUrdBossState_HurtM_FR>();
+				}
+
+				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CUrdBossState_HurtM_FL>();
+				}
+			}
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 			if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -262,11 +278,14 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			//이떄 플레이어한테 이벤트를 던져줍시다
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{
-				
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
 			}
 			else
 			{
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
 								
 			}

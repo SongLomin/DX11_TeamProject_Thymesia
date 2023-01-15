@@ -8,6 +8,7 @@
 #include "GameManager.h"
 #include "Weapon.h"
 #include "Animation.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CCorvusState_PS);
 
@@ -66,6 +67,7 @@ void CCorvusState_PS::OnStateEnd()
 
 void CCorvusState_PS::OnEventMessage(weak_ptr<CBase> pArg)
 {
+
 }
 
 void CCorvusState_PS::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)

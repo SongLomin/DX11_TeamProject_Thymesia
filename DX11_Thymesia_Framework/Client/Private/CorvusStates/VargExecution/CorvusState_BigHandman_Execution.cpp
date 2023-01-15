@@ -97,6 +97,11 @@ void CCorvusState_BigHandman_Execution::Call_NextAnimationKey(const _uint& In_iK
 		return;
 }
 
+void CCorvusState_BigHandman_Execution::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CCorvusState_BigHandman_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 {
 	//m_pTargetObject = Weak_Cast<CGameObject>(pArg);

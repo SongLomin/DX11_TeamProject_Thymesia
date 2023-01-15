@@ -78,6 +78,8 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pModelCom.lock()->Set_AnimationSpeed(0.5f + (m_iAttackCount * 0.5));
+
 	m_bAttackLookAtLimit = true;
 
 
@@ -111,7 +113,7 @@ void CBigHandManState_ComboB_Start::OnStateStart(const _float& In_fAnimationBlen
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
 		bind(&CBigHandManState_ComboB_Start::Call_NextKeyFrame, this, placeholders::_1);
 	
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f + (m_iAttackCount * 0.5));
+	
 }
 
 void CBigHandManState_ComboB_Start::OnStateEnd()
