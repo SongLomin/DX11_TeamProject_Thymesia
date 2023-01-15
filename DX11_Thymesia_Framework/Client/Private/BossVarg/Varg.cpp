@@ -542,15 +542,15 @@ void CVarg::TurnOn_Light(_float fTimeDelta, _bool& In_bEnd)
 
 void CVarg::TurnOff_Light(_float fTimeDelta, _bool& In_bEnd)
 {
-	m_LightDesc.fIntensity -= fTimeDelta*5.f;
-	m_DirLightDesc.fIntensity = min(m_DirLightDesc.fIntensity+fTimeDelta,1.f);
+	//m_LightDesc.fIntensity -= fTimeDelta*5.f;
+	m_DirLightDesc.fIntensity = min(m_DirLightDesc.fIntensity + fTimeDelta * 0.2f , 1.f);
 	GAMEINSTANCE->Set_IrradianceColorScale(_float3(m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity, m_DirLightDesc.fIntensity));
 	if (0.f > m_LightDesc.fIntensity)
 	{
 		m_LightDesc.bEnable = false;
 		In_bEnd = true;
 	}
-	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+	//GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 	GAMEINSTANCE->Set_LightDesc(m_DirLightDesc);
 }
 

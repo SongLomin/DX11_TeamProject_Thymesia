@@ -113,10 +113,10 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_SpotLightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
 	m_SpotLightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
 	m_SpotLightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
-	m_SpotLightDesc.fIntensity = 10.f;
+	m_SpotLightDesc.fIntensity = 0.f;
 	m_SpotLightDesc.fRange = 10.f;
-	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
-	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(60.f));
+	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(30.f));
+	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(35.f));
 
 	vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
 	vLightLook = XMVectorSet(0.f,-1.f,0.f,0.f);
@@ -277,7 +277,7 @@ void CCorvus::Use_SpotLight(_float fTimeDelta, _bool& Out_End)
 
 	XMStoreFloat4(&m_SpotLightDesc.vPosition, vLightPos);
 
-	m_SpotLightDesc.fIntensity = min(10.f, m_SpotLightDesc.fIntensity + fTimeDelta * 40.f);
+	m_SpotLightDesc.fIntensity = min(1.f, m_SpotLightDesc.fIntensity + fTimeDelta * 1.8f);
 
 	GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 }
@@ -538,7 +538,21 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
+	else if (EVENT_TYPE::ON_RESPAWN == (EVENT_TYPE)iArg)
+	{
+		if (m_CreatedLevel == LEVEL_STAGE3)
+		{
+			GAMEINSTANCE->Set_IrradianceColorScale(_float3(1.f, 1.f, 1.f));
+			m_LightDesc.bEnable = true;
+			m_SpotLightDesc.bEnable = false;
+			m_SpotLightDesc.fIntensity = 0.f;
 
+			GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+			GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
+
+			CallBack_LightEvent.Clear();
+		}
+	}
 
 
 

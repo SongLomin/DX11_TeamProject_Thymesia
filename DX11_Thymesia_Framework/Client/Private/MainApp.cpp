@@ -93,9 +93,9 @@ HRESULT CMainApp::Initialize()
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv2_Fortress\\Binary");
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Lv3_Garden\\Binary");
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Map_Else\\Binary");
-	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
-	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
-	Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Bat");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Varg");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Urd");
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Boss\\Bat");
 
 #ifdef _BAKE_MIPMAPS_
 	Bake_MipMaps();
