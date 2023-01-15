@@ -34,6 +34,10 @@ private:
 	_bool    m_bNextState = false;
 	_float   m_fSinematic = 0.f;
 
+	_bool	m_bFadeOutTrigger = true;
+	_bool	m_bStartTimeAcc = false;
+	_float	m_fTimeAcc = 0.f;
+
 private:
 //	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

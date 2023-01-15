@@ -4,6 +4,7 @@
 
 BEGIN(Client)
 class CUI_PauseMenu;
+class CPlayer;
 class CLevel_Test final
 	: public CClientLevel
 {
@@ -28,6 +29,8 @@ private:
 	_bool	m_bCheckMonster = false;
 	_int	m_iWaveCount    = 3;
 	_bool	m_bFadeTrigger  = false;
+
+	weak_ptr<CPlayer> m_pPlayer;
 };
 
 END

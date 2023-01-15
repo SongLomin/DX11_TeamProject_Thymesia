@@ -188,7 +188,7 @@ HRESULT CUrd::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
-
+		iPassIndex = 5;
 		if (iPassIndex > 0)
 		{
 			iPassIndex = m_iPassIndex;

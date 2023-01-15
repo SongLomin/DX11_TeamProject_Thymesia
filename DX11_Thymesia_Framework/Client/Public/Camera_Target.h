@@ -50,7 +50,7 @@ public:
 
 public:
 	_bool Get_IsFocused() { return m_bIsFocused; }
-
+	virtual void OnEventMessage(_uint iArg) override;
 
 protected:
 	virtual HRESULT Bind_PipeLine() override;
@@ -66,7 +66,6 @@ private:
 
 	void Update_Bone();
 	void Update_PhysXCollider(_float fTimeDelta);
-
 
 
 

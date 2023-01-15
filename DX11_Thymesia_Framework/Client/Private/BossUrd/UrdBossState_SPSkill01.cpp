@@ -72,7 +72,9 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 
 
 	_bool bEnd = false;
+
 	CallBack_ColorInversion(fTimeDelta, bEnd);
+
 	if (bEnd)
 	{
 		CallBack_ColorInversion.Clear();
@@ -176,7 +178,7 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 		m_bCameraShaking = true;
-		m_fShakingRatio = 0.01f;
+		m_fShakingRatio = 0.1f;
 	}
 		return;
 	case 204:
@@ -189,11 +191,13 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
-		m_fShakingRatio = 0.1f;
+		m_fShakingRatio = 0.25f;
 	}
 		return;
 	case 220:
 	{
+		m_fInversionStrength = 1.f;
+		m_fInversionRatio = 0.f;
 		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
 		return;
 	}

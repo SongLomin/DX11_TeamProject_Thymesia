@@ -19,6 +19,7 @@
 #include "Effect_Decal.h"
 #include "CNvClothCollider.h"
 #include "Interaction_Ladder.h"
+#include "UI_FadeMask.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -115,8 +116,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_SpotLightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
 	m_SpotLightDesc.fIntensity = 0.f;
 	m_SpotLightDesc.fRange = 10.f;
-	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(30.f));
-	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(35.f));
+	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
+	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(45.f));
 
 	vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
 	vLightLook = XMVectorSet(0.f,-1.f,0.f,0.f);
@@ -551,7 +552,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 			GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 
 			CallBack_LightEvent.Clear();
+			GAMEINSTANCE->Set_GrayScale(1.f);
 		}
+
+		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_CreatedLevel);
+		pFadeMask.lock()->Set_Fade(1.f, 0.f, 2.f, EASING_TYPE::LINEAR);
 	}
 
 

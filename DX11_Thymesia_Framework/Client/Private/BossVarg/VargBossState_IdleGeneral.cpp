@@ -12,6 +12,7 @@
 #include "BossMonster.h"
 #include "MonsterHPBar_Boss.h"
 #include "GameManager.h"
+#include "UI_FadeMask.h"
 
 GAMECLASS_C(CVargBossState_IdleGeneral);
 CLONE_C(CVargBossState_IdleGeneral, CComponent)
@@ -68,6 +69,8 @@ void CVargBossState_IdleGeneral::LateTick(_float fTimeDelta)
 void CVargBossState_IdleGeneral::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_bFadeOutTrigger = true;
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
@@ -90,6 +93,13 @@ void CVargBossState_IdleGeneral::OnStateEnd()
 void CVargBossState_IdleGeneral::EventTrigger(_float fTimeDelta, _bool& Out_bEnd)
 {
 	m_fAccTime += fTimeDelta;
+
+	if (m_bFadeOutTrigger && 3.f <= m_fAccTime)
+	{
+		m_bFadeOutTrigger = false;
+		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+		pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 2.f, 1.f, EASING_TYPE::LINEAR);
+	}
 
 	if (6.f <= m_fAccTime)
 	{
