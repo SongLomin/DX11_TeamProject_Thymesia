@@ -76,7 +76,7 @@
 
 #pragma region Effects
 #undef _BAKE_EFFECTMESH_FBX_
-#undef _EFFECT_TOOL_
+//#define _EFFECT_TOOL_
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_

@@ -7,6 +7,9 @@
 #include "GameInstance.h"
 #include "SMath.h"
 
+static const _float Sound_Min_Distance = 10.f;
+static const _float Sound_Max_Distance = 300.f;
+
 IMPLEMENT_SINGLETON(CSound_Manager)
 
 void CSound_Manager::Initialize()
@@ -125,9 +128,8 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 		return -1;
 
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[_iIndex].pChannel);
-	if (_vol >= SOUND_MAX)
-		_vol = 1.f;
-	else if (_vol <= SOUND_MIN)
+
+	if (_vol <= 0.f)
 		_vol = 0.f;
 
 	m_pChannelArr[_iIndex].is3DSound = true;
@@ -137,8 +139,8 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 	FMOD_VECTOR vVelocity{};
 
 	FMOD_Channel_Set3DAttributes(m_pChannelArr[_iIndex].pChannel, &vPosition, &vVelocity);
-	FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[_iIndex].pChannel, 1.0f, 100.0f);
-	FMOD_Channel_SetVolume(m_pChannelArr[_iIndex].pChannel, _vol * m_fEffectvolume);
+	FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[_iIndex].pChannel, Sound_Min_Distance, Sound_Max_Distance);
+	FMOD_Channel_SetVolume(m_pChannelArr[_iIndex].pChannel, _vol * m_fEffectvolume * 0.25f);
 
 	FMOD_System_Update(m_pSystem);
 	return _iIndex;
@@ -181,9 +183,8 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 		if (!Is_PlayingChannel(m_pChannelArr[i].pChannel))
 		{
 			FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[i].pChannel);
-			if (_vol >= SOUND_MAX)
-				_vol = 1.f;
-			else if (_vol <= SOUND_MIN)
+			
+			if (_vol <= 0.f)
 				_vol = 0.f;
 
 			m_pChannelArr[i].is3DSound = true;
@@ -193,8 +194,8 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 			FMOD_VECTOR vVelocity{};
 
 			FMOD_Channel_Set3DAttributes(m_pChannelArr[i].pChannel, &vPosition, &vVelocity);
-			FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[i].pChannel, 1.0f, 100.0f);
-			FMOD_Channel_SetVolume(m_pChannelArr[i].pChannel, _vol * m_fEffectvolume);
+			FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[i].pChannel, Sound_Min_Distance, Sound_Max_Distance);
+			FMOD_Channel_SetVolume(m_pChannelArr[i].pChannel, _vol * m_fEffectvolume * 0.25f);
 			iResult = i;
 			break;
 		}
@@ -219,14 +220,13 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _f
 		return -1;
 
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[_iIndex].pChannel);
-	if (_vol >= SOUND_MAX)
-		_vol = 1.f;
-	else if (_vol <= SOUND_MIN)
+	
+	if (_vol <= 0.f)
 		_vol = 0.f;
 
 	m_pChannelArr[_iIndex].is3DSound = false;
 
-	FMOD_Channel_SetVolume(m_pChannelArr[_iIndex].pChannel, _vol * m_fEffectvolume);
+	FMOD_Channel_SetVolume(m_pChannelArr[_iIndex].pChannel, _vol * m_fEffectvolume * 0.25f);
 	FMOD_System_Update(m_pSystem);
 	return _iIndex;
 }
@@ -267,14 +267,13 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol)
 		if (!Is_PlayingChannel(m_pChannelArr[i].pChannel))
 		{
 			FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[i].pChannel);
-			if (_vol >= SOUND_MAX)
-				_vol = 1.f;
-			else if (_vol <= SOUND_MIN)
+			
+			if (_vol <= 0.f)
 				_vol = 0.f;
 
 			m_pChannelArr[i].is3DSound = false;
 
-			FMOD_Channel_SetVolume(m_pChannelArr[i].pChannel, _vol * m_fEffectvolume);
+			FMOD_Channel_SetVolume(m_pChannelArr[i].pChannel, _vol * m_fEffectvolume * 0.25f);
 			iResult = i;
 			break;
 		}
@@ -314,13 +313,11 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
 
 	//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
 
-	if (_vol >= SOUND_MAX)
-		_vol = 1.f;
-	else if (_vol <= SOUND_MIN)
+	if (_vol <= 0.f)
 		_vol = 0.f;
 
 
-	FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, _vol * m_fBGMvolume);
+	FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, _vol * m_fBGMvolume * 0.25f);
 	FMOD_System_Update(m_pSystem);
 }
 

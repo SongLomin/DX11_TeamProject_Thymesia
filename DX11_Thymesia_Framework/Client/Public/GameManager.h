@@ -86,7 +86,7 @@ public: // For. ON / OFF Eye Effect
 
 private:
 	std::unordered_map<const char*, _uint> m_StoredEffects;
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 public: // For. Cloning Particle
     void Store_ParticleInfo(EFFECTPARTICLE_DESC tParticleDesc, std::string strBoneName)
     {
@@ -123,7 +123,7 @@ private:
     EFFECTMESH_DESC m_tEffectMeshDesc;
 
 #pragma endregion // Created By. Á¶¼º¿ì
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);

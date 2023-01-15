@@ -772,6 +772,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		Change_State<CCorvusState_Die>();
 	}
+	if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
+	{
+		m_pPhysXControllerCom.lock()->Set_Position(XMVectorSet(3.f, 0.f, 266.f, 1.f), fTimeDelta, Filters);
+	}
+
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	//{
 	//	++m_iContainerIndex;

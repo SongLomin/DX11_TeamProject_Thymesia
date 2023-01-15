@@ -190,7 +190,6 @@ namespace Client
 		_float		fMaxLifeTime;
 #pragma endregion
 
-#ifdef _DEBUG
 		_bool		bIsMinMaxSame_StartSpeed;
 		_bool		bIsMinMaxSame_SpeedForce;
 		_bool		bIsMinMaxSame_SpeedLimit;
@@ -209,7 +208,6 @@ namespace Client
 		_bool		bIsMinMaxSame_ColorSpeed;
 		_bool		bIsMinMaxSame_ColorForce;
 		_bool		bIsMinMaxSame_ColorLimit;
-#endif // _DEBUG
 
 #pragma region Spawn Position
 		_float3		vMinSpawnPosition;

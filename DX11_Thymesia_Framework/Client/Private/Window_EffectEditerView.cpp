@@ -261,7 +261,7 @@ void CWindow_EffectEditerView::Update_Sound()
     ImGui::SetNextItemWidth(100.f);
     if (ImGui::InputInt("Sync Sound with Key Event", &m_iSoundSyncKey));
 
-    if (ImGui::Button("Play"))
+    if (ImGui::Button("Play") || KEY_INPUT(KEY::F5, KEY_STATE::TAP))
     {
         GAMEINSTANCE->PlaySound3D(m_szSoundFileName, m_fVolume, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
     }

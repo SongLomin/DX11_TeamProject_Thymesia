@@ -97,7 +97,7 @@ void CWindow_AnimationPlayerView::Call_UpdatePreViewModel()
     // 델리게이트에 바인드.
     m_pCurrentAnimation.lock()->CallBack_NextChannelKey += bind(&CWindow_AnimationPlayerView::Call_NextAnimationKey, this, placeholders::_1);
 
-    // m_pPreViewModel.lock()->Bind_KeyFrameEvent(m_pCurrentModelCom.lock()->Get_ModelKey());
+    m_pPreViewModel.lock()->Bind_KeyFrameEvent(m_pCurrentModelCom.lock()->Get_ModelKey());
 
 }
 
@@ -442,7 +442,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     _int iMaxKeyIndex = (_int)m_pCurrentAnimation.lock()->Get_MaxChannelKeyIndex();
 
     m_fCurrentTime = m_pCurrentAnimation.lock()->Get_AbsoluteTimeAcc();
-    ImGui::SetNextItemWidth(1800.f);
+    //ImGui::SetNextItemWidth(1800.f);
     ImGui::SliderInt("##Animation Time", &iNewKeyIndex, 0, iMaxKeyIndex, "%d", ImGuiSliderFlags_NoInput);
 
     if (iCurrentKeyIndex != iNewKeyIndex)

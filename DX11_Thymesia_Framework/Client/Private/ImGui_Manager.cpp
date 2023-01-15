@@ -359,7 +359,7 @@ void CImGui_Manager::Init_EffectEditer()
 		elem->Start();
 	}
 
-	//CClientLevel::Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_EDIT);
+	CClientLevel::Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_EDIT);
 	m_eCurrentEditerType = EDITER_TYPE::EFFECT;
 }
 

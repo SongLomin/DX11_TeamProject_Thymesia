@@ -1,1 +1,6091 @@
-{"AnimationIndex":[[null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_BP01_Phase2"]},{"EffectName":["Urd_Atk01LV2_SlashParticle_Phase2"]},null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_SharpParticle1_Phase2","Urd_Atk01LV2_StabParticle01_Phase2"],"Enable_Weapon":true},null,{"Enable_Weapon":false},null,null,null,null,null,null,{"Enable_Weapon":true},{"EffectName":["Urd_Atk01LV2_SharpParticle1_Phase2","Urd_Atk01LV2_StabParticle01_Phase2"]},null,null,{"Enable_Weapon":false},null,null,null,null,null,null,{},null,{"EffectName":["Urd_Atk01LV2_SharpParticle2_Phase2","Urd_Atk01LV2_StabParticle02_Phase2"],"Enable_Weapon":true},null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_DrawParticle_Phase2"]},null,null,null],[null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_BP01_Phase2"]},{"EffectName":["Urd_Atk01LV2_SlashParticle_Phase2"]},null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_SharpParticle1_Phase2","Urd_Atk01LV2_StabParticle01_Phase2"],"Enable_Weapon":true},null,{"Enable_Weapon":false},null,null,null,null,null,null,{"Enable_Weapon":true},{"EffectName":["Urd_Atk01LV2_SharpParticle1_Phase2","Urd_Atk01LV2_StabParticle01_Phase2"]},null,null,{"Enable_Weapon":false},null,null,null,null,null,null,{},null,{"EffectName":["Urd_Atk01LV2_SharpParticle2_Phase2","Urd_Atk01LV2_StabParticle02_Phase2"],"Enable_Weapon":true},null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_DrawParticle_Phase2"]},null,null,null],[null,null,null,null,null,{"EffectName":["Urd_Atk02LV2C0_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02LV2C0_BP_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02LV2C0_StabParticle02_Phase2"]},null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02LV2C0_SlashParticle_Phase2","Urd_Atk02LV2C0_StabParticle01_Phase2"]},null,null,null,null,{"Enable_Weapon":true},null,null,null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02LV2C0_DrawParticle_Phase2"]}],[null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_BP01_Phase2"]},{"EffectName":["Urd_Atk01LV2_SlashParticle_Phase2"]},null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_SharpParticle1_Phase2","Urd_Atk01LV2_StabParticle01_Phase2"],"Enable_Weapon":true},null,{"Enable_Weapon":false},null,null,null,null,null,null,{"Enable_Weapon":true},{"EffectName":["Urd_Atk01LV2_SharpParticle1_Phase2","Urd_Atk01LV2_StabParticle01_Phase2"]},null,null,{"Enable_Weapon":false},null,null,null,null,null,null,{},{"EffectName":["Urd_Atk01LV2_SharpParticle2_Phase2","Urd_Atk01LV2_StabParticle02_Phase2"]},{"Enable_Weapon":true},null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk01LV2_DrawParticle_Phase2"]},null,null,null],[null,null,null,null,null,{"EffectName":["Urd_Atk02_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02_BP_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02_SlashParticle_Phase2","Urd_Atk02_StabParticle01_Phase2"]},null,null,null,null,null,{},null,null,null,{},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk02_DrawParticle_Phase2"]},null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk03_DashSting_L_BP_Phase2","Urd_Atk03_DashSting_L_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk03_DashSting_L_BP2_Phase2"]},{"EffectName":["Urd_Atk03_DashSting_L_SlashParticle_Phase2","Urd_Atk03_DashSting_L_StabParticle01_Phase2"]},null,null,null,null,null,null,null,{"Enable_Weapon":true},null,null,null,null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk03_DashSting_L_DrawParticle_Phase2"]}],[null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk03_DashSting_R_BP_Phase2"]},null,null,null,{"EffectName":["Urd_Atk03_DashSting_R_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk03_DashSting_R_BP2_Phase2"]},{"EffectName":["Urd_Atk03_DashSting_R_SlashParticle_Phase2","Urd_Atk03_DashSting_R_StabParticle01_Phase2"]},null,null,null,null,null,null,null,{"Enable_Weapon":true},null,null,null,null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk03_DashSting_R_DrawParticle_Phase2"]}],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk05_BP_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk05_SlashParticle01_Phase2"]},null,{"EffectName":["Urd_Atk05_PreAtkParticle_Phase2"],"Enable_Weapon":true},null,null,null,null,null,null,null,null,null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk05_BP2_Phase2"]},null,{"EffectName":["Urd_Atk05_SlashParticle02_Phase2","Urd_Atk05_StabParticle01_Phase2"]},null,null,null,null,null,null,null,null,null,{"Enable_Weapon":true},null,null,null,null,{"Enable_Weapon":false},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk05_DrawParticle_Phase2"]}],[null,{"EffectName":["Urd_Atk06_BP_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk06_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,{"EffectName":["Urd_Atk06_SlashParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk07_PreAtkParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Atk07_BP_Phase2"]},null,null,null,null,null,null,null,{"EffectName":["Urd_Atk07_PreAtkParticle2_Phase2","Urd_Atk07_SlashParticle_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],null,[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Equip_L_PreAtkParticle_Phase2"]}],[null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Equip_R_PreAtkParticle_Phase2"]}],null,null,null,null,null,null,null,[{"EffectName":["Urd_Parry_L_Sparkle_Phase2"]},null,{"EffectName":["Urd_Parry_L_PreAtkParticle_Phase2"]}],null,[{"EffectName":["Urd_Parry_R_Sparkle_Phase2"]},null,{"EffectName":["Urd_Parry_R_PreAtkParticle_Phase2"]}],null,[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],null,[null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill01_WeaponAppear_Phase2"]},{"EffectName":["Urd_Skill01_BP_Phase2"]},null,null,null,null,null,{"EffectName":["Urd_Skill01_WeaponEffect_Phase2","Urd_Skill01_WeaponShine_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill01_SharpParticle_Phase2","Urd_Skill01_StabParticle01_Phase2"]},null,null,null,null,{"EffectName":["Urd_Skill01_Impact_Phase2"]}],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill02_1_WeaponAppear_Phase2"]},null,null,null,null,{"EffectName":["Urd_Skill02_1_BP_Phase2"]},{"EffectName":["Urd_Skill02_1_WeaponEffect_Phase2","Urd_Skill02_1_WeaponShine_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill02_1_SharpParticle_Phase2"]},null,{"EffectName":["Urd_Skill02_1_Impact_Phase2"]}],[null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill03_L_BP_Phase2"]},null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill03_L_WeaponAppear_Phase2"]},null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill03_L_WeaponEffect_Phase2","Urd_Skill03_L_WeaponShine_Phase2"]}],[null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill03_R_BP_Phase2"]},null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill03_R_WeaponAppear_Phase2"]},null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_Skill03_R_WeaponEffect_Phase2","Urd_Skill03_R_WeaponShine_Phase2"]}],[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_SP_HandBlood_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_SP_PreAtkParticle_Phase2"]},{"EffectName":["Urd_SP_HandAwakening_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_SP_Explosion_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_SP_ColorFlip_Phase2","Collider_Urd_SP_Explosion_Phase2"]},{"EffectName":["Urd_SP_First_Impact_Phase2"]},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"EffectName":["Urd_SP_DrawParticle_Phase2"]}],[null,null,null,null,{"EffectName":["Urd_StepB_BP_Phase2"]}],[null,null,null,null,null,null,null,null,{"EffectName":["Urd_StepFL45_BP_Phase2"]}],[null,null,null,null,null,null,null,null,{"EffectName":["Urd_StepFL_BP_Phase2"]}],[null,null,null,null,null,{"EffectName":["Urd_StepFR45_BP_Phase2"]}],[null,null,null,null,null,{"EffectName":["Urd_StepFR_BP_Phase2"]}],[null,null,null,null,null,null,null,{"EffectName":["Urd_StepL_BP_Phase2"]}],[null,null,null,null,null,{"EffectName":["Urd_StepR_BP_Phase2"]}]]}
+{
+  "AnimationIndex": [
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_BP01_Phase2" ] },
+      { "EffectName": [ "Urd_Atk01LV2_SlashParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      {
+        "EffectName": [ "Urd_Atk01LV2_SharpParticle1_Phase2", "Urd_Atk01LV2_StabParticle01_Phase2" ],
+        "Enable_Weapon": true
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      { "EffectName": [ "Urd_Atk01LV2_SharpParticle1_Phase2", "Urd_Atk01LV2_StabParticle01_Phase2" ] },
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      {
+        "EffectName": [ "Urd_Atk01LV2_SharpParticle2_Phase2", "Urd_Atk01LV2_StabParticle02_Phase2" ],
+        "Enable_Weapon": true
+      },
+      null,
+      {
+        "Enable_Weapon": false,
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_BP01_Phase2" ] },
+      { "EffectName": [ "Urd_Atk01LV2_SlashParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "Urd_Attack01_01.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordTwoHand_01_02.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "EffectName": [ "Urd_Atk01LV2_SharpParticle1_Phase2", "Urd_Atk01LV2_StabParticle01_Phase2" ],
+        "Enable_Weapon": true
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "SwordTwoHand_01_02.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      { "EffectName": [ "Urd_Atk01LV2_SharpParticle1_Phase2", "Urd_Atk01LV2_StabParticle01_Phase2" ] },
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordTwoHand_01_02.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      {
+        "EffectName": [ "Urd_Atk01LV2_SharpParticle2_Phase2", "Urd_Atk01LV2_StabParticle02_Phase2" ],
+        "Enable_Weapon": true
+      },
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02LV2C0_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02LV2C0_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02LV2C0_StabParticle02_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02LV2C0_SlashParticle_Phase2", "Urd_Atk02LV2C0_StabParticle01_Phase2" ] },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound10.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      {
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02LV2C0_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_BP01_Phase2" ] },
+      { "EffectName": [ "Urd_Atk01LV2_SlashParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordTwoHand_01_02.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      {
+        "EffectName": [ "Urd_Atk01LV2_SharpParticle1_Phase2", "Urd_Atk01LV2_StabParticle01_Phase2" ],
+        "Enable_Weapon": true
+      },
+      null,
+      { "Enable_Weapon": false },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "SwordTwoHand_01_02.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      { "EffectName": [ "Urd_Atk01LV2_SharpParticle1_Phase2", "Urd_Atk01LV2_StabParticle01_Phase2" ] },
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound10.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_SharpParticle2_Phase2", "Urd_Atk01LV2_StabParticle02_Phase2" ] },
+      { "Enable_Weapon": true },
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk01LV2_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02_SlashParticle_Phase2", "Urd_Atk02_StabParticle01_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "HeavySwordHitFloor_03.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      {
+        "EffectName": [ "Urd_Atk02_Spear_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Collider_Urd_Atk02_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk02_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_L_BP_Phase2", "Urd_Atk03_DashSting_L_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_L_BP2_Phase2" ] },
+      { "EffectName": [ "Urd_Atk03_DashSting_L_SlashParticle_Phase2", "Urd_Atk03_DashSting_L_StabParticle01_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_L_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_R_BP_Phase2" ] },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_R_PreAtkParticle_Phase2" ] },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_R_BP2_Phase2" ] },
+      {
+        "EffectName": [ "Urd_Atk03_DashSting_R_SlashParticle_Phase2", "Urd_Atk03_DashSting_R_StabParticle01_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk03_DashSting_R_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk05_BP_Phase2" ] },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk05_SlashParticle01_Phase2" ] },
+      null,
+      {
+        "EffectName": [ "Urd_Atk05_PreAtkParticle_Phase2" ],
+        "Enable_Weapon": true,
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "BladeHitSharp_03.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk05_BP2_Phase2" ] },
+      null,
+      { "EffectName": [ "Urd_Atk05_SlashParticle02_Phase2", "Urd_Atk05_StabParticle01_Phase2" ] },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "Enable_Weapon": true },
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound10.wav",
+            "Volume": 1.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk05_DrawParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound19.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      { "EffectName": [ "Urd_Atk06_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "EffectName": [ "Urd_Atk06_PreAtkParticle_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "EffectName": [ "Urd_Atk06_SlashParticle_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "BladeDraw_01.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      { "Enable_Weapon": true },
+      null,
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk07_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk07_BP_Phase2" ] },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Atk07_PreAtkParticle2_Phase2", "Urd_Atk07_SlashParticle_Phase2" ] },
+      null,
+      null,
+      { "Enable_Weapon": true },
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound12.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      { "Enable_Weapon": false },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Dead_01.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "EffectName": [ "Urd_Equip_L_PreAtkParticle_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "SwordSound12.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Equip_R_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "TH_Sword_Sheath_02.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    null,
+    [
+      null,
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Dead_03.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Dead_05.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Dead_06.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Dead_01.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Hurt02.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt01.ogg",
+            "Volume": 1.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt03.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Hurt03.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt02.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt01.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Hurt03.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt01.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt02.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Hurt02.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt01.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt03.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    null,
+    [
+      { "EffectName": [ "Urd_Parry_L_Sparkle_Phase2" ] },
+      null,
+      {
+        "EffectName": [ "Urd_Parry_L_PreAtkParticle_Phase2" ],
+        "RandomSound": [
+          {
+            "SoundName": "Parry_Urd.mp3",
+            "Volume": 1.0
+          },
+          {
+            "SoundName": "Parry_Urd1.mp3",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "Parry_Urd.mp3",
+            "Volume": 1.0
+          },
+          {
+            "SoundName": "Parry_Urd1.mp3",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      { "EffectName": [ "Urd_Parry_R_Sparkle_Phase2" ] },
+      null,
+      {
+        "EffectName": [ "Urd_Parry_R_PreAtkParticle_Phase2" ],
+        "RandomSound": [
+          {
+            "SoundName": "Parry_Urd1.mp3",
+            "Volume": 1.0
+          },
+          {
+            "SoundName": "Parry_Urd.mp3",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null
+    ],
+    [
+      null,
+      { "EffectName": [ "Urd_Start_WeaponShine_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "EffectName": [ "Urd_Start_FirstImpact_Phase2", "Urd_Start_Impact_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "SwordSound7.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound13.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "EffectName": [ "Urd_Start_WeaponShine2_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "SwordSound14.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Start_PreAtkParticle_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Start_WeaponShine3_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordTwoHand_01_02.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    null,
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill01_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill01_WeaponShine_Phase2", "Urd_Skill01_WeaponEffect_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound7.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      { "EffectName": [ "Urd_Skill01_SharpParticle_Phase2", "Urd_Skill01_StabParticle01_Phase2" ] },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "EffectName": [ "Urd_Skill01_Impact_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill02_1_BP_Phase2" ] },
+      { "EffectName": [ "Urd_Skill02_1_WeaponShine_Phase2", "Urd_Skill02_1_WeaponEffect_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound7.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "EffectName": [ "Urd_Skill02_1_SharpParticle_Phase2" ],
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      { "EffectName": [ "Urd_Skill02_1_Impact_Phase2" ] },
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill03_L_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill03_L_WeaponShine_Phase2", "Urd_Skill03_L_WeaponEffect_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound3.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill03_R_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_Skill03_R_WeaponShine_Phase2", "Urd_Skill03_R_WeaponEffect_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordSound3.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_SP_WeaponShine_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_SP_WeaponChange_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_SP_HandBlood_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordCrash_01.ogg",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_SP_PreAtkParticle_Phase2", "Urd_SP_RedWeapon_Phase2" ] },
+      { "EffectName": [ "Urd_SP_HandAwakening_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_SP_Explosion_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "Explosion_Song.wav",
+            "Volume": 1.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_SP_ColorFlip_Phase2", "Collider_Urd_SP_Explosion_Phase2" ] },
+      { "EffectName": [ "Urd_SP_First_Impact_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "tinnitus_Song.mp3",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "SwordShing_03.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      { "EffectName": [ "Urd_StepB_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_StepFL45_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_StepFL_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_StepFR45_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_StepFR_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_StepL_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      { "EffectName": [ "Urd_StepR_BP_Phase2" ] },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null
+    ],
+    null,
+    [
+      null,
+      null,
+      {
+        "RandomSound": [
+          {
+            "SoundName": "CV_Urd_Hurt01.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt02.ogg",
+            "Volume": 2.0
+          },
+          {
+            "SoundName": "CV_Urd_Hurt03.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    null,
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      }
+    ]
+  ]
+}
