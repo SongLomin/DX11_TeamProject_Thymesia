@@ -88,9 +88,10 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 #ifdef _OVERDRIVE_LOAD_EFFECTGROUP_
 		GET_SINGLE(CGameManager)->Get_ClientThread()->Enqueue_Job(bind([entry, In_LevelIndex, EffectGroup]() {
 			EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-	}));
-#else
-		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+			}));
+#else // _OVERDRIVE_LOAD_EFFECTGROUP_
+		std::string strEntryPath = entry.path().string();
+		EffectGroup.lock()->Load_EffectJson(strEntryPath, (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
 #endif // _OVERDRIVE_LOAD_EFFECTGROUP_
 
 		

@@ -11,7 +11,8 @@
 #include "UI_Landing.h"
 #include "GameObject.h"
 #include "PhysXCharacterController.h"
-#include "FadeMask.h"
+#include "UI_FadeMask.h"
+#include "Camera_Target.h"
 
 
 GAMECLASS_C(CCorvusState_Die);
@@ -45,24 +46,22 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 
 	m_fGrayScaleValue = max(0.f, m_fGrayScaleValue - fTimeDelta * 0.2f);
 	GAMEINSTANCE->Set_GrayScale(m_fGrayScaleValue);
+	m_fDissolveTime = max(m_fDissolveTime -fTimeDelta,0.f);
+	_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+	Get_OwnerPlayer()->Set_DissolveAmount(fDissolveAmount);
+
+	if (m_bFadeOutTrigger && 2.f > m_fDissolveTime)
+	{
+		m_bFadeOutTrigger = false;
+
+		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+		pFadeMask.lock()->Set_Fade_Delay(0.f,1.f,2.f,1.5f,EASING_TYPE::LINEAR);
+	}
+
 
 	if (m_bAnimPlay)
 	{
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	}
-	else if(m_bDissolve)
-	{
-		Get_OwnerPlayer()->Set_PassIndex(7);
-		m_fDissolveTime -= fTimeDelta;
-		//fadeinout 넣어야함
-	/*	weak_ptr<CFadeMask> pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-		pFadeMask.lock()->Init_Fader();  */
-
-		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 3.f);
-		Get_OwnerPlayer()->Set_DissolveAmount(fDissolveAmount);
-
-		if (m_fDissolveTime < -0.1f)
-			m_bDissolve = false;
 	}
 	else
 	{
@@ -71,7 +70,6 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 		if (FAILED(GET_SINGLE(CGameManager)->Respawn_LastCheckPoint(&vOutPos)))
 		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
-			
 
 		}
 		else
@@ -85,6 +83,8 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 				0.f,
 				Filters
 			);
+			Get_OwnerPlayer()->Get_Transform()->Set_Position(XMLoadFloat4(&vOutPos));
+			GET_SINGLE(CGameManager)->Get_CameraTarget().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESPAWN);
 		}
 		Get_OwnerPlayer()->OnEventMessage((_uint)EVENT_TYPE::ON_RESPAWN);
 	}
@@ -107,10 +107,13 @@ void CCorvusState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_fDissolveTime = 3.f;
+	m_fDissolveTime = 4.5f;
 	m_bDissolve = true;
 	m_bAnimPlay = true;
 	m_fGrayScaleValue = 1.f;
+	m_bFadeOutTrigger = true;
+
+	Get_OwnerPlayer()->Set_PassIndex(7);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	

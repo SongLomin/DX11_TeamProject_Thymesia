@@ -31,7 +31,7 @@ public:
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
 
-    void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
+    //void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
 
 
 public:
@@ -63,7 +63,7 @@ protected:
 
 protected:
     _float      m_fTimeAcc = 0.f;
-    _float      m_fDissolveAmount = 0.f;
+    //_float      m_fDissolveAmount = 0.f;
 
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;

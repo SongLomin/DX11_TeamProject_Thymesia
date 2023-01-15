@@ -84,6 +84,7 @@ void CInteraction_DeadSpot::LateTick(_float fTimeDelta)
 
 HRESULT CInteraction_DeadSpot::Render(ID3D11DeviceContext* pDeviceContext)
 {
+
     return __super::Render(pDeviceContext);
 }
 

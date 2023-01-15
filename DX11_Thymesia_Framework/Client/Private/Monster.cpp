@@ -262,7 +262,17 @@ void CMonster::SetUp_ShaderResource()
     __super::SetUp_ShaderResource();
 
     _vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
+    if (0.f < m_fRimLightTimeAcc)
+    {
+        vShaderFlag = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
+        _float4 vRimLightDesc = { 0.f, 0.f, 0.f, 0.f };
+        vRimLightDesc.x = m_vRimLightColor.x;
+        vRimLightDesc.y = m_vRimLightColor.y;
+        vRimLightDesc.z = m_vRimLightColor.z;
+        vRimLightDesc.w = m_fRimLightPower;
+        m_pShaderCom.lock()->Set_RawValue("g_vRimLightColor", &vRimLightDesc, sizeof(_float4));
+    }
     m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
     
     //¹®±¤Çö Ãß°¡.

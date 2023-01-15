@@ -12,6 +12,7 @@
 #include "PhysXCharacterController.h"
 #include "UIManager.h"
 #include "UI_ScriptQueue.h"
+#include "UI_FadeMask.h"
 
 
 
@@ -53,12 +54,6 @@ void CBatBossState_Start::Tick(_float fTimeDelta)
 
 	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-	
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
-	
-	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -115,6 +110,11 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.3f, 9.f, 3.f);
 		break;
 	}
+	case 2041:
+	{
+		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+		pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 0.5f,0.5f, EASING_TYPE::LINEAR);
+	}
 	}
 }
 
@@ -125,6 +125,8 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y| (_byte)ROOTNODE_FLAG::Z);
 
+	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+	pFadeMask.lock()->Set_Fade(1.f, 0.f, 1.5f, EASING_TYPE::LINEAR);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,500);
 
@@ -132,6 +134,15 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey +=
 		bind(&CBatBossState_Start::Call_NextAnimationKey, this, placeholders::_1);
 
+	//m_bStopAnimation = false;
+	//m_fTimeAcc = 0.f;
+	//m_bFadeOutTrigger = true;
+
+	_matrix LocalMat = XMMatrixIdentity();
+	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
+	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
+
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -149,6 +160,10 @@ void CBatBossState_Start::OnStateEnd()
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -=
 		bind(&CBatBossState_Start::Call_NextAnimationKey, this, placeholders::_1);
 	
+
+	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+	pFadeMask.lock()->Set_Fade(1.f, 0.f, 0.5f,EASING_TYPE::LINEAR);
+
 }
 
 void CBatBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)

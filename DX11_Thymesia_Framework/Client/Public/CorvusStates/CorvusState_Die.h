@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "CorvusStateBase.h"
 
 BEGIN(Engine)
@@ -39,6 +39,8 @@ private:
     _bool       m_bDissolve = true;
 
     _float m_fGrayScaleValue = 1.f;
+
+    _bool m_bFadeOutTrigger = true;
 protected:
     void Free();
 

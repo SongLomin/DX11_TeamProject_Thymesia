@@ -204,7 +204,7 @@ void CInteriorProp::Edit_Props()
 		return;
 
 	_vector vCreatePos = pPlayer.lock()->Get_Transform().get()->Get_Position();
-	_vector vOffset = XMVector3Normalize(XMVectorSetY(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2], 0.f)) * m_fOffsetLength;
+	_vector vOffset    = XMVector3Normalize(XMVectorSetY(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2], 0.f)) * m_fOffsetLength;
 	vCreatePos += vOffset;
 	m_pPreviewProp.lock()->Set_Offset(vOffset);
 
@@ -233,6 +233,11 @@ void CInteriorProp::Edit_Props()
 	else
 	{
 		m_pPreviewProp.lock()->Set_Color(XMVectorSet(1.f, 0.f, 0.f, 1.f));
+	}
+
+	if (!IsInTerrin)
+	{
+		GAMEINSTANCE->PlaySound2D("FootStep_MetalC-001.ogg", 1.f);
 	}
 }
 
@@ -342,6 +347,8 @@ void CInteriorProp::Delete_Prop(weak_ptr<CGameObject> _pCollisionObject)
 			iter++;
 		}
 	}
+
+	GAMEINSTANCE->PlaySound2D("FootStep_MetalC-001.ogg", 1.f);
 
 	SetUp_PreviewPropMesh(m_ePropID);
 	m_fRotationY = 0.f;

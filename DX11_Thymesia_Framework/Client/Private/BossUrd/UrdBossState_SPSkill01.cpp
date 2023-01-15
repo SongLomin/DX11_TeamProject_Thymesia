@@ -72,7 +72,9 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 
 
 	_bool bEnd = false;
+
 	CallBack_ColorInversion(fTimeDelta, bEnd);
+
 	if (bEnd)
 	{
 		CallBack_ColorInversion.Clear();
@@ -132,14 +134,17 @@ void CUrdBossState_SPSkill01::OnStateEnd()
 	}
 
 	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
-	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
-	if (1 == iPhase)
+	_uint iLifeCount(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (1 == iLifeCount)
 	{
 #ifdef _URD_EFFECT_
 		if ("Boss_Urd" == Weak_Cast<CUrd>(m_pOwner).lock()->Get_KeyEventName())
 		{
 			Weak_Cast<CUrd>(m_pOwner).lock()->Unbind_KeyEvent("Boss_Urd");
 			Weak_Cast<CUrd>(m_pOwner).lock()->Bind_KeyEvent("Boss_Urd_Phase2");
+
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup("Urd_WeaponShine", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Urd_WeaponShine"));
+			GET_SINGLE(CGameManager)->Store_EffectIndex("Urd_WeaponShine_Phase2", GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_WeaponShine_Phase2", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 		}
 #endif // _URD_EFFECT_
 	}
@@ -176,7 +181,7 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 		m_bCameraShaking = true;
-		m_fShakingRatio = 0.01f;
+		m_fShakingRatio = 0.1f;
 	}
 		return;
 	case 204:
@@ -189,11 +194,13 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
-		m_fShakingRatio = 0.1f;
+		m_fShakingRatio = 0.25f;
 	}
 		return;
 	case 220:
 	{
+		m_fInversionStrength = 1.f;
+		m_fInversionRatio = 0.f;
 		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
 		return;
 	}

@@ -12,6 +12,10 @@
 #include "GameManager.h"
 #include "UI_Landing.h"
 #include "PhysXCharacterController.h"
+#include "Interaction_Item.h"
+#include "Inventory.h"
+
+
 
 GAMECLASS_C(CBatBossState_TakeExecution_Loop);
 CLONE_C(CBatBossState_TakeExecution_Loop, CComponent)
@@ -78,6 +82,12 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 	Get_OwnerMonster()->Set_PassIndex((_uint)SHADER_PASS::PASS_DISSOLVE);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::SKILLPIECE_BLOODSTORM);
+
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::MEMORY02);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

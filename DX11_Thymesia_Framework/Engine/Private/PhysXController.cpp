@@ -327,6 +327,8 @@ void CPhysXController::OnEnable(void* pArg)
 	{
 		GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
 	}*/
+
+	Set_EnableSimulation(true);
 }
 
 void CPhysXController::OnDisable()
@@ -339,6 +341,7 @@ void CPhysXController::OnDisable()
 		m_pController = nullptr;
 	}*/
 
+	Set_EnableSimulation(false);
 }
 
 void CPhysXController::OnDestroy()

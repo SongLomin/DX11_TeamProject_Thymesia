@@ -61,9 +61,12 @@ void CUI_EvolveMenu_SKillIcon::Call_OnEasingFloatConditionEvent(_uint iEventNumb
         pEffect = GAMEINSTANCE->Add_GameObject<CUI_Effect_MagicCircle>(LEVEL_STATIC);
  
     pEffect.lock()->Play(GetPos(), (_float)(iEventNumber + 1));
+
+    GAMEINSTANCE->PlaySound2D("Skill_Circle.ogg", iEventNumber * 0.1f);
+
     if (iEventNumber == 7)
     {
-        Add_Shaking(0.5, (_float)(iEventNumber + 1) * 2);
+     //   Add_Shaking(0.5, (_float)(iEventNumber + 1) * 2);
     }
 }
 
@@ -86,7 +89,7 @@ void CUI_EvolveMenu_SKillIcon::StartGauge()
     m_pEasingRatio.lock()->Add_Condition(0.2f, EASING_FLOAT_CONDITION::BIGGER, 2);
     m_pEasingRatio.lock()->Add_Condition(0.4f, EASING_FLOAT_CONDITION::BIGGER, 3);
     m_pEasingRatio.lock()->Add_Condition(0.6f, EASING_FLOAT_CONDITION::BIGGER, 5);
-    m_pEasingRatio.lock()->Add_Condition(0.9f, EASING_FLOAT_CONDITION::BIGGER, 7);
+    //m_pEasingRatio.lock()->Add_Condition(0.9f, EASING_FLOAT_CONDITION::BIGGER, 7);
 }
 
 void CUI_EvolveMenu_SKillIcon::EndGauge()

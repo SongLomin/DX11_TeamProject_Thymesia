@@ -77,7 +77,7 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_SkillPos()
 		m_vecSkillPos.push_back(_float2(fStartPos.x + i * fOffsetX, fStartPos.y));
 	}
 
-	fStartPos = { 221.f, 441.f};
+	fStartPos = { 221.f, 481.f};
 	fOffsetX = 175.f;
 	for (_uint i = 0; i < 3; i++)
 	{
@@ -116,7 +116,7 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_SkillButtons()
 	weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot>	pButtonSlot;
 
 
-	for(_uint i = 0 ; i < (_uint)SKILL_NAME::SKILL_END;i++)
+	for(_uint i = 0 ; i < (_uint)SKILL_NAME::SKILL_BANKAI;i++)
 	{
 		pButtonSlot = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_PlagueWeapon_SkillButtonSlot>(LEVEL_STATIC);
 
@@ -266,6 +266,8 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnLButtonUp(weak_ptr<CUI_Evolve
 	{
 		if (m_vecPlayerSkillSlot[i].lock()->MousePtInUI())
 		{
+			GAMEINSTANCE->PlaySound2D("Fantasy_Game_UI_Fire_Select.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
 			m_vecPlayerSkillSlot[i].lock()->Equip_Skill(pSkillButton, i);
 			return;
 		}

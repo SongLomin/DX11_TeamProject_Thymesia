@@ -58,7 +58,7 @@ void CUrdBossState_FightStart::Start()
 	m_DecalDesc.vScale = { 10.f,10.f, 0.1f };
 	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
 	m_DecalDesc.fTime = 1.f;
-	m_DecalDesc.fDisapearTime = 2.f;
+	m_DecalDesc.fDisapearTime = 1.f;
 	//1Æä µ¥Ä® emissive color
 	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
 	m_DecalDesc.strTextureTag = "DecalUrd";

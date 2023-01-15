@@ -316,7 +316,11 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up(ID3D11DeviceContext* pDevic
         {
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
-
+        else
+        {
+            BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+            END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+        }
         m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
@@ -384,7 +388,11 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid(ID3D11DeviceContext* pDevi
         {
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
-
+        else
+        {
+            BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+            END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+        }
         m_iPassIndex = Preset::ShaderPass::ModelInstancingShaderPass(BindTextureFlag, true, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
@@ -443,7 +451,11 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down(ID3D11DeviceContext* pDev
         {
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
-
+        else
+        {
+            BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+            END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
+        }
         m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
 
         if ((_uint)-1 == m_iPassIndex)

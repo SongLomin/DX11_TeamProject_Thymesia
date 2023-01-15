@@ -150,6 +150,8 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 	}
 }
 
+
+
 _vector CPlayerStateBase::Get_InputToLookDir()
 {
 	/*if (m_bEdit)
@@ -197,6 +199,11 @@ _vector CPlayerStateBase::Get_InputToLookDir()
 	}
 	
 	return vLookDir;
+}
+
+void CPlayerStateBase::Get_TargetMonLookAt()
+{
+	
 }
 
 _bool CPlayerStateBase::Rotation_InputToLookDir()

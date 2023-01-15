@@ -687,7 +687,7 @@ HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 
 	_vector vPlayerDeadSpotPos = m_pCurrentPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION);
 	_uint   iDropMemory        = m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Get_Desc().m_iMemory;
-
+	
 	m_pCurrentPlayer.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Full_Recovery();
 	m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Set_Memory(0);

@@ -30,7 +30,7 @@ public:
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
 
-    void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
+   // void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
     // virtual void    Bind_HPBar() override;
 
 
@@ -59,9 +59,9 @@ protected:
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnDisable() override;
 
-private:
+protected:
     _float      m_fTimeAcc = 0.f;
-    _float      m_fDissolveAmount = 0.f;
+   // _float      m_fDissolveAmount = 0.f;
 
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;

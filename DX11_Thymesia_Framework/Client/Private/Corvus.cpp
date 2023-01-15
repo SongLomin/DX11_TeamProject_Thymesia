@@ -19,6 +19,7 @@
 #include "Effect_Decal.h"
 #include "CNvClothCollider.h"
 #include "Interaction_Ladder.h"
+#include "UI_FadeMask.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -115,8 +116,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_SpotLightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
 	m_SpotLightDesc.fIntensity = 0.f;
 	m_SpotLightDesc.fRange = 10.f;
-	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(30.f));
-	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(35.f));
+	m_SpotLightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
+	m_SpotLightDesc.fOuterCutOff = cosf(XMConvertToRadians(45.f));
 
 	vLightPos = vPlayerPos + XMVectorSet(0.f, 3.f, 0.f, 0.f);
 	vLightLook = XMVectorSet(0.f,-1.f,0.f,0.f);
@@ -141,7 +142,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 #endif // _USE_THREAD_
 
 
-
 	return S_OK;
 }
 
@@ -157,11 +157,12 @@ HRESULT CCorvus::Start()
 
 	Load_ClientComponentData();
 
-
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
 	
+	Get_Component<CStatus_Player>().lock()->Full_Recovery();
+
 	return S_OK;
 }
 
@@ -551,7 +552,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 			GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 
 			CallBack_LightEvent.Clear();
+			GAMEINSTANCE->Set_GrayScale(1.f);
 		}
+
+		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_CreatedLevel);
+		pFadeMask.lock()->Set_Fade(1.f, 0.f, 2.f, EASING_TYPE::LINEAR);
 	}
 
 
@@ -772,6 +777,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		Change_State<CCorvusState_Die>();
 	}
+	if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
+	{
+		m_pPhysXControllerCom.lock()->Set_Position(XMVectorSet(3.f, 0.f, 266.f, 1.f), fTimeDelta, Filters);
+	}
+
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	//{
 	//	++m_iContainerIndex;
@@ -956,8 +966,10 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Scythe>();
 	Add_Component<CSkill_BloodStorm>();
 	Add_Component<CSkill_Halberds>();
-}
+	Add_Component<CSkill_Bankai>();
+	Add_Component<CSkill_BigHand>();
 
+}
 void CCorvus::Free()
 {
 	int a = 0;

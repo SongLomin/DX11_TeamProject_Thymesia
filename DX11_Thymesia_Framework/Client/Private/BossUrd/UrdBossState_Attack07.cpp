@@ -24,7 +24,10 @@ void CUrdBossState_Attack07::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 123:
-		TurnOff_Effect("Urd_WeaponShine");
+		if (Is_Urd_Phase1())
+		{
+			TurnOff_Effect("Urd_WeaponShine");
+		}
 		return;
 	}
 }

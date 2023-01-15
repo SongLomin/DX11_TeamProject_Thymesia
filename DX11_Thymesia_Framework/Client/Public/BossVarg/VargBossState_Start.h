@@ -41,6 +41,7 @@ private:
 	_bool      m_bNextState = false;
 	_float     m_fSinematic = 0.f;
 	_float4x4  m_vPlyerMatrix;
+
 };
 
 END

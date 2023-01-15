@@ -52,7 +52,6 @@ public:
 
     const STATE_LINK_MONSTER_DESC& Get_LinkStateDesc() { return m_tLinkStateDesc; }
 
-    void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
 
     void Set_LightDesc(const LIGHTDESC& In_LightDesc)
     {

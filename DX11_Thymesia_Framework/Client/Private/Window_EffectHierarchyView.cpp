@@ -130,8 +130,10 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
     EFFECTMESH_DESC EffectMeshDesc;
 
     ZeroMemory(&EffectMeshDesc, sizeof(EffectMeshDesc));
+#ifdef _DEBUG
     EffectMeshDesc.bOnFocus          = false;
     EffectMeshDesc.fSpeedPerSec      = 1.f;
+#endif // _DEBUG
 
     EffectMeshDesc.fInitTime         = 0.f;
     EffectMeshDesc.fLifeTime         = 9999.f;

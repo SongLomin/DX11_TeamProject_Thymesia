@@ -277,7 +277,10 @@ void CUI_EvolveMenu_PlagueWeapon_SkillInformation::Set_SkillInformationUI()
         m_pSkillInfoActionTitle.lock()->Set_Texture("PW_Halberds_Title");
         m_pSkillInfoActionDescription.lock()->Set_Texture("PW_Halberds_Information");
         break;
-    
+    case Client::SKILL_NAME::SKILL_BIGHAND:
+        m_pSkillInfoActionTitle.lock()->Set_Texture("PW_BigHand_Title");
+        m_pSkillInfoActionDescription.lock()->Set_Texture("PW_BigHand_Information");
+        break;
     case Client::SKILL_NAME::SKILL_END:
         break;
     default:
@@ -340,9 +343,6 @@ void CUI_EvolveMenu_PlagueWeapon_SkillInformation::Set_UnlockedHintUI()
         m_tUnlockedHintTextCurrentPiece.vColor = _float4(238.f / 255.f, 94.f / 255.f, 83.f / 255.f, 1.f);
 
     }
-    
-
-    
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillInformation::Clear_Information()

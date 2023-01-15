@@ -73,15 +73,6 @@ void CUrdBossState_AttackComboC1::OnStateStart(const _float& In_fAnimationBlendT
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	m_bAttackLookAtLimit = true;
-	
-	
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-	
-
 }	
 
 
