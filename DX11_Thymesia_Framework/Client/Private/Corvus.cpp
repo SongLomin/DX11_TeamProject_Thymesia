@@ -552,11 +552,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 			GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 
 			CallBack_LightEvent.Clear();
-			GAMEINSTANCE->Set_GrayScale(1.f);
 		}
 
-		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_CreatedLevel);
-		pFadeMask.lock()->Set_Fade(1.f, 0.f, 2.f, EASING_TYPE::LINEAR);
+		GAMEINSTANCE->Set_GrayScale(1.f);
+	
 	}
 
 
