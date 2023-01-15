@@ -18,6 +18,7 @@
 #include "Collider.h"
 #include "Effect_Decal.h"
 #include "CNvClothCollider.h"
+#include "Interaction_Ladder.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -610,12 +611,30 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
+	{
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERUP;
 		m_bLadderCheck = true;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(true);
+	}
 		break;
 	case Client::COLLISION_LAYER::LADDER_DOWN:
+	{
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
 		m_bLadderCheck = true;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(true);
+	}
 		break;
 	case Client::COLLISION_LAYER::ELEVATOR:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ELEVATOR;
@@ -647,12 +666,30 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
+	{
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERUP;
 		m_bLadderCheck = false;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(false);
+	}
 		break;
 	case Client::COLLISION_LAYER::LADDER_DOWN:
+	{
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
 		m_bLadderCheck = false;
+	
+		weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+		if (!pLadder.lock())
+			return;
+
+		pLadder.lock()->Set_RenderOutLine(false);
+	}
 		break;
 	case Client::COLLISION_LAYER::ELEVATOR:
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ELEVATOR;

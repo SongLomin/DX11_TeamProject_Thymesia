@@ -510,7 +510,8 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
             m_pDeco.lock()->Set_Enable(true);
 
-            //GAMEINSTANCE->PlaySound2D("VOC_Aisemy_EquipOff.ogg", 1.f);
+            if (0 != m_iCheckIndex)
+                GAMEINSTANCE->PlaySound2D("EVM_prop_dungeon_teleporter_activate.wav", 1.f);
 
             m_bAisemyRender = true;
 
@@ -550,7 +551,7 @@ void CInteraction_CheckPoint::Enter_AnimIndex()
             m_pAnimModelCom.lock()->Set_AnimationSpeed(1.f);
             m_pAnimModelCom.lock()->CallBack_AnimationEnd += bind(&CInteraction_CheckPoint::Call_CheckAnimEnd, this);
 
-            GAMEINSTANCE->PlaySound2D("VOC_Aisemy_EquipOff.ogg", 1.f);
+            //GAMEINSTANCE->PlaySound2D("VOC_Aisemy_EquipOff.ogg", 1.f);
         }
         break;
 

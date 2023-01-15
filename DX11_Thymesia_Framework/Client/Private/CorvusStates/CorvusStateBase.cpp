@@ -465,6 +465,10 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			Get_OwnerPlayer()->Set_LadderCheck(true);		
 			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_Up_Down_End>();
 			
+			weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+			if (pLadder.lock())
+				pLadder.lock()->Set_RenderOutLine(false);
 		}
 	
 	}		
@@ -482,6 +486,11 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
 			Get_OwnerPlayer()->Set_LadderCheck(true);
 			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_Start>();
+
+			weak_ptr<CInteraction_Ladder> pLadder = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner());
+
+			if (pLadder.lock())
+				pLadder.lock()->Set_RenderOutLine(false);
 		}
 		break;
 

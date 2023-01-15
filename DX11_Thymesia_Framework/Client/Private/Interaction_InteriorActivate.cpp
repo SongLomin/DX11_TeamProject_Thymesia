@@ -190,6 +190,7 @@ void CInteraction_InteriorActivate::Act_Interaction()
     else
     {
         SetAnimState(ANIM_EVENT::EQUIP_END);
+        GAMEINSTANCE->PlaySound2D("EVM_Aisemy_EquipOn.wav", 1.f);
 
         GET_SINGLE(CGameManager)->Activate_Section(3000, EVENT_TYPE::ON_EXIT_SECTION);
     }

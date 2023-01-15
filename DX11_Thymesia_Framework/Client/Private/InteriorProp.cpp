@@ -218,6 +218,7 @@ void CInteriorProp::Edit_Props()
 		if (!KEY_INPUT(KEY::Z, KEY_STATE::TAP))
 			return;
 
+		GAMEINSTANCE->PlaySound2D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f);
 		Create_Prop(m_ePropID, m_pPreviewProp.lock()->Get_Transform()->Get_WorldMatrix());
 	}
 	else if (!m_pPreviewProp.lock()->Get_CheckBuild() && IsInTerrin)

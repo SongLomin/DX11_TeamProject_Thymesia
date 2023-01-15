@@ -134,7 +134,7 @@ HRESULT CMainApp::Initialize()
 void CMainApp::Tick(float fTimeDelta)
 {
 #ifndef _EFFECT_TOOL_
-	if (GetFocus())
+	/*if (GetFocus())
 	{
 		if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::ALT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
 		{
@@ -153,7 +153,7 @@ void CMainApp::Tick(float fTimeDelta)
 			RECT ClientRect = { -99999, -99999, 99999, 99999 };
 			ClipCursor(&ClientRect);
 		}
-	}
+	}*/
 #endif // _EFFECT_TOOL_
 
 #ifdef _DEBUG

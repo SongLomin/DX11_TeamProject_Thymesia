@@ -46,9 +46,15 @@ HRESULT CDynamic_Prop::Start()
         m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
         Preset::Dynamic_Prop::GateWay_DynamicPropSetting(m_pModelCom.lock()->Get_ModelKey(), m_CreatedLevel, m_pPieces);
     }
-    else if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+
+    if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
     {
         CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
+        m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
+    }
+    else if (hash<string>()("Fence_16a_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+    {
+        m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_02.ogg";
     }
 
     __super::Start();
@@ -170,6 +176,7 @@ void CDynamic_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<C
         elem.lock()->Set_Enable(true);
     }
 
+    GAMEINSTANCE->PlaySound3D(m_szSoundKey, 1.f, m_pTransformCom.lock()->Get_Position());
     Set_Dead();
 }
 
