@@ -272,6 +272,7 @@ namespace Client
 		FALLDOWN,
 		STEALMONSTER,
 		NOPARRYATTACK,
+		MULTI_HIT,
 		OPTION_END
 	};
 
