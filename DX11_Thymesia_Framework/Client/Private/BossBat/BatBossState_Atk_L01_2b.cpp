@@ -64,7 +64,7 @@ void CBatBossState_Atk_L01_2b::Tick(_float fTimeDelta)
 	if (m_bWaterWave)
 	{
 		m_fTimeAcc += fTimeDelta;
-		if (m_fTimeAcc >= 0.05f)
+		if (m_fTimeAcc >= 0.03f)
 		{
 			_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
 

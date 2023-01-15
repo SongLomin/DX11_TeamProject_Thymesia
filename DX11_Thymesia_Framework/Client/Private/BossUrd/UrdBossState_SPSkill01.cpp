@@ -37,12 +37,13 @@ void CUrdBossState_SPSkill01::Start()
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	m_DecalDesc.vScale = {3.f,3.f, 1.f };
 	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
+	m_DecalDesc.fAppearTime = 0.f;
 	m_DecalDesc.fTime = 1.f;
 	m_DecalDesc.fDisapearTime = 2.f;
-	//1Æä µ¥Ä® emissive color
-	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
+
+	m_DecalDesc.vColor = _float3(0.5f, 0.8f, 1.f);
 	m_DecalDesc.strTextureTag = "DecalUrd";
 }
 
@@ -51,6 +52,11 @@ void CUrdBossState_SPSkill01::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	if (m_bCameraShaking)
+	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), m_fShakingRatio, 1.f, 9.f, 0.95f);
+	}
 }
 
 
@@ -84,8 +90,9 @@ void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& I
 		m_fInversionRatio += In_fTimeDelta;
 	}
 	else
+	{
 		In_bEnd = true;
-
+	}
 	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
 }
 
@@ -168,7 +175,8 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
-
+		m_bCameraShaking = true;
+		m_fShakingRatio = 0.01f;
 	}
 		return;
 	case 204:
@@ -181,8 +189,14 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
+		m_fShakingRatio = 0.1f;
 	}
 		return;
+	case 220:
+	{
+		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+		return;
+	}
 	case 224:
 	{
 		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
@@ -195,17 +209,9 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		}
 	}
 		return;
-	case 220:
-	{
-		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+	case 350:
+		m_bCameraShaking = false;
 		return;
-	}
-
-	//case 400:
-	//{
-	//	CallBack_ColorInversion.Clear();
-	//	return;
-	//}
 	}
 }
 

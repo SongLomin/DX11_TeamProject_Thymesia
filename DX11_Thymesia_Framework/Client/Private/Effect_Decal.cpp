@@ -47,11 +47,17 @@ void CEffect_Decal::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_DecalDesc.fTime -= fTimeDelta;
+	m_DecalDesc.fAppearTime -= fTimeDelta;
+	if(0.f>m_DecalDesc.fAppearTime)
+		m_DecalDesc.fTime -= fTimeDelta;
+
 }
 
 void CEffect_Decal::LateTick(_float fTimeDelta)
 {
+	if (0.f < m_DecalDesc.fAppearTime)
+		return;
+
 	__super::LateTick(fTimeDelta);
 
 	if (m_DecalDesc.fTime < 0.f)
@@ -62,7 +68,6 @@ void CEffect_Decal::LateTick(_float fTimeDelta)
 		Set_Dead();
 		return;
 	}
-	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 }
 
 HRESULT CEffect_Decal::Render(ID3D11DeviceContext* pDeviceContext)
@@ -116,11 +121,16 @@ void CEffect_Decal::SetUp_ShaderResource()
 
 	m_pShaderCom.lock()->Set_RawValue("g_fAlphaValue", &fAlphaRatio, sizeof(_float));
 
-	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture",0);
-	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture",1);
-	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_ORMTexture",2);
-	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture1", 3);
-	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture2", 4);
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0)))
+		DEBUG_ASSERT;
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture", 1)))
+		DEBUG_ASSERT;
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_ORMTexture", 2)))
+		DEBUG_ASSERT;
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture1", 3)))
+		DEBUG_ASSERT;
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_EmissiveTexture2", 4)))
+		DEBUG_ASSERT;
 
 	m_pShaderCom.lock()->Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
 		

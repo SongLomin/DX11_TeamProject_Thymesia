@@ -55,14 +55,14 @@ PS_OUT PS_MAIN_DECAL(PS_IN In)
 	
     //vector vTextureDesc = g_SourTexture.Sample(DefaultSampler, In.vTexUV);
     vector vTextureDesc = g_SourTexture.Sample(sRGBSampler, In.vTexUV);
-    
+        
     Out.vColor.r = vTextureDesc[g_ChannelIndex.r];
-    Out.vColor.g = vTextureDesc[g_ChannelIndex.g];
+    Out.vColor.g =  vTextureDesc[g_ChannelIndex.g];  
     Out.vColor.b = vTextureDesc[g_ChannelIndex.b];  
-    Out.vColor.a = vTextureDesc[g_ChannelIndex.a];  
-       
+    Out.vColor.a = 1.f; //vTextureDesc[g_ChannelIndex.a];  
+    
     Out.vColor.rgb = pow(Out.vColor.rgb, 2.2f);
-   
+    
     //Out.vColor = vTextureDesc;
     return Out;
 }

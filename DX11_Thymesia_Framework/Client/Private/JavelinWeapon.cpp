@@ -101,9 +101,8 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 HRESULT CJavelinWeapon::Start()
 {
 	
-	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
 	m_DecalDesc.vPosition = {0.f,0.f,0.f,1.f };
-	m_DecalDesc.fTime = 1.f;
+	m_DecalDesc.fTime = 0.5f;
 	m_DecalDesc.fDisapearTime = 2.f;
 
 	m_DecalDesc.vColor = _float3(1.f, 1.f, 1.f);
@@ -335,12 +334,17 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		if (2 == iPhase)
 		{
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+			m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
+
 		}
 		else if (1 == iPhase)
 		{
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+			m_DecalDesc.vColor = { 1.f,1.f,1.f };
+
 		}
-		m_DecalDesc.vScale = { 1.5f,1.5f, 1.f };
+		m_DecalDesc.vScale = { 10.f,1.f, 10.f };
+		m_DecalDesc.fAppearTime = 0.f;
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
@@ -369,20 +373,25 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	pForEffectTransform.lock()->Set_Position(pJavelinWeapon.lock()->Get_Transform()->Get_Position());
 
 	weak_ptr<CStatus_Boss> pStatus = m_pParentCharacter.lock()->Get_Component<CStatus_Boss>();
-	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
-	if (2 == iPhase)
+	_uint iLifeCount(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (2 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		m_DecalDesc.vColor = { 1.f,1.f,1.f };
+
 	}
-	else if (1 == iPhase)
+	else if (1 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
+
 	}
 	else
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 3.f,3.f, 1.f };
+	m_DecalDesc.vScale = { 19.f,0.f, 19.f };
+	m_DecalDesc.fAppearTime = 1.666f;
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
@@ -398,20 +407,25 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
 
 	weak_ptr<CStatus_Boss> pStatus = m_pParentCharacter.lock()->Get_Component<CStatus_Boss>();
-	_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
-	if (2 == iPhase)
+	_uint iLifeCount(pStatus.lock()->Get_Desc().m_iLifeCount);
+	if (2 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		m_DecalDesc.vColor = { 1.f,1.f,1.f };
+
 	}
-	else if (1 == iPhase)
+	else if (1 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2 ", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
+
 	}
 	else
 	{
 		DEBUG_ASSERT;
 	}
-
+	m_DecalDesc.vScale = { 19.f,0.f, 19.f };
+	m_DecalDesc.fAppearTime = 1.666f;
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, pForEffectTransform.lock()->Get_WorldMatrix());
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);

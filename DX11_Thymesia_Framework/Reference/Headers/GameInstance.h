@@ -172,7 +172,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_DebugSize(const _float2 vSize);
 	HRESULT Set_OldSchoolView(const _bool bOldSchool);
 	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
-	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue);
+	HRESULT Render_EditTexture(ComPtr<ID3D11ShaderResourceView> pSRV, const _short In_Red, const _short In_Green, const _short In_Blue, const _short In_Alpha);
 	HRESULT Extract_Texture(const tstring& In_szFilePath);
 #endif // _DEBUG
 

@@ -14,7 +14,7 @@ HRESULT CWindow_TextureEditerView::Initialize()
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
     // window_flags |= ImGuiWindowFlags_NoResize;
     // window_flags |= ImGuiWindowFlags_NoMove;
-    process
+    
     m_bEnable = true;
     SetUp_ImGuiDESC("Texture Editer", ImVec2(250.f, 500.f), window_flags);
 

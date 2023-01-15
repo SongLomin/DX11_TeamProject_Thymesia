@@ -201,16 +201,17 @@ void CCorvus::Tick(_float fTimeDelta)
 	{
 		_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
 		//GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
-	/*	DECAL_DESC DecalDesc;
-		ZeroMemory(&DecalDesc, sizeof(DECAL_DESC));
+		DECAL_DESC DecalDesc;
 
 		DecalDesc.vScale = { 5.f,5.f,5.f };
-		XMStoreFloat4(&DecalDesc.vPosition, vPlayerPos + XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
+		XMStoreFloat4(&DecalDesc.vPosition,XMVectorSet(0.f, DecalDesc.vScale.z * 0.15f, 0.f, 0.f));
+		XMStoreFloat4x4(&DecalDesc.WorldMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
 		DecalDesc.fTime = 3.f;
+		DecalDesc.fDisapearTime = 1.f;
 		DecalDesc.vColor = _float3(0.f, 1.f, 0.7f);
-		DecalDesc.pTextureTag = "DecalTexture";
+		DecalDesc.strTextureTag= "DecalUrd";
 
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);*/
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel,&DecalDesc);
 	}
 
 

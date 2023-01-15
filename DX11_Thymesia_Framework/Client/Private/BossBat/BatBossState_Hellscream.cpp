@@ -50,7 +50,7 @@ void CBatBossState_Hellscream::Tick(_float fTimeDelta)
 	
 	if (m_bShaking)
 	{
-		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.1f, 1.f, 9.f, 0.4f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.15f, 1.f, 9.f, 0.4f);
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 	}
 

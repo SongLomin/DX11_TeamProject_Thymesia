@@ -38,6 +38,9 @@ private:
 	_float m_fInversionStrength = 1.f;
 	_float m_fInversionRatio = 0.f;
 
+	_bool m_bCameraShaking = false;
+	_float m_fShakingRatio = 0.01f;
+
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 	void Call_NextKeyFrame(const _uint& In_KeyIndex);
