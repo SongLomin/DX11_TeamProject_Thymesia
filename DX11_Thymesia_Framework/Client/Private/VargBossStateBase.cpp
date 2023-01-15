@@ -145,7 +145,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		Play_OnHitEffect();
 
 		_float fMagnifiedDamage = In_fDamage;
-		_uint iRand = rand() % 8 + 1;
+		_uint iRand = rand() % 20 + 1;
 
 		switch (eAttackOption)
 		{
@@ -175,6 +175,12 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 				}
+
+				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
 			}		
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
@@ -197,6 +203,10 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
 				Get_OwnerMonster()->Change_State<CVargBossState_Hurt>();
 			}
+			break;
+		default:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		}
 		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
