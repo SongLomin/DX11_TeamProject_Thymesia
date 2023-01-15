@@ -59,7 +59,7 @@ void CEditSetActor::LateTick(_float fTimeDelta)
 
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
+	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Cast<CGameObject>(m_this));
 }
 
 HRESULT CEditSetActor::Render(ID3D11DeviceContext* pDeviceContext)

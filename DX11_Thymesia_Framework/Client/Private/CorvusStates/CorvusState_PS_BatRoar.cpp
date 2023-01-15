@@ -4,6 +4,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Status_Player.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CCorvusState_PS_BatRoar);
 CLONE_C(CCorvusState_PS_BatRoar, CComponent)
@@ -75,7 +76,28 @@ void CCorvusState_PS_BatRoar::Tick(_float fTimeDelta)
 void CCorvusState_PS_BatRoar::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Check_AndChangeNextState();
 }
+
+_bool CCorvusState_PS_BatRoar::Check_AndChangeNextState()
+{
+	if (!Check_Requirement())
+		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 113)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
+}
+
 
 void CCorvusState_PS_BatRoar::OnStateStart(const _float& In_fAnimationBlendTime)
 {

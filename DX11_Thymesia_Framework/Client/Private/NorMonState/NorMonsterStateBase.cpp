@@ -14,6 +14,7 @@
 #include "Status_Player.h"
 #include "UI_DamageFont.h"
 #include "PhysXCharacterController.h"
+#include "Status_Monster.h"
 
 GAMECLASS_C(CNorMonsterStateBase)
 
@@ -88,7 +89,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 		
-		
+		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
 
 		_vector vOtherColliderPosition = pOtherCharacter.lock()->
 			Get_Component<CTransform>().lock()->
@@ -145,7 +146,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		vHitPos.x += fRandom(mt);
 		vHitPos.y += fRandom(mt);
 
-		_int iRand = rand() % 8 + 1;
+		_int iRand = rand() % 20 + 1;
 
 		switch (eAttackOption)
 		{
@@ -162,30 +163,30 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
-			fMagnifiedDamage *= tPlayerDesc.m_fPlagueAtk;
+			fMagnifiedDamage *= tPlayerDesc.m_fPlagueAtk + iRand;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			if (In_eHitType == HIT_TYPE::RIGHT_HIT)
-			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
-			}
-			else if (In_eHitType == HIT_TYPE::LEFT_HIT)
-			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
-			}
-			else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
-			}
+				if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
+				}
+				else if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+				}
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 		    if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -234,21 +235,22 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
 				|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
 			{
-				if (m_eMonType != MONSTERTYPE::ARMORSHIELDMAN && m_eMonType != MONSTERTYPE::WEAKARMORSHIELDMAN &&
-					m_eMonType != MONSTERTYPE::WEAKARMORSPEARMAN && m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
+				if (m_eMonType != MONSTERTYPE::WEAKARMORSPEARMAN && m_eMonType != MONSTERTYPE::ARMORSPEARMAN)
 				{
 					Get_OwnerMonster()->Change_State<CNorMonState_Die>();
 				}		    
 				else
 				{
-					if (m_eMonType == MONSTERTYPE::ARMORSHIELDMAN || m_eMonType == MONSTERTYPE::WEAKARMORSHIELDMAN)
-					{
-						pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSHIELD);
-					}
-					else if (m_eMonType == MONSTERTYPE::WEAKARMORSPEARMAN || m_eMonType == MONSTERTYPE::ARMORSPEARMAN)
-					{
-						pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSPEAR);
-					}
+					if (eAttackOption == ATTACK_OPTION::SPECIAL_ATTACK &&
+						eAttackOption == ATTACK_OPTION::PLAGUE)
+						return;
+					
+						if (m_eMonType == MONSTERTYPE::WEAKARMORSPEARMAN || m_eMonType == MONSTERTYPE::ARMORSPEARMAN)
+						{
+							pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSPEAR);
+						}
+					
+					
 				}
 			}
 			else if (m_pStatusCom.lock()->Is_Dead())

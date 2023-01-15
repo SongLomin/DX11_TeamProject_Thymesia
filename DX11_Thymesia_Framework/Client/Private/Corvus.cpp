@@ -515,6 +515,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
+
 	else if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
@@ -551,28 +552,36 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-	if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+
+	else if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+
+
+
+	else if (EVENT_TYPE::ON_PARRYRIGHT == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_ParryDeflectLeftup>();
 	}
 
-	if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_PARRYLEFT == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_ParryDeflectRightup>();
 	}
 
-	if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}
 
-
-	if (EVENT_TYPE::ON_ARMOREXECUTIONSHIELD == (EVENT_TYPE)iArg)
-	{
-		Change_State<CCorvusState_Execution_R_R>();
-	}
-
-	if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
+	else if (EVENT_TYPE::ON_ARMOREXECUTIONSPEAR == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}

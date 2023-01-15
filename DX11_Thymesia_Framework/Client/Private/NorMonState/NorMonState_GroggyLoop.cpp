@@ -8,6 +8,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CNorMonState_GroggyLoop);
 CLONE_C(CNorMonState_GroggyLoop, CComponent)

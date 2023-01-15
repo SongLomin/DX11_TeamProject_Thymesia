@@ -19,7 +19,8 @@ private:
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void LateTick(_float fTimeDelta) override;
-
+	virtual _bool Check_AndChangeNextState() override;
+	
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual void OnEventMessage(weak_ptr<CBase> pArg) override;

@@ -3,6 +3,7 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CCorvusState_PS_Magician);
 CLONE_C(CCorvusState_PS_Magician, CComponent)
@@ -47,6 +48,26 @@ void CCorvusState_PS_Magician::Tick(_float fTimeDelta)
 void CCorvusState_PS_Magician::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+	Check_AndChangeNextState();
+
+}
+
+_bool CCorvusState_PS_Magician::Check_AndChangeNextState()
+{
+	if (!Check_Requirement())
+		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.75f)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CCorvusState_PS_Magician::OnStateStart(const _float& In_fAnimationBlendTime)

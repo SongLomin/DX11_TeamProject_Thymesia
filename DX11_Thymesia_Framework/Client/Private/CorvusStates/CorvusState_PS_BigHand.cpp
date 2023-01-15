@@ -5,6 +5,7 @@
 #include "PhysXController.h"
 #include "GameManager.h"
 #include "Effect_Decal.h"
+#include "CorvusStates/CorvusStates.h"
 
 
 GAMECLASS_C(CCorvusState_PS_BigHand);
@@ -79,6 +80,8 @@ void CCorvusState_PS_BigHand::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
+
+
 
 void CCorvusState_PS_BigHand::OnStateStart(const _float& In_fAnimationBlendTime)
 {

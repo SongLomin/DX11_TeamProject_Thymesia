@@ -1045,7 +1045,7 @@ if (!m_bPatrol)
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
 				break;
 			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.1f);
 				break;
 			}
 			break;
@@ -1053,7 +1053,7 @@ if (!m_bPatrol)
 			switch (iRunORWalk)
 			{
 			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.1f);
 				break;
 			case 1:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);

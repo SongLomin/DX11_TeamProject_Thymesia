@@ -58,6 +58,13 @@ private:
 
 	weak_ptr<CPreviewAnimationModel> m_pPreViewModel;
 
+	_int m_iSoundSyncKey = 0;
+
+public:
+	_int Get_SoundSyncKey() const { return m_iSoundSyncKey; }
+	std::string Get_SoundFileName() const { return m_szSoundFileName; }
+	_float Get_SoundVolume() const { return m_fVolume; }
+
 private: /* For. Sound */
 	string						m_szSoundFileName;
 	_float						m_fVolume{};

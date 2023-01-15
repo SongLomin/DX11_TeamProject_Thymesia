@@ -213,6 +213,32 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 		}
 		m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 		break;
+		case Client::MONSTERTYPE::ARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.5f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		break;
+		case Client::MONSTERTYPE::WEAKARMORSPEARMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.5f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		break;
 		}
 
 
