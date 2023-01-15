@@ -315,6 +315,10 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	GAMEINSTANCE->Set_MaskingTexture("UVMask");
 
+	GAMEINSTANCE->Set_Contrast(1.07f);
+	GAMEINSTANCE->Set_Saturation(1.1f);
+	GAMEINSTANCE->Set_Exposure(1.f);
+
 	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
 	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
 
