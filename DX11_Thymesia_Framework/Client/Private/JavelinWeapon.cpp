@@ -321,7 +321,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -19.f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.1f)
 	{
 //#ifdef _URD_EFFECT_
 		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
@@ -336,7 +336,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
-		}
+		}d
 		else if (1 == iPhase)
 		{
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
