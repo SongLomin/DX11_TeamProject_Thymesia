@@ -147,6 +147,16 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	
+	LightDesc.eActorType = LIGHTDESC::TYPE_DIRECTIONAL;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 1.f;
+	LightDesc.bEnable = false;
+
+	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+
 	return S_OK;
 }
 
@@ -386,6 +396,7 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 
 			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
 		}
+
 
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);

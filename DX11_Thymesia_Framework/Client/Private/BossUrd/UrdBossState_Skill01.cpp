@@ -144,6 +144,18 @@ void CUrdBossState_Skill01::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCol
 	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
+void CUrdBossState_Skill01::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bHandAttachKeyIndexCheck = false;
+		m_bHandDettachKeyIndexCheck = false;
+	}
+}
+
 void CUrdBossState_Skill01::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Skill01::Call_AnimationEnd, this, placeholders::_1);

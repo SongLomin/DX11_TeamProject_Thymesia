@@ -31,7 +31,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 	break;
 	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
 	{
-#ifdef _URD_EFFECT_
+//#ifdef _URD_EFFECT_
 		switch (m_iWeaponNum)
 		{
 		case 2:
@@ -62,7 +62,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		}
 		break;
 		}
-#endif // _URD_EFFECT_
+//#endif // _URD_EFFECT_
 	}
 	break;
 	}
@@ -321,9 +321,9 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= XMVectorGetY(pCurrentPlayer.lock()->Get_WorldPosition()) + 0.56f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.1f)
 	{
-#ifdef _URD_EFFECT_
+//#ifdef _URD_EFFECT_
 		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
 		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
 		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
@@ -350,7 +350,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 
 
-#endif // _URD_EFFECT_
+//#endif // _URD_EFFECT_
 
 		Set_JavelinState(JAVELIN_STATE::STAKE);
 		return;

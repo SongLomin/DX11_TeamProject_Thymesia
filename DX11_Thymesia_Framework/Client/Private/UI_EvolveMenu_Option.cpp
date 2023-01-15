@@ -83,6 +83,21 @@ void CUI_EvolveMenu_Option::Tick(_float fTimeDelta)
     }
 }
 
+    if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
+    {
+        for (auto& elem : m_HardwareInfos)
+        {
+            GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, elem);
+        }
+
+
+        for (_int i = 0; i < m_CPU_RateInfos.size(); ++i)
+        {
+            GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_CPU_RateInfos[i]);
+        }
+    }
+}
+
 void CUI_EvolveMenu_Option::LateTick(_float fTimeDelta)
 {
     fTimeDelta = CUI_Utils::UI_TimeDelta();

@@ -69,6 +69,9 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
 		bind(&CVargBossState_Exe_NoDeadEnd::Call_NextKeyFrame, this, placeholders::_1);
 
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CVargBossState_Exe_NoDeadEnd::Call_NextKeyFrame, this, placeholders::_1);
+
 	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
 	{
 		PxControllerFilters Filters;
