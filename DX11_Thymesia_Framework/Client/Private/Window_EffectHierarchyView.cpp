@@ -319,8 +319,6 @@ void CWindow_EffectHierarchyView::Render_Sound()
     if (ImGui::BeginTabItem("SoundFile"))
     {
 
-
-
         ImGui::EndTabItem();
     }
 }

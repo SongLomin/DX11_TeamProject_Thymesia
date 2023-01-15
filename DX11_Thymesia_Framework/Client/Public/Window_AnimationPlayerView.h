@@ -69,6 +69,9 @@ private:
 	string m_strKeyEventFileName = "";
 	string m_strSoundFileName = "";
 
+public:
+	json Get_KeyEventJson() const { return m_KeyEventJson; }
+
 private:
 	json m_KeyEventJson;
 	weak_ptr<CModel>		m_pCurrentModelCom;

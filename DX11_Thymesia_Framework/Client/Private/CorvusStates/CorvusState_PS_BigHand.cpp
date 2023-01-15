@@ -25,7 +25,7 @@ void CCorvusState_PS_BigHand::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	case 60:
 		TurnOn_Effect("Corvus_PW_EyeGlow");
 		return;
-	case 101:
+	case 103:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
