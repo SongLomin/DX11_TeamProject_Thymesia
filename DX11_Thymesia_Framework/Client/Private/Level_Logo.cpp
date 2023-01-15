@@ -55,6 +55,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::F2, KEY_STATE::TAP))
 	{
+		GAMEINSTANCE->StopAll();
 		if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(LEVEL_EDIT))))
 			return;
 	}

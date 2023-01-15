@@ -20,7 +20,6 @@
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
-
 // #define _SKYBOX_
 
 #define _USE_GRAVITY_
@@ -35,7 +34,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-// #define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   
