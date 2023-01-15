@@ -117,7 +117,7 @@ _bool CCorvusState_HurtR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.25f)
 	{
 		if (Check_RequirementParryState())
 		{

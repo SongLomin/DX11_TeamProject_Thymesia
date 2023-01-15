@@ -370,11 +370,12 @@ void CUrd::OnEventMessage(_uint iArg)
 	{
 		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+		Reset_Weapon();
+		m_pStatus.lock()->Full_Recovery();
 
 		Change_State<CUrdBossState_Start>();
 
-		Reset_Weapon();
-		m_pStatus.lock()->Full_Recovery();
+		
 
 	}
 }
@@ -413,7 +414,7 @@ void CUrd::Reset_Weapon()
 	}
 
 	m_pWeapons.front().lock()->Weapon_BoneChange(m_pModelCom, "AnimTargetPoint");
-	Weak_StaticCast<CUrdWeapon>(m_pWeapons.back()).lock()->Set_UsingCheck(true);
+
 }
 
 
