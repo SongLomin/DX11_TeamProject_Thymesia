@@ -152,7 +152,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
 	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
 	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
-	LightDesc.fIntensity = 1.f;
+	LightDesc.fIntensity = 0.f;
 	LightDesc.bEnable = false;
 
 	m_DirLightDesc = GAMEINSTANCE->Add_Light(LightDesc);

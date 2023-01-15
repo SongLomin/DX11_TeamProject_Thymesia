@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Level_Stage2.h"
-
+#include "Player.h"
 #include "GameInstance.h"
 #include "Client_GameObjects.h"
 #include "GameManager.h"
@@ -50,13 +50,14 @@ HRESULT CLevel_Stage2::Initialize()
 
 	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_STAGE2);
 	GAMEINSTANCE->Set_GodRay_Enable(false);
-
+	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	SetUp_UI();
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
 	
 	return S_OK;
 }
+
 
 void CLevel_Stage2::Tick(_float fTimeDelta)
 {
@@ -67,6 +68,16 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 	{
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Stage2.json");
 	}
+
+	_vector vPosition = m_pPlayer.lock()->Get_WorldPosition();
+
+	GAMEINSTANCE->Set_DynamicShadowLight(
+		{ -15.f + XMVectorGetX(vPosition)
+		, 30.f + XMVectorGetY(vPosition)
+		, -15.f + XMVectorGetZ(vPosition) }
+		, { XMVectorGetX(vPosition)
+			, XMVectorGetY(vPosition)
+			, XMVectorGetZ(vPosition) });
 	
 }
 

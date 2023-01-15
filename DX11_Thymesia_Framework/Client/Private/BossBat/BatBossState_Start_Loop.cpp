@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "UI_FadeMask.h"
 #include "PhysXCharacterController.h"
 
 GAMECLASS_C(CBatBossState_Start_Loop);
@@ -40,7 +41,16 @@ void CBatBossState_Start_Loop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
+	if (m_bStartTimeAcc)
+	{
+		m_fTimeAcc += fTimeDelta;
+		if (m_bFadeOutTrigger)
+		{
+			m_bFadeOutTrigger = false;
+			weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+			pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 0.5f, 1.f, EASING_TYPE::LINEAR);
+		}
+	}
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -51,13 +61,18 @@ void CBatBossState_Start_Loop::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
+
+	
 }
 
 void CBatBossState_Start_Loop::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+	m_bFadeOutTrigger = true;
+	m_bStartTimeAcc = false;
+	m_fTimeAcc = 0.f;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -90,10 +105,13 @@ _bool CBatBossState_Start_Loop::Check_AndChangeNextState()
 	
 	if (fPToMDistance <= 30.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Start>(0.05f);
-		return true;
+		m_bStartTimeAcc = true;
 	}
 
+	if (m_fTimeAcc > 1.4f)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Start>(0.05f);
+	}
 	return false;
 }
 

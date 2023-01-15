@@ -559,6 +559,16 @@ void CCamera_Target::Update_PhysXCollider(_float fTimeDelta)
 		XMStoreFloat4x4(&m_CollisionMatrix, vCollisionMatrix);
 	}
 }
+void CCamera_Target::OnEventMessage(_uint iArg)
+{
+	if (EVENT_TYPE::ON_RESPAWN == (EVENT_TYPE)iArg)
+	{
+		_vector vCurPlayerPos = m_pCurrentPlayer.lock()->Get_WorldPosition();
+
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
+		XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
+	}
+}
 
 void CCamera_Target::OnLevelExit()
 {

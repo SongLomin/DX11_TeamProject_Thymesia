@@ -4,6 +4,7 @@
 #include "ClientLevel.h"
 
 BEGIN(Client)
+class CPlayer;
 
 class CLevel_Stage2 final : public CClientLevel
 {
@@ -18,6 +19,9 @@ public:
 
 public:
 	virtual void ExitLevel(LEVEL eLevel);
+
+private:
+	weak_ptr<CPlayer> m_pPlayer;
 
 public:
 	static shared_ptr<CLevel_Stage2> Create();

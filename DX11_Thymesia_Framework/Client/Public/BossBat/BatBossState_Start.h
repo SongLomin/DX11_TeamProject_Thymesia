@@ -37,7 +37,9 @@ public:
 private:
 	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
-
+	_bool			m_bStopAnimation = false;
+	_bool			m_bFadeOutTrigger = true;
+	_float			m_fTimeAcc = 0.f;
 
 
 private:

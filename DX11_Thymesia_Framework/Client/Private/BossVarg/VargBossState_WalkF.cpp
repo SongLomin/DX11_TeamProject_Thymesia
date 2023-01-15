@@ -11,6 +11,7 @@
 #include "VargStates.h"
 #include "PhysXController.h"
 #include "GameManager.h"
+#include "UI_FadeMask.h"
 
 GAMECLASS_C(CVargBossState_WalkF);
 CLONE_C(CVargBossState_WalkF, CComponent)
@@ -76,6 +77,8 @@ void CVargBossState_WalkF::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: WalkbB -> OnStateStart" << endl;
@@ -139,6 +142,9 @@ _bool CVargBossState_WalkF::Check_AndChangeNextState()
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
 		{
+			weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+			pFadeMask.lock()->Set_Fade(1.f, 0.f, 1.5f, EASING_TYPE::LINEAR);
+
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
 			return true;
 		}

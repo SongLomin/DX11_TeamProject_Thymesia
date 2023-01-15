@@ -62,13 +62,15 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
 
-	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
+	GAMEINSTANCE->Set_ShadowLight({ 50.f, -50.f, -50.f }, { 0.f, 0.f, 0.f });
 
 	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.f), 9999.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(3.01f, 25.f, 40.2f, 1.f));
 	GAMEINSTANCE->Set_GodRayScale(1.f);
+
+	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
@@ -117,6 +119,16 @@ void CLevel_Test::Tick(_float fTimeDelta)
 
 		m_bFadeTrigger = true;
 	}
+
+	_vector vPosition = m_pPlayer.lock()->Get_WorldPosition();
+
+	GAMEINSTANCE->Set_DynamicShadowLight(
+		{ -15.f + XMVectorGetX(vPosition)
+		, 30.f + XMVectorGetY(vPosition)
+		, -15.f + XMVectorGetZ(vPosition) }
+		, { XMVectorGetX(vPosition)
+			, XMVectorGetY(vPosition)
+			, XMVectorGetZ(vPosition) });
 
 #ifndef _LOAD_CAPTURED_RESOURCE_
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))

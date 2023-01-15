@@ -133,7 +133,7 @@ public:
     void Focus_Monster();
     void Release_Focus();
     weak_ptr<CMonster> Get_TargetMonster();
-    weak_ptr<CCamera_Target> Get_Target() { return m_pTargetCamera; }
+    weak_ptr<CCamera_Target> Get_CameraTarget() { return m_pTargetCamera; }
 
 private:
     weak_ptr<CMonster> Forced_SearchNearTargetMonster();

@@ -48,7 +48,7 @@ public: /* For. Talent */
     void  Set_LadderCheck(_bool LadderCheck) { m_bLadderCheck = LadderCheck; }
     _bool Get_LadderCheck() { return m_bLadderCheck; }
     list<weak_ptr<CWeapon>> Get_Weapon() { return m_pWeapons; }
-    void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
+    //void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
 public:
     void Focus_Monster(weak_ptr<CGameObject> In_pMonster);
     void Release_Focus();
@@ -63,6 +63,7 @@ public:
     }
 
 public:
+    virtual void Set_DissolveAmount(const _float& In_fAmount) override { m_fDissolveAmount = In_fAmount; } 
     void Set_DissolveAmount(const _uint In_iDissolveMeshIndex,const DISSOLVE_DESC In_DissolveDesc)
     {
         m_DissolveDescs[In_iDissolveMeshIndex] = In_DissolveDesc;

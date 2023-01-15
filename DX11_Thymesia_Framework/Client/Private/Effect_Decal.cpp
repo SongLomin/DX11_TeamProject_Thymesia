@@ -48,6 +48,7 @@ void CEffect_Decal::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_DecalDesc.fAppearTime -= fTimeDelta;
+
 	if(0.f>m_DecalDesc.fAppearTime)
 		m_DecalDesc.fTime -= fTimeDelta;
 

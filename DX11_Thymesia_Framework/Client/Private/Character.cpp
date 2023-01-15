@@ -80,6 +80,7 @@ void CCharacter::Tick(_float fTimeDelta)
 		m_fRimLightTimeAcc -= fTimeDelta;
 
 		m_fRimLightPower = max(0.f, m_fRimLightPower * m_fRimLightTimeAcc / m_fRimLightTime);
+
 	}
 	
 }

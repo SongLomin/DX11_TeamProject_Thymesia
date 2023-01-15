@@ -11,6 +11,7 @@
 #include "UI_ScriptQueue.h"
 #include "MonsterHPBar_Boss.h"
 #include "UIManager.h"
+#include "UI_FadeMask.h"
 
 
 GAMECLASS_C(CVargBossState_Start);
@@ -69,7 +70,24 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	if(!m_bStopAnimation)
+		m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	else
+	{
+		m_fStopTimeAcc += fTimeDelta;
+		if (m_fStopTimeAcc > 2.5f)
+		{
+			m_bStopAnimation = true;
+		}
+
+		if (m_bFadeOutTrigger)
+		{
+			m_bFadeOutTrigger = false;
+			weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+			pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 2.f, 1.f, EASING_TYPE::LINEAR);
+		}
+	}
 }
 
 void CVargBossState_Start::LateTick(_float fTimeDelta)
@@ -84,10 +102,16 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
+	m_bFadeOutTrigger = true;
+	m_fStopTimeAcc = 0.f;
+	m_bStopAnimation = false;
+
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-
-
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
+
+	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+	pFadeMask.lock()->Set_Fade(1.f, 0.f, 1.5f, EASING_TYPE::LINEAR);
+
 
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -136,7 +160,13 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 1210)
+	_uint CurAnimationKey = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+
+	if (m_bFadeOutTrigger && CurAnimationKey == 1209)
+	{
+		m_bStopAnimation = true;
+	}
+	else if (CurAnimationKey == 1210)
 	{
 		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 		//pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();

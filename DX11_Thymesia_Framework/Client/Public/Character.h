@@ -38,7 +38,7 @@ public:
     weak_ptr<CPhysXCharacterController> Get_PhysX() { return m_pPhysXControllerCom; }
     weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
 
-    //void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
+    virtual void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
     _uint Get_AttackCollisionLayer() const {
         return (_uint)m_eAttackCollisionLayer;
     };

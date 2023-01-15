@@ -123,7 +123,6 @@ HRESULT CVargWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 			// NvCloth
 			if (1 == i)
 			{
-				iPassIndex = 11;
 				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
 			}
 			else
