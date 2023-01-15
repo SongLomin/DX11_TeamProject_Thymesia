@@ -117,6 +117,8 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::VARG_KEY);
 
+	GAMEINSTANCE->StopSound(0);
+
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 
 	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);

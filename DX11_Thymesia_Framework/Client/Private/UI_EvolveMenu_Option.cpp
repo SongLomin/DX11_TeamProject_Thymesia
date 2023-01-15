@@ -8,7 +8,7 @@
 #include "UIManager.h"
 #include "UI_OptionItem.h"
 #include "GameManager.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_EvolveMenu_Option)
 CLONE_C(CUI_EvolveMenu_Option, CGameObject)
@@ -56,6 +56,8 @@ void CUI_EvolveMenu_Option::LateTick(_float fTimeDelta)
 
 void CUI_EvolveMenu_Option::Call_OnChangeOption(OPTION_TYPE eOption, _uint iAmount)
 {
+    GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
+
     Callback_OnChangeOption(eOption, iAmount);
     //or GAMEMANAGER Call
 

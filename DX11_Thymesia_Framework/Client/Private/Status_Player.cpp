@@ -163,7 +163,6 @@ void CStatus_Player::Init_Status(const void* pArg)
 void CStatus_Player::Add_Str(_uint iStr)
 {
     m_tDesc.m_iStr += iStr;
-
     m_tDesc.m_fNormalAtk = 25 + (((_float)m_tDesc.m_iStr - 1) * 3.f);
 }
 

@@ -86,8 +86,7 @@ void CUI_EvolveMenu_SKillIcon::StartGauge()
     m_pEasingRatio.lock()->Add_Condition(0.2f, EASING_FLOAT_CONDITION::BIGGER, 2);
     m_pEasingRatio.lock()->Add_Condition(0.4f, EASING_FLOAT_CONDITION::BIGGER, 3);
     m_pEasingRatio.lock()->Add_Condition(0.6f, EASING_FLOAT_CONDITION::BIGGER, 5);
-    m_pEasingRatio.lock()->Add_Condition(0.99f, EASING_FLOAT_CONDITION::BIGGER, 7);
-
+    m_pEasingRatio.lock()->Add_Condition(0.9f, EASING_FLOAT_CONDITION::BIGGER, 7);
 }
 
 void CUI_EvolveMenu_SKillIcon::EndGauge()

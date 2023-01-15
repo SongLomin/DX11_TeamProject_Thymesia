@@ -113,6 +113,8 @@ private:
 
     shared_ptr<CInventorySorter>    m_pInventorySorter;
 
+    _uint                           m_iSoundKey;
+
 private:
     _bool                            m_IsAnimating = false;
 //Free

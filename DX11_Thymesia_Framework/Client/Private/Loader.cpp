@@ -1429,6 +1429,9 @@ void CLoader::Load_UIResource()
 	//UI _ ItemRequirement	
 	LOAD_TEXTURES_USE_THREAD(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("ItemRequirement_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Requirement_Direction"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_Direction.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	LOAD_TEXTURES_USE_THREAD(("Use_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Use_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);

@@ -7,6 +7,7 @@
 #include "Preset_ItemData.h"
 #include "Item.h"
 #include "EasingComponent_Transform.h"
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_ItemSlot)
 CLONE_C(CUI_ItemSlot, CGameObject)
@@ -139,11 +140,14 @@ void CUI_ItemSlot::Set_RenderGroup(RENDERGROUP eRenderGroup)
 
 void CUI_ItemSlot::OnMouseOver()
 {
+
 	m_pHover.lock()->Get_Component<CEasingComponent_Alpha>().lock()->Set_Lerp(0.f, 1.f, 0.2f, EASING_TYPE::QUAD_IN, 
 		CEasingComponent::ONCE, false);
 
 	if (m_pBindedItem.lock())
 	{
+
+
 		Callback_OnMouseOver(m_pBindedItem);
 	}
 }

@@ -291,6 +291,8 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
             if (m_pMouseOveredItem.lock()->Get_Type() == ITEM_TYPE::CONSUMPTION || 
                 m_pMouseOveredItem.lock()->Get_Type() == ITEM_TYPE::INGREDIENT)
             {
+                GAMEINSTANCE->PlaySound2D("ItemUse.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT));
+
                 GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>
                     ().lock()->Use_Item(m_pMouseOveredItem.lock()->Get_Name(), 1);
              
@@ -324,14 +326,9 @@ void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
 
     for (auto& elem : m_vecItemSlot)
     {
-        if (!elem.lock()->Get_BindItem().lock())
-            continue;
-
-        if (elem.lock()->Get_BindItem().lock()->Get_CurrentQuantity() < 1)
-        {
-            elem.lock()->UnBind_Item();
-        }
+        elem.lock()->UnBind_Item();
     }
+
     for(auto& pair : pMapItem)
     {
         m_vecItemSlot[iIndex++].lock()->Bind_Item(pair.second);
@@ -503,6 +500,13 @@ void CUI_Inventory::Call_OnWheelMove(_float fAmount)
 void CUI_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
 {
     m_pMouseOveredItem = pItem;
+
+
+    if (pItem.lock()->Get_CurrentQuantity() > 0)
+    {
+        GAMEINSTANCE->PlaySound2D("UI_ChangeIndex0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT));
+    }
+
     Callback_OnMouseOver(pItem);
 }
 

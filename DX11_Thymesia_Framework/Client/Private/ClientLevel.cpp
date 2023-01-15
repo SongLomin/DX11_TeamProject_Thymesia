@@ -25,7 +25,7 @@ HRESULT CClientLevel::Initialize()
 
 	if (m_eMyLevel == LEVEL_LOGO)
 	{
-		GAMEINSTANCE->PlayBGM("BGM_LOGO.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM) + 0.2f);
+		GAMEINSTANCE->PlayBGM("BGM_LOGO.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 	}
 	return S_OK;
 }
@@ -156,6 +156,8 @@ void CClientLevel::SetUp_UI()
 
 	if (pUIManager.lock()->Get_Completed_SetUpUI())
 	{
+		m_pPauseMenu = GAMEINSTANCE->Get_GameObjects< CUI_PauseMenu>(LEVEL_STATIC).front();
+		m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects< CUI_EvolveMenu>(LEVEL_STATIC).front();
 		//이미 셋업된 UI면 리턴한다.
 		return;
 	}
@@ -210,6 +212,9 @@ void CClientLevel::Tick_Key_InputEvent()
 {
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
+		if (m_pEvolveMenu.lock()->Get_Enable() == true)
+			return;
+
 		if (m_pPauseMenu.lock()->Get_Enable() == false)
 		{
 			FaderDesc tFaderDesc;

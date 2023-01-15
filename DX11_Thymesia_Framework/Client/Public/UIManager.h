@@ -53,8 +53,6 @@ public:
     void               OnEnterEvolveMenu();
     void               OnExitEvolveMenu();
 
-
-
 public:
     void   CreateItemPopupQueue();
     void   Add_ItemPopup(ITEM_NAME eItemName);

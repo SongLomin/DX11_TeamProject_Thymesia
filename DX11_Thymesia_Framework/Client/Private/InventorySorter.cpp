@@ -10,6 +10,11 @@
 #include "EasingComponent_Transform.h"
 #include "EasingComponent_Bezier.h"
 #include "UIManager.h"
+#include "ImGui_Manager.h"
+#include "SMath.h"
+#include "UIManager.h"
+
+
 
 GAMECLASS_C(CInventorySorter)
 
@@ -290,6 +295,14 @@ void CInventorySorter::Start_Animation_TypeFlow()
    pDescIcon.lock()->Get_Component<CEasingComponent_Bezier>().lock()->Callback_LerpEnd
         += bind(&CInventorySorter::Start_Animation_TypeFlow, this); //두개 뽑아서 하나 쓰는거라, 한쪽 콜백에만 달아둠.
 
+   //string strShuffleSoundKey = "CardShot_0";
+   //_int     iRandom = SMath::Random(1, 3);
+   //
+   //strShuffleSoundKey += to_string(iRandom);
+   //strShuffleSoundKey += ".ogg";
+
+   GAMEINSTANCE->PlaySound2D("CardShot_03.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
+
    pDescIcon.lock()->Start_SwapLerp(pSourIcon.lock()->GetPos(), 0.5f, m_fSortTime);
    pSourIcon.lock()->Start_SwapLerp(pDescIcon.lock()->GetPos(), -0.5f, m_fSortTime);
 
@@ -314,10 +327,8 @@ _bool CInventorySorter::CheckCondition(weak_ptr<CItem> pLeftItem, weak_ptr<CItem
             return true;   
         break;
     case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_DATE:
-        
         if (pLeftItem.lock()->Get_CreatedTime() <= pRightItem.lock()->Get_CreatedTime())
             return true;
-
         break;
     case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_QUANTITY:
         if (pLeftItem.lock()->Get_CurrentQuantity() <= pRightItem.lock()->Get_CurrentQuantity())

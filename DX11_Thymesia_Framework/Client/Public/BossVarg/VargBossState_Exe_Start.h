@@ -30,6 +30,10 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+
+public:
+	virtual void Call_NextKeyFrame(const _uint& In_iKeyIndex) override;
+
 private:
 	_bool   m_bDieType = false;
 

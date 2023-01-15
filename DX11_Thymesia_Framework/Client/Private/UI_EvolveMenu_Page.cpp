@@ -29,6 +29,7 @@ void CUI_EvolveMenu_Page::Tick(_float fTimeDelta)
 
 void CUI_EvolveMenu_Page::Update_KeyInput(_float fTimeDelta)
 {
+    GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
     FaderDesc tFaderDesc;
     tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
     tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
@@ -61,5 +62,4 @@ void CUI_EvolveMenu_Page::OnDisable()
     __super::OnDisable();
 
     GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
-
 }
