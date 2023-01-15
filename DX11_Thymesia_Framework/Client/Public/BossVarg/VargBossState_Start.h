@@ -42,9 +42,6 @@ private:
 	_float     m_fSinematic = 0.f;
 	_float4x4  m_vPlyerMatrix;
 
-	_float		m_fStopTimeAcc = 0.f;
-	_bool		m_bStopAnimation = false;
-	_bool		m_bFadeOutTrigger = true;
 };
 
 END

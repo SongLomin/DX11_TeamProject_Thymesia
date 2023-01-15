@@ -30,6 +30,12 @@ void CVargBossState_Start::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	case 1251:
 		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 		break;
+	case 1486:
+	{
+		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
+		pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 0.5f, 0.5f, EASING_TYPE::LINEAR);
+		break;
+	}
 	}
 }
 
@@ -71,23 +77,8 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
 
-	if(!m_bStopAnimation)
-		m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	else
-	{
-		m_fStopTimeAcc += fTimeDelta;
-		if (m_fStopTimeAcc > 2.5f)
-		{
-			m_bStopAnimation = true;
-		}
+	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-		if (m_bFadeOutTrigger)
-		{
-			m_bFadeOutTrigger = false;
-			weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
-			pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 2.f, 1.f, EASING_TYPE::LINEAR);
-		}
-	}
 }
 
 void CVargBossState_Start::LateTick(_float fTimeDelta)
@@ -101,10 +92,6 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
-
-	m_bFadeOutTrigger = true;
-	m_fStopTimeAcc = 0.f;
-	m_bStopAnimation = false;
 
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
