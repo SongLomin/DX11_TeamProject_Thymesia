@@ -5,6 +5,7 @@ namespace Client
 	{
 #pragma region Tool Options
 		// TODO : for imgui movements -> remove after finishing mesh effect
+#ifdef _DEBUG
 		_bool		bOnFocus;
 		_float		fSpeedPerSec;
 		_float		fRotationPerSec;
@@ -16,6 +17,7 @@ namespace Client
 		_bool		bSyncScaleForce;
 		_bool		bSyncMinScale;
 		_bool		bSyncMaxScale;
+#endif // _DEBUG
 #pragma endregion
 
 #pragma region Datas
@@ -190,6 +192,7 @@ namespace Client
 		_float		fMaxLifeTime;
 #pragma endregion
 
+#ifdef _DEBUG
 		_bool		bIsMinMaxSame_StartSpeed;
 		_bool		bIsMinMaxSame_SpeedForce;
 		_bool		bIsMinMaxSame_SpeedLimit;
@@ -208,6 +211,7 @@ namespace Client
 		_bool		bIsMinMaxSame_ColorSpeed;
 		_bool		bIsMinMaxSame_ColorForce;
 		_bool		bIsMinMaxSame_ColorLimit;
+#endif // _DEBUG
 
 #pragma region Spawn Position
 		_float3		vMinSpawnPosition;

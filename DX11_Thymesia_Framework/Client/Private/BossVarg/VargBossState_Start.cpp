@@ -149,11 +149,7 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 
 	_uint CurAnimationKey = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
 
-	if (m_bFadeOutTrigger && CurAnimationKey == 1209)
-	{
-		m_bStopAnimation = true;
-	}
-	else if (CurAnimationKey == 1210)
+	if (CurAnimationKey == 1210)
 	{
 		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 		//pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
