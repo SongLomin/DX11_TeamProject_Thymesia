@@ -302,6 +302,7 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
 	FMOD_Channel_SetMode(m_pChannelArr[BGM].pChannel, FMOD_LOOP_NORMAL);
 	//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
 
+	m_pChannelArr[BGM].is3DSound = false;
 
 	FMOD_VECTOR vPosition{};
 	FMOD_VECTOR vVelocity{};
