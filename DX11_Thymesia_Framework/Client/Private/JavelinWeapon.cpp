@@ -372,6 +372,12 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
 	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
 
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	tMonsterDesc.Reset();
+	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+
+	m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc);
+
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(pJavelinWeapon.lock()->Get_Transform()->Get_Position());
 
