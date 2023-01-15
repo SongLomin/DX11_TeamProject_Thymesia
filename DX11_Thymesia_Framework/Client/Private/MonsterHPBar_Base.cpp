@@ -285,6 +285,18 @@ void CMonsterHPBar_Base::Reset()
 
 }
 
+void CMonsterHPBar_Base::Call_UpdateHP(CStatus_Monster::MONSTERDESC tDesc)
+{
+	_float fWhiteRatio = 0.f;
+	_float fGreenRatio = 0.f;
+
+	fWhiteRatio = tDesc.m_fCurrentHP_white / tDesc.m_fMaxHP_white;
+	fGreenRatio = tDesc.m_fCurrentHP_Green / tDesc.m_fMaxHP_Green;
+
+	m_pWhite.lock()->Set_Ratio(fWhiteRatio);
+	m_pGreen.lock()->Set_Ratio(fGreenRatio);
+}
+
 void CMonsterHPBar_Base::Call_Update_ParryGauge(_float _fRatio, _bool bLerp)
 {
 	Set_Enable(true);
@@ -468,7 +480,10 @@ void CMonsterHPBar_Base::Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Mo
 	(
 		&CMonsterHPBar_Base::Call_Full_Recovery, this
 	);
-
+	pStatus_Monster.lock()->Callback_UpdateHP += bind
+	(
+		&CMonsterHPBar_Base::Call_UpdateHP, this, placeholders::_1
+	);
 }
 void	CMonsterHPBar_Base::Reset_UI()
 {

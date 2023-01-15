@@ -177,6 +177,19 @@ _bool CStatus_Monster::Is_Groggy() const
 	return fParryGaugeRatio >= 1.f - DBL_EPSILON;
 }
 
+void CStatus_Monster::Heal(_float fHealAmount)
+{
+	m_tMonsterDesc.m_fCurrentHP_white += fHealAmount;
+
+	if (m_tMonsterDesc.m_fCurrentHP_white > m_tMonsterDesc.m_fMaxHP_white)
+	{
+		m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
+	}
+	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fCurrentHP_white;
+
+	Callback_UpdateHP(m_tMonsterDesc);
+}
+
 void CStatus_Monster::Set_ParryRecoveryTime(const _float fRatio)
 {
 	if (fRatio > 0.8f)

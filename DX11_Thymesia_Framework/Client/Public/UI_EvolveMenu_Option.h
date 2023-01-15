@@ -72,6 +72,7 @@ private:
     _bool                   m_bLoopStop{};
 
 private:
+    _int                    m_iSoundIndex = -999;
     _float                  m_fOptionItemOffsetY;
 
 

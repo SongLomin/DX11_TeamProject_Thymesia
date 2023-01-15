@@ -38,13 +38,13 @@ public://Node Search Function
     
     _bool Check_ActiveAble_ThisNode();
     
-    void Find_AllParent_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_ptr<CTalent>>& out_pActiveParent);
+    void    Find_AllParent_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_ptr<CTalent>>& out_pActiveParent);
 
     void    Set_TalentInfo(_bool In_bActive,  weak_ptr<CTalent_Effect> In_pEffet, weak_ptr<CTalent> In_pParent);
     
     void    Set_Parent(weak_ptr<CTalent> In_Parent);
     
-    void Set_Active(_bool Active);
+    void    Set_Active(_bool Active);
 
     weak_ptr<CTalent_Effect> Get_Effect() { return m_pEffect; }
     

@@ -92,9 +92,13 @@ void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp)
 
 void CPlayer_HPBar::Call_UpdateStatus()
 {
-    m_fMaxHp = m_pPlayerStatus.lock()->Get_MaxHP();
+    CStatus_Player::PLAYERDESC tPlayerDesc = m_pPlayerStatus.lock()->Get_PlayerDesc();
+
+    m_fMaxHp = tPlayerDesc.m_fMaxHP;
     m_fLerpHp = m_fMaxHp;
     m_fCurrentHp = m_fMaxHp;
+
+    m_pMainBar.lock()->Set_Ratio(1.f);
 }
 
 void CPlayer_HPBar::Call_ChangeCurrentHP(_float fCurrentHP)
@@ -105,7 +109,6 @@ void CPlayer_HPBar::Call_ChangeCurrentHP(_float fCurrentHP)
 void CPlayer_HPBar::Bind_Player()
 {
     __super::Bind_Player();
-    Call_UpdateStatus();
 
     m_pPlayerStatus.lock()->Callback_ChangeHP += bind(&CPlayer_HPBar::Call_ChangeCurrentHP, this,
         placeholders::_1);
@@ -114,6 +117,8 @@ void CPlayer_HPBar::Bind_Player()
 
     Set_MaxHp(m_pPlayerStatus.lock()->Get_MaxHP());
     Set_CurrentHp(m_pPlayerStatus.lock()->Get_CurrentHP());
+
+    //Call_UpdateStatus();
 }
 
 void CPlayer_HPBar::OnDisable()

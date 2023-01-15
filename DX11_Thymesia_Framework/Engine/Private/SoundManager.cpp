@@ -306,6 +306,14 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
 	FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
 
 
+	FMOD_VECTOR vPosition{};
+	FMOD_VECTOR vVelocity{};
+
+	FMOD_Channel_Set3DAttributes(m_pChannelArr[BGM], &vPosition, &vVelocity);
+
+
+	//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
+
 	if (_vol >= SOUND_MAX)
 		_vol = 1.f;
 	else if (_vol <= SOUND_MIN)

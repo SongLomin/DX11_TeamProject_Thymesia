@@ -9,6 +9,10 @@ BEGIN(Client)
 class CUI_Utils : public CBase
 {
 public:
+
+	static _float				Get_BGMSoundAmount() { return 0.3f; }
+	static _float				Get_UISoundAmount() { return 0.4f; }
+
 	static _float2				ConvertWorldPosToUIPos(_fvector	vWorldPos, _fvector vOffset);
 	static _float				UI_TimeDelta();
 	static _float4&				GET_COLOR(COLOR_PALETTE eColor);

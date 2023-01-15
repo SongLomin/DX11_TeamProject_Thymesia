@@ -29,6 +29,7 @@ void CUI_EvolveMenu_Page::Tick(_float fTimeDelta)
 
 void CUI_EvolveMenu_Page::Update_KeyInput(_float fTimeDelta)
 {
+    GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
     FaderDesc tFaderDesc;
     tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
     tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
@@ -46,6 +47,7 @@ void CUI_EvolveMenu_Page::Call_ExitTap()
     Set_Enable(false);
     m_pFadeMask.lock()->Set_Enable(false);
     GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+    GAMEINSTANCE->PlaySound2D("Fantasy_Game_UI_Ice_Select.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT));
 
 }
 
@@ -61,5 +63,4 @@ void CUI_EvolveMenu_Page::OnDisable()
     __super::OnDisable();
 
     GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
-
 }

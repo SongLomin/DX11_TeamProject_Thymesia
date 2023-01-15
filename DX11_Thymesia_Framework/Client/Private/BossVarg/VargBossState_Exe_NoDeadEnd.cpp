@@ -66,6 +66,9 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,5);
 
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CVargBossState_Exe_NoDeadEnd::Call_NextKeyFrame, this, placeholders::_1);
+
 	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
 	{
 		PxControllerFilters Filters;
@@ -110,6 +113,9 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd(_uint iEndAnimIndex)
 {
 	if (!Get_Enable())
 		return;
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CVargBossState_Exe_NoDeadEnd::Call_NextKeyFrame, this, placeholders::_1);
 
 
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);

@@ -69,6 +69,13 @@ void CUI_ItemRequirement::Call_ItemRequireMent(ITEM_NAME eITemName)
     Start_UI();
 }
 
+void CUI_ItemRequirement::Call_RequirementDir()
+{
+    Set_Texture("Requirement_Direction");
+    
+    Start_UI();
+}
+
 void CUI_ItemRequirement::Call_UseItem(ITEM_NAME eITemName)
 {
     switch (eITemName)

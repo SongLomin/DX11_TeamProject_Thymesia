@@ -55,6 +55,22 @@ void CUIManager::DisableCursor()
 	m_pCursor.lock()->Set_Enable(false);
 }
 
+void CUIManager::Add_SoundType(UI_SOUND_TYPE eType, _float fAmount)
+{
+	m_UISoundTypeMap.emplace(eType, fAmount);
+}
+
+_float CUIManager::Get_SoundType(UI_SOUND_TYPE eType)
+{
+	UISOUNDTYPE::iterator pair = m_UISoundTypeMap.find(eType);
+
+	if (pair == m_UISoundTypeMap.end())
+	{
+		return 1.f;
+	}
+	return pair->second;
+}
+
 void CUIManager::Set_CloseCurtain(_float fTime)
 {
 	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Get_GameObjects<CUI_FadeMask>(LEVEL_STATIC).front();
@@ -88,7 +104,7 @@ void CUIManager::OnEnterEvolveMenu()
 	pRadialBlurMask.lock()->Callback_OnEndLerp += bind(&CUIManager::Open_EvolveMenu, this);
 
 	pFadeMask.lock()->Set_Fade(0.f, 1.f, 0.3f, EASING_TYPE::LINEAR);
-
+	GAMEINSTANCE->PlaySound2D("EvolveMenu_Enable.wav", m_UISoundTypeMap[UI_SOUND_TYPE::SOUND_CHOOSE_SELECT]);
 }
 
 void CUIManager::OnExitEvolveMenu()
@@ -103,6 +119,8 @@ void CUIManager::OnExitEvolveMenu()
 	pFadeMask.lock()->Set_Fade(1.f, 0.f, 0.7f, EASING_TYPE::QUART_IN);
 
 	pFadeMask.lock()->Callback_OnLerpEnd += bind(&CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu, pEvolveMenu.lock());
+	GAMEINSTANCE->PlaySound2D("EvolveMenu_Disable.wav", m_UISoundTypeMap[UI_SOUND_TYPE::SOUND_CHOOSE_SELECT]);
+
 }
 
 void CUIManager::CreateItemPopupQueue()

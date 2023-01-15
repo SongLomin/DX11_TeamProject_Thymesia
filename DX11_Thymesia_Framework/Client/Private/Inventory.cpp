@@ -5,7 +5,8 @@
 #include "UI_ItemPopup.h"
 #include "GameManager.h"
 #include "UIManager.h"
-
+#include "Status_Player.h"
+#include "Player.h"
 
 GAMECLASS_C(CInventory)
 CLONE_C(CInventory, CComponent)
@@ -146,6 +147,64 @@ void CInventory::Remove_Item(ITEM_NAME eItemName)
 _uint CInventory::Get_Size()
 {
 	return m_mapInventory.size();
+}
+
+void CInventory::Use_Item(ITEM_NAME eItemName, _uint iUseQuantity)
+{
+	weak_ptr<CItem> pItem = Find_Item(eItemName);
+
+	if (!pItem.lock())
+	{
+		return;//마우스오버 안올린 아이템을 쓴다? 이건 오류임.
+	}
+	weak_ptr<CStatus_Player> pPlayerStatus = m_pOwner.lock()->Get_Component<CStatus_Player>();
+
+	switch (eItemName)
+	{
+	case Client::ITEM_NAME::BASIL:
+		pPlayerStatus.lock()->Heal_PlayerFromMaxHP(0.1f);
+		break;
+	case Client::ITEM_NAME::THYME:
+		pPlayerStatus.lock()->Add_Str(10);
+		break;
+	case Client::ITEM_NAME::CINNAMON:
+		pPlayerStatus.lock()->MPHeal_PlayerFromMaxMP(0.1f);
+		break;
+	case Client::ITEM_NAME::MEMORY01:
+		pPlayerStatus.lock()->Add_Memory(10000);
+		break;
+	case Client::ITEM_NAME::MEMORY02:
+		pPlayerStatus.lock()->Add_Memory(100000);
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_VARGSWORD:
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_AXE:
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_KNIFE:
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_SCYTHE:
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_HAMMER:
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_BLOODSTORM:
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_HALBERDS:
+		break;
+	case Client::ITEM_NAME::ITEM_NAME_END:
+		return;
+		break;
+	}
+	pItem.lock()->Minus_Quantity(iUseQuantity);
+
+	if (pItem.lock()->Get_CurrentQuantity() == 0)
+	{
+		ITEMMAP::iterator pair = m_mapInventory.find(pItem.lock()->Get_Name());
+
+		if (pair != m_mapInventory.end())
+		{
+			m_mapInventory.erase(pair);
+		}
+	}
 }
 
 weak_ptr<CItem> CInventory::Find_Item(ITEM_NAME eItemName)

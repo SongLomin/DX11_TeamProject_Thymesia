@@ -126,9 +126,9 @@ private:
 
 	
 private:
-	_uint								m_iCurrentMemory;
-	_uint								m_iNeedMemory;
-	_float4								m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::EVOLOVE_TEXT_COLOR_END];
+	_uint						m_iCurrentMemory;
+	_uint						m_iNeedMemory;
+	_float4						m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::EVOLOVE_TEXT_COLOR_END];
 private:
 	TEXTINFO					m_tTextInfo_OriginLevel;
 	TEXTINFO					m_tTextInfo_OriginMemory;

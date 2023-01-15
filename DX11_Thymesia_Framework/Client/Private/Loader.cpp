@@ -445,6 +445,30 @@ HRESULT CLoader::Loading_ForStage2Level()
 	LightDesc.fIntensity = 1.f;
 #endif // _BRIGHT_LIGHT_
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+	Load_AllEffectMesh();
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+
+	Load_AllMapModel();
+
+
 	GAMEINSTANCE->Add_Light(LightDesc);
 
 	//GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 160.f);
@@ -472,6 +496,28 @@ HRESULT CLoader::Loading_ForStage3Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage3.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage3.json");
 #else // _LOAD_CAPTURED_RESOURCE_
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+	Load_AllEffectMesh();
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+
 	Load_AllMapModel();
 #endif
 	_matrix TransformMatrix(XMMatrixIdentity());
@@ -1391,6 +1437,9 @@ void CLoader::Load_UIResource()
 	//UI _ ItemRequirement	
 	LOAD_TEXTURES_USE_THREAD(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("ItemRequirement_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("Requirement_Direction"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_Direction.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	LOAD_TEXTURES_USE_THREAD(("Use_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("Use_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1442,7 +1491,7 @@ void CLoader::Load_UIResource()
 	LOAD_TEXTURES_USE_THREAD(("PW_BloodStorm_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/BloodStorm/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("PW_Halberds_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Halberd/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
-	LOAD_TEXTURES_USE_THREAD(("PW_Halberds_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Halberd/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
+	LOAD_TEXTURES_USE_THREAD(("PW_Halberds_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Halberd/Informaiton0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	LOAD_TEXTURES_USE_THREAD(("SkillOpen_TitleText"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/TitleText.png"), MEMORY_TYPE::MEMORY_STATIC);
 	LOAD_TEXTURES_USE_THREAD(("SkillOpen_SkillName"), TEXT("../Bin/Resources/Textures/UI/UI_EffectGroup/SkillOpen/SkillName%d.png"), MEMORY_TYPE::MEMORY_STATIC);

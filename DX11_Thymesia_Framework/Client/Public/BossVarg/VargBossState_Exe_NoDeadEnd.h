@@ -31,6 +31,7 @@ protected:
 public:
 	void Set_DeadChoice(_bool DeadChoice) { m_bDeadChoice = DeadChoice; }
 
+
 private:
 	_bool  m_bDeadChoice = false;
 private:

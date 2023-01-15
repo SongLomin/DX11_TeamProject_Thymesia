@@ -908,8 +908,11 @@ void CCorvus::Save_ClientComponentData()
 	json	CorvusJson;
 
 	string                  szClientSavePath = "../Bin/ClientComponentData/Corvus/SaveData.json";
-	
+	string                  szClientBackUpPath = "../Bin/ClientComponentData/Corvus/SaveDataBackUp";
 
+	
+	szClientBackUpPath += to_string(time(NULL));
+	szClientBackUpPath += ".json";
 
 	m_pStatus.lock()->Write_SaveData(CorvusJson);
 	m_pInventory.lock()->Write_SaveData(CorvusJson);
@@ -919,6 +922,7 @@ void CCorvus::Save_ClientComponentData()
 	CorvusJson["TalentEffect"] = iFlag;
 
 	CJson_Utility::Save_Json(szClientSavePath.c_str(), CorvusJson);
+	CJson_Utility::Save_Json(szClientBackUpPath.c_str(), CorvusJson);
 }
 
 void CCorvus::Load_ClientComponentData()

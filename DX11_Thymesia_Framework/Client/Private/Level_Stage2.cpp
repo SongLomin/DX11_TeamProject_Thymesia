@@ -47,20 +47,20 @@ HRESULT CLevel_Stage2::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_STAGE2);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
-	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
-    m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
-	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
 	GET_SINGLE(CGameManager)->Set_PreLevel(LEVEL::LEVEL_STAGE2);
 	GAMEINSTANCE->Set_GodRay_Enable(false);
 
+	SetUp_UI();
+
+	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
+	
 	return S_OK;
 }
 
 void CLevel_Stage2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);	
-
 
 	Tick_Key_InputEvent();
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))

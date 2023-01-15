@@ -30,6 +30,10 @@ public:
     void    EnableCursor();
     void    DisableCursor();
 
+    void      Add_SoundType(UI_SOUND_TYPE eType, _float fAmount);
+    _float    Get_SoundType(UI_SOUND_TYPE eType);
+
+
 
     void        Set_CloseCurtain(_float fTime);
     FDelegate<> Callback_OpenCurtain;
@@ -48,8 +52,6 @@ public:
 public:
     void               OnEnterEvolveMenu();
     void               OnExitEvolveMenu();
-
-
 
 public:
     void   CreateItemPopupQueue();
@@ -76,6 +78,11 @@ private:
 	_bool		m_bIsAnimation = false;
 
     _bool       m_bCompleteSetUpUI = false;
+
+
+    typedef map<UI_SOUND_TYPE, _float>  UISOUNDTYPE;
+    map<UI_SOUND_TYPE, _float> m_UISoundTypeMap;
+
 
 private:
 	void		Free();

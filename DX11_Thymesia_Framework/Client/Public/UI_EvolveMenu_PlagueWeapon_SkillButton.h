@@ -55,7 +55,6 @@ protected:
 	virtual void	OnMouseOut() override;
 	virtual void	OnLButtonUp() override; 
 
-
 private:
 	weak_ptr<CCustomUI>			m_pHover;
 	weak_ptr<CCustomUI>			m_pFrame;
