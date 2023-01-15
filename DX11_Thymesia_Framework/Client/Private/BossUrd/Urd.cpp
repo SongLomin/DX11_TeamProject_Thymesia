@@ -190,7 +190,7 @@ HRESULT CUrd::Render(ID3D11DeviceContext* pDeviceContext)
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 		iPassIndex = 5;
 
-		if (iPassIndex > 0)
+		if (m_iPassIndex > 0)
 		{
 			iPassIndex = m_iPassIndex;
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
