@@ -343,7 +343,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 10.f,10.f, 5.0f };
+		m_DecalDesc.vScale = { 6.f,6.f, 5.0f };
 		m_DecalDesc.fAppearTime = 0.f;
 		_matrix WorldMatrix = XMMatrixIdentity();
 		WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
@@ -399,7 +399,7 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 5.0f };
+	m_DecalDesc.vScale = { 16.f,16.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
@@ -436,7 +436,7 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 0.1f };
+	m_DecalDesc.vScale = { 16.f,16.f, 0.1f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
