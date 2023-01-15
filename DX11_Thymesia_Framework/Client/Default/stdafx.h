@@ -23,3 +23,9 @@
 #include "SMath.h"
 #include <filesystem>
 #include "imgui.h"
+
+#include "Client_Structs.h"
+#include "Client_Presets.h"
+#include "Client_Enum.h"
+#include "NvCloth_Structs.h"
+#include "Client_Functions.h"
