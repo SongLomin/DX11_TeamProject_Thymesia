@@ -31,9 +31,9 @@ protected:
 
 
 private:
-	//void Call_AnimationEnd(_uint iEndAnimIndex);
+	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

@@ -17,6 +17,8 @@ class CUrdBossState_Skill02_1 :
 
 
 
+public:
+	void Call_NextAnimationKey(const _uint& In_iKeyIndex);
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -30,9 +32,10 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
-	_bool m_bOne = false;
-	_bool m_bDisableWeaponCheck = false;
+	_bool m_bHandAttachKeyIndexCheck = false;
+	_bool m_bHandDettachKeyIndexCheck = false;
 	weak_ptr<CJavelinWeapon> pJavelinWeapon;
+	weak_ptr<CAnimation> m_ThisStateAnimationCom;
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:

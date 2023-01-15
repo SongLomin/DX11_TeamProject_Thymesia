@@ -315,19 +315,22 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			if (In_eHitType == HIT_TYPE::LEFT_HIT)
+			if (!m_pStatusCom.lock()->Is_Dead())
 			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-				Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_L>();
-			}
+				if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_L>();
+				}
 
-			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
-			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-				Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
-			}
+				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
+				}
+			}	
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 			if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -374,9 +377,8 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			//이떄 플레이어한테 이벤트를 던져줍시다
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{
-				if (eAttackOption != ATTACK_OPTION::SPECIAL_ATTACK ||
-					eAttackOption != ATTACK_OPTION::PLAGUE)
-				{
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
 					pStatus.lock()->Minus_LifePoint(1);
 					pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BATEXECUTION);
 					_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
@@ -388,13 +390,12 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 					Get_Owner().lock()->Get_Component<CBatBossState_TakeExecution_Start>().lock()->Set_DieType(true);
 					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TakeExecution_Start>(0.05f);
-				}
+				
 			}
 			else
 			{
-				if (eAttackOption != ATTACK_OPTION::SPECIAL_ATTACK ||
-					eAttackOption != ATTACK_OPTION::PLAGUE)
-				{
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
 					pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BATEXECUTION);
 					_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
 					vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-1.2f, 0.f, 8.8f, 0.f));
@@ -405,7 +406,7 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 					Get_Owner().lock()->Get_Component<CBatBossState_TakeExecution_Start>().lock()->Set_DieType(false);
 					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TakeExecution_Start>(0.05f);
-				}
+				
 			}
 		}
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격

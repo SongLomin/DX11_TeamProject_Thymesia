@@ -168,7 +168,9 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
-		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:		
+			if (!m_pStatusCom.lock()->Is_Dead())
+			{
 				if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 				{
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
@@ -187,6 +189,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 					Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
 				}
+			}			
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 		    if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -241,14 +244,15 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 				}		    
 				else
 				{
-					if (eAttackOption == ATTACK_OPTION::SPECIAL_ATTACK &&
-						eAttackOption == ATTACK_OPTION::PLAGUE)
-						return;
-					
+				
+					if (eAttackOption == ATTACK_OPTION::NONE ||
+						eAttackOption == ATTACK_OPTION::NORMAL)
+					{
 						if (m_eMonType == MONSTERTYPE::WEAKARMORSPEARMAN || m_eMonType == MONSTERTYPE::ARMORSPEARMAN)
 						{
 							pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ARMOREXECUTIONSPEAR);
 						}
+					}
 					
 					
 				}

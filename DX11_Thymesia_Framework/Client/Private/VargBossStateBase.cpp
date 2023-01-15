@@ -162,17 +162,20 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			if (In_eHitType == HIT_TYPE::LEFT_HIT)
+			if (!m_pStatusCom.lock()->Is_Dead())
 			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);			
-			}
+				if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
 
-			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
-			{
-				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
-			}
+				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
+			}		
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 			if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -218,8 +221,9 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			//이떄 플레이어한테 이벤트를 던져줍시다
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{			
-				if (eAttackOption != ATTACK_OPTION::SPECIAL_ATTACK ||
-					eAttackOption != ATTACK_OPTION::PLAGUE)
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
+
 				{
 					pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 
@@ -235,13 +239,12 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 					Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);
 					Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
 				}
-				
-				
+							
 			}
 			else
 			{
-				if (eAttackOption != ATTACK_OPTION::SPECIAL_ATTACK ||
-					eAttackOption != ATTACK_OPTION::PLAGUE)
+				if (eAttackOption == ATTACK_OPTION::NONE ||
+					eAttackOption == ATTACK_OPTION::NORMAL)
 				{
 					pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 
