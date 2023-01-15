@@ -77,6 +77,10 @@ _bool CCorvusState_PS_Scythe_Upgrade::Check_AndChangeNextState()
 			return true;
 		}
 	}
+	else
+	{
+		Rotation_TargetToLookDir();
+	}
 
 	return false;
 }

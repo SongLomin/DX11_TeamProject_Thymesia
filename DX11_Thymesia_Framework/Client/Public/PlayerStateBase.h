@@ -34,6 +34,7 @@ protected:
 protected:
     void            Turn_Transform(_float fTimeDelta);
     _vector         Get_InputToLookDir();
+     void           Get_TargetMonLookAt();
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
     _bool           Rotation_NearToLookDir();

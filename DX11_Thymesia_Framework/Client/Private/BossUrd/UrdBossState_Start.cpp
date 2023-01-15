@@ -71,6 +71,8 @@ void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+	m_bSinematicStart = false;
+
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
 	GAMEINSTANCE->PlaySound2D("STAGE3_BOSS_0.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
@@ -93,6 +95,8 @@ void CUrdBossState_Start::OnStateEnd()
 
 	if(m_bSinematicStart)
 	GET_SINGLE(CGameManager)->End_Cinematic();
+
+	m_bSinematicStart = false;
 }
 
 

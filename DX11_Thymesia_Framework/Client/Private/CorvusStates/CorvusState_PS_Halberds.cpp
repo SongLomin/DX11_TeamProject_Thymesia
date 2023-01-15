@@ -100,6 +100,10 @@ _bool CCorvusState_PS_Halberds::Check_AndChangeNextState()
 			return true;
 		}
 	}
+	else
+	{
+		Rotation_TargetToLookDir();
+	}
 
 	return false;
 }

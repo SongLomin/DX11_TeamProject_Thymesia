@@ -360,6 +360,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 
 	}
 
+
 	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(4.5f, {0.6f,0.f,0.f}, 0.9f);
 }
 
@@ -594,6 +595,9 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 			Get_OwnerPlayer()->Change_State<CCorvusState_KnockBack>();
 
+			break;
+		case Client::ATTACK_OPTION::MULTI_HIT:
+			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 			break;
 		default:
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);

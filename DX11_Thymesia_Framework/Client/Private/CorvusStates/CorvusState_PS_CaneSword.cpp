@@ -105,6 +105,10 @@ _bool CCorvusState_PS_CaneSword::Check_AndChangeNextState()
 			return true;
 		}
 	}
+	else
+	{
+		Rotation_TargetToLookDir();
+	}
 
 	return false;
 }
