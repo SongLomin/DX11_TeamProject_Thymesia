@@ -336,7 +336,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
-		}d
+		}
 		else if (1 == iPhase)
 		{
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
