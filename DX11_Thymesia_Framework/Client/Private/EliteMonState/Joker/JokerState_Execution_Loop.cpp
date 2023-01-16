@@ -7,6 +7,7 @@
 #include "Player.h"
 //#include "BehaviorBase.h"
 #include "Animation.h"
+#include "MobWeapon.h"
 #include "Character.h"
 #include "JokerStates.h"
 #include "GameManager.h"
@@ -44,13 +45,34 @@ void CJokerState_Execution_Loop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	if (!m_bAnimEnd)
+		m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	else
+	{
+		Get_OwnerMonster()->Set_PassIndex(7);
+		m_fDissolveTime -= fTimeDelta;
+
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
+	}
 }
 
 
 void CJokerState_Execution_Loop::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	//Monster Die
+	if (m_fDissolveTime < 0.f)
+	{
+		m_pOwner.lock()->Set_Enable(false);
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+		for (auto& elem : pWeapons)
+			elem.lock()->Set_Enable(false);
+
+		Get_OwnerMonster()->Set_PassIndex(0);
+	}
 
 	Check_AndChangeNextState();
 }
@@ -59,7 +81,7 @@ void CJokerState_Execution_Loop::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-
+	m_fDissolveTime = 4.f;
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
 

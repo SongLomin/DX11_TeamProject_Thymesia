@@ -54,6 +54,14 @@ void CBigHandManState_VS_TakeExecution_01::Tick(_float fTimeDelta)
 
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	}
+	else
+	{
+		Get_OwnerMonster()->Set_PassIndex(7);
+		m_fDissolveTime -= fTimeDelta;
+
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
+	}
 	
 }
 
@@ -61,6 +69,19 @@ void CBigHandManState_VS_TakeExecution_01::Tick(_float fTimeDelta)
 void CBigHandManState_VS_TakeExecution_01::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	//Monster Die
+	if (m_fDissolveTime < 0.f)
+	{
+		m_pOwner.lock()->Set_Enable(false);
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+		for (auto& elem : pWeapons)
+			elem.lock()->Set_Enable(false);
+
+		Get_OwnerMonster()->Set_PassIndex(0);
+	}
+
 
 	Check_AndChangeNextState();
 }
@@ -74,6 +95,8 @@ void CBigHandManState_VS_TakeExecution_01::OnStateStart(const _float& In_fAnimat
 	Get_OwnerMonster()->Release_Monster();
 
 	Rotation_TargetToLookDir();
+
+	m_fDissolveTime = 4.f;
 
 	Get_OwnerMonster()->Set_EliteExecutionStartOnOff(false);
 

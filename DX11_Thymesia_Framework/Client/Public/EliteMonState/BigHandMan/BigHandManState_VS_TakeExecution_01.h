@@ -30,6 +30,9 @@ private:
 	_bool      m_bAnimationStop = false;
 
 private:
+	_float      m_fDissolveTime;
+
+private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;

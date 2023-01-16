@@ -9,7 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
-#include "MobWeapon.h"
+
 #include "MonsterHPBar_Elite.h"
 #include "Inventory.h"
 #include "UI_Utils.h"
@@ -65,17 +65,6 @@ void CJokerState_Dead::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	//Monster Die
-	if (m_fDissolveTime < 0.f)
-	{
-		m_pOwner.lock()->Set_Enable(false);
-		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
-		for (auto& elem : pWeapons)
-			elem.lock()->Set_Enable(false);
-
-		Get_OwnerMonster()->Set_PassIndex(0);
-	}
 
 	Check_AndChangeNextState();
 }
