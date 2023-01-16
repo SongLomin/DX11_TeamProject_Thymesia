@@ -1,11 +1,5 @@
 #pragma once
 
-#include "Client_Structs.h"
-#include "Client_Presets.h"
-#include "Client_Enum.h"
-#include "NvCloth_Structs.h"
-#include "Client_Functions.h"
-
 /////////////////////////////////////////// DEBUG MODE DEFINES ///////////////////////////////////////////
 #ifdef _DEBUG
 
