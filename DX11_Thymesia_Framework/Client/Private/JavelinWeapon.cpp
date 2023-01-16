@@ -321,11 +321,16 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.23f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.32f)
 	{
 //#ifdef _URD_EFFECT_
 		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
 		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+		CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+		tMonsterDesc.Reset();
+		tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+		m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc);
+
 		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 		pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
 
@@ -375,7 +380,6 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
 	tMonsterDesc.Reset();
 	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
-
 	m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc);
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
@@ -414,6 +418,11 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 {
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
 	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	tMonsterDesc.Reset();
+	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+	m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc);
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());

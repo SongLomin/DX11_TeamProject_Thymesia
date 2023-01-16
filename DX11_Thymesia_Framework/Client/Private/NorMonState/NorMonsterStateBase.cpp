@@ -192,6 +192,11 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 					Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
 				}
+				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
 			}			
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:

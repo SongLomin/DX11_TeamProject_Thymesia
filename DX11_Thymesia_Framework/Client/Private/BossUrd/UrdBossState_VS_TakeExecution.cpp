@@ -95,7 +95,7 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
 		vOtherWorldMatrix.r[3] = XMVectorSet(-42.5696678f, -18.8200150f, 266.893677f, 1.f);
 		_matrix                    vResultOtherWorldMatrix;
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.08f, 0.f, 2.88f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.2f, 0.f, 2.88f, 0.f));
 		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),

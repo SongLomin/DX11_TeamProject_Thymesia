@@ -337,6 +337,12 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
 				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
+				}
 			}	
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:

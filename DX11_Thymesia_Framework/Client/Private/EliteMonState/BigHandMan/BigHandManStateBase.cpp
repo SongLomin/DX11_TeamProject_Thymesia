@@ -162,6 +162,7 @@ void CBigHandManStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 				{
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtR>(0.05f);
 				}
 
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
@@ -174,7 +175,13 @@ void CBigHandManStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 				{
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtR>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtL>(0.05f);
+				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtL>(0.05f);
 				}
 			}
 			break;

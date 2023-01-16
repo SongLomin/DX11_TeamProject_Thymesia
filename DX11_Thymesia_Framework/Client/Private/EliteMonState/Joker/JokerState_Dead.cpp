@@ -96,12 +96,6 @@ void CJokerState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "JokerState: Idle -> OnStateStart" << endl;
 #endif // _DEBUG
 
-	weak_ptr<CInteraction_Item> pItem = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(m_CreatedLevel);
-	pItem.lock()->Get_Transform()->Set_Position(m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f));
-	pItem.lock()->Add_Item(CUI_Utils::ConvertMonsterTypeToSkillPiece(m_eMonType));
-	pItem.lock()->Add_Item(ITEM_NAME::MEMORY02);
-
-	Weak_StaticCast<CMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 }
 
 void CJokerState_Dead::OnStateEnd()

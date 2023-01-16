@@ -169,7 +169,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 				}
-
+					
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 				{
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
@@ -177,6 +177,11 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				}
 
 				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
 				{
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);

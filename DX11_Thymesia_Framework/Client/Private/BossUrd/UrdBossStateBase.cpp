@@ -159,6 +159,12 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 					Get_OwnerMonster()->Change_State<CUrdBossState_HurtM_FL>();
 				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+					Get_OwnerMonster()->Change_State<CUrdBossState_HurtM_FL>();
+				}
 			}
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:

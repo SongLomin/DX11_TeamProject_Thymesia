@@ -174,6 +174,11 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
 			}
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
