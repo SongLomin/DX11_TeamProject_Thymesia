@@ -37,7 +37,7 @@ void CAIStateBase::Init_Desc(void* In_pDesc)
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
 	m_eBossStartType  = StateLinkDesc.eBossStartType;
-	m_bPatrol = StateLinkDesc.bPatrol;
+	m_bPatrol         = StateLinkDesc.bPatrol;
 }
 
 void CAIStateBase::Start()
@@ -88,6 +88,74 @@ _bool CAIStateBase::Check_RequirementIsTargeted()
 	return false;
 }
 
+void CAIStateBase::HitEffectSound()
+{
+	_uint iRandom = 0;
+
+	if (MONSTERTYPE::AXEMAN				== m_eMonType ||
+		MONSTERTYPE::KNIFEWOMAN			== m_eMonType ||
+		MONSTERTYPE::SHIELDAXEMAN		== m_eMonType ||
+		MONSTERTYPE::BALLOON			== m_eMonType ||
+		MONSTERTYPE::GARDENER			== m_eMonType ||
+		MONSTERTYPE::ENHANCE_GARDENER	== m_eMonType ||
+		MONSTERTYPE::JOKER				== m_eMonType)
+	{
+		iRandom = rand() % 3;
+
+		switch (iRandom)
+		{
+			case 0: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_03.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 1: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_04.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 2: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_05.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+		}
+	}
+
+	else if (MONSTERTYPE::SKULL				== m_eMonType ||
+		     MONSTERTYPE::SKULLSHIELDMAN	== m_eMonType ||
+			 MONSTERTYPE::SKULLSPEARMAN		== m_eMonType)
+	{
+		iRandom = rand() % 3;
+
+		switch (iRandom)
+		{
+			case 0: GAMEINSTANCE->PlaySound3D("EVM_impact_sword_01.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 1: GAMEINSTANCE->PlaySound3D("EVM_impact_sword_02.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 2: GAMEINSTANCE->PlaySound3D("EVM_impact_sword_03.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+		}
+	}
+
+	else if (MONSTERTYPE::ARMORSHIELDMAN		== m_eMonType ||
+			 MONSTERTYPE::WEAKARMORSHIELDMAN	== m_eMonType ||
+			 MONSTERTYPE::ARMORSPEARMAN			== m_eMonType ||
+			 MONSTERTYPE::WEAKARMORSPEARMAN		== m_eMonType ||
+			 MONSTERTYPE::BIGHANDMAN			== m_eMonType)
+	{
+		iRandom = rand() % 6;
+
+		switch (iRandom)
+		{
+			case 0: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_04.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 1: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_05.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 2: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_06.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 3: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_07.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 4: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_08.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+			case 5: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_09.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+		}
+	}
+
+	else if (MONSTERTYPE::VARG == m_eMonType)
+	{
+	}
+
+	else if (MONSTERTYPE::BAT == m_eMonType)
+	{
+	}
+
+	else if (MONSTERTYPE::URD == m_eMonType)
+	{
+	}
+}
+
 void CAIStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
 {
 	__super::Call_OtherControllerHit(In_hit);
@@ -108,8 +176,6 @@ shared_ptr<CMonster> CAIStateBase::Get_OwnerMonster() const noexcept
 
 _bool CAIStateBase::Check_Requirement()
 {
-	
-
 	return __super::Check_Requirement();
 }
 
@@ -258,8 +324,10 @@ _vector CAIStateBase::Get_CurMonToStartMonDir()
 {
 	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
+
 	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
 	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
+
 	_vector vLookDir = XMVector4Normalize(vStartPosition - vCurrenPosition);
 
 	return vLookDir;
@@ -267,11 +335,13 @@ _vector CAIStateBase::Get_CurMonToStartMonDir()
 
 _float CAIStateBase::GetStartPositionToCurrentPositionDir()
 {
-	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vCurrenPosition(m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
 	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
-	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
+
+	_vector vStartPosition(XMLoadFloat4(&m_fStartPosition));
 	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
-	_float fDistance = XMVectorGetX(XMVector3Length(vCurrenPosition - vStartPosition));
+
+	_float fDistance(XMVectorGetX(XMVector3Length(vCurrenPosition - vStartPosition)));
 
 	return fDistance;
 }
@@ -305,7 +375,6 @@ void CAIStateBase::TurnMechanism()
 
 	else
 	{
-		//룩앳천천히하기
 		_vector vPlayerPosition = pCurrentPlayer.lock()->Get_WorldPosition();
 		m_pTransformCom.lock()->LookAt2D(vPlayerPosition);
 	}
@@ -317,48 +386,41 @@ _float CAIStateBase::ComputeAngleWithPlayer()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	vCurPlayerPos = XMVectorSetY(vCurPlayerPos, 0.f);
 
-	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
-	vCurPlayerPos.m128_f32[1] = 0.f;
-	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
-	vMyPos.m128_f32[1] = 0.f;
-	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
-	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	vMyLookVector.m128_f32[1] = 0.f;
-	vMyLookVector = XMVector3Normalize(vMyLookVector);
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	vMyPos = XMVectorSetY(vMyPos, 0.f);
 
-	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
 
-	#ifdef _DEBUG_COUT_
-		cout << "ComputeAngleWithPlayer: " << fCos << endl;
-#endif
+	vMyLookVector = XMVector3Normalize(XMVectorSetY(vMyLookVector, 0.f));
+
+	_float fCos(XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
+
+#ifdef _DEBUG_COUT_
+	cout << "ComputeAngleWithPlayer: " << fCos << endl;
+#endif // _DEBUG_COUT_
 
 	return fCos;
-
 }
 
 _int CAIStateBase::ComputeDirectionToPlayer()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
 
-	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
-	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
-	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
-	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	_float fCross(XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector)));
 
-	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
-
-	if (fCross >= 0.f) // 양수 오른쪽
-	{
-		// 오른쪽가는턴라이트싱행<1리턴>
+	if (fCross >= 0.f)
 		return 1;
-	}
 	else // 음수 왼쪽
-	{
-		//왼쪽으로가는턴래프트실행 <-1리턴>
 		return -1;
-	}
 }
 
 _int CAIStateBase::Compute_DirectionToOtherPosition(const _float3& In_OtherPos)

@@ -71,6 +71,10 @@ _bool CPlayerStateBase::Check_Requirement()
 	return true;
 }
 
+void CPlayerStateBase::HitEffectSound()
+{
+}
+
 void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 {
 	_matrix CurrentCamWorldMatrix;

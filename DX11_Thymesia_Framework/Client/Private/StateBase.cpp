@@ -164,21 +164,7 @@ void CStateBase::OnEventMessage(weak_ptr<CBase> pArg)
 
 void CStateBase::HitEffectSound()
 {
-	if (!m_pTransformCom.lock())
-		return;
-	
-	_uint iRandom = SMath::Random(1, 7);
 
-	switch (iRandom)
-	{
-		case 1: GAMEINSTANCE->PlaySound3D("Knife_Attack_01.ogg", 1.f, m_pTransformCom.lock()->Get_Position()); break;
-		case 2: GAMEINSTANCE->PlaySound3D("Knife_Attack_02.ogg", 1.f, m_pTransformCom.lock()->Get_Position()); break;
-		case 3: GAMEINSTANCE->PlaySound3D("Knife_Attack_03.ogg", 1.f, m_pTransformCom.lock()->Get_Position()); break;
-		case 4: GAMEINSTANCE->PlaySound3D("Knife_Attack_04.ogg", 1.f, m_pTransformCom.lock()->Get_Position()); break;
-		case 5: GAMEINSTANCE->PlaySound3D("Dart_Hit_01.ogg"    , 1.f, m_pTransformCom.lock()->Get_Position()); break;
-		case 6: GAMEINSTANCE->PlaySound3D("Dart_Hit_02.ogg"    , 1.f, m_pTransformCom.lock()->Get_Position()); break;
-		case 7: GAMEINSTANCE->PlaySound3D("Dart_Hit_03.ogg"    , 1.f, m_pTransformCom.lock()->Get_Position()); break;
-	}
 }
 
 void CStateBase::Free()

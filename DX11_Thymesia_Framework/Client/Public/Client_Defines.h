@@ -56,7 +56,7 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-// #define _RENDER_FPS_
+#define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
 #undef _LOAD_CAPTURED_RESOURCE_
