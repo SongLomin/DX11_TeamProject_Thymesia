@@ -12,7 +12,7 @@
 #include "ClientComponent_Utils.h"
 #include "PlayerSkill_System.h"
 #include "Skill_Base.h"
- 
+#include "UIManager.h"
 
 GAMECLASS_C(CCorvusState_Idle);
 CLONE_C(CCorvusState_Idle, CComponent)
@@ -108,6 +108,11 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return false;
 
 	PxControllerCollisionFlags Flags(Get_OwnerCharacter().lock()->Get_LastCollisionFlags());
+
+
+	//다른페이지가 켜져있다면 
+	if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
+		return false;
 
 	if (m_bLockOn)
 	{

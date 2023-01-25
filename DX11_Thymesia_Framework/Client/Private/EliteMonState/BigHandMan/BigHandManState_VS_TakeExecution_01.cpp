@@ -8,7 +8,10 @@
 #include "Character.h"
 #include "EliteMonState/BigHandMan/BigHandManStates.h"
 #include "Status_Monster.h"
-
+#include "UI_Utils.h"
+#include "MobWeapon.h"
+#include "Interaction_Item.h"
+#include "MonsterHPBar_Base.h"
 
 
 GAMECLASS_C(CBigHandManState_VS_TakeExecution_01);
@@ -54,6 +57,14 @@ void CBigHandManState_VS_TakeExecution_01::Tick(_float fTimeDelta)
 
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	}
+	else
+	{
+		Get_OwnerMonster()->Set_PassIndex(7);
+		m_fDissolveTime -= fTimeDelta;
+
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
+	}
 	
 }
 
@@ -61,6 +72,17 @@ void CBigHandManState_VS_TakeExecution_01::Tick(_float fTimeDelta)
 void CBigHandManState_VS_TakeExecution_01::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	if (m_fDissolveTime < 0.f)
+	{
+		m_pOwner.lock()->Set_Enable(false);
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Weapons();
+		for (auto& elem : pWeapons)
+			elem.lock()->Set_Enable(false);
+
+		Get_OwnerMonster()->Set_PassIndex(0);
+	}
 
 	Check_AndChangeNextState();
 }
@@ -79,6 +101,9 @@ void CBigHandManState_VS_TakeExecution_01::OnStateStart(const _float& In_fAnimat
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_fDissolveTime = 4.f;
+	m_bAnimationStop = false;
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "BigHandManState: Idle -> OnStateStart" << endl;
@@ -91,6 +116,13 @@ void CBigHandManState_VS_TakeExecution_01::OnStateStart(const _float& In_fAnimat
 void CBigHandManState_VS_TakeExecution_01::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	weak_ptr<CInteraction_Item> pItem = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(m_CreatedLevel);
+	pItem.lock()->Get_Transform()->Set_Position(m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f));
+	pItem.lock()->Add_Item(CUI_Utils::ConvertMonsterTypeToSkillPiece(m_eMonType));
+	pItem.lock()->Add_Item(ITEM_NAME::MEMORY02);
+
+	Weak_StaticCast<CMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 
 
 }

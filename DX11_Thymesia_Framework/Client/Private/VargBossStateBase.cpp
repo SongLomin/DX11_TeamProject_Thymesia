@@ -145,7 +145,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		Play_OnHitEffect();
 
 		_float fMagnifiedDamage = In_fDamage;
-		_uint iRand = rand() % 8 + 1;
+		_uint iRand = rand() % 20 + 1;
 
 		switch (eAttackOption)
 		{
@@ -169,8 +169,19 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 				}
-
+					
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
+
+				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				}
+				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
 				{
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
@@ -197,6 +208,10 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
 				Get_OwnerMonster()->Change_State<CVargBossState_Hurt>();
 			}
+			break;
+		default:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		}
 		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
@@ -264,6 +279,8 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		}
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
+
+		Get_OwnerMonster()->Set_RimLightDesc(4.5f, { 0.6f,0.f,0.f }, 0.9f);
 		//현재상태가 스턴스타트나 스턴루프인경우에 
 		//다시 검사를해준다 플레이어의 공격이 들어오면 바그처형으로 갑니다 
 		// 바그처형으로가고 바그처형으로 갈떄 그 애니메이션한태 값하나던져주면 해결ㅇ완료 

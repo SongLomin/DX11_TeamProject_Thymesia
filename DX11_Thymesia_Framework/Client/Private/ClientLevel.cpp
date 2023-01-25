@@ -25,7 +25,10 @@ HRESULT CClientLevel::Initialize()
 
 	if (m_eMyLevel == LEVEL_LOGO)
 	{
-		GAMEINSTANCE->PlayBGM("BGM_LOGO.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+		_float fSound = GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM);
+
+		GAMEINSTANCE->PlayBGM("BGM_LOGO.ogg", fSound);
 	}
 	return S_OK;
 }

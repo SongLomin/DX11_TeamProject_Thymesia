@@ -1801,9 +1801,6 @@
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Start.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.h">
-      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboA02.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02</Filter>
     </ClInclude>
@@ -2242,6 +2239,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Skill_Bankai.h" />
     <ClInclude Include="..\Public\Skill_BigHand.h" />
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\JokerStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
     </ClInclude>

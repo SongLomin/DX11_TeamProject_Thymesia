@@ -13,7 +13,7 @@
 #include "UIManager.h"
 #include "UI_ScriptQueue.h"
 #include "UI_FadeMask.h"
-
+#include "GameManager.h"
 
 
 GAMECLASS_C(CBatBossState_Start);
@@ -153,6 +153,15 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+
+
+#ifdef _DEBUG
+#ifdef _DEBUG_COUT_
+	cout << "VargState: Start -> OnStateStart" << endl;
+#endif
+#endif
+
 }	
 
 void CBatBossState_Start::OnStateEnd()
@@ -175,6 +184,7 @@ void CBatBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	GET_SINGLE(CGameManager)->End_Cinematic();
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 

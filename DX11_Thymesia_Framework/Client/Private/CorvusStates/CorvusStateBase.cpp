@@ -23,6 +23,7 @@
 #include "CorvusStates/StateExecution/CorvusState_RaidAttack1Hurt.h"
 #include "CorvusStates/CorvusState_Headache_Start.h"
 #include "CorvusStates/CorvusState_KnockBack.h"
+#include "Monster.h"
 
 GAMECLASS_C(CCorvusStateBase)
 
@@ -551,6 +552,8 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
+		
+
 		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
 		PxControllerFilters Filters;
 
@@ -569,8 +572,13 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
+		CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+		tMonsterDesc.Reset();
+
 		//pMonsterStatusCom.lock()->OnEventMessage();
 		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
+
+
 
 		switch (eAttackOption)
 		{
