@@ -43,7 +43,7 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::Create_Instance();
 	CUIManager::Create_Instance();
 
-	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 0.0f);
+	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_BGM, 2.f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHANGE_SELECT, 0.3f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 0.3f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 0.3f);
