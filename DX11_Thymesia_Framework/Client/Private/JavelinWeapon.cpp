@@ -101,7 +101,7 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 HRESULT CJavelinWeapon::Start()
 {
 	
-	m_DecalDesc.vPosition = {0.f,0.f,0.f,1.f };
+	m_DecalDesc.vPosition = {0.f,0.3f,0.f,1.f };
 	m_DecalDesc.fTime = 0.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 
@@ -343,7 +343,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 10.f,10.f, 5.0f };
+		m_DecalDesc.vScale = { 9.f,9.f, 1.0f };
 		m_DecalDesc.fAppearTime = 0.f;
 		_matrix WorldMatrix = XMMatrixIdentity();
 		WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
@@ -351,6 +351,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.1f, 1.f, 9.f, 0.95f);
 
 
 //#endif // _URD_EFFECT_
@@ -393,7 +394,7 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 5.0f };
+	m_DecalDesc.vScale = { 17.f,17.f, 1.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
@@ -401,6 +402,7 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
 
 }
 
@@ -430,7 +432,7 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 0.1f };
+	m_DecalDesc.vScale = { 17.f,17.f, 1.f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
@@ -438,6 +440,8 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
+
 }
 
 void CJavelinWeapon::LookAt_Player()
