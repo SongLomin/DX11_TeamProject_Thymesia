@@ -47,19 +47,6 @@ void CDissolveUI::Tick(_float fTimeDelta)
 
     //TODO : Dissolve 아이콘 테스트 코드입니다.
 #ifdef _DEBUG
-    if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
-    {
-        m_fRatio -= 0.5f * fTimeDelta;
-        if (m_fRatio < 0.f)
-            m_fRatio = 0.f;
-    }
-    if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
-    {
-        m_fRatio += 0.5f * fTimeDelta;
-        if (m_fRatio >= 1.f)
-            m_fRatio = 1.f;
-    }
-
     if (KEY_INPUT(KEY::NUM0, KEY_STATE::HOLD))
     {
         m_iTextureIndex = 0;
