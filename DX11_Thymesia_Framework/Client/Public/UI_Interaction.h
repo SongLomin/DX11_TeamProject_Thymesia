@@ -17,7 +17,6 @@ public:
 	GAMECLASS_H(CUI_Interaction);
 	CLONE_H(CUI_Interaction, CGameObject);
 
-
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);

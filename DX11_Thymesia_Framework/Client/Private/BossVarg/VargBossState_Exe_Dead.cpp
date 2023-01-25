@@ -36,7 +36,6 @@ void CVargBossState_Exe_Dead::Start()
 {
 	__super::Start();
 
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Dead");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Dead::Call_AnimationEnd, this, placeholders::_1);
 }
@@ -95,7 +94,6 @@ void CVargBossState_Exe_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-
 }
 
 void CVargBossState_Exe_Dead::OnStateEnd()
@@ -112,6 +110,7 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
+	
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::VARG_KEY);
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
@@ -123,8 +122,8 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::MEMORY02);
 
-
-	GAMEINSTANCE->StopBGM();
+	//GAMEINSTANCE->StopBGM();
+	GAMEINSTANCE->PlayBGM("BGM_STAGE_3.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 

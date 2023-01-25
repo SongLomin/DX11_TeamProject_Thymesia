@@ -52,9 +52,7 @@ void CUrdBossState_Start::Tick(_float fTimeDelta)
 
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	}
-
 }
-
 
 void CUrdBossState_Start::LateTick(_float fTimeDelta)
 {
@@ -73,12 +71,11 @@ void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
-
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 
-	
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -100,7 +97,6 @@ void CUrdBossState_Start::OnStateEnd()
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 	m_bSinematicStart = false;
 }
-
 
 
 void CUrdBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
@@ -134,10 +130,13 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	if (fPToMDistance <= 20.f && !m_bSinematicStart)
 	{
 		m_bSinematicStart = true;
-		_float fSound = GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM);
-		GAMEINSTANCE->PlayBGM("STAGE3_BOSS_0.mp3", fSound);
+	
 		GET_SINGLE(CGameManager)->Activate_Section(200, EVENT_TYPE::ON_ENTER_SECTION);
 		GET_SINGLE(CGameManager)->Activate_Fog(1);
+
+		_float fSound = GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM);
+		GAMEINSTANCE->PlayBGM("STAGE3_BOSS_0.mp3", fSound);
+
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 500)
