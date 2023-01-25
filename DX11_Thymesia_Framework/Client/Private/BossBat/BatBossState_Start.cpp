@@ -75,8 +75,8 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	{
 	case 1249:
 	{
-		GET_SINGLE(CGameInstance)->PlaySound2D("BossBat_WingFlap_02", 1.f);
-		GET_SINGLE(CGameInstance)->PlaySound2D("BossBat_JumpSmashLR", 1.f);
+		GET_SINGLE(CGameInstance)->PlaySound2D("BossBat_WingFlap_02.ogg", 1.f);
+		GET_SINGLE(CGameInstance)->PlaySound2D("BossBat_JumpSmashLR.ogg", 1.f);
 	}
 	return;
 	case 1436:
@@ -117,7 +117,7 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	return;
 	case 1839:
 	{
-		GET_SINGLE(CGameInstance)->PlaySound2D("Yarg_Yell_01", 1.f);
+		GET_SINGLE(CGameInstance)->PlaySound2D("Yarg_Yell_01.ogg", 1.f);
 	}
 		return;
 	case 2041:
