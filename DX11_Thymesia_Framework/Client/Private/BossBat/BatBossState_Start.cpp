@@ -13,7 +13,7 @@
 #include "UIManager.h"
 #include "UI_ScriptQueue.h"
 #include "UI_FadeMask.h"
-
+#include "GameManager.h"
 
 
 GAMECLASS_C(CBatBossState_Start);
@@ -73,6 +73,12 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 	
 	switch (In_iKeyIndex)
 	{
+	case 1249:
+	{
+		GET_SINGLE(CGameInstance)->PlaySound2D("BossBat_WingFlap_02.ogg", 1.f);
+		GET_SINGLE(CGameInstance)->PlaySound2D("BossBat_JumpSmashLR.ogg", 1.f);
+	}
+	return;
 	case 1436:
 	{
 		_matrix CombinedMatrix = Get_LeftHandCombinedWorldMatrix();
@@ -81,43 +87,47 @@ void CBatBossState_Start::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.4f, 9.f, 3.f);
 		Print_Vector(vPosition);
 
-		break;
 	}
-
+	return;
 	case 1439:
 	{
 		_vector vPosition = m_pOwner.lock()->Get_Transform()->Get_Position();
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.6f, 9.f, 3.f);
 		Print_Vector(vPosition);
-		break;
 	}
+	return;
 	case 1420:
 		//m_pPhysXControllerCom.lock()->Enable_Gravity(true);
-		break;
+		return;
 	case 1442:
 	{
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.5f, 9.f, 3.f);
-		break;
 	}
+	return;
 	case 1745:
 	{
 		_matrix CombinedMatrix = Get_RightHandCombinedWorldMatrix();
 
 		_vector vPosition = CombinedMatrix.r[3];//XMVector3TransformCoord(vPosition, m_pRightHandBoneNode.lock()->Get_CombinedMatrix());
 		GET_SINGLE(CGameManager)->Add_WaterWave(vPosition, 0.3f, 9.f, 3.f);
-		break;
 	}
+	return;
+	case 1839:
+	{
+		GET_SINGLE(CGameInstance)->PlaySound2D("Yarg_Yell_01.ogg", 1.f);
+	}
+		return;
 	case 2041:
 	{
 		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
 		pFadeMask.lock()->Set_Fade_Delay(0.f, 1.f, 0.5f,0.5f, EASING_TYPE::LINEAR);
 	}
+	return;
 	}
 }
-
 
 void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -143,6 +153,8 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -172,10 +184,14 @@ void CBatBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	GET_SINGLE(CGameManager)->End_Cinematic();
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 
 	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Bat_Appear();
+
+	GAMEINSTANCE->PlayBGM("STAGE2_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
 	//GET_SINGLE(CUIManager)->Set_CloseCurtain(1.f);
 }
 

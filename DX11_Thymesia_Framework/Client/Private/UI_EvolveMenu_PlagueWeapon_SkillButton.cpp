@@ -131,6 +131,8 @@ _uint CUI_EvolveMenu_PlagueWeapon_SkillButton::Get_RequirementSkillPiece()
         break;
     case Client::SKILL_NAME::SKILL_BLOODSTORM:
         iRequirementSkillPiece = 1;
+    case Client::SKILL_NAME::SKILL_BIGHAND:
+        iRequirementSkillPiece = 1;
         break;
     case Client::SKILL_NAME::SKILL_END:
         break;

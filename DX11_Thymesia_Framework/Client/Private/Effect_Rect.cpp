@@ -12,7 +12,8 @@
 #include "Level.h"
 
 #include "GameManager.h"
-#include "update_Particle.cuh"
+//#include "update_Particle.cu"
+#include <imgui_impl_dx11.h>
 
 
 
@@ -969,7 +970,7 @@ __global__ void EKernel(int size)
 
 }
 
-void CEffect_Rect::Play(_float fTimeDelta)
+__host__ void CEffect_Rect::Play(_float fTimeDelta)
 {
 	if (0.f < m_fCurrentInitTime)
 	{
@@ -1048,27 +1049,18 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		}
 	}
 
-	//PARTICLE_DESC* pInputParticleDescToCuda;
-	//PARTICLE_DESC* pOutputParticleDescToCuda;
+	
 
-	//_size_t Size = sizeof(PARTICLE_DESC) * m_tEffectParticleDesc.iMaxInstance;
+	//CudaMain_UpdateParticleTEST(HZ_144);
+	
 
-	//cudaMalloc((void**)&pInputParticleDescToCuda, Size);
-	//cudaMalloc((void**)&pOutputParticleDescToCuda, Size);
+	/*kernel_UpdateParticle<<<1, m_tEffectParticleDesc.iMaxInstance>>>(HZ_144, BoneMatrix, 
+		pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);*/
+	//EKernel<<<1, 10>>>(10);
 
-	//cudaMemcpy(pInputParticleDescToCuda, &m_tParticleDescs[0], Size, cudaMemcpyHostToDevice);
+	//cudaMemcpy(&m_tParticleDescs[0], pOutputParticleDescToCuda, Size, cudaMemcpyDeviceToHost);
 
-	//CudaMain_UpdateParticle(HZ_144, BoneMatrix,
-	//	pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);
-
-	///*kernel_UpdateParticle<<<1, m_tEffectParticleDesc.iMaxInstance>>>(HZ_144, BoneMatrix, 
-	//	pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);*/
-	////EKernel<<<1, 10>>>(10);
-
-	////cudaMemcpy(&m_tParticleDescs[0], pOutputParticleDescToCuda, Size, cudaMemcpyDeviceToHost);
-
-	//cudaFree(pInputParticleDescToCuda);
-	//cudaFree(pOutputParticleDescToCuda);
+	
 
 	for (_int x(0); x < iTickCount; ++x)
 	{
@@ -1272,7 +1264,7 @@ void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta, _matrix Bone
 		Update_ParticleSpriteFrame(i, fTimeDelta);
 }
 
-void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix)
+__host__ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix)
 {
 	if (m_pBoneNode.lock() && (_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
 	{

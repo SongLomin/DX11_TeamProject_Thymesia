@@ -7,6 +7,8 @@ matrix g_LightViewMatrix, g_LightProjMatrix;
 matrix g_DynamicLightViewMatrix, g_DynamicLightProjMatrix;
 
 bool g_bPBR;
+bool g_bDynamicShadow;
+bool g_bStaticShadow;
 
 // For Light Render
 vector g_vLightDir;
@@ -583,7 +585,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
  
         litColor = pow(litColor, 2.2f);
       
-        Out.vColor = vAmbientDesc + vSpecular*vORMDesc.a + (litColor * float4(g_IrradianceColorScale, 1.f));
+        Out.vColor.rgb = vAmbientDesc.rgb + vSpecular.rgb + (litColor.rgb * g_IrradianceColorScale);
         Out.vColor.rgb *= vViewShadow.rgb;
         Out.vColor.rgb *= vHBAO.rgb;
            
@@ -804,8 +806,8 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     //Out.vColor = float4(vDynamicPosition.z / vDynamicPosition.w, vShadowDepth.r, 0.f, 1.f);
      
     // TODO : Hong Hong Hong Juseok
-    if (vDynamicPosition.z / vDynamicPosition.w > vShadowDepth.r||
-        vStaticPosition.z / vStaticPosition.w > vStaticShadowDepth.r)
+    if ((g_bDynamicShadow && vDynamicPosition.z / vDynamicPosition.w > vShadowDepth.r) ||
+        (g_bStaticShadow && vStaticPosition.z / vStaticPosition.w > vStaticShadowDepth.r))
         Out.vColor = 0.8f;
 
     return Out;

@@ -58,7 +58,7 @@ private:
 
     virtual void SetUp_ShaderResource();
 
-    void Play(_float fTimeDelta);
+    __host__ void Play(_float fTimeDelta);
     void Reset_Instance(const _uint& In_ParticleCount);
     void Reset_ParticleDescs();
     void Reset_ParticleDesc(const _uint& In_iIndex);
@@ -66,7 +66,7 @@ private:
     _bool Check_DisableAllParticle();
 
     void Play_Internal(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
-    void Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
+    __host__ void Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
     void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
     void Update_ParticleScale(const _uint& i, _float fTimeDelta);
     void Update_ParticleUV(_float fTimeDelta);

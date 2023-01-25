@@ -29,7 +29,6 @@ PhysX_64.dll
 PhysXCommon_64.dll
 PhysXCooking_64.dll
 PhysXFoundation_64.dll
-Bat.bin
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

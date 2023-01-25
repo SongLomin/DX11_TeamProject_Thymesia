@@ -7,6 +7,7 @@ BEGIN(Client)
 class CHUD_PlagueWeaponBase;
 class CHUD_PlagueWeapon_Main;
 class CHUD_PlagueWeapon_Steal;
+class CEasingComponent_Alpha;
 
 class CComponent_Alpha;
 

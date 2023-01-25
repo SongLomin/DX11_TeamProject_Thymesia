@@ -29,7 +29,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		LookAt_Player();
 	};
 	break;
-	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
+	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:	
 	{
 //#ifdef _URD_EFFECT_
 		switch (m_iWeaponNum)
@@ -101,7 +101,7 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 HRESULT CJavelinWeapon::Start()
 {
 	
-	m_DecalDesc.vPosition = {0.f,0.f,0.f,1.f };
+	m_DecalDesc.vPosition = {0.f,0.3f,0.f,1.f };
 	m_DecalDesc.fTime = 0.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 
@@ -321,11 +321,16 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.23f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.32f)
 	{
 //#ifdef _URD_EFFECT_
 		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
-		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
+		CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+		tMonsterDesc.Reset();
+		tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+		m_pForEffectCharacter.lock()->Set_Status(m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc));
+
 		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 		pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
 
@@ -333,24 +338,30 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
 		if (2 == iPhase)
 		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
 		}
 		else if (1 == iPhase)
 		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 10.f,10.f, 5.0f };
+		m_DecalDesc.vScale = { 9.f,9.f, 1.0f };
 		m_DecalDesc.fAppearTime = 0.f;
 		_matrix WorldMatrix = XMMatrixIdentity();
-		WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
+
+		_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
+
+		WorldMatrix.r[3] = vWorldPos;
 
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.1f, 1.f, 9.f, 0.95f);
 
 
 //#endif // _URD_EFFECT_
@@ -370,7 +381,12 @@ void CJavelinWeapon::Update_Matrix_Stake()
 void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinWeapon)
 {
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
-	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
+
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	tMonsterDesc.Reset();
+	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+	m_pForEffectCharacter.lock()->Set_Status(m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc));
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(pJavelinWeapon.lock()->Get_Transform()->Get_Position());
@@ -380,12 +396,14 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	if (2 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 	}
 	else if (1 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
 	}
@@ -393,21 +411,30 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 5.0f };
+	m_DecalDesc.vScale = { 17.f,17.f, 1.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
-	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
+
+	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
+
+	WorldMatrix.r[3] = vWorldPos;
 
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
 
 }
 
 void CJavelinWeapon::Activate_ExplosionEffect()
 {
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
-	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
+
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	tMonsterDesc.Reset();
+	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+	m_pForEffectCharacter.lock()->Set_Status(m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc));
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
@@ -417,12 +444,14 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	if (2 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 	}
 	else if (1 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2 ", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
 	}
@@ -430,14 +459,19 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 0.1f };
+	m_DecalDesc.vScale = { 17.f,17.f, 1.f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
-	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
+
+	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
+
+	WorldMatrix.r[3] = vWorldPos;
 
 	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
+
 }
 
 void CJavelinWeapon::LookAt_Player()

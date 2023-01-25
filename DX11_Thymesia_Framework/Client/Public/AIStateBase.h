@@ -41,6 +41,8 @@ protected:
     _float                  Get_DistanceWithPlayer() const;
     _bool                   Check_RequirementIsTargeted();
    
+    virtual void HitEffectSound() override;
+
 public:
     virtual void           Call_OtherControllerHit(const PxControllersHit& In_hit) override;
   
@@ -66,7 +68,7 @@ protected:
 protected:
     _vector                Get_CurMonToStartMonDir();
     _float                 GetStartPositionToCurrentPositionDir();
-    void                   TurnMechanism();
+    virtual void           TurnMechanism();
     _float                 ComputeAngleWithPlayer();
     _int                   ComputeDirectionToPlayer();
     _int                   Compute_DirectionToOtherPosition(const _float3& In_OtherPos);
