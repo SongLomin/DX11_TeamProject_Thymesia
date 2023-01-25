@@ -151,7 +151,7 @@ void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd(_uint iEndAnimIndex)
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
 
-	GAMEINSTANCE->PlayBGM("Varg_Boss_Phase2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	GAMEINSTANCE->PlaySound2D("Varg_Boss_Phase2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 
 
 }
