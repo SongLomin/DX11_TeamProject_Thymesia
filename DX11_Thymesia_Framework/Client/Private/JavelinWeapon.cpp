@@ -101,7 +101,7 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 HRESULT CJavelinWeapon::Start()
 {
 	
-	m_DecalDesc.vPosition = {0.f,0.f,0.f,1.f };
+	m_DecalDesc.vPosition = {0.f,0.3f,0.f,1.f };
 	m_DecalDesc.fTime = 0.f;
 	m_DecalDesc.fDisapearTime = 2.f;
 
@@ -343,10 +343,13 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 10.f,10.f, 5.0f };
+		m_DecalDesc.vScale = { 9.5f,9.5f, 5.0f };
 		m_DecalDesc.fAppearTime = 0.f;
 		_matrix WorldMatrix = XMMatrixIdentity();
-		WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
+
+		_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
+
+		WorldMatrix.r[3] = vWorldPos;
 
 		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
@@ -393,12 +396,13 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 5.0f };
+	m_DecalDesc.vScale = { 17.5f,17.5f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
-	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
 
-	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
+	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
+
+	WorldMatrix.r[3] = vWorldPos;
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 
@@ -430,12 +434,13 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 19.f,19.f, 0.1f };
+	m_DecalDesc.vScale = { 17.5f,17.5f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
-	WorldMatrix.r[3] = pForEffectTransform.lock()->Get_Position();
 
-	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
+	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
+
+	WorldMatrix.r[3] = vWorldPos;
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 }

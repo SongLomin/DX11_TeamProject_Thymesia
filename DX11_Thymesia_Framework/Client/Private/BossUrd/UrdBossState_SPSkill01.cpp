@@ -89,7 +89,7 @@ void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& I
 		m_fInversionStrength += In_fTimeDelta * 3.5f;
 	else if (1.f > m_fInversionRatio)
 	{
-		m_fInversionRatio += In_fTimeDelta*1.7f;
+		m_fInversionRatio += In_fTimeDelta*1.8f;
 	}
 	else
 	{
