@@ -24,6 +24,7 @@ void CGameManager::Initialize()
 	GAMEINSTANCE->Set_Chromatic_Enable(false);
 	GAMEINSTANCE->Set_RadialBlur_Enable(false);
 	GAMEINSTANCE->Set_DynamicShadow_Enable(false);
+	GAMEINSTANCE->Set_StaticShadow_Enable(false);
 	GAMEINSTANCE->Set_PBR_Enable(false);
 }
 

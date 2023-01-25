@@ -161,6 +161,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_Chromatic_Enable(const _bool& In_bChromaticEnable);
 	HRESULT Set_RadialBlur_Enable(const _bool& In_bRadialBlurEnable);
 	HRESULT Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEnable);
+	HRESULT Set_StaticShadow_Enable(const _bool& In_bStaticShadowEnable);
 	HRESULT Set_SSAA_Enable(const _bool& In_bSSAAEnable);
 	HRESULT Set_HBAO_Enable(const _bool& In_bHBAOEnable);
 	HRESULT Set_PBR_Enable(const _bool& In_bPBR);
@@ -255,7 +256,7 @@ public: /* For.Sound_Manager */
 	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
-	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
+	_uint PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop = false);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
 	void StopBGM();
 	void StopSound(_uint _iChannelIndex);

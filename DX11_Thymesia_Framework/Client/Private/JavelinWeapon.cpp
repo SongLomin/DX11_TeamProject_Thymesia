@@ -380,12 +380,14 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	if (2 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 	}
 	else if (1 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
 	}
@@ -417,12 +419,14 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	if (2 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 	}
 	else if (1 == iLifeCount)
 	{
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2 ", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
+		GAMEINSTANCE->PlaySound3D("Urd_SkillBomb_02.ogg", 2.f, pForEffectTransform.lock()->Get_Position());
 		m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
 	}

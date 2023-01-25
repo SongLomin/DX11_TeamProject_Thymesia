@@ -74,7 +74,17 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
-	Bind_KeyEvent("Corvus");
+	
+
+	if (m_CreatedLevel == (_uint)LEVEL_STAGE2)
+	{
+		// 물맵이라서 소리를 따로
+		Bind_KeyEvent("Corvus_Stage2");
+	}
+	else
+	{
+		Bind_KeyEvent("Corvus");
+	}
 
 	// TODO : need to disable at Destroy/Disable
 	// Passive Effect ON
@@ -541,7 +551,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 	else if (EVENT_TYPE::ON_RESPAWN == (EVENT_TYPE)iArg)
 	{
-		if (m_CreatedLevel == LEVEL_STAGE3)
+		if (m_CreatedLevel == (_uint)LEVEL_STAGE3)
 		{
 			GAMEINSTANCE->Set_IrradianceColorScale(_float3(1.f, 1.f, 1.f));
 			m_LightDesc.bEnable = true;
@@ -552,11 +562,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 			GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 
 			CallBack_LightEvent.Clear();
-			GAMEINSTANCE->Set_GrayScale(1.f);
 		}
 
 		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_CreatedLevel);
 		pFadeMask.lock()->Set_Fade(1.f, 0.f, 2.f, EASING_TYPE::LINEAR);
+		GAMEINSTANCE->Set_GrayScale(1.f);
 	}
 
 
