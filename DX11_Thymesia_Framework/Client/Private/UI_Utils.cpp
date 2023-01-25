@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UI_Utils.h"
 #include "GameInstance.h"
 #include "GameManager.h"

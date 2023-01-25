@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UI_EvolveMenu_Talent.h"
 #include "UI_Containers.h"
 #include "UI_Elements.h"
