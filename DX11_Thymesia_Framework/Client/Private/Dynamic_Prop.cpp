@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Dynamic_Prop.h"
+
 #include "Client_Components.h"
 #include "Client_Presets.h"
 #include "Dynamic_Piece.h"
@@ -22,7 +23,6 @@ HRESULT CDynamic_Prop::Initialize(void* pArg)
     __super::Initialize(pArg);
 
     m_pColliderCom = Add_Component<CCollider>();
-    //m_pModelCom.lock()->Init_Model("Wagon3_Origin");
     m_pShaderCom.lock()->Set_ShaderInfo
     (
         TEXT("Shader_VtxModel"),
@@ -50,7 +50,7 @@ HRESULT CDynamic_Prop::Start()
     if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
     {
         CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
-        m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
+        m_szSoundKey = "Impact_Rock_Pillar_Large_Impact_04.wav";
     }
     else if (hash<string>()("Wagon3_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
     {

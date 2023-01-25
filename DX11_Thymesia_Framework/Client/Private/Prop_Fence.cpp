@@ -134,14 +134,15 @@ void CProp_Fence::OnEventMessage(_uint iArg)
         {
             Callback_ActEvent.Clear();
             
-            if (0.f < m_fDelayTime)
-                Callback_ActEvent += bind(&CProp_Fence::Act_Delay, this, placeholders::_1, placeholders::_2);
+            /*if (0.f < m_fDelayTime)
+                Callback_ActEvent += bind(&CProp_Fence::Act_Delay, this, placeholders::_1, placeholders::_2);*/
             Callback_ActEvent += bind(&CProp_Fence::Act_Event, this, placeholders::_1, placeholders::_2);
 
             m_pTransformCom.lock()->Set_Position(XMLoadFloat4(&m_vFirstPosition));
             m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
-            m_bDelayDone     = false;
+            //_bDelayDone     = false;
+            m_bDelayDone      = true;
             m_fDissolveRatio = 0.f;
             m_iPassIndex     = 12;
 

@@ -31,6 +31,8 @@ protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
 
+    virtual void HitEffectSound() {}
+
 public:
     void Call_AnimationEnd(_uint iEndAnimIndex);
     void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
