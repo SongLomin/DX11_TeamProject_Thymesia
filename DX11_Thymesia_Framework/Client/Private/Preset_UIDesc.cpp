@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Preset_UIDesc.h"
 #include "UI_MonsterFocus.h"
 #include "Player_HPBar.h"

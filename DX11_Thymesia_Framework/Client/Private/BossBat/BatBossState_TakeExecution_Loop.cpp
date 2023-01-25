@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "BossBat/BatBossState_TakeExecution_Loop.h"
 #include "Model.h"
 #include "GameInstance.h"
@@ -68,7 +68,6 @@ void CBatBossState_TakeExecution_Loop::LateTick(_float fTimeDelta)
 	}
 
 }
-
 
 
 void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationBlendTime)

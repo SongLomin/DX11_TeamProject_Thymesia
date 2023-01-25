@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Interaction_Item.h"
 
 #include "Model.h"

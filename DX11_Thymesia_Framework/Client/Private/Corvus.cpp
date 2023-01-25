@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Corvus.h"
 #include "Shader.h"
 #include "Status_Player.h"

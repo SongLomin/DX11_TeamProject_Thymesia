@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_Interaction.h"
 #include "EasingComponent_Alpha.h"
 #include "Interaction_Prop.h"

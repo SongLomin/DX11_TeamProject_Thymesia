@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "DeveloperConsole_Manager.h"
 #include "GameInstance.h"
 

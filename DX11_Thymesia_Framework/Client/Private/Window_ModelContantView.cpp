@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Window_ModelContantView.h"
 #include "GameInstance.h"
 #include "ImGui_Manager.h"

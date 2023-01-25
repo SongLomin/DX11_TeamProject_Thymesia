@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Skill_Base.h"
 #include "PlayerStateBase.h"
 #include "Status_Player.h"

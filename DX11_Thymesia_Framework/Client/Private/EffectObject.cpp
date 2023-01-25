@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "EffectObject.h"
 #include "Client_Components.h"
 

@@ -7,9 +7,6 @@
     <ClInclude Include="Resource.h">
       <Filter>98. Default</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>98. Default</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>98. Default</Filter>
     </ClInclude>
@@ -2244,6 +2241,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\JokerStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>98. Default</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

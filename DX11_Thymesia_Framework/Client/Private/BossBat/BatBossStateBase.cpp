@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "BossBat/BatBossStateBase.h"
 #include "GameInstance.h"
 #include "Collider.h"
@@ -20,7 +20,7 @@ GAMECLASS_C(CBatBossStateBase)
 
 
 
-
+     
 
 _bool CBatBossStateBase::Check_RequirementAttackState()
 {

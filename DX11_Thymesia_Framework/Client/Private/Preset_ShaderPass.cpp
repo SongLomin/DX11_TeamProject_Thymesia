@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Preset_ShaderPass.h"
 #include "Engine_Typedef.h"
 #include <assimp/material.h>

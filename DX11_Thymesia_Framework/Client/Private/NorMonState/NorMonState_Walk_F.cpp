@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "NorMonState/NorMonState_Walk_F.h"
 #include "Model.h"
 #include "GameInstance.h"

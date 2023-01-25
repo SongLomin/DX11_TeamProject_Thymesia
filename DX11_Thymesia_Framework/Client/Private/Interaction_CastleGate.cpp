@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Interaction_CastleGate.h"
 
 #include "Shader.h"

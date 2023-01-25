@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 
 #include "Camera_Target.h"
 #include "GameManager.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "EffectMesh.h"
 #include "Model.h"
 #include "Shader.h"
