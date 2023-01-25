@@ -12,8 +12,7 @@
 
 #include "UI_Landing.h"
 #include "Inventory.h"
-
-
+#include "UIManager.h"
 
 GAMECLASS_C(CVargBossState_Exe_Dead);
 CLONE_C(CVargBossState_Exe_Dead, CComponent)
@@ -123,8 +122,7 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd(_uint iEndAnimIndex)
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
 		->Push_Item(ITEM_NAME::MEMORY02);
 
-
-	GAMEINSTANCE->StopBGM();
+	GAMEINSTANCE->PlayBGM("BGM_STAGE_3.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 

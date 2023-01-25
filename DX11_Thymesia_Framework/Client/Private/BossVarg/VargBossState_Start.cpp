@@ -133,7 +133,7 @@ void CVargBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(1.f);
 
-	GAMEINSTANCE->PlaySound2D("Varg_Boss_Phase1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	GAMEINSTANCE->PlayBGM("Varg_Boss_Phase1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 }
  
 void CVargBossState_Start::OnDestroy()
