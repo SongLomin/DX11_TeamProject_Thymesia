@@ -207,7 +207,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		if (Check_RequirementJoggingState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Jogging>();
 			return true;
 		}
 
@@ -268,12 +268,13 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			return true;
 		}
 
-		if (Check_RequirementFeatherAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
-			return true;
-		}
+		//TODO 안써요  근데 나둬야함
+		//if (Check_RequirementFeatherAttackState())
+		//{
+		//	Rotation_InputToLookDir();
+		//	Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
+		//	return true;
+		//}
 	}
 
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))

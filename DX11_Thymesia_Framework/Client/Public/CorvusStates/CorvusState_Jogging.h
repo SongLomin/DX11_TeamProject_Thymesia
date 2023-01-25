@@ -37,8 +37,8 @@ private:
 private:
     weak_ptr<CTransform> m_pTransform;
 
-    _float m_fMaxSpeed = 8.f;
-    _float m_fCurrentSpeed = 3.8f;
+    _float m_fMaxSpeed = 4.8f;
+    _float m_fCurrentSpeed = 4.8f;
     _float m_fAccel = 0.f;
 
 protected:

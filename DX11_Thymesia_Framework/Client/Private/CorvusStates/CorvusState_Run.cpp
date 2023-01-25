@@ -282,16 +282,16 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 		if (Check_RequirementJoggingState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Jogging>();
 			return true;
 		}
 
-		if (Check_RequirementFeatherAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
-			return true;
-		}
+		//if (Check_RequirementFeatherAttackState())
+		//{
+		//	Rotation_InputToLookDir();
+		//	Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
+		//	return true;
+		//}
 
 
 	}

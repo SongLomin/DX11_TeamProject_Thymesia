@@ -104,7 +104,7 @@ _bool CCorvusStateBase::Check_RequirementDashState()
 
 _bool CCorvusStateBase::Check_RequirementJoggingState()
 {
-	if (KEY_INPUT(KEY::ALT, KEY_STATE::HOLD))
+	if (KEY_INPUT(KEY::V, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
