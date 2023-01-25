@@ -838,11 +838,11 @@
           },
           {
             "SoundName": "BossBat_Attack_01_2a-003.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_Attack_01_2a-005.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -1575,7 +1575,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_Attack_01_3a.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -2577,19 +2577,19 @@
         "Sound": [
           {
             "SoundName": "BossBat_Attack_01_2a.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_Attack_01_2a-003.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_Attack_01_2a-006.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_Attack_01_2a-005.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -2915,7 +2915,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_Attack_01_2b.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -3732,15 +3732,15 @@
         "RandomSound": [
           {
             "SoundName": "BossBat_BiteB_01.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_BiteB_02.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_BiteB_03.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -5745,7 +5745,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_Charge.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_Charge-005.ogg",
@@ -6077,7 +6077,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_Charge-004.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -6440,7 +6440,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_HellScream-007.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -6659,7 +6659,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_HellScream-007.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -7053,7 +7053,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_HellScream-001.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -7331,11 +7331,11 @@
         "Sound": [
           {
             "SoundName": "BossBat_HellScream_02.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_HellScream-007.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -7464,7 +7464,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_HellScream-011.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -8479,7 +8479,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_JumpSmash_Chest_Fly.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -8568,7 +8568,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_JumpSmash_Chest_Smash.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -8839,7 +8839,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_JumpSmashLR-002.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -9003,7 +9003,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_JumpSmash_Chest_Smash.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -9511,7 +9511,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_JumpSmashLR-002.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -9669,7 +9669,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_JumpSmash_Chest_Smash.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -11089,28 +11089,7 @@
       null,
       null,
       null,
-      {
-        "RandomSound": [
-          {
-            "SoundName": "BossBat_WingFlap_02.ogg",
-            "Volume": 2
-          },
-          {
-            "SoundName": "BossBat_WingFlap_01.ogg",
-            "Volume": 1
-          },
-          {
-            "SoundName": "BossBat_WingFlap_03.ogg",
-            "Volume": 1
-          }
-        ],
-        "Sound": [
-          {
-            "SoundName": "BossBat_JumpSmashLR.ogg",
-            "Volume": 2
-          }
-        ]
-      },
+      null,
       null,
       null,
       null,
@@ -11720,14 +11699,7 @@
       null,
       null,
       null,
-      {
-        "Sound": [
-          {
-            "SoundName": "Yarg_Yell_01.ogg",
-            "Volume": 2
-          }
-        ]
-      },
+      null,
       null,
       null,
       null,
@@ -12109,7 +12081,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_SonicBoom-008.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -12220,11 +12192,11 @@
         "Sound": [
           {
             "SoundName": "BossBat_SonicBoom_main.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "BossBat_SonicBoom-007.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -12663,7 +12635,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_SP01_01_Yell.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -12832,7 +12804,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_WingAction_01.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -12921,7 +12893,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_SP01_03.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -12938,7 +12910,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_SP01-004.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -13059,7 +13031,7 @@
         "Sound": [
           {
             "SoundName": "BossBat_SP01_02.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
@@ -13724,11 +13696,11 @@
         "Sound": [
           {
             "SoundName": "BossBat_StunStart.ogg",
-            "Volume": 1
+            "Volume": 2
           },
           {
             "SoundName": "Alert_KillChance.ogg",
-            "Volume": 1
+            "Volume": 2
           }
         ]
       },
