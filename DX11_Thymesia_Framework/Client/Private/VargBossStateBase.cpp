@@ -203,7 +203,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
 		_float fShakingRatio = 0.01f * iRand;
 
-		
 
 		//이거는한번만호출되게 해야함 
 		//현재상태가 스턴스타트나 루프가아닌경우
@@ -264,6 +263,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		}
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
+		Get_OwnerMonster()->Set_RimLightDesc(4.5f, { 0.6f,0.f,0.f }, 0.9f);
 		//현재상태가 스턴스타트나 스턴루프인경우에 
 		//다시 검사를해준다 플레이어의 공격이 들어오면 바그처형으로 갑니다 
 		// 바그처형으로가고 바그처형으로 갈떄 그 애니메이션한태 값하나던져주면 해결ㅇ완료 
