@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "EliteMonState/Joker/JokerState_RunAtkLoop.h"
 #include "Model.h"
 #include "GameInstance.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "NorMonState/NorMonState_LightAttack3.h"
 #include "Model.h"
 #include "GameInstance.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Effect_Trail_Distortion.h"
 #include "VIBuffer_Trail.h"
 #include "Client_Components.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Camera_Static.h"
 GAMECLASS_C(CCamera_Static)
 CLONE_C(CCamera_Static, CGameObject)

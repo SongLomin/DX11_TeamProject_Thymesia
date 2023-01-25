@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "BossUrd/UrdBossState_Attack01LV2.h"
 #include "BossUrd/Urd.h"
 #include "BossUrd/UrdBossState_Idle.h"

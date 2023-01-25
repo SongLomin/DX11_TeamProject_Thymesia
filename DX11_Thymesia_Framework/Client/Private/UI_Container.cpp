@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "UI_Container.h"
 
 HRESULT CUI_Container::Initialize_Prototype()

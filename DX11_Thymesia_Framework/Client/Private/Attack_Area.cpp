@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Attack_Area.h"
 #include "Client_Components.h"
 #include "BoneNode.h"

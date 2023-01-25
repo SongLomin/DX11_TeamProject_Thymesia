@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "UI_RadialBlurMask.h"
 #include "EasingComponent_Float.h"
 #include "GameInstance.h"

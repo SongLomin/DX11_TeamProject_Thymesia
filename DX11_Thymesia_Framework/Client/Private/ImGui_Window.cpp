@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "ImGui_Window.h"
 
 CImGui_Window::CImGui_Window()

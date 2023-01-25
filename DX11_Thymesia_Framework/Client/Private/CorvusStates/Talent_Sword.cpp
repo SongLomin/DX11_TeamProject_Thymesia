@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "CorvusStates/Talent_Sword.h"
 #include "GameManager.h"
 #include "GameInstance.h"

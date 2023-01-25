@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Prop_Fence.h"
 
 #include "Shader.h"

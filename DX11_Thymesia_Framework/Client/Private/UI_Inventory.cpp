@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "UI_Inventory.h"
 #include "UI_Utils.h"
 #include "UI_Utils.h"

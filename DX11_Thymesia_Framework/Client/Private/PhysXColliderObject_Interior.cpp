@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "PhysXColliderObject_Interior.h"
 
 #include "PhysXCollider.h"

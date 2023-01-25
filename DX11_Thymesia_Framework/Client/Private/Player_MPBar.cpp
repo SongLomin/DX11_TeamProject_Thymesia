@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Player_MPBar.h"
 #include "Texture.h"
 #include "Shader.h"

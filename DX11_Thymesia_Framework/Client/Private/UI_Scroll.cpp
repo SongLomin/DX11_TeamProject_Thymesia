@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "UI_Scroll.h"
 #include "UI_Utils.h"
 #include "CustomUI.h"

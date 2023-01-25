@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "CorvusStates/Talent_Effect_Growing_FeadtherLV2.h"
 #include "GameManager.h"
 

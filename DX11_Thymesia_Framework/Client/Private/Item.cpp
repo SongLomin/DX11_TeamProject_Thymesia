@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Item.h"
 #include "Texture.h"
 #include "Preset_ItemData.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Requirement_Time.h"
 #include "GameInstance.h"
 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "BossUrd/UrdBossState_StunEnd.h"
 #include "Model.h"
 #include "GameInstance.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Client_Windows.h"
 #include "GameInstance.h"
 #include "Client_GameObjects.h"

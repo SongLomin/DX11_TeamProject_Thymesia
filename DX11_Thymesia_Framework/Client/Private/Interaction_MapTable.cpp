@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Interaction_MapTable.h"
 
 #include "Model.h"

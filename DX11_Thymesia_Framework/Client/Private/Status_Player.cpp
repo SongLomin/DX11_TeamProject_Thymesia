@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+﻿#include "..\Default\stdafx.h"
 #include "Status_Player.h"
 #include "Status.h"
 #include "GameInstance.h"

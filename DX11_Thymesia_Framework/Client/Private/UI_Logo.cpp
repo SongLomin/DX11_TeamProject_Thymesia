@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "UI_Logo.h"
 #include "CustomUI.h"
 #include "Texture.h"

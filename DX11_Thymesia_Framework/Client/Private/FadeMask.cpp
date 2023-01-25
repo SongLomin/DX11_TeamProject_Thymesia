@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "FadeMask.h"
 #include "Texture.h"
 #include "Shader.h"

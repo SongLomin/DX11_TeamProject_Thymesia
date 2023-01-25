@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "MonsterHPBar_Boss.h"
 #include "MonsterHPBar_Base.h"
 #include "CustomUI.h"

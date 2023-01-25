@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "UI_PauseMenu_Tap_Potion.h"
 #include "UI_PauseMenu_Page_Status.h"
 #include "UI_PauseMenu_Tap_Status.h"

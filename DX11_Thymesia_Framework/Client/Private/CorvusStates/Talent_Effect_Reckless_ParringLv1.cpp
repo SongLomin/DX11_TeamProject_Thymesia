@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "CorvusStates/Talent_Effect_Reckless_ParringLV1.h"
 #include "GameManager.h"
 

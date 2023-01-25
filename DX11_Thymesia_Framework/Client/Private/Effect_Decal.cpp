@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Effect_Decal.h"
 #include "Client_Components.h"
 #include "VIBuffer_Cube.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Window_AnimationPlayerView.h"
 #include "GameInstance.h"
 #include "Window_AnimationModelView.h"

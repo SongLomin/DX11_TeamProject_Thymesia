@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "Skill_Halberds.h"
 #include "ClientComponent_Utils.h"
 #include "PlayerStateBase.h"

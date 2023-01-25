@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\Default\stdafx.h"
 #include "HUD_Player_Memory.h"
 #include "Texture.h"
 #include "Shader.h"
