@@ -1471,7 +1471,7 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\04.Varg_ExecutionStart</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_R_R.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Interaction_NextPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
@@ -2195,13 +2195,13 @@
     <ClInclude Include="..\Public\UIHeaders.h" />
     <ClInclude Include="..\Public\TransformUtils.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_LV2M_Execution.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R\06.CorvusState_LV2M_Execution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_LV1M_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_AromorLV1_NCamera_Execution.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\04.CorvusState_AromorLV1_NCamera_Execution</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R\06.CorvusState_LV2M_Execution\04.CorvusState_AromorLV1_NCamera_Execution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_AromorLV1_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\03.CorvusState_AromorLV1_Execution</Filter>
@@ -3747,7 +3747,7 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\04.Varg_ExecutionStart</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Execution_R_R.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
@@ -4475,13 +4475,13 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_AromorLV1_NCamera_Execution.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\04.CorvusState_AromorLV1_NCamera_Execution</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R\06.CorvusState_LV2M_Execution\04.CorvusState_AromorLV1_NCamera_Execution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_AromorLV1_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\03.CorvusState_AromorLV1_Execution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_LV2M_Execution.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R\06.CorvusState_LV2M_Execution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Armor_Execution_01.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\CorvusState_Armor_Execution_01</Filter>
@@ -5987,9 +5987,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\04.Varg_ExecutionStart">
       <UniqueIdentifier>{d1d0d9a4-2ec3-4160-832e-d7bb007f96c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R">
-      <UniqueIdentifier>{18ff6167-aaf0-4886-bd70-9b172f40d919}</UniqueIdentifier>
-    </Filter>
     <Filter Include="AppearEvent">
       <UniqueIdentifier>{d3a11a7c-0354-46b5-b914-4587764414bf}</UniqueIdentifier>
     </Filter>
@@ -6608,14 +6605,8 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon">
       <UniqueIdentifier>{bb4724bb-e8eb-4257-b66d-604505311fad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\06.CorvusState_LV2M_Execution">
-      <UniqueIdentifier>{f5527b93-e6fb-43e1-b296-cfdd4bde1e04}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\05.CorvusState_LV1M_Execution">
       <UniqueIdentifier>{318c5370-2ebb-41c8-b8e1-195eb17b5476}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\04.CorvusState_AromorLV1_NCamera_Execution">
-      <UniqueIdentifier>{5affc4f7-f4bf-4290-b7f1-7b4a9d875432}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\07.Armor_Executon\03.CorvusState_AromorLV1_Execution">
       <UniqueIdentifier>{8cfd7429-4ef4-474a-af88-cb1811f90188}</UniqueIdentifier>
@@ -6679,6 +6670,15 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\01. TextureEditer">
       <UniqueIdentifier>{f3361738-3c8e-4796-9947-334c34e437e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R">
+      <UniqueIdentifier>{18ff6167-aaf0-4886-bd70-9b172f40d919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R\06.CorvusState_LV2M_Execution">
+      <UniqueIdentifier>{f5527b93-e6fb-43e1-b296-cfdd4bde1e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Execution_R_R\06.CorvusState_LV2M_Execution\04.CorvusState_AromorLV1_NCamera_Execution">
+      <UniqueIdentifier>{5affc4f7-f4bf-4290-b7f1-7b4a9d875432}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

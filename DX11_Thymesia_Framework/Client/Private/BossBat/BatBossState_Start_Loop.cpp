@@ -103,7 +103,7 @@ _bool CBatBossState_Start_Loop::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 30.f)
+	if (fPToMDistance <= 33.f)
 	{
 		m_bStartTimeAcc = true;
 	}
