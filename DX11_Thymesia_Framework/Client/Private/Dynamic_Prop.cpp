@@ -49,6 +49,10 @@ HRESULT CDynamic_Prop::Start()
 
     if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
     {
+        m_szSoundKey = "Fantasy_Game_Action_Collect_Stone_A";
+    }
+    if (hash<string>()("Wagon3_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+    {
         CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
         m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
     }

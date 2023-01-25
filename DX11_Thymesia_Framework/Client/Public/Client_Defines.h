@@ -16,7 +16,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
-#define _OVERDRIVE_LOAD_EFFECTGROUP_
+//#define _OVERDRIVE_LOAD_EFFECTGROUP_
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
