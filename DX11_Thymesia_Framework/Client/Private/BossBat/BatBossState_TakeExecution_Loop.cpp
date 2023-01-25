@@ -14,8 +14,7 @@
 #include "PhysXCharacterController.h"
 #include "Interaction_Item.h"
 #include "Inventory.h"
-
-
+#include "UIManager.h"
 
 GAMECLASS_C(CBatBossState_TakeExecution_Loop);
 CLONE_C(CBatBossState_TakeExecution_Loop, CComponent)
@@ -98,7 +97,8 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 
 	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS, 2.f);
-
+	GAMEINSTANCE->StopBGM();
+	GAMEINSTANCE->PlayBGM("BGM_STAGE_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 	GET_SINGLE(CGameManager)->Activate_Section(1000, EVENT_TYPE::ON_ENTER_SECTION);
 }	
 

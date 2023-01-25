@@ -45,6 +45,8 @@ void CVargBossState_SPA_Roar_Getup::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
+
 	if (m_bShakingCamera)
 	{
 		_float3 vPosition;
@@ -94,6 +96,7 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 	Weak_Cast<CVarg>(m_pOwner).lock()->Unbind_KeyEvent("Boss_Varg");
 	Weak_Cast<CVarg>(m_pOwner).lock()->Bind_KeyEvent("Boss_Varg_Phase2");
 #endif // _VARG_EFFECT_
+	GAMEINSTANCE->PlayBGM("Varg_Boss_Phase2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -149,9 +152,6 @@ void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd(_uint iEndAnimIndex)
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
-
-	GAMEINSTANCE->PlayBGM("Varg_Boss_Phase2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
-
 
 }
 
