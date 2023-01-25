@@ -63,6 +63,12 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);	
 
+	// TODO : 박쥐맵 환경 사운드 (루프)
+	/*
+	Env_Crystal_01.ogg-> 42초 짜리 환경음. 계속 루프되게.
+	Env_Crystal_01.ogg
+	*/
+
 	Tick_Key_InputEvent();
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
 	{
