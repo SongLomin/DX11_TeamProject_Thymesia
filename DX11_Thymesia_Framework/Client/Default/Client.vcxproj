@@ -553,6 +553,7 @@
     <ClInclude Include="..\Public\Interaction_MapTable.h" />
     <ClInclude Include="..\Public\InteriorProp.h" />
     <ClInclude Include="..\Public\JavelinWeapon.h" />
+    <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\Level_Home.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack4.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack5.h" />
@@ -574,7 +575,6 @@
     <ClInclude Include="..\Public\InventorySorter.h" />
     <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\ItemPopup_Queue.h" />
-    <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
     <ClInclude Include="..\Public\JokerWeapon.h" />
     <ClInclude Include="..\Public\Level_Stage2.h" />

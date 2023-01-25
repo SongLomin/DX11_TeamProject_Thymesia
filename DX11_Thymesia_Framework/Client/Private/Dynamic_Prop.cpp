@@ -52,18 +52,22 @@ HRESULT CDynamic_Prop::Start()
         CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
         m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
     }
+    else if (hash<string>()("Wagon3_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+    {
+        m_szSoundKey = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
+    }
     else if (hash<string>()("Fence_16a_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
     {
-        m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_02.ogg";
+        m_szSoundKey = "EVM_prop_hell_wood_crate_bones_break_02.ogg";
     }
 
     __super::Start();
 
     COLLIDERDESC tColliderDesc;
-    tColliderDesc.iLayer = (_uint)CollisionLayer;
-    tColliderDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
-    tColliderDesc.vScale = { 2.3f, 0.f, 0.f };
-    tColliderDesc.vOffset = { 0.f, 0.f, 0.f };
+    tColliderDesc.iLayer       = (_uint)CollisionLayer;
+    tColliderDesc.vRotation    = { 0.f, 0.f, 0.f, 0.f };
+    tColliderDesc.vScale       = { 2.3f, 0.f, 0.f };
+    tColliderDesc.vOffset      = { 0.f, 0.f, 0.f };
     tColliderDesc.vTranslation = { 0.f, 0.f, 0.f };
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, tColliderDesc);
