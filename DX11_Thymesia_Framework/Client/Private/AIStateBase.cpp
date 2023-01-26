@@ -98,7 +98,9 @@ void CAIStateBase::HitEffectSound()
 		MONSTERTYPE::BALLOON			== m_eMonType ||
 		MONSTERTYPE::GARDENER			== m_eMonType ||
 		MONSTERTYPE::ENHANCE_GARDENER	== m_eMonType ||
-		MONSTERTYPE::JOKER				== m_eMonType)
+		MONSTERTYPE::JOKER				== m_eMonType ||
+		MONSTERTYPE::BAT			    == m_eMonType ||
+		MONSTERTYPE::URD                == m_eMonType)
 	{
 		iRandom = rand() % 3;
 
@@ -128,7 +130,8 @@ void CAIStateBase::HitEffectSound()
 			 MONSTERTYPE::WEAKARMORSHIELDMAN	== m_eMonType ||
 			 MONSTERTYPE::ARMORSPEARMAN			== m_eMonType ||
 			 MONSTERTYPE::WEAKARMORSPEARMAN		== m_eMonType ||
-			 MONSTERTYPE::BIGHANDMAN			== m_eMonType)
+			 MONSTERTYPE::BIGHANDMAN			== m_eMonType ||
+		     MONSTERTYPE::VARG                  == m_eMonType)
 	{
 		iRandom = rand() % 6;
 
@@ -141,18 +144,6 @@ void CAIStateBase::HitEffectSound()
 			case 4: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_08.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
 			case 5: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Metal_Thin_09.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
 		}
-	}
-
-	else if (MONSTERTYPE::VARG == m_eMonType)
-	{
-	}
-
-	else if (MONSTERTYPE::BAT == m_eMonType)
-	{
-	}
-
-	else if (MONSTERTYPE::URD == m_eMonType)
-	{
 	}
 }
 
