@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_EvolveMenu_Option.h"
 #include "UI_Utils.h"
 #include "CustomUI.h"
@@ -241,7 +241,7 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
 
     cudaDeviceProp deviceProperties;
     cudaGetDeviceProperties(&deviceProperties, 0);
-    m_HardwareInfos[GPU_NAME].szText = L"GPU: " + filesystem::path(deviceProperties.name).wstring();
+   // m_HardwareInfos[GPU_NAME].szText = L"GPU: " + filesystem::path(deviceProperties.name).wstring();
 
     cudaSetDevice(0);
     cudaDeviceSynchronize();

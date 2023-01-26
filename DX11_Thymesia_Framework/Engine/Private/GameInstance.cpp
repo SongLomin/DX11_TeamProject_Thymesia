@@ -824,9 +824,9 @@ _uint CGameInstance::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _fl
 	return m_pSound_Manager->PlaySound3D(In_szSoundKey, _iIndex, _vol, In_WorldPosition);
 }
 
-_uint CGameInstance::PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition)
+_uint CGameInstance::PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition, const _float In_fMinDistance, const _float In_fMaxDistance)
 {
-	return m_pSound_Manager->PlaySound3D(In_szSoundKey, _vol, In_WorldPosition);
+	return m_pSound_Manager->PlaySound3D(In_szSoundKey, _vol, In_WorldPosition, In_fMinDistance, In_fMaxDistance);
 }
 
 _uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol)

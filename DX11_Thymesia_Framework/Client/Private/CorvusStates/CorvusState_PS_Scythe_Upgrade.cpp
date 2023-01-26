@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "CorvusStates/CorvusState_PS_Scythe_Upgrade.h"
 #include "Animation.h"
 #include "PhysXController.h"

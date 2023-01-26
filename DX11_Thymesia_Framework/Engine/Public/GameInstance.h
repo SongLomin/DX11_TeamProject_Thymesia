@@ -254,7 +254,7 @@ public: /* For.Sound_Manager */
 	void Update_BGMVolumeScale(const _float In_VolumeScale);
 	_int  Pause(CHANNELID eID);
 	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
-	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
+	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition, const _float In_fMinDistance = Sound_Min_Distance, const _float In_fMaxDistance = Sound_Max_Distance);
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
 	_uint PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop = false);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);

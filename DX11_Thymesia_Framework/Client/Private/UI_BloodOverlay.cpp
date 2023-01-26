@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_BloodOverlay.h"
 #include "EasingComponent_Alpha.h"
 #include "Shader.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Window_EffectEditerView.h"
 #include "GameInstance.h"
 #include "EffectGroup.h"
@@ -256,7 +256,7 @@ void CWindow_EffectEditerView::Update_Sound()
 
     ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), szFrontName.c_str());
 
-    if (ImGui::SliderFloat("Volume", &m_fVolume, 0.f, 2.f, "%.1f"));
+    if (ImGui::SliderFloat("Volume", &m_fVolume, 0.f, 5.f, "%.1f"));
 
     ImGui::SetNextItemWidth(100.f);
     if (ImGui::InputInt("Sync Sound with Key Event", &m_iSoundSyncKey));

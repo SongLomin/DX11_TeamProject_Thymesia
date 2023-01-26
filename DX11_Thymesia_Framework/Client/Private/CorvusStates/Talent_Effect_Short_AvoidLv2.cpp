@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "CorvusStates/Talent_Effect_Short_AvoidLv2.h"
 #include "GameManager.h"
 

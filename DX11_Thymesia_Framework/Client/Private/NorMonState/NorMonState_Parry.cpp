@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "NorMonState/NorMonState_Parry.h"
 #include "Model.h"
 #include "GameInstance.h"

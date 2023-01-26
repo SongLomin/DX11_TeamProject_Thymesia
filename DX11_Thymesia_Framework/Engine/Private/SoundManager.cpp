@@ -7,8 +7,7 @@
 #include "GameInstance.h"
 #include "SMath.h"
 
-static const _float Sound_Min_Distance = 30.f;
-static const _float Sound_Max_Distance = 300.f;
+
 
 IMPLEMENT_SINGLETON(CSound_Manager)
 
@@ -146,7 +145,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 	return _iIndex;
 }
 
-_uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition)
+_uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition, const _float In_fMinDistance, const _float In_fMaxDistance)
 {
 	map<_hashcode, SOUND_DESC>::iterator iter;
 
@@ -194,7 +193,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 			FMOD_VECTOR vVelocity{};
 
 			FMOD_Channel_Set3DAttributes(m_pChannelArr[i].pChannel, &vPosition, &vVelocity);
-			FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[i].pChannel, Sound_Min_Distance, Sound_Max_Distance);
+			FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[i].pChannel, In_fMinDistance, In_fMaxDistance);
 			FMOD_Channel_SetVolume(m_pChannelArr[i].pChannel, _vol * m_fEffectvolume * 0.25f);
 			iResult = i;
 			break;

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Effect_AttackArea.h"
 #include "Collider.h"
 #include "EffectGroup.h"

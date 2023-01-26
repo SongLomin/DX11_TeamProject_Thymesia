@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_EvolveMenu_PlagueWeapon_PlayerSkillSlot.h"
 #include "CustomUI.h"
 #include "UI_Utils.h"

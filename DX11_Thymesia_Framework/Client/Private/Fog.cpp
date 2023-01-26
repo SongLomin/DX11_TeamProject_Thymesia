@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../Default/stdafx.h"
 #include "Fog.h"
 
 #include "GameInstance.h"

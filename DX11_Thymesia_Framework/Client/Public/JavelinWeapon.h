@@ -1,6 +1,6 @@
 #pragma once
 #include "Attack_Area.h"
-#include "Client_Defines.h"
+//#include "Client_Defines.h"
 
 BEGIN(Engine)
 class CModel;
@@ -65,6 +65,8 @@ public:
     void  Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
     void  LookAt_Player();
 
+    void Set_BombTimer();
+
 private:
     void Update_Matrix_Hand();
     void Update_Matrix_Throw(_float fTimeDelta);
@@ -101,6 +103,10 @@ protected:
     _uint                   m_iWeaponNum = 0;
     _bool                   m_bRenderCheck = false;
     _bool                   m_bBoneBind = true;
+
+private:
+    _float                  m_fBombTimeAcc = 0.f;
+    _bool                   m_bBomb = true;
 
 private:
     JAVELIN_STATE           m_eCurrentState = JAVELIN_STATE::STATE_END;
