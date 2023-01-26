@@ -189,7 +189,7 @@ HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				(1 << aiTextureType_SPECULAR) & BindTextureFlag
 				)
 			{
-				iPassIndex = 7;
+				iPassIndex = 13;
 			}
 
 			// NormalTexture	OK.
@@ -199,7 +199,7 @@ HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				!((1 << aiTextureType_SPECULAR) & BindTextureFlag)
 				)
 			{
-				iPassIndex = 3;
+				iPassIndex = 14;
 			}
 
 			// NormalTexture	NO.
@@ -396,7 +396,7 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 17.5f,17.5f, 5.0f };
+	m_DecalDesc.vScale = { 18.f,18.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 
@@ -434,7 +434,7 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 17.5f,17.5f, 5.0f };
+	m_DecalDesc.vScale = { 18.f,18.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 
