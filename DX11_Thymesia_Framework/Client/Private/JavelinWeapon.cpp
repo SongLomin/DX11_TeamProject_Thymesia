@@ -40,7 +40,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 			{
 				if (1 == elem.lock()->Get_WeaponNum())
 				{
-					Activate_ExplosionEffect(elem);
+					elem.lock()->Activate_ExplosionEffect();
 				}
 			}
 		}
@@ -51,12 +51,12 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 			{
 				if (1 == elem.lock()->Get_WeaponNum())
 				{
-					Activate_ExplosionEffect(elem);
+					elem.lock()->Activate_ExplosionEffect();
 				}
 
 				if (2 == elem.lock()->Get_WeaponNum())
 				{
-					Activate_ExplosionEffect(elem);
+					elem.lock()->Activate_ExplosionEffect();
 				}
 			}
 		}
