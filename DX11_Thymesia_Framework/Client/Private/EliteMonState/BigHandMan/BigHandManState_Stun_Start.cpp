@@ -62,7 +62,7 @@ void CBigHandManState_Stun_Start::OnStateStart(const _float& In_fAnimationBlendT
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 
-	Get_OwnerMonster()->Set_RimLightDesc(6.f, { 0.5f,1.f,0.9f }, 1.f);
+	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

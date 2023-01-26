@@ -97,7 +97,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
 	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
-	pFadeMask.lock()->Set_Fade(1.f, 0.f, 1.f, EASING_TYPE::LINEAR);
+	pFadeMask.lock()->Set_Fade(1.f, 0.f, 1.5f, EASING_TYPE::LINEAR);
 
 
 
@@ -112,9 +112,6 @@ void CVargBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
 	GET_SINGLE(CGameManager)->End_Cinematic();
-
-	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_pOwner.lock()->Get_CreatedLevel());
-	pFadeMask.lock()->Set_Fade(1.f, 0.f, 0.5f, EASING_TYPE::LINEAR);
 }
 
 void CVargBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
@@ -133,7 +130,7 @@ void CVargBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(1.f);
 
-	GAMEINSTANCE->PlayBGM("Varg_Boss_Phase1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	GAMEINSTANCE->PlaySound2D("Varg_Boss_Phase1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 }
  
 void CVargBossState_Start::OnDestroy()

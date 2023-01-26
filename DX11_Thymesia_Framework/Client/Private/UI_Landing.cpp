@@ -128,10 +128,6 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
     desc.fSizeMag = 0.1f;
     desc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD;
    
-    if (eLandingType == LANDING_KILL_BOSS)
-    {
-        GAMEINSTANCE->PlaySound2D("BossKill.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
-    }
     if ((_uint)eLandingType < (_uint)LANDING_ENTER_STAGE)
     {
         m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc);

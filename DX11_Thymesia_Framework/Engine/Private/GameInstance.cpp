@@ -485,11 +485,6 @@ HRESULT CGameInstance::Set_DynamicShadow_Enable(const _bool& In_bDynamicShadowEn
 	return m_pRender_Manager->Set_DynamicShadow_Enable(In_bDynamicShadowEnable);
 }
 
-HRESULT CGameInstance::Set_StaticShadow_Enable(const _bool& In_bStaticShadowEnable)
-{
-	return m_pRender_Manager->Set_StaticShadow_Enable(In_bStaticShadowEnable);
-}
-
 HRESULT CGameInstance::Set_SSAA_Enable(const _bool& In_bSSAAEnable)
 {
 	return m_pRender_Manager->Set_SSAA_Enable(In_bSSAAEnable);
@@ -834,9 +829,9 @@ _uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _fl
 	return m_pSound_Manager->PlaySound2D(In_szSoundKey, _iIndex, _vol);
 }
 
-_uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop)
+_uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _float _vol)
 {
-	return m_pSound_Manager->PlaySound2D(In_szSoundKey, _vol, isLoop);
+	return m_pSound_Manager->PlaySound2D(In_szSoundKey, _vol);
 }
 
 void CGameInstance::PlayBGM(const string& In_szSoundKey, _float _vol)

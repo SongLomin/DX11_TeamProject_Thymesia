@@ -1242,9 +1242,6 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 	m_pShader->Set_RawValue("g_DynamicLightViewMatrix", &m_DynamicLightViewMatrixTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_DynamicLightProjMatrix", &m_DynamicLightProjMatrixTranspose, sizeof(_float4x4));
 
-	m_pShader->Set_RawValue("g_bDynamicShadow", &m_bDynamicShadow, sizeof(_bool));
-	m_pShader->Set_RawValue("g_bStaticShadow", &m_bStaticShadowEnable, sizeof(_bool));
-
 
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 	_float fCamFar = pPipeLine->Get_CameraFar();

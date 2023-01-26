@@ -1,4 +1,4 @@
-//#include "Update_Particle.cuh"
+#include "Update_Particle.cuh"
 
 
 __device__  PARTICLE_DESC Play_TestInternal(const _uint& i, _float fTimeDelta, _matrix BoneMatrix, PARTICLE_DESC* input)
@@ -27,24 +27,8 @@ __global__ void Kernel(int size)
 
 }
 
-__host__ void CudaMain_UpdateParticle(float fTimeDelta, _matrix BoneMatrix, PARTICLE_DESC* input, PARTICLE_DESC* output, _int size)
+void CudaMain_UpdateParticle(float fTimeDelta, _matrix BoneMatrix, PARTICLE_DESC* input, PARTICLE_DESC* output, _int size)
 {
-	
-}
 
-__host__ void CudaMain_UpdateParticleTEST(float fTimeDelta)
-{
-	//PARTICLE_DESC* pInputParticleDescToCuda;
-	//PARTICLE_DESC* pOutputParticleDescToCuda;
-
-	////_size_t Size = sizeof(PARTICLE_DESC) * m_tEffectParticleDesc.iMaxInstance;
-
-	//cudaMalloc((void**)&pInputParticleDescToCuda, 100);
-	//cudaMalloc((void**)&pOutputParticleDescToCuda, 100);
-
-	////cudaMemcpy(pInputParticleDescToCuda, &m_tParticleDescs[0], Size, cudaMemcpyHostToDevice);
-
-	//cudaFree(pInputParticleDescToCuda);
-	//cudaFree(pOutputParticleDescToCuda);
 }
 

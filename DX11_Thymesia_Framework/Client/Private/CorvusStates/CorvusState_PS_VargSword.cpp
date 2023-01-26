@@ -41,8 +41,10 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	}
 	return;
-	case 120:
+	case 172:
 		TurnOff_Effect("Corvus_PW_VargSword_Weapon");
+		return;
+	case 184:
 		TurnOff_Effect("Corvus_PW_EyeGlow");
 		return;
 	}

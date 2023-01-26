@@ -149,11 +149,9 @@ public:
 	}
 
 	HRESULT Set_SSRLevel(const _uint& In_iSSRLevel);
-
 	HRESULT Set_StaticShadow_Enable(const _bool& In_bStaticShadowEnable)
 	{
 		m_bStaticShadowEnable = In_bStaticShadowEnable;
-		return S_OK;
 	}
 
 private:

@@ -60,10 +60,20 @@ void CEliteStateBase::Init_Desc(void* In_pDesc)
 	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
 	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	memcpy(&StateLinkDesc, In_pDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	m_eMonType        = StateLinkDesc.eMonType;
+	m_eMonType = StateLinkDesc.eMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
-	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
-	m_eBossStartType  = StateLinkDesc.eBossStartType;
+	m_fStartPosition = StateLinkDesc.m_fStartPositon;
+	m_eBossStartType = StateLinkDesc.eBossStartType;
+}
+
+shared_ptr<CMonster> CEliteStateBase::Get_OwnerMonster() const noexcept
+{
+	return m_pOwnerFromMonster.lock();
+}
+
+_bool CEliteStateBase::Check_Requirement()
+{
+	return __super::Check_Requirement();
 }
 
 void CEliteStateBase::Turn_ToThePlayer(_float fTimeDelta)
@@ -174,6 +184,30 @@ _float CEliteStateBase::Get_DistanceWithPlayer() const
 	return fDistance;
 }
 
+_vector CEliteStateBase::Get_CurMonToStartMonDir()
+{
+	_vector vCurrenPosition(m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
+	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
+
+	_vector vStartPosition(XMLoadFloat4(&m_fStartPosition));
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
+
+	_vector vLookDir(XMVector4Normalize(vStartPosition - vCurrenPosition));
+	return vLookDir;
+}
+
+_float CEliteStateBase::GetStartPositionToCurrentPositionDir()
+{
+	_vector vCurrenPosition(m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
+	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
+
+	_vector vStartPosition(XMLoadFloat4(&m_fStartPosition));
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
+
+	_float fDistance(XMVectorGetX(XMVector3Length(vCurrenPosition - vStartPosition)));
+	return fDistance;
+}
+
 void CEliteStateBase::TurnMechanism()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
@@ -281,6 +315,47 @@ void CEliteStateBase::TurnAttack(_float fTimeDelta)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), sqrtf(fTimeDelta * 0.08f));
 	else
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -sqrtf(fTimeDelta * 0.08f));
+}
+
+_float CEliteStateBase::ComputeAngleWithPlayer()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	vCurPlayerPos = XMVectorSetY(vCurPlayerPos, 0.f);
+
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	vMyPos = XMVectorSetY(vMyPos, 0.f);
+
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
+
+	vMyLookVector = XMVector3Normalize(XMVectorSetY(vMyLookVector, 0.f));
+
+	_float fCos(XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
+
+#ifdef _DEBUG_COUT_
+	cout << "ComputeAngleWithPlayer: " << fCos << endl;
+#endif // _DEBUG_COUT_
+
+	return fCos;
+}
+
+_int CEliteStateBase::ComputeDirectionToPlayer()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
+
+	_float fCross(XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector)));
+
+	if (fCross >= 0.f)
+		return 1;
+	else // À½¼ö ¿ÞÂÊ
+		return -1;
 }
 
 void CEliteStateBase::OnDestroy()

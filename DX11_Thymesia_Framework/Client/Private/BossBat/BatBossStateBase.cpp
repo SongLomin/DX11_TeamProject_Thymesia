@@ -330,19 +330,6 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
 				}
-
-				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
-				{
-					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
-				}
-				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-				{
-					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerMonster()->Change_State<CBatBossState_HurtXL_F>();
-				}
 			}	
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
@@ -424,8 +411,6 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		}
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
-
-		Get_OwnerMonster()->Set_RimLightDesc(4.5f, { 0.6f,0.f,0.f }, 0.9f);
 		//현재상태가 스턴스타트나 스턴루프인경우에 
 		//다시 검사를해준다 플레이어의 공격이 들어오면 바그처형으로 갑니다 
 		// 바그처형으로가고 바그처형으로 갈떄 그 애니메이션한태 값하나던져주면 해결ㅇ완료 

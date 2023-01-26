@@ -92,9 +92,8 @@ void CBigHandManState_TurnL90::Call_AnimationEnd(_uint iEndAnimIndex)
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CBigHandManState_Idle>(0.05f);
+	
 }
-
 
 void CBigHandManState_TurnL90::OnDestroy()
 {

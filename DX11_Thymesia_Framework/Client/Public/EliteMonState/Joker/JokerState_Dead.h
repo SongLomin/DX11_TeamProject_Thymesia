@@ -36,9 +36,6 @@ private:
 	_bool    m_bBackReset = false;
 
 private:
-	_float      m_fDissolveTime;
-	_bool       m_bAnimEnd;
-private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);
 protected:
 	virtual void OnDestroy() override;

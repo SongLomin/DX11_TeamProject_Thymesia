@@ -3,7 +3,7 @@
 #include "UI_Utils.h"
 #include "CustomUI.h"
 #include "Preset_UIDesc.h"
-#include "EasingComponent_Alpha.h"
+
 
 GAMECLASS_C(CUI_InventoryConfirmWindowButton)
 CLONE_C(CUI_InventoryConfirmWindowButton, CGameObject)

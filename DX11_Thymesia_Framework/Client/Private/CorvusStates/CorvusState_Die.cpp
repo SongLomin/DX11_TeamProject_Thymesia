@@ -50,7 +50,7 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 	_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
 	Get_OwnerPlayer()->Set_DissolveAmount(fDissolveAmount);
 
-	if (m_bFadeOutTrigger && 3.5f > m_fDissolveTime)
+	if (m_bFadeOutTrigger && 2.f > m_fDissolveTime)
 	{
 		m_bFadeOutTrigger = false;
 
@@ -138,8 +138,7 @@ void CCorvusState_Die::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_CreatedLevel);
-	pFadeMask.lock()->Set_Fade(1.f, 0.f, 2.f, EASING_TYPE::LINEAR);
+
 }
 
 void CCorvusState_Die::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)

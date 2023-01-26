@@ -2,7 +2,7 @@
 #include "Skill_VargSword.h"
 #include "ClientComponent_Utils.h"
 #include "PlayerStateBase.h"
-#include "CorvusStates/CorvusState_PS_VargSwordStart.h"
+#include "CorvusStates/CorvusState_PS_VargSword.h"
 #include "Status_Player.h"
 #include "Requirement_Time.h"
 #include "RequirementChecker.h"
@@ -36,7 +36,7 @@ void CSkill_VargSword::Init_SkillInfo()
 
 void CSkill_VargSword::Init_State()
 {
-	m_pSkillState = m_pOwner.lock()->Get_Component<CCorvusState_PS_VargSwordStart>();
+	m_pSkillState = m_pOwner.lock()->Get_Component<CCorvusState_PS_VargSword>();
 }
 
 void CSkill_VargSword::Free()

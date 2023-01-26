@@ -1017,6 +1017,9 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_IdleGeneral.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.IdleGeneral</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\JokerStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\EditEventContoller.h">
       <Filter>02. GameObject\99. Other\09. EditEventContoller</Filter>
     </ClInclude>
@@ -1801,6 +1804,9 @@
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Start.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\02.ComboB_Start</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboA02.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\01.ComboA02</Filter>
     </ClInclude>
@@ -2239,12 +2245,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Skill_Bankai.h" />
     <ClInclude Include="..\Public\Skill_BigHand.h" />
-    <ClInclude Include="..\Public\EliteMonState\BigHandMan\BigHandManState_ComboB_Loop.h">
-      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\01.BigHandManState\01.Attack\03.ComboB_Loop</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\JokerStateBase.h">
-      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

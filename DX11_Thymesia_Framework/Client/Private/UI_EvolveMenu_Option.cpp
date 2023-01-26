@@ -284,7 +284,7 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
             m_CPU_RateInfos[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
             m_CPU_RateInfos[i].vPosition = _float2(xPosition, 60.f + i * 20.f);
             m_CPU_RateInfos[i].vScale = _float2(0.7f, 0.7f);
-            m_CPU_RateInfos[i].szText = L"CPU" + to_wstring(i) + L": " + to_wstring((_int)((m_CPU_usages[i] * 2.f) / iCapturedCallCount)) + L" % ";
+            m_CPU_RateInfos[i].szText = L"CPU" + to_wstring(i) + L": " + to_wstring((_int)((m_CPU_usages[i] * m_CPU_usages.size()) / iCapturedCallCount)) + L" % ";
             m_CPU_usages[i] = 0.0;
         }
         m_iCallCount = 0;

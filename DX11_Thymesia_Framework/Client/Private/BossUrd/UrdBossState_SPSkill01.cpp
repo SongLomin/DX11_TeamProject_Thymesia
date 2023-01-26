@@ -85,8 +85,8 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 
 void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 {
-	if (3.f > m_fInversionStrength)
-		m_fInversionStrength += In_fTimeDelta * 2.1f;
+	if (3.5f > m_fInversionStrength)
+		m_fInversionStrength += In_fTimeDelta * 1.2f;
 	else if (1.f > m_fInversionRatio)
 	{
 		m_fInversionRatio += In_fTimeDelta;
@@ -168,17 +168,6 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	
 	case 184:
 	{
-		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
-
-		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
-		m_bCameraShaking = true;
-		m_fShakingRatio = 0.15f;
-
-		m_fInversionStrength = 1.f;
-		m_fInversionRatio = 0.f;
-		CallBack_ColorInversion += CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
-
 		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
 		{
 			if (3 == elem.lock()->Get_WeaponNum())
@@ -187,11 +176,16 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
-		return;
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, OwnerWorldMatrix);
+
+		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
+		m_bCameraShaking = true;
+		m_fShakingRatio = 0.1f;
 	}
+		return;
 	case 204:
 	{
-		m_fShakingRatio = 0.25f;
 		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
 		{
 			if (2 == elem.lock()->Get_WeaponNum())
@@ -200,8 +194,16 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
+		m_fShakingRatio = 0.25f;
 	}
 		return;
+	case 220:
+	{
+		m_fInversionStrength = 1.f;
+		m_fInversionRatio = 0.f;
+		CallBack_ColorInversion+= CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
+		return;
+	}
 	case 224:
 	{
 		for (auto& elem : Weak_StaticCast<CUrd>(m_pOwner).lock()->Get_JavelinWeapons())
@@ -214,7 +216,7 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		}
 	}
 		return;
-	case 349:
+	case 350:
 		m_bCameraShaking = false;
 		return;
 	}

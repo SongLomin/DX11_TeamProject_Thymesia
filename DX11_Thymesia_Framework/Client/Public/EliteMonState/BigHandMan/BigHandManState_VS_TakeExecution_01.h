@@ -28,9 +28,6 @@ protected:
 
 private:
 	_bool      m_bAnimationStop = false;
-private:
-	_float      m_fDissolveTime;
-	_bool       m_bAnimEnd;
 
 private:
 	void Call_AnimationEnd(_uint iEndAnimIndex);

@@ -152,38 +152,10 @@ void CBigHandManStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
-			fMagnifiedDamage *= tPlayerDesc.m_fPlagueAtk;
+			fMagnifiedDamage *= tPlayerDesc.m_fParryingAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			if (!m_pStatusCom.lock()->Is_Dead())
-			{
-				if (In_eHitType == HIT_TYPE::LEFT_HIT)
-				{
-					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtR>(0.05f);
-				}
-
-				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
-				{
-					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtL>(0.05f);
-				}
-				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
-				{
-					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtL>(0.05f);
-				}
-				else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-				{
-					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
-					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-					Get_OwnerCharacter().lock()->Change_State<CBigHandManState_HurtL>(0.05f);
-				}
-			}
 			break;
 		case Client::ATTACK_OPTION::STEALMONSTER:
 			if (In_eHitType == HIT_TYPE::STEALMONSTER)
@@ -219,16 +191,12 @@ void CBigHandManStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		}
 		else
 		{
-			if (eAttackOption == ATTACK_OPTION::NONE ||
-				eAttackOption == ATTACK_OPTION::NORMAL)
 			pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTION);
 
 		}
 
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//�Ϲ� ����
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
-
-		Get_OwnerMonster()->Set_RimLightDesc(4.5f, { 0.6f,0.f,0.f }, 0.9f);
 	}
 }
 

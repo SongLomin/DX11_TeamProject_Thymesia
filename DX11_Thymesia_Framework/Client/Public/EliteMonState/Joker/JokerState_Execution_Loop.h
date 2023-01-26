@@ -34,8 +34,6 @@ protected:
 private:
 	_bool    m_bTurnCheck = false;
 	_bool    m_bBackReset = false;
-private:
-	_float      m_fDissolveTime;
 
 private:
 	//void Call_AnimationEnd(_uint iEndAnimIndex);

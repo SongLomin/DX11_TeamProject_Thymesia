@@ -7,7 +7,7 @@
 #include "GameInstance.h"
 #include "SMath.h"
 
-static const _float Sound_Min_Distance = 30.f;
+static const _float Sound_Min_Distance = 10.f;
 static const _float Sound_Max_Distance = 300.f;
 
 IMPLEMENT_SINGLETON(CSound_Manager)
@@ -231,7 +231,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _f
 	return _iIndex;
 }
 
-_uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop)
+_uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol)
 {
 	map<_hashcode, SOUND_DESC>::iterator iter;
 
@@ -274,11 +274,6 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, cons
 			m_pChannelArr[i].is3DSound = false;
 
 			FMOD_Channel_SetVolume(m_pChannelArr[i].pChannel, _vol * m_fEffectvolume * 0.25f);
-
-			if (isLoop)
-			{
-				FMOD_Channel_SetMode(m_pChannelArr[i].pChannel, FMOD_LOOP_NORMAL);
-			}
 			iResult = i;
 			break;
 		}

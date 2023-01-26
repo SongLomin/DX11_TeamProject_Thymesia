@@ -30,7 +30,6 @@ public:
 protected:
     shared_ptr<CPlayer> Get_OwnerPlayer() const noexcept;
     virtual _bool Check_Requirement() override;
-    virtual void HitEffectSound() override;
 
 protected:
     void            Turn_Transform(_float fTimeDelta);

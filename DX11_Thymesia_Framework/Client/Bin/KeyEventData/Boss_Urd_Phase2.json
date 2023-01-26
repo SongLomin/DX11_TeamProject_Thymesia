@@ -23,7 +23,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -63,7 +63,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -112,7 +112,7 @@
         "Enable_Weapon": false,
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -162,7 +162,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -183,7 +183,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -239,7 +239,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -290,7 +290,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -328,7 +328,7 @@
             "Volume": 2.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -355,7 +355,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -392,7 +392,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -417,7 +417,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -472,7 +472,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -547,7 +547,7 @@
         "Enable_Weapon": true,
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -587,7 +587,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -698,7 +698,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -706,7 +706,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -747,7 +747,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -842,7 +842,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -858,7 +858,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -912,7 +912,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -990,7 +990,7 @@
         "EffectName": [ "Urd_Atk02_Spear_Phase2" ],
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1123,7 +1123,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1156,7 +1156,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1194,7 +1194,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1257,7 +1257,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1276,7 +1276,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1329,7 +1329,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1340,7 +1340,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1371,7 +1371,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1387,7 +1387,7 @@
         "EffectName": [ "Urd_Atk03_DashSting_R_SlashParticle_Phase2", "Urd_Atk03_DashSting_R_StabParticle01_Phase2" ],
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1407,7 +1407,7 @@
             "Volume": 1.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1418,7 +1418,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1479,7 +1479,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1501,7 +1501,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1550,7 +1550,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1568,7 +1568,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1591,7 +1591,7 @@
         "Enable_Weapon": true,
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1611,7 +1611,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1641,7 +1641,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1655,7 +1655,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1683,7 +1683,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1703,7 +1703,7 @@
             "Volume": 1.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1726,7 +1726,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1774,7 +1774,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1798,7 +1798,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1844,7 +1844,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1864,7 +1864,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1878,7 +1878,7 @@
         "EffectName": [ "Urd_Atk06_PreAtkParticle_Phase2" ],
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1892,7 +1892,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1918,7 +1918,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -1981,7 +1981,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2008,7 +2008,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2021,7 +2021,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2060,7 +2060,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2089,7 +2089,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2123,7 +2123,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2143,7 +2143,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2171,7 +2171,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2246,7 +2246,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2262,7 +2262,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2286,7 +2286,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2301,7 +2301,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2317,7 +2317,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2496,7 +2496,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2511,7 +2511,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2526,7 +2526,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2562,7 +2562,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2574,7 +2574,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2585,7 +2585,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2598,7 +2598,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2633,7 +2633,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2646,7 +2646,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2658,7 +2658,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2672,7 +2672,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2685,7 +2685,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2716,7 +2716,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2733,7 +2733,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2745,7 +2745,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2759,7 +2759,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2795,7 +2795,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2808,7 +2808,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2823,7 +2823,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2837,7 +2837,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2870,7 +2870,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2883,7 +2883,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2939,7 +2939,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -2953,7 +2953,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3004,7 +3004,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3017,7 +3017,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3027,7 +3027,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3042,7 +3042,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3058,7 +3058,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3321,7 +3321,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3331,7 +3331,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3345,11 +3345,11 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -3716,7 +3716,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4151,11 +4151,11 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4164,11 +4164,11 @@
         "EffectName": [ "Urd_Skill01_Impact_Phase2" ],
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4264,7 +4264,7 @@
         "EffectName": [ "Urd_Skill02_1_SharpParticle_Phase2" ],
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4272,7 +4272,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4282,7 +4282,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4353,7 +4353,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4420,7 +4420,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4451,7 +4451,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4468,7 +4468,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4527,7 +4527,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4594,7 +4594,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4613,7 +4613,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4629,7 +4629,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4651,7 +4651,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4771,7 +4771,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -4912,7 +4912,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5043,7 +5043,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5135,7 +5135,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5157,11 +5157,11 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           },
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5184,7 +5184,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5202,7 +5202,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5240,7 +5240,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5257,7 +5257,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5294,7 +5294,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5311,7 +5311,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5344,7 +5344,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5357,7 +5357,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5386,7 +5386,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5408,7 +5408,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5437,7 +5437,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5448,7 +5448,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5469,7 +5469,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5499,7 +5499,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5513,7 +5513,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5553,7 +5553,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5593,7 +5593,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5640,7 +5640,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5659,7 +5659,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5680,121 +5680,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
-            "Volume": 2.0
-          }
-        ]
-      },
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      {
-        "Sound": [
-          {
-            "SoundName": "FootStep_Urd.ogg",
-            "Volume": 2.0
-          }
-        ]
-      },
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      {
-        "Sound": [
-          {
-            "SoundName": "FootStep_Urd.ogg",
-            "Volume": 2.0
-          }
-        ]
-      },
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      {
-        "Sound": [
-          {
-            "SoundName": "FootStep_Urd.ogg",
-            "Volume": 2.0
-          }
-        ]
-      },
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      {
-        "Sound": [
-          {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5822,13 +5708,10 @@
       null,
       null,
       null,
-      null,
-      null,
-      null,
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5853,7 +5736,124 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null
+    ],
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
+            "Volume": 2.0
+          }
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        "Sound": [
+          {
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5883,7 +5883,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5910,7 +5910,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5940,7 +5940,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5967,7 +5967,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -5997,7 +5997,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -6024,7 +6024,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -6054,7 +6054,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
@@ -6081,7 +6081,7 @@
       {
         "Sound": [
           {
-            "SoundName": "FootStep_Urd.ogg",
+            "SoundName": "FootStep_MetalC-001.ogg",
             "Volume": 2.0
           }
         ]
