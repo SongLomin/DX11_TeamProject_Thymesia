@@ -4,7 +4,7 @@
 #include "Window_AnimationModelView.h"
 #include "Window_EffectHierarchyView.h"
 #include "PreViewAnimationModel.h"
-
+#include "Thread_Manager.h"
 #include "Easing_Utillity.h"
 #include "Model.h"
 #include "BoneNode.h"
@@ -15,7 +15,7 @@
 //#include "update_Particle.cu"
 #include <imgui_impl_dx11.h>
 
-
+static _int g_iThread_Scale = 500;
 
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
@@ -117,6 +117,41 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 		Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
 
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
+
+	/*if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 100;
+	}
+
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 300;
+	}
+
+	if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 500;
+	}
+
+	if (KEY_INPUT(KEY::NUM4, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 700;
+	}
+
+	if (KEY_INPUT(KEY::NUM5, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 1000;
+	}
+
+	if (KEY_INPUT(KEY::NUM6, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 2000;
+	}
+
+	if (KEY_INPUT(KEY::NUM7, KEY_STATE::TAP))
+	{
+		g_iThread_Scale = 3000;
+	}*/
 }
 
 void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
@@ -998,7 +1033,110 @@ __host__ void CEffect_Rect::Play(_float fTimeDelta)
 		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 	}
 
-	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
+
+	
+
+	if (m_tEffectParticleDesc.iMaxInstance < g_iThread_Scale * 2)
+	{
+		Play_WithIndex(0, m_tEffectParticleDesc.iMaxInstance, BoneMatrix, fTimeDelta, iTickCount);
+	}
+	else
+	{
+		_int iThread_Size = m_tEffectParticleDesc.iMaxInstance / g_iThread_Scale;
+		_int iextra = m_tEffectParticleDesc.iMaxInstance % g_iThread_Scale;
+
+		for (_int i = 0; i < iThread_Size; ++i)
+		{
+			// 마지막 쓰레드면 여분까지 전부 플레이한다.
+			GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CEffect_Rect::Play_WithIndex, this, 
+				i * g_iThread_Scale, (i + 1) * g_iThread_Scale + ((i + 1) == iThread_Size ? iextra : 0), BoneMatrix, fTimeDelta, iTickCount));
+		}
+	}
+
+	
+
+	
+
+
+	//for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
+	//{
+
+	//	if (!m_tParticleDescs[i].bEnable)
+	//	{
+
+	//		if (m_tParticleDescs[i].fCurrentSpawnTime > m_tParticleDescs[i].fTargetSpawnTime)
+	//		{
+	//			// 파티클 생성 시점
+
+	//			m_tParticleDescs[i].bEnable = true;
+
+	//			if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
+	//				XMStoreFloat4x4(&m_tParticleDescs[i].ParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
+	//		}
+	//		else
+	//		{
+	//			m_tParticleDescs[i].fCurrentSpawnTime += fTimeDelta;
+	//			continue;
+	//		}
+	//	}
+
+	//	else
+	//	{
+	//		if (m_tParticleDescs[i].fCurrentLifeTime > m_tParticleDescs[i].fTargetLifeTime)
+	//		{
+	//			if (m_tEffectParticleDesc.bLooping && !m_bStopParticle)
+	//			{
+	//				Reset_ParticleDesc((_uint)i);
+	//			}
+	//			else
+	//			{
+	//				m_tParticleDescs[i].bEnable = false;
+	//				m_tParticleDescs[i].fCurrentSpawnTime = -1.f * FLT_MAX;
+	//			}
+
+	//			continue;
+	//		}
+
+	//		m_tParticleDescs[i].fCurrentLifeTime += fTimeDelta;
+	//	}
+
+
+	//	
+
+	//	for (_int x(0); x < iTickCount; ++x)
+	//	{
+	//		Play_Internal(i, HZ_144, BoneMatrix);
+	//	}
+	//}
+
+	
+
+	//CudaMain_UpdateParticleTEST(HZ_144);
+	
+
+	/*kernel_UpdateParticle<<<1, m_tEffectParticleDesc.iMaxInstance>>>(HZ_144, BoneMatrix, 
+		pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);*/
+	//EKernel<<<1, 10>>>(10);
+
+	//cudaMemcpy(&m_tParticleDescs[0], pOutputParticleDescToCuda, Size, cudaMemcpyDeviceToHost);
+
+	
+
+	for (_int x(0); x < iTickCount; ++x)
+	{
+		Update_ParticleUV(HZ_144);
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow))
+			Update_ParticleGlowColor(HZ_144);
+	}
+}
+
+void CEffect_Rect::Play_WithIndex(_int iStart_Index, _int iEnd_Index, _matrix BoneMatrix, _float fTimeDelta, _int iTickCount)
+{
+	if (iEnd_Index > m_tParticleDescs.size())
+		return;
+
+	for (_int i(iStart_Index); i < iEnd_Index; ++i)
 	{
 
 		if (!m_tParticleDescs[i].bEnable)
@@ -1040,34 +1178,10 @@ __host__ void CEffect_Rect::Play(_float fTimeDelta)
 			m_tParticleDescs[i].fCurrentLifeTime += fTimeDelta;
 		}
 
-
-		
-
 		for (_int x(0); x < iTickCount; ++x)
 		{
 			Play_Internal(i, HZ_144, BoneMatrix);
 		}
-	}
-
-	
-
-	//CudaMain_UpdateParticleTEST(HZ_144);
-	
-
-	/*kernel_UpdateParticle<<<1, m_tEffectParticleDesc.iMaxInstance>>>(HZ_144, BoneMatrix, 
-		pInputParticleDescToCuda, pOutputParticleDescToCuda, m_tEffectParticleDesc.iMaxInstance);*/
-	//EKernel<<<1, 10>>>(10);
-
-	//cudaMemcpy(&m_tParticleDescs[0], pOutputParticleDescToCuda, Size, cudaMemcpyDeviceToHost);
-
-	
-
-	for (_int x(0); x < iTickCount; ++x)
-	{
-		Update_ParticleUV(HZ_144);
-
-		if (Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow))
-			Update_ParticleGlowColor(HZ_144);
 	}
 }
 

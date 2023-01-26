@@ -59,6 +59,9 @@ private:
     virtual void SetUp_ShaderResource();
 
     __host__ void Play(_float fTimeDelta);
+    void Play_WithIndex(_int iStart_Index, _int iEnd_Index, _matrix BoneMatrix, _float fTimeDelta, _int iTickCount);
+
+
     void Reset_Instance(const _uint& In_ParticleCount);
     void Reset_ParticleDescs();
     void Reset_ParticleDesc(const _uint& In_iIndex);

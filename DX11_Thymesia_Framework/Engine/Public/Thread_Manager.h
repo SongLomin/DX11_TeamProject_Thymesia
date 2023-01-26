@@ -6,7 +6,7 @@ BEGIN(Engine)
 
 class CGameObject;
 
-class CThread_Manager final : public CBase
+class ENGINE_DLL CThread_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CThread_Manager)
 

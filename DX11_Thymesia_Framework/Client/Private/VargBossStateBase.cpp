@@ -218,7 +218,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
 		_float fShakingRatio = 0.01f * iRand;
 
-		
 
 		//이거는한번만호출되게 해야함 
 		//현재상태가 스턴스타트나 루프가아닌경우

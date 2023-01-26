@@ -50,7 +50,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fIntensity = 1.f;
 
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
-
+	
 	return S_OK;
 }
 
@@ -244,6 +244,11 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	{
 		m_tLightDesc.bEnable = false;
 		GET_SINGLE(CGameManager)->Registration_SectionLight(m_iSectionIndex, Weak_Cast<CLight_Prop>(m_this));
+
+		if ("Env_Torch_Fire" == m_szEffectTag)
+		{
+			Callback_OnActivate += bind(&CLight_Prop::Call_Activate_Sound, this);
+		}
 	}
 
 	_vector vPos = m_pTransformCom.lock()->Get_Position();
@@ -265,6 +270,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				return;
 
 			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOnEvent, this, placeholders::_1, placeholders::_2);
+			Callback_OnActivate();
 		}
 		break;
 
@@ -334,7 +340,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::InputFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x);
 						ImGui::InputFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x);
 
-						ImGui::InputFloat("Light_Range", &m_tLightDesc.fRange);
+						ImGui::InputFloat("Light_Range"    , &m_tLightDesc.fRange);
 						ImGui::InputFloat("Light_Intensity", &m_tLightDesc.fIntensity);
 					}
 					break;
@@ -370,7 +376,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
 						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
 						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
-						ImGui::DragFloat("Light_CutOff", &m_tLightDesc.fCutOff, 0.01f);
+						ImGui::DragFloat("Light_CutOff"    , &m_tLightDesc.fCutOff, 0.01f);
 						ImGui::DragFloat("Light_OuterCutoff", &m_tLightDesc.fOuterCutOff, 0.01f);
 					}
 					break;
@@ -455,6 +461,11 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 	}
 
 	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+}
+
+void CLight_Prop::Call_Activate_Sound()
+{
+	GAMEINSTANCE->PlaySound2D("Spotlight.mp3", 1.f);
 }
 
 #ifdef _DEBUG

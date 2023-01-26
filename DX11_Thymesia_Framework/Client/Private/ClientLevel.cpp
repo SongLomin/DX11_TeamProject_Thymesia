@@ -127,13 +127,44 @@ void CClientLevel::Tick(_float fTimeDelta)
 		case Client::LEVEL_LOBBY:
 			break;
 		case Client::LEVEL_GAMEPLAY:
+		{
+			// BGM
 			GAMEINSTANCE->PlayBGM("BGM_STAGE_1.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+			// 환경음
+			GAMEINSTANCE->PlaySound2D("Env_HorrorBG_01.ogg", 0.5f, false);
+			GAMEINSTANCE->PlaySound2D("Env_Wind_Howling_01.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_DarkForest_01.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_RainLight_01.ogg", 0.5f, true);
+		}
 			break;
 		case Client::LEVEL_STAGE2:
+		{
+			// BGM
 			GAMEINSTANCE->PlayBGM("BGM_STAGE_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+			// 환경음
+			GAMEINSTANCE->PlaySound2D("Env_BloodWater_01.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_Crystal_02.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_Wind_Abyss_01.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_WaterDrop_02.ogg", 0.75f, true);
+			GAMEINSTANCE->PlaySound2D("Env_WaterDrop_03.ogg", 0.75f, true);
+			GAMEINSTANCE->PlaySound2D("Env_WaterDrop_04.ogg", 0.75f, true);
+		}
 			break;
 		case Client::LEVEL_STAGE3:
+		{
+			// BGM
 			GAMEINSTANCE->PlayBGM("BGM_STAGE_3.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+			// 환경음
+			GAMEINSTANCE->PlaySound2D("Env_BloodWater_01.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_Crystal_02.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_Wind_Abyss_01.ogg", 0.5f, true);
+			GAMEINSTANCE->PlaySound2D("Env_WaterDrop_02.ogg", 0.75f, true);
+			GAMEINSTANCE->PlaySound2D("Env_WaterDrop_03.ogg", 0.75f, true);
+			GAMEINSTANCE->PlaySound2D("Env_WaterDrop_04.ogg", 0.75f, true);
+		}
 			break;
 		case Client::LEVEL_TEST:
 			GAMEINSTANCE->PlayBGM("BGM_STAGE_TEST.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));

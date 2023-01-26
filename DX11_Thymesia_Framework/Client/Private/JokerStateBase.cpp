@@ -225,7 +225,6 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 		Get_OwnerMonster()->Set_RimLightDesc(4.5f, { 0.6f,0.f,0.f }, 0.9f);
-
 	}
 }
 

@@ -177,7 +177,7 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
             break;
         case Client::LEVEL_TEST:
             m_pLanding.lock()->Set_Size(820.f, 643.f);
-            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_SafeHouse");
             break;
         default:
             m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");

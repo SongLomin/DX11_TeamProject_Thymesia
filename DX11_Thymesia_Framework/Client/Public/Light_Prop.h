@@ -39,6 +39,7 @@ public:
 private:
     void Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End);
     void Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End);
+    void Call_Activate_Sound();
 
 
 private:
@@ -59,6 +60,7 @@ private:
     _float      m_fDisableTime     = 0.5f;
 
     FDelegate<_float, _bool&>   Callback_ActUpdate;
+    FDelegate<>                 Callback_OnActivate;
 
 #ifdef _DEBUG
     weak_ptr<CCollider>   m_pColliderCom;

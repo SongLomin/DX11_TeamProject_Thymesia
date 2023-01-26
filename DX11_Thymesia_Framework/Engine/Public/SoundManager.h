@@ -5,6 +5,9 @@
 BEGIN(Engine)
 
 #define MAX_CHANNEL 1024
+static const _float Sound_Min_Distance = 30.f;
+static const _float Sound_Max_Distance = 80.f;
+
 
 class CSound_Manager final : public CBase
 {
@@ -43,7 +46,7 @@ public:
 	// Play sound with attenuation rate based on perspective with index.
 	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
 	// Play sound with attenuation rate based on perspective.
-	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition);
+	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition, const _float In_fMinDistance = Sound_Min_Distance, const _float In_fMaxDistance = Sound_Max_Distance);
 	// Play sound without perspective. (e.g. environmental sound, UI sound) with index.
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
 	// Play sound without perspective. (e.g. environmental sound, UI sound)

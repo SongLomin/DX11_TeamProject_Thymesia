@@ -667,7 +667,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
                                 {
                                     _float Volume = iter_Sound.value()["Volume"];
 
-                                    if (ImGui::SliderFloat((string("[Volume]") + to_string(iIndex)).c_str(), &Volume, 0, 2.f, "%.1f"))
+                                    if (ImGui::SliderFloat((string("[Volume]") + to_string(iIndex)).c_str(), &Volume, 0, 5.f, "%.1f"))
                                     {
                                         iter_Sound.value()["Volume"] = Volume;
                                     }

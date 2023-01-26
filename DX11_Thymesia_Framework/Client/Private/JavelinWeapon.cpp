@@ -40,7 +40,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 			{
 				if (1 == elem.lock()->Get_WeaponNum())
 				{
-					Activate_ExplosionEffect(elem);
+					elem.lock()->Activate_ExplosionEffect();
 				}
 			}
 		}
@@ -51,12 +51,12 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 			{
 				if (1 == elem.lock()->Get_WeaponNum())
 				{
-					Activate_ExplosionEffect(elem);
+					elem.lock()->Activate_ExplosionEffect();
 				}
 
 				if (2 == elem.lock()->Get_WeaponNum())
 				{
-					Activate_ExplosionEffect(elem);
+					elem.lock()->Activate_ExplosionEffect();
 				}
 			}
 		}
@@ -129,6 +129,17 @@ void CJavelinWeapon::Tick(_float fTimeDelta)
 	default:
 		break;
 	}
+
+	if (m_fBombTimeAcc > 1.666f && !m_bBomb)
+	{
+		GAMEINSTANCE->PlaySound3D("Urd_SPSKill01_Explosion", 1.f, m_pTransformCom.lock()->Get_Position());
+		m_bBomb = true;
+	}
+	else if(!m_bBomb)
+	{
+		m_fBombTimeAcc += fTimeDelta;
+	}
+
 }
 
 void CJavelinWeapon::LateTick(_float fTimeDelta)
@@ -189,7 +200,7 @@ HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				(1 << aiTextureType_SPECULAR) & BindTextureFlag
 				)
 			{
-				iPassIndex = 7;
+				iPassIndex = 13;
 			}
 
 			// NormalTexture	OK.
@@ -199,7 +210,7 @@ HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				!((1 << aiTextureType_SPECULAR) & BindTextureFlag)
 				)
 			{
-				iPassIndex = 3;
+				iPassIndex = 14;
 			}
 
 			// NormalTexture	NO.
@@ -350,7 +361,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 9.f,9.f, 1.0f };
+		m_DecalDesc.vScale = { 9.5f,9.5f, 5.0f };
 		m_DecalDesc.fAppearTime = 0.f;
 		_matrix WorldMatrix = XMMatrixIdentity();
 
@@ -390,6 +401,8 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(pJavelinWeapon.lock()->Get_Transform()->Get_Position());
+	pJavelinWeapon.lock()->Set_BombTimer();
+
 
 	weak_ptr<CStatus_Boss> pStatus = m_pParentCharacter.lock()->Get_Component<CStatus_Boss>();
 	_uint iLifeCount(pStatus.lock()->Get_Desc().m_iLifeCount);
@@ -411,15 +424,13 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 17.f,17.f, 1.0f };
+	m_DecalDesc.vScale = { 18.f,18.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 
 	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
 
 	WorldMatrix.r[3] = vWorldPos;
-
-	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
@@ -428,6 +439,8 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 
 void CJavelinWeapon::Activate_ExplosionEffect()
 {
+	Set_BombTimer();
+
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
 	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
 
@@ -459,15 +472,13 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 17.f,17.f, 1.f };
+	m_DecalDesc.vScale = { 18.f,18.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 
 	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
 
 	WorldMatrix.r[3] = vWorldPos;
-
-	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
@@ -479,6 +490,12 @@ void CJavelinWeapon::LookAt_Player()
 	_vector vPos = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Transform()->Get_Position();
 	m_pTransformCom.lock()->LookAt(vPos);
 
+}
+
+void CJavelinWeapon::Set_BombTimer()
+{
+	m_bBomb = false;
+	m_fBombTimeAcc = 0.f;
 }
 
 void CJavelinWeapon::SetUp_ShaderResource()

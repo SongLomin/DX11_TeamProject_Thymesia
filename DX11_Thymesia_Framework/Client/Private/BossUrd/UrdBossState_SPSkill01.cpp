@@ -37,7 +37,7 @@ void CUrdBossState_SPSkill01::Start()
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_SPSkill01::Call_AnimationEnd, this, placeholders::_1);
 
-	m_DecalDesc.vScale = {19.f,19.f, 0.1f };
+	m_DecalDesc.vScale = {19.f,19.f, 1.f };
 	m_DecalDesc.vPosition = { -0.027f,0.f,2.017f, 1.f };
 	m_DecalDesc.fAppearTime = 0.f;
 	m_DecalDesc.fTime = 1.f;
@@ -85,11 +85,11 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 
 void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 {
-	if (3.f > m_fInversionStrength)
-		m_fInversionStrength += In_fTimeDelta * 2.1f;
+	if (3.5f > m_fInversionStrength)
+		m_fInversionStrength += In_fTimeDelta * 3.5f;
 	else if (1.f > m_fInversionRatio)
 	{
-		m_fInversionRatio += In_fTimeDelta;
+		m_fInversionRatio += In_fTimeDelta*1.5f;
 	}
 	else
 	{
@@ -173,7 +173,7 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 		GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 		m_bCameraShaking = true;
-		m_fShakingRatio = 0.15f;
+		m_fShakingRatio = 0.1f;
 
 		m_fInversionStrength = 1.f;
 		m_fInversionRatio = 0.f;
@@ -187,7 +187,6 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 				return;
 			}
 		}
-		return;
 	}
 	case 204:
 	{

@@ -157,9 +157,9 @@ PS_OUT PS_MAIN_COLOR_INVERSION(PS_IN In)
     
     float3 vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV).xyz;
     
-    float3 vInversedColor = (1.f - vColor) * 1.f/*g_fInversionStrength*/;
+    float3 vInversedColor = (1.f - vColor) * g_fInversionStrength;
     
-    Out.vColor.rgb = lerp(vInversedColor, vColor,0.f /*g_fInversionRatio*/);
+    Out.vColor.rgb = lerp(vInversedColor, vColor, g_fInversionRatio);
     Out.vColor.a = 1.f;
     
     return Out;
