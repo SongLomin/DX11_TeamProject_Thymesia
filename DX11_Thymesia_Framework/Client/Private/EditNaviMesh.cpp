@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "EditNaviMesh.h"
 
 #include "Collider.h"

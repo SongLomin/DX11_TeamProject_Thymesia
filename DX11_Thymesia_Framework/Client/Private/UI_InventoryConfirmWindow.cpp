@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_InventoryConfirmWindow.h"
 #include "UI_Utils.h"
 #include "Preset_UIDesc.h"

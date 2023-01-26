@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Interaction_Elevator.h"
 
 #include "Shader.h"

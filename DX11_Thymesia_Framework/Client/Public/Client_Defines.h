@@ -3,6 +3,7 @@
 /////////////////////////////////////////// DEBUG MODE DEFINES ///////////////////////////////////////////
 #ifdef _DEBUG
 
+
 #pragma region System
 //#define _BAKE_MIPMAPS_define
 #define _USE_THREAD_

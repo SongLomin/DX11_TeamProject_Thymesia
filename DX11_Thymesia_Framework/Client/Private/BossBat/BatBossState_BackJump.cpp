@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "BossBat/BatBossState_BackJump.h"
 #include "Model.h"
 #include "GameInstance.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "InventorySorter.h"
 #include "GameInstance.h"
 #include "Client_Defines.h"

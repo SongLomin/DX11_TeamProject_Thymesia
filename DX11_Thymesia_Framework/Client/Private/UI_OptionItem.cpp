@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_OptionItem.h"
 #include "CustomUI.h"
 #include "UIManager.h"

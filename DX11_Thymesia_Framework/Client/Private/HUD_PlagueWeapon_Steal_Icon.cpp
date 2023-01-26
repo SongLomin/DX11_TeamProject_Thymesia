@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "HUD_PlagueWeapon_Steal_Icon.h"
 #include "CustomUI.h"
 #include "DissolveUI.h"

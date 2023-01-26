@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Preset_PhysXColliderDesc.h"
 #include "PhysXCollider.h"
 #include "GameInstance.h"

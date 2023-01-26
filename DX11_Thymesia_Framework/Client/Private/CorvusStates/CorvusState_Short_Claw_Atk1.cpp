@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "CorvusStates/CorvusState_Short_Claw_Atk1.h"
 #include "Model.h"
 #include "GameInstance.h"

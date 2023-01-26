@@ -1,4 +1,4 @@
-﻿#include "../Default/stdafx.h"
+﻿#include "stdafx.h"
 #include "Light_Prop.h"
 #include "VIBuffer_Cube.h"
 #include "Shader.h"

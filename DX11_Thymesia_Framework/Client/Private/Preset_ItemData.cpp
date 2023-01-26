@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Preset_ItemData.h"
 #include "Client_Defines.h"
 #include "Item.h"

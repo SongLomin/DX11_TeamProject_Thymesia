@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "CorvusStates/CorvusStateBase.h"
 #include "Requirement_State.h"
 #include "RequirementChecker.h"

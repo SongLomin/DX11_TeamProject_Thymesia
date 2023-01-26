@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_DamageFontPiece.h"
 
 GAMECLASS_C(CUI_DamageFontPiece)

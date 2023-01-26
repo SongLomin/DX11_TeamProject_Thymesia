@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "TestUI.h"
 #include "Texture.h"
 #include "EasingComponent_Transform.h"

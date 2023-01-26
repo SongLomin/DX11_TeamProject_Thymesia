@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_LerpBar.h"
 #include "Easing_Utillity.h"
 

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Skill_Bankai.h"
 #include "ClientComponent_Utils.h"
 #include "PlayerStateBase.h"

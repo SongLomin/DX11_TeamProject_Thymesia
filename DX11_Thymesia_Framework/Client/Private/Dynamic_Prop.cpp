@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Dynamic_Prop.h"
 
 #include "Client_Components.h"

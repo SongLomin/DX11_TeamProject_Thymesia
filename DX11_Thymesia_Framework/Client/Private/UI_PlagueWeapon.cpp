@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_PlagueWeapon.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"

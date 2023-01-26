@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 
 #include "EditSetActor.h"
 #include "Client_GameObjects.h"

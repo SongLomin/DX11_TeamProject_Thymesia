@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Trigger.h"
 #include "Model.h"
 #include "Shader.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "Texture.h"
 #include "EasingComponent.h"

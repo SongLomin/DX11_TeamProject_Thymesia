@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "ItemPopup_Queue.h"
 #include "CustomUI.h"
 #include "UI_ItemPopup.h"

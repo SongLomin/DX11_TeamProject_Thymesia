@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Camera_Free.h"
 
 GAMECLASS_C(CCamera_Free)

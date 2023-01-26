@@ -1,4 +1,4 @@
-﻿#include "../Default/stdafx.h"
+﻿#include "stdafx.h"
 #include "PhysXCameraController.h"
 #include "Transform.h"
 #include "GameInstance.h"

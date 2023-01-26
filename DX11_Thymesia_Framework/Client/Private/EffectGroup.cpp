@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "EffectGroup.h"
 #include "CustomEffectMesh.h"
 #include "Effect_Rect.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Corvus_DefaultDagger.h"
 #include "Client_Components.h"
 #include "BoneNode.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Inventory.h"
 #include "GameInstance.h"
 #include "Item.h"

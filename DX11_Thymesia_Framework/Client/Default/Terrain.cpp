@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Terrain.h"
 #include "Shader.h"
 #include "Renderer.h"

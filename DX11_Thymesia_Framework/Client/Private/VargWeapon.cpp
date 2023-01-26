@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "VargWeapon.h"
 #include "Client_Components.h"
 #include "BoneNode.h"

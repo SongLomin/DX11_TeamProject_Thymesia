@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_MenuText.h"
 
 CUI_MenuText::CUI_MenuText()

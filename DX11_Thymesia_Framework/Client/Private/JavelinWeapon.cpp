@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Client_Components.h"
 #include "BoneNode.h"
 #include "GameManager.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "CorvusStates/CorvusState_Jogging.h"
 #include "Model.h"
 #include "Transform.h"

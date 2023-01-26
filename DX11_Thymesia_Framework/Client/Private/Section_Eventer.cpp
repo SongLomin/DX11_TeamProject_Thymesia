@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Section_Eventer.h"
 
 #include "Transform.h"

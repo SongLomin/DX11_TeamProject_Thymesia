@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Imgui_Manager.h"
 #include <shobjidl.h> 
 

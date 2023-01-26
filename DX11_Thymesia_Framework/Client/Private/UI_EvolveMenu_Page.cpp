@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_EvolveMenu_Page.h"
 #include "FadeMask.h"
 #include "UI_EvolveMenu.h"

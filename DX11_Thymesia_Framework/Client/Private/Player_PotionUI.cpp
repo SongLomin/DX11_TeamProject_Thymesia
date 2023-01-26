@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Player_PotionUI.h"
 #include "Texture.h"
 #include "Shader.h"

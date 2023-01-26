@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Requirement_PlayerStatusMana.h"
 #include "Status_Player.h"
 #include "GameManager.h"

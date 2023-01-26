@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "HUD_PlagueWeaponBase.h"
 #include "Texture.h"
 #include "Shader.h"

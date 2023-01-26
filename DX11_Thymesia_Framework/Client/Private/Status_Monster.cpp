@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Status_Monster.h"
 #include "Engine_Defines.h"
 #include "Client_Defines.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "BossMonster.h"
 #include "Collider.h"
 #include "Shader.h"

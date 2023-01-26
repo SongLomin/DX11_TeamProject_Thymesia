@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "EliteMonState/Joker/Joker.h"
 #include "Model.h"
 #include "Shader.h"

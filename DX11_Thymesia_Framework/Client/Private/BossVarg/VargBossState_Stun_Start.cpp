@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "BossVarg/VargBossState_Stun_Start.h"
 #include "VargBossStateBase.h"
 #include "Model.h"

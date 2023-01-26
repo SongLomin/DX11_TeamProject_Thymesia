@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "StolenSkill.h"
 #include "RequirementChecker.h"
 #include "Requirement_Time.h"

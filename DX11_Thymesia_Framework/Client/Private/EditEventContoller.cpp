@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 
 #include "EditEventContoller.h"
 #include "SMath.h"

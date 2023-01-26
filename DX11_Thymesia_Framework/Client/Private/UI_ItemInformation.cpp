@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_ItemInformation.h"
 #include "UI_Utils.h"
 #include "GameManager.h"

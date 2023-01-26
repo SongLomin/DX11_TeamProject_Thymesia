@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_EvolveMenu.h"
 #include "UI_Elements.h"
 #include "Level.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Window_Level_Dev.h"
 #include "GameInstance.h"
 #include "Level_GamePlay.h"

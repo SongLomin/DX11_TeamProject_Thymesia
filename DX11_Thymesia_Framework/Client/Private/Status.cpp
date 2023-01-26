@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Status.h"
 
 GAMECLASS_C(CStatus)

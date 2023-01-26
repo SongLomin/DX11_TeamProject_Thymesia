@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Character.h"
 //#include "BehaviorBase.h"
 #include "Client_Components.h"

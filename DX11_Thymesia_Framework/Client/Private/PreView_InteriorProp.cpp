@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "PreView_InteriorProp.h"
 
 #include "Model.h"

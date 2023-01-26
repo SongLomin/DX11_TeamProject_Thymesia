@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Window_EffectHierarchyView.h"
 #include "GameInstance.h"
 #include "Window_EffectResourceView.h"

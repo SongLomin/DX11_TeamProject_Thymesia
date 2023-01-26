@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Window_Shader_Dev.h"
 #include "GameInstance.h"
 #include "Engine_Struct.h"

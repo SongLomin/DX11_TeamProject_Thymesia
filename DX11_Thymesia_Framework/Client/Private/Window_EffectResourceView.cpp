@@ -1,4 +1,4 @@
-﻿#include "../Default/stdafx.h"
+﻿#include "stdafx.h"
 #include "Window_EffectResourceView.h"
 #include "GameInstance.h"
 #include <imgui_impl_win32.h>

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Requirement_State.h"
 #include "Character.h"
 #include "StateBase.h"

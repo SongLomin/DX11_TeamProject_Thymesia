@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Preset_NvClothCollider.h"
 #include "CNvClothCollider.h"
 

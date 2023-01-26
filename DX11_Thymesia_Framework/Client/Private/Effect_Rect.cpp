@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Effect_Rect.h"
 #include "Client_Components.h"
 #include "Window_AnimationModelView.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "WorldUI.h"
 #include "Shader.h"
 #include "Renderer.h"

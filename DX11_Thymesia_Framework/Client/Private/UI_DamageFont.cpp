@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_DamageFont.h"
 #include "CustomUI.h"
 #include "EasingComponent_Transform.h"

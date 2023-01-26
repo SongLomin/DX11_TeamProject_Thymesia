@@ -1,5 +1,5 @@
 
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "CorvusStates/StateExecution/CorvusState_Execution_Start.h"
 #include "Model.h"
 #include "GameInstance.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_EvolveLeftBG.h"
 #include "CustomUI.h"
 #include "Shader.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_AppearEventVarg.h"
 #include "CustomUI.h"
 #include "EasingComponent_Alpha.h"

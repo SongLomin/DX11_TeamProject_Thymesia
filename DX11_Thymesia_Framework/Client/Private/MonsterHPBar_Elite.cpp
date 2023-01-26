@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "MonsterHPBar_Elite.h"
 #include "CustomUI.h"
 #include "Texture.h"

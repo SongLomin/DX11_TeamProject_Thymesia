@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "..\Public\Level_Logo.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"

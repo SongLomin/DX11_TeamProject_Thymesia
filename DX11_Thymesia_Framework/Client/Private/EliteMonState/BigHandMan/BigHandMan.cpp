@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "EliteMonState/BigHandMan/BigHandMan.h"
 #include "Model.h"
 #include "Shader.h"

@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "VargBossStateBase.h"
 #include "EliteMonState/Joker/JokerState_ShockAttack.h"
 #include "Model.h"

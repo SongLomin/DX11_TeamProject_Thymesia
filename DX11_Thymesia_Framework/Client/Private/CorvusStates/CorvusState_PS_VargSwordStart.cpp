@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "CorvusStates/CorvusState_PS_VargSwordStart.h"
 #include "CorvusStates/CorvusState_PS_VargSword.h"
 #include "Animation.h"

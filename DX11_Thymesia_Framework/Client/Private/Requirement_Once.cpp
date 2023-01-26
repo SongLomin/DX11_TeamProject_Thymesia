@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "Requirement_Once.h"
 
 _bool CRequirement_Once::Check_Requirement()

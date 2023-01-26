@@ -1,4 +1,4 @@
-﻿#include "../Default/stdafx.h"
+﻿#include "stdafx.h"
 #include "CustomEffectMesh.h"
 #include "Client_Components.h"
 #include "GameManager.h"

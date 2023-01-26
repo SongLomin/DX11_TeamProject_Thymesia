@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "CorvusStates/CorvusState_Climb_R_UP_End.h"
 #include "Model.h"
 #include "GameInstance.h"

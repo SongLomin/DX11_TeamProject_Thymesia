@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "..\Public\MainApp.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"

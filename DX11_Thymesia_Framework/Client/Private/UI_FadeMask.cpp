@@ -1,4 +1,4 @@
-#include "../Default/stdafx.h"
+#include "stdafx.h"
 #include "UI_FadeMask.h"
 #include "EasingComponent_Alpha.h"
 #include "EasingComponent_Transform.h"
