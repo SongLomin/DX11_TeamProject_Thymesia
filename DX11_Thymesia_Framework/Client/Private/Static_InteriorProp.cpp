@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "Static_InteriorProp.h"
 
 #include "Model.h"

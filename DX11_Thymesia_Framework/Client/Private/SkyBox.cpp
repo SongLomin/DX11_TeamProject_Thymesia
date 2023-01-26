@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "SkyBox.h"
 #include "VIBuffer_Cube.h"
 #include "Shader.h"

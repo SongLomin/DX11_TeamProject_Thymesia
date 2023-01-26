@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "EasingComponent_Float.h"
 #include "Component.h"
 #include "Easing_Utillity.h"

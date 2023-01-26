@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "EliteMonState/EliteStateBase.h"
 #include "GameInstance.h"
 #include "GameObject.h"

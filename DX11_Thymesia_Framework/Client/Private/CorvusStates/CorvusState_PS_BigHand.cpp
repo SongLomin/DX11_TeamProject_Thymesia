@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "CorvusStates/CorvusState_PS_BigHand.h"
 #include "CorvusStates/CorvusState_PS_BigHand_End.h"
 #include "Animation.h"

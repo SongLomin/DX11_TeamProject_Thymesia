@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "UIManager.h"
 #include "Client_Defines.h"
 #include "Engine_Defines.h"

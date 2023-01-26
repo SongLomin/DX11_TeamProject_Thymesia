@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "Interaction_Dynamic_Prop.h"
 
 #include "Model.h"

@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 
 #include "EditInstanceProp.h"
 #include "SMath.h"

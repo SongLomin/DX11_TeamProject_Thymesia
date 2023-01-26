@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "Ballon.h"
 #include "Model.h"
 #include "Shader.h"

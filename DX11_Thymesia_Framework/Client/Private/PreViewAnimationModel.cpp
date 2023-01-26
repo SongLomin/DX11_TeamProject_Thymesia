@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "PreviewAnimationModel.h"
 #include "Model.h"
 #include "shader.h"

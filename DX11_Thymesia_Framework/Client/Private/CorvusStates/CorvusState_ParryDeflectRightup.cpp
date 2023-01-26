@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "CorvusStates/CorvusState_ParryDeflectRightup.h"
 #include "Model.h"
 #include "GameInstance.h"

@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_T_Dissolve.h"
 #include "UI_PlagueWeapon.h"
 #include "GameInstance.h"

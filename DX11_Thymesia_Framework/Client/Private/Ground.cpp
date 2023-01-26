@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "Ground.h"
 #include "Shader.h"
 #include "Renderer.h"

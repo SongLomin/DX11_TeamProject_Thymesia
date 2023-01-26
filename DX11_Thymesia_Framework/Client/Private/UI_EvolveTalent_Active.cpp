@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_EvolveTalent_Active.h"
 #include "Texture.h"
 #include "EasingComponent_Transform.h"

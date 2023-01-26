@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_OptionElementBase.h"
 
 GAMECLASS_C(CUI_OptionElementBase)

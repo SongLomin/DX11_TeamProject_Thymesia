@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_ShuffleIcon.h"
 #include "Item.h"
 #include "Preset_UIDesc.h"

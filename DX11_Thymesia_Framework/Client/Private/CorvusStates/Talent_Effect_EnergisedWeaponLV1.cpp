@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "CorvusStates/Talent_Effect_EnergisedWeaponLV1.h"
 #include "GameManager.h"
 

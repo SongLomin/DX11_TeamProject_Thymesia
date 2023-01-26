@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "ClientComponent_Utils.h"
 #include "Player.h"
 #include "Corvus.h"

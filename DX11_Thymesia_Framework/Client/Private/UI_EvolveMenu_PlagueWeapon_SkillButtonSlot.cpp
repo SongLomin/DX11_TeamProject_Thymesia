@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillButtonSlot.h"
 #include "CustomUI.h"
 #include "EasingComponent_Alpha.h"

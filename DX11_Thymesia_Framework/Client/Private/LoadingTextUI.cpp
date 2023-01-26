@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "LoadingTextUI.h"
 #include "CustomUI.h"
 #include "DissolveUI.h"

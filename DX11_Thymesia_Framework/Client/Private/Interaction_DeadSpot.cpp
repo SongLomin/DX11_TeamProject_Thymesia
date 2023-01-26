@@ -1,4 +1,4 @@
-#include "..\Default\stdafx.h"
+#include "../Default/stdafx.h"
 #include "Interaction_DeadSpot.h"
 
 #include "Model.h"
