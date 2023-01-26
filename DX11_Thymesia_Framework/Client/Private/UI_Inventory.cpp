@@ -305,9 +305,14 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
                 Update_ItemSlotFromPlayerInventory();
                 Start_AnimationSorting((_uint)CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK);
 
-                if (m_pMouseOveredItem.lock()->Get_CurrentQuantity() < 1)
+                if (m_pMouseOveredItem.lock())
                 {
-                    Call_OnMouseOut();
+                    if (m_pMouseOveredItem.lock()->Get_CurrentQuantity() < 1)
+                    {
+                        Call_OnMouseOut();
+
+                    }
+
                 }
 
             }

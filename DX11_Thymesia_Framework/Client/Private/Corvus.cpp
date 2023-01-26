@@ -552,11 +552,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 			GAMEINSTANCE->Set_LightDesc(m_SpotLightDesc);
 
 			CallBack_LightEvent.Clear();
-			GAMEINSTANCE->Set_GrayScale(1.f);
 		}
 
-		weak_ptr<CUI_FadeMask> pFadeMask = GAMEINSTANCE->Add_GameObject<CUI_FadeMask>(m_CreatedLevel);
-		pFadeMask.lock()->Set_Fade(1.f, 0.f, 2.f, EASING_TYPE::LINEAR);
+		GAMEINSTANCE->Set_GrayScale(1.f);
+	
 	}
 
 
@@ -708,6 +707,11 @@ void CCorvus::OnStealMonsterSkill(MONSTERTYPE eMonstertype)
 	__super::OnStealMonsterSkill(eMonstertype);
 	
 	m_eMostRecentStealedMonsterType = eMonstertype;
+
+	Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonstertype);
+
+	GAMEINSTANCE->PlaySound2D("Fantasy_Game_Water_Bolt_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
+
 	//m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
 }
 

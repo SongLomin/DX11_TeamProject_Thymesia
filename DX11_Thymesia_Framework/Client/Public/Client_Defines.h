@@ -1,11 +1,5 @@
 #pragma once
 
-#include "Client_Structs.h"
-#include "Client_Presets.h"
-#include "Client_Enum.h"
-#include "NvCloth_Structs.h"
-#include "Client_Functions.h"
-
 /////////////////////////////////////////// DEBUG MODE DEFINES ///////////////////////////////////////////
 #ifdef _DEBUG
 
@@ -16,7 +10,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
-// #define _OVERDRIVE_LOAD_EFFECTGROUP_
+#define _OVERDRIVE_LOAD_EFFECTGROUP_
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
@@ -34,7 +28,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-// #define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   
@@ -112,11 +106,11 @@
 #pragma endregion // Map
 
 #pragma region Tool
- #define _CORVUS_MODEL_
-#define _BOSS_MODEL_
-#define _ELITE_MOB_MODEL_
+#define _CORVUS_MODEL_
+ #define _BOSS_MODEL_
+// #define _ELITE_MOB_MODEL_
 #define _NORMAL_MOB_MODEL_
-#define _ANIMATION_TOOL_WEAPON_
+// #define _ANIMATION_TOOL_WEAPON_
 #undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
 

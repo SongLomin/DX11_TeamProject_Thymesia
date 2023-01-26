@@ -29,7 +29,7 @@ void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
 		LookAt_Player();
 	};
 	break;
-	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
+	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:	
 	{
 //#ifdef _URD_EFFECT_
 		switch (m_iWeaponNum)
@@ -321,11 +321,16 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.23f)
+	if (XMVectorGetY(m_pTransformCom.lock()->Get_Position()) <= -18.32f)
 	{
 //#ifdef _URD_EFFECT_
 		m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
-		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+		m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
+		CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+		tMonsterDesc.Reset();
+		tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+		m_pForEffectCharacter.lock()->Set_Status(m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc));
+
 		weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 		pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());
 
@@ -333,12 +338,14 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		_uint iPhase(pStatus.lock()->Get_Desc().m_iLifeCount);
 		if (2 == iPhase)
 		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			m_DecalDesc.vColor = { 0.5f,0.8f,1.f };
 
 		}
 		else if (1 == iPhase)
 		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Explosion_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			GET_SINGLE(CGameManager)->Use_EffectGroup("Urd_Skill_Impact_Phase2", pForEffectTransform, _uint(TIMESCALE_LAYER::MONSTER));
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
@@ -373,7 +380,12 @@ void CJavelinWeapon::Update_Matrix_Stake()
 void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinWeapon)
 {
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
-	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
+
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	tMonsterDesc.Reset();
+	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+	m_pForEffectCharacter.lock()->Set_Status(m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc));
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(pJavelinWeapon.lock()->Get_Transform()->Get_Position());
@@ -411,7 +423,12 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 void CJavelinWeapon::Activate_ExplosionEffect()
 {
 	m_pForEffectCharacter = GAMEINSTANCE->Add_GameObject<CCharacter>(m_CreatedLevel);
-	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER);
+	m_pForEffectCharacter.lock()->Set_AttackCollisionLayer(COLLISION_LAYER::MONSTER_ATTACK);
+
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	tMonsterDesc.Reset();
+	tMonsterDesc.eMonType = MONSTERTYPE::AXEMAN;
+	m_pForEffectCharacter.lock()->Set_Status(m_pForEffectCharacter.lock()->Add_Component<CStatus_Monster>(&tMonsterDesc));
 
 	weak_ptr<CTransform> pForEffectTransform = m_pForEffectCharacter.lock()->Get_Transform();
 	pForEffectTransform.lock()->Set_Position(m_pTransformCom.lock()->Get_Position());

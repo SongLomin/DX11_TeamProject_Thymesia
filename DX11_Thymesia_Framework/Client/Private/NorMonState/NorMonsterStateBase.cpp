@@ -79,6 +79,9 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
 	{
+
+		HitEffectSound();
+
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
 		//맞았을때 플레이어를 바라보는 시선 처리
@@ -188,6 +191,11 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
 					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 					Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+				}
+				else if (In_eHitType == HIT_TYPE::DOWN_HIT)
+				{
+					fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+					m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 				}
 			}			
 			break;

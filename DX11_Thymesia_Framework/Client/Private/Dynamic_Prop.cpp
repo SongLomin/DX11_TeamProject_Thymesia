@@ -47,15 +47,19 @@ HRESULT CDynamic_Prop::Start()
         Preset::Dynamic_Prop::GateWay_DynamicPropSetting(m_pModelCom.lock()->Get_ModelKey(), m_CreatedLevel, m_pPieces);
     }
 
-    if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
-    {
-        CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
-        m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
-    }
-    else if (hash<string>()("Fence_16a_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
-    {
-        m_szSoundKey   = "EVM_prop_hell_wood_crate_bones_break_02.ogg";
-    }
+	if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+	{
+		m_szSoundKey = "Fantasy_Game_Action_Collect_Stone_A";
+	}
+	else if (hash<string>()("Wagon3_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+	{
+		CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
+		m_szSoundKey = "EVM_prop_hell_wood_crate_bones_break_01.ogg";
+	}
+	else if (hash<string>()("Fence_16a_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+	{
+		m_szSoundKey = "EVM_prop_hell_wood_crate_bones_break_02.ogg";
+	}
 
     __super::Start();
 
