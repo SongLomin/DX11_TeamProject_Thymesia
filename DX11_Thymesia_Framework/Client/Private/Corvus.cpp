@@ -81,6 +81,10 @@ HRESULT CCorvus::Initialize(void* pArg)
 		// 물맵이라서 소리를 따로
 		Bind_KeyEvent("Corvus_Stage2");
 	}
+	else if (m_CreatedLevel == (_uint)LEVEL_STAGE3)
+	{
+		Bind_KeyEvent("Corvus_Stage3");
+	}
 	else
 	{
 		Bind_KeyEvent("Corvus");

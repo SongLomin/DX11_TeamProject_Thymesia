@@ -81,6 +81,22 @@ void CUI_EvolveMenu_Option::Tick(_float fTimeDelta)
             GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_CPU_RateInfos[i]);
         }
     }
+
+    for (DWORD i = 0; i < m_CPU_usages.size(); i++)
+    {
+        HQUERY query;
+        PdhOpenQuery(NULL, NULL, &query);
+        PDH_HCOUNTER counter;
+        std::wstring counter_path = L"\\Processor(" + std::to_wstring(i) + L")\\% Processor Time";
+        PdhAddEnglishCounter(query, counter_path.c_str(), NULL, &counter);
+        PdhCollectQueryData(query);
+        PDH_FMT_COUNTERVALUE value;
+        PdhCollectQueryData(query);
+        PdhGetFormattedCounterValue(counter, PDH_FMT_DOUBLE, NULL, &value);
+        m_CPU_usages[i] += value.doubleValue;
+        PdhCloseQuery(query);
+
+    }
 }
 
    
@@ -272,7 +288,7 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
     GetSystemInfo(&sysinfo);
     DWORD dwNumberOfProcessors = sysinfo.dwNumberOfProcessors;
 
-    _int iCapturedCallCount = m_iCallCount;
+    /*_int iCapturedCallCount = m_iCallCount;
 
     if (iCapturedCallCount > 0)
     {
@@ -288,7 +304,19 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
             m_CPU_usages[i] = 0.0;
         }
         m_iCallCount = 0;
-    }
+    }*/
+
+    //for (DWORD i = 0; i < m_CPU_usages.size(); i++)
+    //{
+    //    m_CPU_RateInfos[i].bAlways = false;
+    //    m_CPU_RateInfos[i].bCenterAlign = false;
+    //    m_CPU_RateInfos[i].eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+    //    m_CPU_RateInfos[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    //    m_CPU_RateInfos[i].vPosition = _float2(xPosition, 60.f + i * 20.f);
+    //    m_CPU_RateInfos[i].vScale = _float2(0.7f, 0.7f);
+    //    m_CPU_RateInfos[i].szText = L"CPU" + to_wstring(i) + L": " + to_wstring((_int)((m_CPU_usages[i] * 2.f))) + L" % ";
+    //    m_CPU_usages[i] = 0.0;
+    //}
 
     /*for (DWORD i = 0; i < dwNumberOfProcessors; i++)
     {
@@ -363,9 +391,9 @@ void CUI_EvolveMenu_Option::OnEnable(void* pArg)
     Update_HardwareInfos();
 
     m_bLoopStop = false;
-    m_pCheckCoreUsageThreadPool = CSubThread_Pool::Create(1);
+    //m_pCheckCoreUsageThreadPool = CSubThread_Pool::Create(1);
 
-    m_pCheckCoreUsageThreadPool->Enqueue_Job([this]() {
+    /*m_pCheckCoreUsageThreadPool->Enqueue_Job([this]() {
         while (!m_bLoopStop)
         {
             for (DWORD i = 0; i < m_CPU_usages.size(); i++)
@@ -385,7 +413,7 @@ void CUI_EvolveMenu_Option::OnEnable(void* pArg)
             }
             ++m_iCallCount;
         }
-        });
+        });*/
 }
 
 void CUI_EvolveMenu_Option::OnDisable()
@@ -397,7 +425,7 @@ void CUI_EvolveMenu_Option::OnDisable()
     GET_SINGLE(CGameManager)->Set_MoveTargetCamera(true);
 
     m_bLoopStop = true;
-    m_pCheckCoreUsageThreadPool.reset();
+    //m_pCheckCoreUsageThreadPool.reset();
 }
 
 void CUI_EvolveMenu_Option::Free()
@@ -405,6 +433,6 @@ void CUI_EvolveMenu_Option::Free()
     if (m_pCheckCoreUsageThreadPool)
     {
         m_bLoopStop = true;
-        m_pCheckCoreUsageThreadPool.reset();
+        //m_pCheckCoreUsageThreadPool.reset();
     }
 }

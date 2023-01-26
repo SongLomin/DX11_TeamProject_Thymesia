@@ -839,9 +839,9 @@ _uint CGameInstance::PlaySound2D(const string& In_szSoundKey, _float _vol, const
 	return m_pSound_Manager->PlaySound2D(In_szSoundKey, _vol, isLoop);
 }
 
-void CGameInstance::PlayBGM(const string& In_szSoundKey, _float _vol)
+void CGameInstance::PlayBGM(const string& In_szSoundKey, _float _vol, const _float In_fFadeSound)
 {
-	m_pSound_Manager->PlayBGM(In_szSoundKey, _vol);
+	m_pSound_Manager->PlayBGM(In_szSoundKey, _vol, In_fFadeSound);
 }
 
 void CGameInstance::StopBGM()

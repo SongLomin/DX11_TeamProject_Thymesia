@@ -46,6 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
+#ifdef _DEBUG
     FILE* ConsoleStream;
 
     AllocConsole();
@@ -53,6 +54,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     freopen_s(&ConsoleStream, "CON", "w", stdout);
 
     printf("HELLO!!! I AM THE CONSOLE!\n");
+#endif // _DEBUG
 
     srand((_uint)time(nullptr));
     unique_ptr<CMainApp> pMainApp;
@@ -127,12 +129,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     pMainApp.reset();
 
-#ifdef  _DEBUG_COUT_
+#ifdef  _DEBUG
     //system("pause");
     fclose(ConsoleStream);
     D3DMemoryLeakCheck();
-    //_CrtDumpMemoryLeaks();
-#endif //  _DEBUG_COUT_
+    //_CrtDumpMemoryLeaks()6;
+#endif //  _DEBUG
 
     return (int)msg.wParam;
 }

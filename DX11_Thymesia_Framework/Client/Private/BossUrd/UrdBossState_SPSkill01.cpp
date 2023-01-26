@@ -85,17 +85,20 @@ void CUrdBossState_SPSkill01::LateTick(_float fTimeDelta)
 
 void CUrdBossState_SPSkill01::Calculate_Inversion(_float In_fTimeDelta, _bool& In_bEnd)
 {
-	if (3.5f > m_fInversionStrength)
-		m_fInversionStrength += In_fTimeDelta * 3.5f;
+	if (1.f > m_fInversionStrength)
+	{
+		m_fInversionStrength += In_fTimeDelta * 0.5f;
+	}
 	else if (1.f > m_fInversionRatio)
 	{
-		m_fInversionRatio += In_fTimeDelta*1.5f;
+		m_fInversionRatio += In_fTimeDelta * 0.5f;
 	}
 	else
 	{
 		In_bEnd = true;
 	}
-	GAMEINSTANCE->Set_ColorInversion(m_fInversionStrength, m_fInversionRatio);
+	
+	GAMEINSTANCE->Set_ColorInversion(max(1.f, m_fInversionStrength * 3.5f), m_fInversionRatio);
 }
 
 
@@ -175,7 +178,7 @@ void CUrdBossState_SPSkill01::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		m_bCameraShaking = true;
 		m_fShakingRatio = 0.1f;
 
-		m_fInversionStrength = 1.f;
+		m_fInversionStrength = 0.f;
 		m_fInversionRatio = 0.f;
 		CallBack_ColorInversion += CallBack_ColorInversion += bind(&CUrdBossState_SPSkill01::Calculate_Inversion, this, placeholders::_1, placeholders::_2);
 

@@ -264,7 +264,7 @@ void CInteraction_CastleGate::Act_Interaction()
         Callback_ActUpdate += bind(&CInteraction_CastleGate::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
     }
 
-    GAMEINSTANCE->PlaySound3D("EVM_Door_Industrial_Open_01.wav", 1.f, m_pTransformCom.lock()->Get_Position());
+    GAMEINSTANCE->PlaySound3D("EVM_Door_Industrial_Open_01.wav", 3.f, m_pTransformCom.lock()->Get_Position());
 }
 
 void CInteraction_CastleGate::Requirement_Key(_bool& Out_bRequirement)
@@ -284,7 +284,7 @@ void CInteraction_CastleGate::Requirement_Key(_bool& Out_bRequirement)
     if (!Out_bRequirement)
     {
         GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_ItemRequireMent(m_iKeyID);
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 3.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 

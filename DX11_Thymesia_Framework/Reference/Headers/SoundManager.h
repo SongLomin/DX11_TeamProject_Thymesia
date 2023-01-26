@@ -51,7 +51,7 @@ public:
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
 	// Play sound without perspective. (e.g. environmental sound, UI sound)
 	_uint PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop = false);
-	void PlayBGM(const string& In_szSoundKey, _float _vol);
+	void PlayBGM(const string& In_szSoundKey, _float _vol, const _float In_fFadeSound = 0.f);
 	void StopBGM();
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
@@ -59,6 +59,7 @@ public:
 
 private:
 	_bool	Is_PlayingChannel(FMOD_CHANNEL* pChannel);
+	void	Update_BGMVolume(_float fTimeDelta);
 
 public:
 	vector<const string*> Get_AllSoundNames();
@@ -72,6 +73,15 @@ private:
 	_float m_fBGMvolume = SOUND_DEFAULT;
 	FMOD_BOOL m_bool;
 
+private: /* BGM Fader */
+	_float	m_fStartFadeTime = 0.f;
+	_float	m_fCurrentFadeTime = 0.f;
+	string	m_szNextBGM;
+	_float	m_fPreBGMvolume = 0.f;
+	_float	m_fNextBGMvolume = 0.f;
+
+	// 0: Fade out, 1: Fade in, 2: Fade End 
+	_ushort	m_FaderState = 0;
 
 
 private:

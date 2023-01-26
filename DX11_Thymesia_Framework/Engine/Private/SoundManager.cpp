@@ -60,6 +60,11 @@ void CSound_Manager::Tick()
 		}
 	}
 
+	if (m_FaderState != 2)
+	{
+		Update_BGMVolume(GAMEINSTANCE->Get_DeltaTime());
+	}
+
 
 	FMOD_System_Update(m_pSystem);
 
@@ -141,7 +146,6 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 	FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[_iIndex].pChannel, Sound_Min_Distance, Sound_Max_Distance);
 	FMOD_Channel_SetVolume(m_pChannelArr[_iIndex].pChannel, _vol * m_fEffectvolume * 0.25f);
 
-	FMOD_System_Update(m_pSystem);
 	return _iIndex;
 }
 
@@ -201,7 +205,6 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 
 	}
 
-	FMOD_System_Update(m_pSystem);
 
 	return iResult;
 }
@@ -284,12 +287,10 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, cons
 
 	}
 
-	FMOD_System_Update(m_pSystem);
-
 	return iResult;
 }
 
-void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
+void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol, const _float In_fFadeSound)
 {
 	map<_hashcode, SOUND_DESC>::iterator iter;
 
@@ -300,30 +301,124 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol)
 	if (iter == m_mapSound.end())
 		return;
 
-	FMOD_Channel_Stop(m_pChannelArr[BGM].pChannel);
-	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[BGM].pChannel);
-	FMOD_Channel_SetMode(m_pChannelArr[BGM].pChannel, FMOD_LOOP_NORMAL);
-	//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
+	if (In_fFadeSound <= DBL_EPSILON)
+	{
+		FMOD_Channel_Stop(m_pChannelArr[BGM].pChannel);
+		FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[BGM].pChannel);
+		FMOD_Channel_SetMode(m_pChannelArr[BGM].pChannel, FMOD_LOOP_NORMAL);
+		//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
 
-	m_pChannelArr[BGM].is3DSound = false;
+		m_pChannelArr[BGM].is3DSound = false;
 
-	FMOD_VECTOR vPosition{};
-	FMOD_VECTOR vVelocity{};
-	
-	FMOD_Channel_Set3DAttributes(m_pChannelArr[BGM].pChannel, &vPosition, &vVelocity);
-	FMOD_Channel_Set3DDopplerLevel(m_pChannelArr[BGM].pChannel, 0);
-	//FMOD_Channel_SetMode(m_pChannelArr[BGM], FMOD_CHANNEL_IGNORELISTENER);
+		FMOD_VECTOR vPosition{};
+		FMOD_VECTOR vVelocity{};
 
+		FMOD_Channel_Set3DAttributes(m_pChannelArr[BGM].pChannel, &vPosition, &vVelocity);
+		FMOD_Channel_Set3DDopplerLevel(m_pChannelArr[BGM].pChannel, 0);
+		//FMOD_Channel_SetMode(m_pChannelArr[BGM], FMOD_CHANNEL_IGNORELISTENER);
+		//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
 
-	//FMOD_Channel_Set3DMinMaxDistance(m_pChannelArr[BGM], 999999.f, 999999.f);
+		if (_vol <= 0.f)
+			_vol = 0.f;
 
-	if (_vol <= 0.f)
-		_vol = 0.f;
-
-
-	FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, _vol * m_fBGMvolume * 0.25f);
-	FMOD_System_Update(m_pSystem);
+		FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, _vol * m_fBGMvolume * 0.25f);
+	}
+	else
+	{
+		m_szNextBGM = In_szSoundKey;
+		m_fNextBGMvolume = _vol * m_fBGMvolume * 0.25f;
+		m_fStartFadeTime = In_fFadeSound;
+		m_fCurrentFadeTime = 0.f;
+		m_FaderState = 0;
+		FMOD_Channel_GetVolume(m_pChannelArr[BGM].pChannel, &m_fPreBGMvolume);
+	}
 }
+
+void CSound_Manager::Update_BGMVolume(_float fTimeDelta)
+{
+	_ushort PreFaderState = m_FaderState;
+
+	m_fCurrentFadeTime += fTimeDelta;
+
+	if (m_fCurrentFadeTime < m_fStartFadeTime * 0.5f)
+	{
+		m_FaderState = 0;
+	}
+	else if (m_fCurrentFadeTime < m_fStartFadeTime)
+	{
+		m_FaderState = 1;
+	}
+	else
+	{
+		m_FaderState = 2;
+	}
+
+	// State Start
+	if (PreFaderState != m_FaderState)
+	{
+		switch (m_FaderState)
+		{
+
+
+		case 1:
+		{
+			map<_hashcode, SOUND_DESC>::iterator iter;
+			_hashcode HashFromKey = hash<string>()(m_szNextBGM);
+
+			iter = m_mapSound.find(HashFromKey);
+
+			if (iter != m_mapSound.end())
+			{
+				FMOD_Channel_Stop(m_pChannelArr[BGM].pChannel);
+				FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[BGM].pChannel);
+				FMOD_Channel_SetMode(m_pChannelArr[BGM].pChannel, FMOD_LOOP_NORMAL);
+				m_pChannelArr[BGM].is3DSound = false;
+
+				FMOD_VECTOR vPosition{};
+				FMOD_VECTOR vVelocity{};
+
+				FMOD_Channel_Set3DAttributes(m_pChannelArr[BGM].pChannel, &vPosition, &vVelocity);
+				FMOD_Channel_Set3DDopplerLevel(m_pChannelArr[BGM].pChannel, 0);
+				FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, 0.f);
+			}
+		}
+		break;
+
+		default:
+			break;
+		}
+	}
+
+	// State Update
+	switch (m_FaderState)
+	{
+	case 0:
+	{
+		_float fTargetTime = m_fStartFadeTime * 0.5f;
+		_float fRatio = (fTargetTime - m_fCurrentFadeTime) / fTargetTime;
+		FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, fRatio * m_fPreBGMvolume);
+	}
+		break;
+
+	case 1:
+	{
+		_float fOffsetTime = m_fStartFadeTime * 0.5f;
+		_float fRatio = (m_fCurrentFadeTime - fOffsetTime) / (m_fStartFadeTime - fOffsetTime);
+		FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, fRatio * m_fNextBGMvolume);
+	}
+		break;
+
+	case 2:
+	{
+
+	}
+		break;
+
+	default:
+		break;
+	}
+}
+
 
 void CSound_Manager::StopBGM()
 {
@@ -411,7 +506,6 @@ void CSound_Manager::LoadSoundFile(const string& In_szFile)
 		++itr;
 	}
 
-	FMOD_System_Update(m_pSystem);
 }
 
 vector<const string*> CSound_Manager::Get_AllSoundNames()
@@ -447,3 +541,4 @@ _bool CSound_Manager::Is_PlayingChannel(FMOD_CHANNEL* pChannel)
 
 	return FMOD_OK == FResult && bPlay;
 }
+

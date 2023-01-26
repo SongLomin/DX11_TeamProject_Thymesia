@@ -17,15 +17,15 @@ void CGameManager::Initialize()
 {
 	m_pClientThread = CSubThread_Pool::Create(8);
 
-	GAMEINSTANCE->Set_SSAA_Enable(false);
-	GAMEINSTANCE->Set_HBAO_Enable(false);
-	GAMEINSTANCE->Set_MotionBlur_Enable(false);
-	GAMEINSTANCE->Set_GodRay_Enable(false);
-	GAMEINSTANCE->Set_Chromatic_Enable(false);
-	GAMEINSTANCE->Set_RadialBlur_Enable(false);
-	GAMEINSTANCE->Set_DynamicShadow_Enable(false);
-	GAMEINSTANCE->Set_StaticShadow_Enable(false);
-	GAMEINSTANCE->Set_PBR_Enable(false);
+	GAMEINSTANCE->Set_SSAA_Enable(true);
+	GAMEINSTANCE->Set_HBAO_Enable(true);
+	GAMEINSTANCE->Set_MotionBlur_Enable(true);
+	GAMEINSTANCE->Set_GodRay_Enable(true);
+	GAMEINSTANCE->Set_Chromatic_Enable(true);
+	GAMEINSTANCE->Set_RadialBlur_Enable(true);
+	GAMEINSTANCE->Set_DynamicShadow_Enable(true);
+	GAMEINSTANCE->Set_StaticShadow_Enable(true);
+	GAMEINSTANCE->Set_PBR_Enable(true);
 }
 
 void CGameManager::LateTick(_float fTimeDelta)
@@ -1075,7 +1075,7 @@ void CGameManager::Change_Option(OPTION_TYPE eOption, _uint iAmount)
 		GAMEINSTANCE->Set_DynamicShadow_Enable(_bool(iAmount));
 		break;
 	case Client::OPTION_TYPE::STATIC_SHADOW:
-		//GAMEINSTANCE->(_bool(iAmount));
+		GAMEINSTANCE->Set_StaticShadow_Enable(_bool(iAmount));
 		break;
 	case Client::OPTION_TYPE::BRIGHTLESS:
 		GAMEINSTANCE->Set_BrightnessOffset(((_float)iAmount - 50.f) / 50.f);

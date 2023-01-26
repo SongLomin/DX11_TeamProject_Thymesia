@@ -80,6 +80,15 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
 	{
+		_uint iRandom = rand() % 3;
+
+		switch (iRandom)
+		{
+		case 0: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_03.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+		case 1: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_04.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+		case 2: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_05.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+		}
+
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
 		//맞았을때 플레이어를 바라보는 시선 처리

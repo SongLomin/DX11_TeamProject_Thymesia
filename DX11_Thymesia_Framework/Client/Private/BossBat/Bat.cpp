@@ -310,6 +310,11 @@ void CBat::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
 	{
+		if (Weak_Cast<CStatus_Boss>(m_pStatus).lock()->Get_WhiteRatio() > 0.99f)
+		{
+			return;
+		}
+
 		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
 

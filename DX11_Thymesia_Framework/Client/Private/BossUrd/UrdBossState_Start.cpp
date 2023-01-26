@@ -98,6 +98,8 @@ void CUrdBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	GAMEINSTANCE->PlayBGM("STAGE3_BOSS_0.mp3", 3.f, 1.f);
+
 	if(m_bSinematicStart)
 	GET_SINGLE(CGameManager)->End_Cinematic();
 
@@ -139,7 +141,6 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	{
 		m_bSinematicStart = true;
 		_float fSound = GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM);
-		GAMEINSTANCE->PlayBGM("STAGE3_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
 
 		GET_SINGLE(CGameManager)->Activate_Section(200, EVENT_TYPE::ON_ENTER_SECTION);
 		GET_SINGLE(CGameManager)->Activate_Fog(1);
