@@ -5,7 +5,7 @@ namespace Client
 	{
 #pragma region Tool Options
 		// TODO : for imgui movements -> remove after finishing mesh effect
-#ifdef _DEBUG
+#ifdef  _DEBUG
 		_bool		bOnFocus;
 		_float		fSpeedPerSec;
 		_float		fRotationPerSec;

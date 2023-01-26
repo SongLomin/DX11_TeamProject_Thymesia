@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "UI_Utils.h"
 #include "GameInstance.h"
 #include "GameManager.h"
@@ -255,6 +256,9 @@ ITEM_NAME CUI_Utils::ConvertMonsterTypeToSkillPiece(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::BIGHANDMAN:
 		eItemName = ITEM_NAME::SKILLPIECE_BIGHAND;
+		break;
+	case Client::MONSTERTYPE::JOKER:
+		eItemName = ITEM_NAME::SKILLPIECE_HAMMER;
 		break;
 	default:
 		break;

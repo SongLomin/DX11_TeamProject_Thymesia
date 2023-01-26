@@ -73,7 +73,11 @@ void CUrdBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	XMStoreFloat4x4(&m_vPlyerMatrix, pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix());
 
-	GAMEINSTANCE->PlaySound2D("STAGE3_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	GAMEINSTANCE->PlayBGM("STAGE3_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+
+	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -94,6 +98,7 @@ void CUrdBossState_Start::OnStateEnd()
 	if(m_bSinematicStart)
 	GET_SINGLE(CGameManager)->End_Cinematic();
 
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 	m_bSinematicStart = false;
 }
 
@@ -127,10 +132,11 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 20.f)
+	if (fPToMDistance <= 20.f && !m_bSinematicStart)
 	{
 		m_bSinematicStart = true;
-
+		_float fSound = GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM);
+		GAMEINSTANCE->PlayBGM("STAGE3_BOSS_0.mp3", fSound);
 		GET_SINGLE(CGameManager)->Activate_Section(200, EVENT_TYPE::ON_ENTER_SECTION);
 		GET_SINGLE(CGameManager)->Activate_Fog(1);
 	}

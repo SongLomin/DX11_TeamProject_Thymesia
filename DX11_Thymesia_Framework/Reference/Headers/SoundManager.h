@@ -47,7 +47,7 @@ public:
 	// Play sound without perspective. (e.g. environmental sound, UI sound) with index.
 	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
 	// Play sound without perspective. (e.g. environmental sound, UI sound)
-	_uint PlaySound2D(const string& In_szSoundKey, _float _vol);
+	_uint PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop = false);
 	void PlayBGM(const string& In_szSoundKey, _float _vol);
 	void StopBGM();
 	void StopSound(_uint _iChannelIndex);

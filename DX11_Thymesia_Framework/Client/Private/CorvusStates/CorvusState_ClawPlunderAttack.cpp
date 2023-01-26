@@ -182,20 +182,7 @@ void CCorvusState_ClawPlunderAttack::OnStateStart(const _float& In_fAnimationBle
 	//	bind(&CCorvusState_ClawPlunderAttack::Call_OtherControllerHit, this, placeholders::_1);
 
 	//m_iAttackIndex = 7;
-	//m_iEndAttackEffectIndex = -1;
-
-	weak_ptr<CCorvus> pCorvus = Weak_StaticCast<CCorvus>(m_pOwner);
-
-	//가장 최근에 흡수한 몬스터의 타입
-	MONSTERTYPE eMonsterType = pCorvus.lock()->GetMostRecentStealedMonsterType();
-
-	pCorvus.lock()->Get_Component<CPlayerSkill_System>().lock()->OnStealMonsterSkill(eMonsterType);
-
-	pCorvus.lock()->OnStealMonsterSkill(MONSTERTYPE::TYPE_END);
-
-	GAMEINSTANCE->PlaySound2D("Fantasy_Game_Water_Bolt_2.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_EFFECT));
-
-
+	//m_iEndAttackEffectIndex = -1
 	//Disable_Weapons();
 
 #ifdef _DEBUG

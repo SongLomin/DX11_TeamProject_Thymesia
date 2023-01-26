@@ -24,6 +24,7 @@ void CGameManager::Initialize()
 	GAMEINSTANCE->Set_Chromatic_Enable(false);
 	GAMEINSTANCE->Set_RadialBlur_Enable(false);
 	GAMEINSTANCE->Set_DynamicShadow_Enable(false);
+	GAMEINSTANCE->Set_StaticShadow_Enable(false);
 	GAMEINSTANCE->Set_PBR_Enable(false);
 }
 
@@ -609,16 +610,23 @@ void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_p
 		Enable_WeaponFromEvent(In_TransformCom, elem);
 	}
 
+	_float fSoundScale = 1.f;
+
+	if (strcmp(In_ModelCom.lock()->Get_ModelKey(), "Corvus") != 0)
+	{
+		fSoundScale = 2.f;
+	}
+
 	for (auto& elem : Key_iter->second.Sounds)
 	{
-		GAMEINSTANCE->PlaySound3D(elem.szSoundFileName, elem.fVolume, In_TransformCom.lock()->Get_Position());
+		GAMEINSTANCE->PlaySound3D(elem.szSoundFileName, elem.fVolume * fSoundScale, In_TransformCom.lock()->Get_Position());
 	}
 
 	if (!Key_iter->second.RandomSounds.empty())
 	{
 		_int iRandom = rand() % Key_iter->second.RandomSounds.size();
 
-		GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume, In_TransformCom.lock()->Get_Position());
+		GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume * fSoundScale, In_TransformCom.lock()->Get_Position());
 
 	}
 }

@@ -36,7 +36,7 @@ HRESULT CLevel_Test::Initialize()
 
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
-	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	// Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
 	Load_FromJson(m_szDefaultJsonPath + "Stage_Home.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;

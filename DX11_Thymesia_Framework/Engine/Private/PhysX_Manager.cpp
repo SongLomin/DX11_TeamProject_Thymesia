@@ -90,7 +90,6 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 			if(m_pCudaContextManager)
 				m_pCudaContextManager->release();
 			m_pCudaContextManager = nullptr;
-			exit(0);
 		}
 	}
 	else
