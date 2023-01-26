@@ -458,13 +458,13 @@ void CInteraction_Door::Act_Interaction()//¿©±â¼­ Use
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
         m_pPhysXColliderCom.lock()->Set_Enable(false);
 
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Open.ogg", 3.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Open.ogg", 5.f, m_pTransformCom.lock()->Get_Position());
     }
     else
     {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
 
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Close.ogg", 3.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Close.ogg", 5.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 
@@ -485,7 +485,7 @@ void CInteraction_Door::Requirement_Key(_bool& Out_bRequirement)
 
     if (!Out_bRequirement)
     {
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 5.f, m_pTransformCom.lock()->Get_Position());
         GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_ItemRequireMent(m_iKeyID);
     }
 }
@@ -511,7 +511,7 @@ void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
     if (!Out_bRequirement)
     {
         GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_RequirementDir();
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Item_Wooden_Chest_Open_or_Close.ogg", 5.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 
