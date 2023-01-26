@@ -60,7 +60,7 @@ void CSound_Manager::Tick()
 		}
 	}
 
-	if (m_FaderState != 3)
+	if (m_FaderState != 2)
 	{
 		Update_BGMVolume(GAMEINSTANCE->Get_DeltaTime());
 	}
@@ -332,8 +332,6 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol, const _fl
 		m_FaderState = 0;
 		FMOD_Channel_GetVolume(m_pChannelArr[BGM].pChannel, &m_fPreBGMvolume);
 	}
-
-	
 }
 
 void CSound_Manager::Update_BGMVolume(_float fTimeDelta)
@@ -405,7 +403,7 @@ void CSound_Manager::Update_BGMVolume(_float fTimeDelta)
 	case 1:
 	{
 		_float fOffsetTime = m_fStartFadeTime * 0.5f;
-		_float fRatio = m_fCurrentFadeTime - fOffsetTime / m_fStartFadeTime - fOffsetTime;
+		_float fRatio = (m_fCurrentFadeTime - fOffsetTime) / (m_fStartFadeTime - fOffsetTime);
 		FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, fRatio * m_fNextBGMvolume);
 	}
 		break;

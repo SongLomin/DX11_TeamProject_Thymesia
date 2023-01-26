@@ -27,7 +27,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -76,7 +76,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -87,7 +87,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -95,7 +95,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -214,7 +214,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -223,7 +223,7 @@
         "Sound": [
           {
             "SoundName": "EVM_Abraxis_Weapon_Large_WhooshRip_B_Whoosh_03.wav",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -235,7 +235,7 @@
         "Sound": [
           {
             "SoundName": "ClothMove_A_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -248,7 +248,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -311,11 +311,11 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           },
           {
             "SoundName": "EVM_Abraxis_Weapon_Large_WhooshRip_B_Whoosh_03.wav",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -325,7 +325,7 @@
         "Sound": [
           {
             "SoundName": "ClothMove_A_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -338,7 +338,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -390,7 +390,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -399,7 +399,7 @@
         "Sound": [
           {
             "SoundName": "EVM_Abraxis_Weapon_Large_WhooshRip_B_Whoosh_03.wav",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -408,7 +408,7 @@
         "Sound": [
           {
             "SoundName": "ClothMove_A_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -416,7 +416,7 @@
         "Sound": [
           {
             "SoundName": "ClothMove_A_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -426,7 +426,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -483,7 +483,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -503,7 +503,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -515,7 +515,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -529,7 +529,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -544,7 +544,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -615,7 +615,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -640,7 +640,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -658,7 +658,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -688,7 +688,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -717,7 +717,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -725,7 +725,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -734,7 +734,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -742,7 +742,7 @@
         "Sound": [
           {
             "SoundName": "EVM_Boss_Wrath_Atk_Slam_Fire_Impact_Ring_03.wav",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -750,7 +750,7 @@
         "Sound": [
           {
             "SoundName": "ClothMove_A_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -845,7 +845,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -870,7 +870,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -882,7 +882,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -920,7 +920,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -952,7 +952,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1078,7 +1078,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1091,7 +1091,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1105,7 +1105,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1116,7 +1116,7 @@
         "Sound": [
           {
             "SoundName": "EarthWave_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1124,7 +1124,7 @@
         "Sound": [
           {
             "SoundName": "EVM_Angel_Male_Foley_Armor_Land_02.wav",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1162,7 +1162,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1256,7 +1256,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1360,7 +1360,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1403,7 +1403,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1414,7 +1414,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1437,7 +1437,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1483,7 +1483,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1601,7 +1601,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1617,7 +1617,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1627,7 +1627,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1677,7 +1677,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1770,7 +1770,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1779,7 +1779,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1854,7 +1854,7 @@
         "Sound": [
           {
             "SoundName": "CV_Varg_AtkAction11_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1890,11 +1890,11 @@
         "RandomSound": [
           {
             "SoundName": "CV_Varg_Hurt02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           },
           {
             "SoundName": "CV_Varg_Hurt03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1903,7 +1903,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1964,7 +1964,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1978,7 +1978,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -1990,7 +1990,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2001,7 +2001,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2021,7 +2021,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2035,11 +2035,11 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           },
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2126,7 +2126,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2154,7 +2154,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2191,7 +2191,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2199,7 +2199,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2267,7 +2267,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2280,7 +2280,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2292,7 +2292,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2300,7 +2300,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2320,7 +2320,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2340,7 +2340,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2380,7 +2380,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2394,7 +2394,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -2408,7 +2408,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -3274,7 +3274,7 @@
         "Sound": [
           {
             "SoundName": "Impact_Blade_Metal_Medium_Metal_Thin_04.wav",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -3433,7 +3433,7 @@
         "Sound": [
           {
             "SoundName": "Fantasy_Game_Action_Collect_Stone_D.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -3521,7 +3521,7 @@
         "Sound": [
           {
             "SoundName": "WhooshHeavySword_05.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -3669,7 +3669,7 @@
         "Sound": [
           {
             "SoundName": "Armor_Metal_ShieldHitA_03.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4077,7 +4077,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4179,7 +4179,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4195,7 +4195,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4234,7 +4234,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4280,7 +4280,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4314,7 +4314,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4358,7 +4358,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4381,7 +4381,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4392,7 +4392,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4474,7 +4474,7 @@
         "Sound": [
           {
             "SoundName": "CV_Varg_AtkAction11_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4585,7 +4585,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4596,7 +4596,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4700,7 +4700,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4742,7 +4742,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4795,7 +4795,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4816,7 +4816,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4840,7 +4840,7 @@
         "Sound": [
           {
             "SoundName": "WhooshAxe_02.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4860,7 +4860,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4893,7 +4893,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -4989,7 +4989,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5071,7 +5071,7 @@
         "Sound": [
           {
             "SoundName": "CV_Varg_AtkAction11_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5080,7 +5080,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5213,7 +5213,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5274,7 +5274,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       }
@@ -5351,7 +5351,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5389,7 +5389,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5413,7 +5413,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       }
@@ -5543,7 +5543,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5652,7 +5652,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5693,7 +5693,7 @@
         "Sound": [
           {
             "SoundName": "HeavySwordHitFloor_01.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5711,7 +5711,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5897,7 +5897,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5909,7 +5909,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5956,7 +5956,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -5979,7 +5979,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -6008,7 +6008,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -6030,7 +6030,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -6055,7 +6055,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -6085,7 +6085,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       }
@@ -6107,7 +6107,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       },
@@ -6135,7 +6135,7 @@
         "Sound": [
           {
             "SoundName": "FootStep_Heavy_04.ogg",
-            "Volume": 5.0
+            "Volume": 1
           }
         ]
       }

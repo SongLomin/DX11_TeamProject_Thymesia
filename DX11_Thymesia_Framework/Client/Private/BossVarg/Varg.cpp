@@ -15,7 +15,7 @@
 #include "Status_Monster.h"
 #include "Status_Boss.h"
 #include "BoneNode.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CVarg);
 CLONE_C(CVarg, CGameObject);
@@ -611,6 +611,15 @@ void CVarg::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
 	{
+
+		if (Weak_Cast<CStatus_Boss>(m_pStatus).lock()->Get_WhiteRatio() > 0.99f)
+		{
+			return;
+		}
+
+		GAMEINSTANCE->PlayBGM("BGM_STAGE_3.ogg", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+
+
 		PxControllerFilters Filters;
 		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
 

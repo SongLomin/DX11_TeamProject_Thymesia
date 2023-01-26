@@ -10,6 +10,7 @@
 #include "UI_PauseMenu.h"
 #include "PhysXCharacterController.h"
 
+
 CLevel_Stage3::CLevel_Stage3()
 {
 
@@ -24,6 +25,8 @@ HRESULT CLevel_Stage3::Initialize()
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
+
+	GET_SINGLE(CGameInstance)->Update_VolumeScale(5.f);
 	
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE3);
 

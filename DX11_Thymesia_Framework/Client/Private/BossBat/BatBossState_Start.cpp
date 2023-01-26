@@ -190,7 +190,7 @@ void CBatBossState_Start::Call_AnimationEnd(_uint iEndAnimIndex)
 
 	GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL::LEVEL_STATIC).front().lock()->Call_SetScript_Bat_Appear();
 
-	GAMEINSTANCE->PlayBGM("STAGE2_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM));
+	GAMEINSTANCE->PlayBGM("STAGE2_BOSS_0.mp3", GET_SINGLE(CUIManager)->Get_SoundType(UI_SOUND_TYPE::SOUND_BGM), 1.f);
 
 	//GET_SINGLE(CUIManager)->Set_CloseCurtain(1.f);
 }

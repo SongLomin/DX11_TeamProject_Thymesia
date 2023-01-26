@@ -73,6 +73,15 @@ _bool CPlayerStateBase::Check_Requirement()
 
 void CPlayerStateBase::HitEffectSound()
 {
+	_uint iRandom = rand() % 3;
+
+	switch (iRandom)
+	{
+	case 0: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_03.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+	case 1: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_04.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+	case 2: GAMEINSTANCE->PlaySound3D("Impact_Blade_Metal_Medium_Armor_Flesh_05.wav", 1.f, m_pTransformCom.lock()->Get_Position()); break;
+	}
+
 }
 
 void CPlayerStateBase::Turn_Transform(_float fTimeDelta)

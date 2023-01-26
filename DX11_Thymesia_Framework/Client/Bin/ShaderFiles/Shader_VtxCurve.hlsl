@@ -151,7 +151,7 @@ PS_OUT PS_MAIN(PS_IN In)
     half2 vTexUV = In.vTexUV;
     vTexUV.x *= fWrapWeight*0.8f;
  
-    Out.vColor.a *= (g_MaskTexture2.Sample(DefaultSampler, vTexUV - g_vUVMask).r * 0.4f + fMaskDesc);
+    Out.vColor.a *= (g_MaskTexture2.Sample(DefaultSampler, vTexUV - g_vUVMask).r * 0.6f + fMaskDesc);
     Out.vColor.a *= Out.vColor.a;
     Out.vColor.a = max(0.01f, Out.vColor.a);
     

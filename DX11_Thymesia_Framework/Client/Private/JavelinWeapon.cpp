@@ -132,7 +132,7 @@ void CJavelinWeapon::Tick(_float fTimeDelta)
 
 	if (m_fBombTimeAcc > 1.666f && !m_bBomb)
 	{
-		GAMEINSTANCE->PlaySound3D("Urd_SPSKill01_Explosion", 1.f, m_pTransformCom.lock()->Get_Position());
+		GAMEINSTANCE->PlaySound3D("Urd_SPSKill01_Explosion", 4.f, m_pTransformCom.lock()->Get_Position());
 		m_bBomb = true;
 	}
 	else if(!m_bBomb)
@@ -381,7 +381,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 		return;
 	}
 	
-	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 60.f);
+	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 30.f);
 	
 }
 

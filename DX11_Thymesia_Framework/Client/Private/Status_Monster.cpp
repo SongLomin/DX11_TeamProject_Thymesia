@@ -300,8 +300,8 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		break;	
 	case Client::MONSTERTYPE::VARG:
 		//TODO 공격력몰름 임시
-		m_tMonsterDesc.m_fAtk = 40.f;
-		m_tMonsterDesc.m_fMaxHP_white = 100.f;
+		m_tMonsterDesc.m_fAtk = 50.f;
+		m_tMonsterDesc.m_fMaxHP_white = 3000.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
@@ -396,9 +396,9 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_szModelKey = "Boss_Bat";
 		break;
 	case Client::MONSTERTYPE::URD:
-		m_tMonsterDesc.m_fAtk = 23.f;
+		m_tMonsterDesc.m_fAtk = 15.f;
 		m_tMonsterDesc.m_fMaxHP_white = 1500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 15000.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 3000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Urd";
