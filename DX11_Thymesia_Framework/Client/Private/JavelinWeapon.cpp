@@ -200,7 +200,7 @@ HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				(1 << aiTextureType_SPECULAR) & BindTextureFlag
 				)
 			{
-				iPassIndex = 7;
+				iPassIndex = 13;
 			}
 
 			// NormalTexture	OK.
@@ -210,7 +210,7 @@ HRESULT CJavelinWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				!((1 << aiTextureType_SPECULAR) & BindTextureFlag)
 				)
 			{
-				iPassIndex = 3;
+				iPassIndex = 14;
 			}
 
 			// NormalTexture	NO.
@@ -361,7 +361,7 @@ void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
 			m_DecalDesc.vColor = { 1.f,1.f,1.f };
 
 		}
-		m_DecalDesc.vScale = { 9.f,9.f, 1.0f };
+		m_DecalDesc.vScale = { 9.5f,9.5f, 5.0f };
 		m_DecalDesc.fAppearTime = 0.f;
 		_matrix WorldMatrix = XMMatrixIdentity();
 
@@ -424,15 +424,13 @@ void CJavelinWeapon::Activate_ExplosionEffect(weak_ptr<CJavelinWeapon> pJavelinW
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 17.f,17.f, 1.0f };
+	m_DecalDesc.vScale = { 18.f,18.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 
 	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
 
 	WorldMatrix.r[3] = vWorldPos;
-
-	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
@@ -474,15 +472,13 @@ void CJavelinWeapon::Activate_ExplosionEffect()
 	{
 		DEBUG_ASSERT;
 	}
-	m_DecalDesc.vScale = { 17.f,17.f, 1.f };
+	m_DecalDesc.vScale = { 18.f,18.f, 5.0f };
 	m_DecalDesc.fAppearTime = 1.666f;
 	_matrix WorldMatrix = XMMatrixIdentity();
 
 	_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&m_DecalDesc.vPosition), pForEffectTransform.lock()->Get_WorldMatrix());
 
 	WorldMatrix.r[3] = vWorldPos;
-
-	XMStoreFloat4x4(&m_DecalDesc.WorldMatrix, WorldMatrix);
 
 	GAMEINSTANCE->Add_GameObject<CEffect_Decal>(m_CreatedLevel, &m_DecalDesc);
 	GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.2f, 1.f, 9.f, 0.95f);
