@@ -15,12 +15,7 @@
 #include "PhysXCharacterController.h"
 #include "Status_Boss.h"
 
-
 GAMECLASS_C(CBatBossStateBase)
-
-
-
-     
 
 _bool CBatBossStateBase::Check_RequirementAttackState()
 {
