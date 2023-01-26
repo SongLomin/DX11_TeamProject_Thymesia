@@ -458,13 +458,13 @@ void CInteraction_Door::Act_Interaction()//¿©±â¼­ Use
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
         m_pPhysXColliderCom.lock()->Set_Enable(false);
 
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Open.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Open.ogg", 3.f, m_pTransformCom.lock()->Get_Position());
     }
     else
     {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
 
-        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Close.ogg", 1.f, m_pTransformCom.lock()->Get_Position());
+        GAMEINSTANCE->PlaySound3D("EVM_Fantasy_Game_Door_Close.ogg", 3.f, m_pTransformCom.lock()->Get_Position());
     }
 }
 
