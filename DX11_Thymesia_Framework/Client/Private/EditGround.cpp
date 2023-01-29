@@ -970,6 +970,7 @@ void CEditGround::Bake_FilterTexture()
 
 		Texture.emplace("Diff"   , iter.second.pDiffTex.lock()->Get_TextureKey());
 		Texture.emplace("Norm"   , iter.second.pNormTex.lock()->Get_TextureKey());
+		Texture.emplace("ORM"    , iter.second.pORMTex.lock()->Get_TextureKey());
 		Texture.emplace("Density", iter.second.fDensity);
 
 		TexInfo.emplace(iter.first, Texture);
@@ -1031,6 +1032,7 @@ void CEditGround::Load_FilterTexture()
 	{
 		iter.second.pDiffTex.lock().reset();
 		iter.second.pNormTex.lock().reset();
+		iter.second.pORMTex.lock().reset();
 	}
 
 	m_pTextureCom.clear();
@@ -1047,6 +1049,7 @@ void CEditGround::Load_FilterTexture()
 			TEXTURES_INFO Desc;
 			Desc.pDiffTex = Add_Component<CTexture>();
 			Desc.pNormTex = Add_Component<CTexture>();
+			Desc.pORMTex  = Add_Component<CTexture>();
 
 			m_pTextureCom.emplace(szDatakey, Desc);
 			iter_find = m_pTextureCom.find(szDatakey);
@@ -1066,6 +1069,12 @@ void CEditGround::Load_FilterTexture()
 			{
 				string szTextureName = iter_item.value();
 				iter_find->second.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+			}
+
+			if ("ORM" == szitemkey)
+			{
+				string szTextureName = iter_item.value();
+				iter_find->second.pORMTex.lock()->Use_Texture(szTextureName.c_str());
 			}
 
 			if ("Density" == szitemkey)
