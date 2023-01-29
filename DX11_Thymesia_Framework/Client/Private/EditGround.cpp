@@ -111,19 +111,19 @@ HRESULT CEditGround::SetUp_ShaderResource()
 		string szORMTextureName  = iter.first + "_ORM";
 		string szDensityName	 = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 	
-		if ("" != iter.second.pDiffTex.lock()->Get_TextureKey())
+		if (iter.second.pDiffTex.lock() && "" != iter.second.pDiffTex.lock()->Get_TextureKey())
 		{
 			if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
 				return E_FAIL;
 		}
 
-		if ("" != iter.second.pNormTex.lock()->Get_TextureKey())
+		if (iter.second.pNormTex.lock() && "" != iter.second.pNormTex.lock()->Get_TextureKey())
 		{
 			if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
 				return E_FAIL;
 		}
 
-		if ("" != iter.second.pORMTex.lock()->Get_TextureKey())
+		if (iter.second.pORMTex.lock() && "" != iter.second.pORMTex.lock()->Get_TextureKey())
 		{
 			if (FAILED(iter.second.pORMTex.lock()->Set_ShaderResourceView(m_pShaderCom, szORMTextureName.c_str(), 0)))
 				return E_FAIL;
@@ -968,9 +968,12 @@ void CEditGround::Bake_FilterTexture()
 	{
 		json Texture;
 
-		Texture.emplace("Diff"   , iter.second.pDiffTex.lock()->Get_TextureKey());
-		Texture.emplace("Norm"   , iter.second.pNormTex.lock()->Get_TextureKey());
-		Texture.emplace("ORM"    , iter.second.pORMTex.lock()->Get_TextureKey());
+		if (iter.second.pDiffTex.lock())
+			Texture.emplace("Diff"   , iter.second.pDiffTex.lock()->Get_TextureKey());
+		if (iter.second.pNormTex.lock())
+			Texture.emplace("Norm"   , iter.second.pNormTex.lock()->Get_TextureKey());
+		if (iter.second.pORMTex.lock())
+			Texture.emplace("ORM"    , iter.second.pORMTex.lock()->Get_TextureKey());
 		Texture.emplace("Density", iter.second.fDensity);
 
 		TexInfo.emplace(iter.first, Texture);

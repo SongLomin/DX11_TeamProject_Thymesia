@@ -270,7 +270,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				return;
 
 			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOnEvent, this, placeholders::_1, placeholders::_2);
-			Callback_OnActivate();
 		}
 		break;
 
@@ -421,6 +420,8 @@ void CLight_Prop::Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End)
 			m_tLightDesc.fIntensity = m_fTargetIntensity;
 			m_tLightDesc.fRange     = m_fTargetRange;
 			Out_End                 = true;
+
+			Callback_OnActivate();
 		}
 
 		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
