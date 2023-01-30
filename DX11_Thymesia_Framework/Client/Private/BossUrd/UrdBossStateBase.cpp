@@ -301,14 +301,12 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			//이떄 플레이어한테 이벤트를 던져줍시다
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{
-				if (eAttackOption == ATTACK_OPTION::NONE ||
-					eAttackOption == ATTACK_OPTION::NORMAL)
+				if (eAttackOption == ATTACK_OPTION::NORMAL)
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
 			}
 			else
 			{
-				if (eAttackOption == ATTACK_OPTION::NONE ||
-					eAttackOption == ATTACK_OPTION::NORMAL)
+				if (eAttackOption == ATTACK_OPTION::NORMAL)
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
 								
 			}
