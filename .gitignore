@@ -12,9 +12,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.cso
-*.exp
-*.exe
 *.tlog
 *.idb
 Engine.dll
