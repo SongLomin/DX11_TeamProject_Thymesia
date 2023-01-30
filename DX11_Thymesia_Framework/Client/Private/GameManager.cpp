@@ -17,15 +17,19 @@ void CGameManager::Initialize()
 {
 	m_pClientThread = CSubThread_Pool::Create(8);
 
-	GAMEINSTANCE->Set_SSAA_Enable(true);
-	GAMEINSTANCE->Set_HBAO_Enable(true);
-	GAMEINSTANCE->Set_MotionBlur_Enable(true);
-	GAMEINSTANCE->Set_GodRay_Enable(true);
-	GAMEINSTANCE->Set_Chromatic_Enable(true);
-	GAMEINSTANCE->Set_RadialBlur_Enable(true);
-	GAMEINSTANCE->Set_DynamicShadow_Enable(true);
-	GAMEINSTANCE->Set_StaticShadow_Enable(true);
-	GAMEINSTANCE->Set_PBR_Enable(true);
+	_bool Init_State = false;
+
+	GAMEINSTANCE->Set_SSAA_Enable(Init_State);
+	GAMEINSTANCE->Set_HBAO_Enable(Init_State);
+	GAMEINSTANCE->Set_MotionBlur_Enable(Init_State);
+	GAMEINSTANCE->Set_GodRay_Enable(Init_State);
+	GAMEINSTANCE->Set_Chromatic_Enable(Init_State);
+	GAMEINSTANCE->Set_RadialBlur_Enable(Init_State);
+	GAMEINSTANCE->Set_DynamicShadow_Enable(Init_State);
+	GAMEINSTANCE->Set_StaticShadow_Enable(Init_State);
+	GAMEINSTANCE->Set_PBR_Enable(Init_State);
+
+	GAMEINSTANCE->Update_BGMVolumeScale(0.f);
 }
 
 void CGameManager::LateTick(_float fTimeDelta)
