@@ -12,6 +12,7 @@
 #include "CorvusStates/Talent.h"
 #include "UI_EvolveTalent_Active.h"
 #include "UI_Utils.h"
+#include "UIManager.h"
 
 
 GAMECLASS_C(CUI_EveolveMenu_Talent)
@@ -209,9 +210,9 @@ void CUI_EveolveMenu_Talent::Update_UI()
 void CUI_EveolveMenu_Talent::OnEnable(void* pArg)
 {
     __super::OnEnable(pArg);
-
-    ShowCursor(true);
   
+    GET_SINGLE(CUIManager)->EnableCursor();
+
     if (!m_pFadeMask.lock())
         m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
@@ -229,7 +230,7 @@ void CUI_EveolveMenu_Talent::OnDisable()
 {
     __super::OnDisable();
 
-    ShowCursor(false);
+    GET_SINGLE(CUIManager)->DisableCursor();
 
     for (_uint i = 0; i < m_pRootList[m_iTalentIndex].size(); i++)
     {

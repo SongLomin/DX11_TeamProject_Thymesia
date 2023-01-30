@@ -19,7 +19,7 @@ void CSound_Manager::Initialize()
 	FMOD_System_Init(m_pSystem, MAX_CHANNEL, FMOD_INIT_NORMAL, NULL);
 
 	//FMOD_System_CreateSound(m_pSystem, "example.mp3", FMOD_3D, 0, &m_pSound);
-	
+
 }
 
 
@@ -38,10 +38,10 @@ void CSound_Manager::Tick()
 {
 	_matrix CameraWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
 
- 	FMOD_VECTOR vListenerPosition = SMath::Convert_FMOD_VECTOR(CameraWorldMatrix.r[3]);
+	FMOD_VECTOR vListenerPosition = SMath::Convert_FMOD_VECTOR(CameraWorldMatrix.r[3]);
 	FMOD_VECTOR vVelocity{};
- 	FMOD_VECTOR vListenerLook = SMath::Convert_FMOD_VECTOR(CameraWorldMatrix.r[2]);
- 	FMOD_VECTOR vListenerUp = SMath::Convert_FMOD_VECTOR(CameraWorldMatrix.r[1]);
+	FMOD_VECTOR vListenerLook = SMath::Convert_FMOD_VECTOR(CameraWorldMatrix.r[2]);
+	FMOD_VECTOR vListenerUp = SMath::Convert_FMOD_VECTOR(CameraWorldMatrix.r[1]);
 
 
 	FMOD_System_Set3DListenerAttributes(m_pSystem, 0, &vListenerPosition, &vVelocity, &vListenerLook, &vListenerUp);
@@ -104,8 +104,10 @@ void CSound_Manager::Update_BGMVolumeScale(const _float In_VolumeScale)
 
 	FMOD_Channel_GetVolume(m_pChannelArr[BGM].pChannel, &CurrentVolume);
 	CurrentVolume /= m_fBGMvolume;
-	FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, CurrentVolume * In_VolumeScale);
-	m_fBGMvolume = In_VolumeScale;
+	// FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, CurrentVolume * In_VolumeScale);
+	//m_fBGMvolume = In_VolumeScale;
+	FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, 0.f);
+	m_fBGMvolume = 0.f;
 }
 
 _int CSound_Manager::Pause(CHANNELID eID)
@@ -126,7 +128,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
 
 	iter = m_mapSound.find(HashFromKey);
-	
+
 
 	if (iter == m_mapSound.end())
 		return -1;
@@ -163,7 +165,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 
 
 	/*_vector vCamToWorldPosition = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3] - In_WorldPosition;
-	
+
 	_float fDistance = XMVectorGetX(XMVector3Length(vCamToWorldPosition));
 
 	const _float fMaxSoundDistance = 10.f;
@@ -186,7 +188,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 		if (!Is_PlayingChannel(m_pChannelArr[i].pChannel))
 		{
 			FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[i].pChannel);
-			
+
 			if (_vol <= 0.f)
 				_vol = 0.f;
 
@@ -222,7 +224,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _f
 		return -1;
 
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[_iIndex].pChannel);
-	
+
 	if (_vol <= 0.f)
 		_vol = 0.f;
 
@@ -269,7 +271,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, cons
 		if (!Is_PlayingChannel(m_pChannelArr[i].pChannel))
 		{
 			FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[i].pChannel);
-			
+
 			if (_vol <= 0.f)
 				_vol = 0.f;
 
@@ -292,6 +294,8 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, cons
 
 void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol, const _float In_fFadeSound)
 {
+	return;
+
 	map<_hashcode, SOUND_DESC>::iterator iter;
 
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
@@ -398,7 +402,7 @@ void CSound_Manager::Update_BGMVolume(_float fTimeDelta)
 		_float fRatio = (fTargetTime - m_fCurrentFadeTime) / fTargetTime;
 		FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, fRatio * m_fPreBGMvolume);
 	}
-		break;
+	break;
 
 	case 1:
 	{
@@ -406,13 +410,13 @@ void CSound_Manager::Update_BGMVolume(_float fTimeDelta)
 		_float fRatio = (m_fCurrentFadeTime - fOffsetTime) / (m_fStartFadeTime - fOffsetTime);
 		FMOD_Channel_SetVolume(m_pChannelArr[BGM].pChannel, fRatio * m_fNextBGMvolume);
 	}
-		break;
+	break;
 
 	case 2:
 	{
 
 	}
-		break;
+	break;
 
 	default:
 		break;

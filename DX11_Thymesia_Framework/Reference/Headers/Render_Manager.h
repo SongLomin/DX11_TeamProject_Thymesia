@@ -201,7 +201,6 @@ private:
 private:
 	void Emplace_SleepContext(const _uint In_iIndex);
 
-#ifdef _DEBUG
 public:
 	HRESULT Render_Debug();
 	HRESULT Set_DebugSize(const _float2 vSize);
@@ -221,16 +220,6 @@ private:
 	_bool			m_bOldSchoolView = true;
 
 	shared_ptr<CShader> m_pEditTextureShaderCom;
-#endif // _DEBUG
-	
-
-#ifdef _DEBUG
-	/* 직교투영을 위한 정보이다. */
-
-
-private:
-	list<weak_ptr<CComponent>>	m_pDebugComponents;
-#endif // _DEBUG
 
 private:
 	_float4x4					m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;

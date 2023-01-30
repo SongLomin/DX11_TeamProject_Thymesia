@@ -649,6 +649,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		pCommandList = nullptr;
 	}*/
 
+	GET_SINGLE(CCollision_Manager)->Render_Collider();
+
 	if (FAILED(Render_UI()))
 		DEBUG_ASSERT;
 
@@ -1349,7 +1351,7 @@ HRESULT CRender_Manager::Render_Blend()
 	/* �簢�� ���۸� ��������� �׷�����. */
 	m_pVIBuffer->Render(pDeviceContext);
 
-	GET_SINGLE(CCollision_Manager)->Render_Collider();
+	
 
 	return S_OK;
 }
@@ -2385,10 +2387,8 @@ void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
 	}
 }
 
-#ifdef _DEBUG
 HRESULT CRender_Manager::Render_Debug()
 {
-	m_pDebugComponents.clear();
 
 	/*if (!GAMEINSTANCE->Is_Debug())
 	{
@@ -2407,15 +2407,13 @@ HRESULT CRender_Manager::Render_Debug()
 	}
 
 
-
-
-
 	if (FAILED(m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
+#ifdef _DEBUG
 	if (m_bOldSchoolView)
 	{
 		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);
@@ -2441,6 +2439,10 @@ HRESULT CRender_Manager::Render_Debug()
 			Render_DebugSRT((_uint)i);
 		}
 	}
+#endif // _DEBUG
+
+
+	
 
 
 	m_szDebugRenderMRTNames.clear();
@@ -2499,7 +2501,11 @@ void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
 	if (FAILED(m_pShader->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
+
+#ifdef _DEBUG
 	GET_SINGLE(CRenderTarget_Manager)->Render_DebugSRT(m_szDebugRenderMRTNames[In_iIndex].c_str(), m_pShader, m_pVIBuffer);
+#endif // _DEBUG
+	
 
 }
 
@@ -2511,7 +2517,6 @@ void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
 //}
 
 
-#endif // _DEBUG
 
 
 

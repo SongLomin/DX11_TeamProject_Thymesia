@@ -56,7 +56,6 @@ private:
 	void CollisionStay(weak_ptr<CCollider> pOtherCollider);
 	void CollisionExit(weak_ptr<CCollider> pOtherCollider);
 
-#ifdef _DEBUG
 public:
 	void	Set_DebugColor(_fvector In_vColor);
 	HRESULT Render(ID3D11DeviceContext* pDeviceContext);
@@ -66,7 +65,6 @@ public:
 private:
 	_float4	m_vColor = { 1.f, 1.f, 1.f, 1.f };
 	_bool	m_bEditerDraw = false;
-#endif // _DEBUG
 
 private:
 	static	_uint							m_iClonedColliderIndex;
@@ -91,12 +89,10 @@ private:
 
 	_float3									m_vCurrentPosition;
 
-#ifdef _DEBUG
-private:
+private: /* For. Debug_Collider */
 	shared_ptr<BasicEffect> m_pEffect;
 	shared_ptr<PrimitiveBatch<VertexPositionColor>> m_pBatch;
 	ComPtr<ID3D11InputLayout> m_pInputLayout;
-#endif // _DEBUG
 
 protected:
 	//객체의 상태가 활성화 상태로 변경될 때, 호출되는 이벤트입니다.

@@ -23,6 +23,8 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
+	ShowCursor(false);
+
 	GRAPHICDESC		GraphicDesc;
 	ZeroMemory(&GraphicDesc, sizeof(GRAPHICDESC));
 

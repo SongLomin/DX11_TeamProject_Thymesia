@@ -49,7 +49,6 @@ HRESULT CCollider::Initialize_Prototype()
 
 HRESULT CCollider::Initialize(void* pArg)
 {
-#ifdef _DEBUG
 	m_pBatch = make_shared<PrimitiveBatch<VertexPositionColor>>(DEVICECONTEXT);
 	m_pEffect = make_shared<BasicEffect>(DEVICE);
 	m_pEffect->SetVertexColorEnabled(true);
@@ -61,8 +60,7 @@ HRESULT CCollider::Initialize(void* pArg)
 
 	if (FAILED(DEVICE->CreateInputLayout(VertexPositionColor::InputElements, VertexPositionColor::InputElementCount, pShaderByteCode, ShaderByteCodeLength, &m_pInputLayout)))
 		return E_FAIL;
-
-#endif // _DEBUG	
+	
 
 	m_iColliderIndex = m_iClonedColliderIndex++;
 	m_thisFromColliderCom = Weak_StaticCast<CCollider>(m_this);
@@ -349,7 +347,6 @@ _matrix CCollider::Remove_Rotation(_fmatrix TransformMatrix)
 	return Transform;
 }
 
-#ifdef _DEBUG
 void CCollider::Set_DebugColor(_fvector In_vColor)
 {
 	XMStoreFloat4(&m_vColor, In_vColor);
@@ -436,8 +433,6 @@ HRESULT CCollider::Render_IgnoreDebugCheck()
 
 	return S_OK;
 }
-
-#endif // _DEBUG
 
 
 void CCollider::CollisionEnter(weak_ptr<CCollider> pOtherCollider)
