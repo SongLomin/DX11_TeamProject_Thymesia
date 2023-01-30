@@ -323,6 +323,16 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				if (ImGui::InputText("Effect", szEffectTag, MAX_PATH))
 					m_szEffectTag = szEffectTag;
 
+				ImGui::SameLine();
+
+				if (ImGui::Button("Act Effect"))
+				{
+					if (0 <= m_iEffectIndex)
+						GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
+
+					m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom);
+				}
+
 				ImGui::InputInt("Section Index"   , &m_iSectionIndex);
 				ImGui::InputFloat("DelayTime"     , &m_fDelayTime);
 				ImGui::InputFloat("Intensity Time", &m_fIntensityTime);
