@@ -369,7 +369,10 @@ HRESULT CInteraction_CastleGate::DrawShader_Body(ID3D11DeviceContext* pDeviceCon
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
 
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+            m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
+        else      
+            m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {
@@ -451,7 +454,7 @@ HRESULT CInteraction_CastleGate::DrawShader_Door(ID3D11DeviceContext* pDeviceCon
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
 
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {
@@ -505,7 +508,10 @@ HRESULT CInteraction_CastleGate::DrawShader_Gear(ID3D11DeviceContext* pDeviceCon
             BindTextureFlag |= (1 << aiTextureType_SPECULAR);
         }
 
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+            m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
+        else
+            m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {

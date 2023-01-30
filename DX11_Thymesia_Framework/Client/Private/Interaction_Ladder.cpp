@@ -127,37 +127,29 @@ void CInteraction_Ladder::OnEventMessage(_uint iArg)
 
     switch ((EVENT_TYPE)iArg)
     {
+        case EVENT_TYPE::ON_EDITINIT:
+        {
+            UpdateLadder();
+        }
+        break;
+
+        case EVENT_TYPE::ON_EDIT_UDATE:
+        {
+            UpdateLadder();
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITDRAW:
         {
             _bool bChage = false;
 
             bChage |= ImGui::DragFloat("Mid Offset", &m_fOffset, 1.f);
-            bChage |= ImGui::DragInt("Mid Cntt", &m_iMidSize, 1.f);
-            bChage |= ImGui::Button("UpdatePos", ImVec2(100.f, 25.f));
+            bChage |= ImGui::DragInt("Mid Cnt", &m_iMidSize, 1.f);
+            //bChage |= ImGui::Button("UpdatePos", ImVec2(100.f, 25.f));
 
             if (bChage)
             {
-                vector<INSTANCE_MESH_DESC> Prop_Desc;
-                INSTANCE_MESH_DESC Desc;
-                ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
-
-                _float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));
-                _vector vQuaternion   = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
-
-                Desc.vScale    = m_pTransformCom.lock()->Get_Scaled();
-                Desc.vRotation = vPitchYawRoll;
-
-                _vector vPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-                for (_uint i = 0; i < m_iMidSize; ++i)
-                {
-                    XMStoreFloat3(&Desc.vTarnslation, XMVectorSetY(vPos, XMVectorGetY(vPos) + (m_fOffset * (i + OFFSET_INDEX))));
-                    Prop_Desc.push_back(Desc);
-                }
-
-                m_pInstanceModelCom.lock()->Init_Instance(m_iMidSize);
-                m_pInstanceModelCom.lock()->Update(Prop_Desc);
-
-                SetUpColliderDesc();
+                UpdateLadder();
             }
         }
         break;
@@ -321,7 +313,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up(ID3D11DeviceContext* pDevic
             BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
             END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
         }
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {
@@ -393,7 +385,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid(ID3D11DeviceContext* pDevi
             BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
             END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
         }
-        m_iPassIndex = Preset::ShaderPass::ModelInstancingShaderPass(BindTextureFlag, true, false, false);
+        m_iPassIndex = Preset::ShaderPass::ModelInstancingShaderPass(BindTextureFlag, false, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {
@@ -456,7 +448,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down(ID3D11DeviceContext* pDev
             BEGIN_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
             END_PERFROMANCE_CHECK(m_pModelCom.lock()->Get_ModelKey());
         }
-        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+        m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
 
         if ((_uint)-1 == m_iPassIndex)
         {
@@ -492,6 +484,31 @@ void CInteraction_Ladder::SetUpColliderDesc()
 
     for (_uint i = 0; i < LADDER_COL_TYPE::TYPE_END; ++i)
         m_pColliderCom[i].lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_Ladder::UpdateLadder()
+{
+    vector<INSTANCE_MESH_DESC> Prop_Desc;
+    INSTANCE_MESH_DESC Desc;
+    ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
+
+    _float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));
+    _vector vQuaternion   = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
+
+    Desc.vScale    = m_pTransformCom.lock()->Get_Scaled();
+    Desc.vRotation = vPitchYawRoll;
+
+    _vector vPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+    for (_uint i = 0; i < m_iMidSize; ++i)
+    {
+        XMStoreFloat3(&Desc.vTarnslation, XMVectorSetY(vPos, XMVectorGetY(vPos) + (m_fOffset * (i + OFFSET_INDEX))));
+        Prop_Desc.push_back(Desc);
+    }
+
+    m_pInstanceModelCom.lock()->Init_Instance(m_iMidSize);
+    m_pInstanceModelCom.lock()->Update(Prop_Desc);
+
+    SetUpColliderDesc();
 }
 
 void CInteraction_Ladder::Free()

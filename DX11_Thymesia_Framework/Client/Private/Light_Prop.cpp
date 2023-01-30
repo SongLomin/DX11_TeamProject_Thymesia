@@ -147,7 +147,10 @@ HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
 		}
 
-		m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
+		if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+			m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, false, false, false);
+		else
+			m_iPassIndex = Preset::ShaderPass::ModelShaderPass(BindTextureFlag, true, false, false);
 
 		if ((_uint)-1 == m_iPassIndex)
 		{

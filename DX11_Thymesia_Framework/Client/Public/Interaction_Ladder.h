@@ -59,6 +59,7 @@ private:
     HRESULT SetUp_ShaderResource_Down(ID3D11DeviceContext* pDeviceContext);
 
     void    SetUpColliderDesc();
+    void    UpdateLadder();
 
 private:
     weak_ptr<CCollider>                 m_pColliderCom[LADDER_COL_TYPE::TYPE_END];
