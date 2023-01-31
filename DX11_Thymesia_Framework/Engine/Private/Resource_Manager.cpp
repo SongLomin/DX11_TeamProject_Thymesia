@@ -3,6 +3,7 @@
 #include "ModelData.h"
 #include "Shader.h"
 #include "SubThread_Pool.h"
+#include "SoundManager.h"
 
 IMPLEMENT_SINGLETON(CResource_Manager)
 
@@ -544,6 +545,13 @@ HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 
 void CResource_Manager::Write_JsonUsingResource(const char* In_szFilePath)
 {
+	if (m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC].find("Sounds") != m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC].end())
+	{
+		m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC]["Sounds"].clear();
+	}
+	
+	GET_SINGLE(CSound_Manager)->Write_JsonUsingResource(m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC]);
+
 	if (FAILED(CJson_Utility::Save_Json(In_szFilePath, m_UsingResourceJson)))
 	{
 		DEBUG_ASSERT;
@@ -559,7 +567,7 @@ void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
 		DEBUG_ASSERT;
 	}
 
-	shared_ptr<CSubThread_Pool> pSubThreads = CSubThread_Pool::Create(NUM_ENGINE_THREAD);
+	shared_ptr<CSubThread_Pool> pSubThreads = CSubThread_Pool::Create(GET_SINGLE(CThread_Manager)->Get_NumThread());
 
 	//list<future<void>>	Threads;
 
@@ -582,6 +590,13 @@ void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
 			bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Textures"], (MEMORY_TYPE)i));*/
 	}
+
+
+	for (auto& elem : In_Json[(_uint)MEMORY_TYPE::MEMORY_STATIC]["Sounds"])
+	{
+		GET_SINGLE(CSound_Manager)->LoadSoundFile(elem);
+	}
+	
 
 	//list<future<void>>	Threads;
 

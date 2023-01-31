@@ -19,6 +19,9 @@ private:
 	};
 
 public:
+	_uint Get_NumThread() const { return num_threads_; }
+
+public:
 	void Initialize(const _uint In_iNumLayer);
 	void Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject);
 	void Bind_GameObjectWorks(const _flag In_ThreadTypeFlag);

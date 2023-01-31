@@ -43,7 +43,7 @@ class CGameManager :
     DECLARE_SINGLETON(CGameManager)
 
 public:
-    void Initialize();
+    void Initialize(_uint iNumThread);
 
 public:
     void LateTick(_float fTimeDelta);

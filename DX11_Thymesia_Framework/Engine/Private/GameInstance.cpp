@@ -8,7 +8,7 @@
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
-HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uint iNumTimeScales, _uint iNumCollsionLayer, const GRAPHICDESC& GraphicDesc)
+HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uint iNumTimeScales, _uint iNumCollsionLayer, const GRAPHICDESC& GraphicDesc, _uint iNumThread)
 {
 	m_pGraphic_Device = CGraphic_Device::Create_Instance();
 	m_pInput_Device = CInput_Device::Create_Instance();
@@ -76,7 +76,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager->Initialize();
 
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
-	m_pThread_Manager->Initialize(8);
+	m_pThread_Manager->Initialize(iNumThread);
 
 	m_pNvCloth_Manager->Initialize();
 
@@ -861,7 +861,7 @@ void CGameInstance::StopAll()
 
 void CGameInstance::Load_SoundFileFromFolderPath(const string& In_szFolderPath)
 {
-	m_pSound_Manager->LoadSoundFile(In_szFolderPath);
+	m_pSound_Manager->LoadSoundFilesFromPath(In_szFolderPath);
 }
 
 vector<const string*> CGameInstance::Get_AllSoundNames()

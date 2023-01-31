@@ -133,6 +133,8 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 	if (iter == m_mapSound.end())
 		return -1;
 
+	m_UsedSounds[HashFromKey] = &iter->second.szFilePath;
+
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[_iIndex].pChannel);
 
 	if (_vol <= 0.f)
@@ -163,6 +165,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 	if (iter == m_mapSound.end())
 		return -1;
 
+	m_UsedSounds[HashFromKey] = &iter->second.szFilePath;
 
 	/*_vector vCamToWorldPosition = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3] - In_WorldPosition;
 
@@ -223,6 +226,8 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _f
 	if (iter == m_mapSound.end())
 		return -1;
 
+	m_UsedSounds[HashFromKey] = &iter->second.szFilePath;
+
 	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second.pSound, FALSE, &m_pChannelArr[_iIndex].pChannel);
 
 	if (_vol <= 0.f)
@@ -247,6 +252,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, cons
 	if (iter == m_mapSound.end())
 		return -1;
 
+	m_UsedSounds[HashFromKey] = &iter->second.szFilePath;
 
 	/*_vector vCamToWorldPosition = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3] - In_WorldPosition;
 
@@ -284,6 +290,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, cons
 				FMOD_Channel_SetMode(m_pChannelArr[i].pChannel, FMOD_LOOP_NORMAL);
 			}
 			iResult = i;
+
 			break;
 		}
 
@@ -304,6 +311,8 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol, const _fl
 
 	if (iter == m_mapSound.end())
 		return;
+
+	m_UsedSounds[HashFromKey] = &iter->second.szFilePath;
 
 	if (In_fFadeSound <= DBL_EPSILON)
 	{
@@ -446,7 +455,7 @@ void CSound_Manager::StopAll()
 		FMOD_Channel_Stop(m_pChannelArr[i].pChannel);
 }
 
-//void CSound_Manager::LoadSoundFile_Legacy()
+//void CSound_Manager::LoadSoundFilesFromPath_Legacy()
 //{
 //	_tfinddata64_t fd;
 //	__int64 handle = _tfindfirst64(L"../Bin/Sound/*.*", &fd);
@@ -484,11 +493,14 @@ void CSound_Manager::StopAll()
 //	_findclose(handle);
 //}
 
-void CSound_Manager::LoadSoundFile(const string& In_szFile)
+void CSound_Manager::LoadSoundFilesFromPath(const string& In_szFile)
 {
 	filesystem::path SoundFilePath(In_szFile);
 
 	filesystem::directory_iterator itr(SoundFilePath);
+
+	string szFileName;
+	string szFilePath;
 
 	while (itr != filesystem::end(itr))
 	{
@@ -498,18 +510,45 @@ void CSound_Manager::LoadSoundFile(const string& In_szFile)
 
 		FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, entry.path().string().c_str(), FMOD_3D, 0, &pSound);
 
-		if (FMOD_OK == eRes)
-		{
-			FMOD_Sound_Set3DMinMaxDistance(pSound, 1.0f, 100.0f);
+		szFileName = entry.path().filename().string();
+		szFilePath = entry.path().string();
 
-			string szFileName = entry.path().filename().string();
-
-			m_mapSound.emplace(hash<string>()(szFileName), SOUND_DESC(szFileName, pSound));
-		}
+		LoadSoundFile(szFilePath, &szFileName);
 
 		++itr;
 	}
 
+}
+
+void CSound_Manager::LoadSoundFile(const string& In_szFilePath, string* In_szFile)
+{
+	FMOD_SOUND* pSound = nullptr;
+
+	FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, In_szFilePath.c_str(), FMOD_3D, 0, &pSound);
+	string szFileName;
+	if (FMOD_OK == eRes)
+	{
+		FMOD_Sound_Set3DMinMaxDistance(pSound, 1.0f, 100.0f);
+
+		if (!In_szFile)
+		{
+			szFileName = filesystem::path(In_szFilePath).filename().string();
+			In_szFile = &szFileName;
+		}
+
+		m_mapSound.emplace(hash<string>()(*In_szFile), SOUND_DESC(*In_szFile, In_szFilePath, pSound));
+	}
+
+}
+
+void CSound_Manager::Write_JsonUsingResource(json& Out_Json)
+{
+	//Out_Json["Sounds"] = {};
+
+	for (auto& elem : m_UsedSounds)
+	{
+		Out_Json["Sounds"].emplace_back(elem.second->c_str());
+	}
 }
 
 vector<const string*> CSound_Manager::Get_AllSoundNames()

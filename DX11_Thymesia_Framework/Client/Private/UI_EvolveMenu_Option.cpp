@@ -284,9 +284,7 @@ void CUI_EvolveMenu_Option::Update_HardwareInfos()
     
     //boost::process::system_info
 
-    SYSTEM_INFO sysinfo;
-    GetSystemInfo(&sysinfo);
-    DWORD dwNumberOfProcessors = sysinfo.dwNumberOfProcessors;
+    
 
     /*_int iCapturedCallCount = m_iCallCount;
 

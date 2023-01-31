@@ -17,10 +17,11 @@ private:
 	struct SOUND_DESC
 	{
 		string		szFileName;
+		string		szFilePath;
 		FMOD_SOUND* pSound{};
 
-		SOUND_DESC(const string& In_szFileName, FMOD_SOUND* In_pSound)
-			: szFileName(In_szFileName), pSound(In_pSound)
+		SOUND_DESC(const string& In_szFileName, const string& In_szFilePath, FMOD_SOUND* In_pSound)
+			: szFileName(In_szFileName), szFilePath(In_szFilePath), pSound(In_pSound)
 		{
 		}
 	};
@@ -65,8 +66,13 @@ public:
 	vector<const string*> Get_AllSoundNames();
 
 public:
-	//void LoadSoundFile_Legacy();
-	void LoadSoundFile(const string& In_szFile);
+	//void LoadSoundFilesFromPath_Legacy();
+	void LoadSoundFilesFromPath(const string& In_szFile);
+	void LoadSoundFile(const string& In_szFilePath, string* In_szFile = nullptr);
+
+public: /* Captured_Resource */
+	void Write_JsonUsingResource(json& Out_Json);
+
 
 private:
 	_float m_fEffectvolume = SOUND_DEFAULT;
@@ -92,6 +98,9 @@ private:
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
 	FMOD_SYSTEM* m_pSystem{};
 	_bool		m_bPause = false;
+
+private:
+	unordered_map<_hashcode, string*> m_UsedSounds;
 
 public:
 	virtual void OnDestroy() override;

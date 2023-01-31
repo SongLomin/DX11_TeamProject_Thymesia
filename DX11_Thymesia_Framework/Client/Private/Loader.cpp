@@ -187,6 +187,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading UI Resources..."));
 	Load_UIResource();
 
+	GAMEINSTANCE->Load_Textures(("DecalTexture"), TEXT("../Bin/Resources/Textures/Decal/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DecalLinear"), TEXT("../Bin/Resources/Textures/DecalLinear/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DecalUrd"), TEXT("../Bin/Resources/Textures/DecalUrd/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Sound..."));
+	GAMEINSTANCE->Load_SoundFileFromFolderPath("../bin/Sound");
+
 #endif // _LOAD_CAPTURED_RESOURCE_
 
 
@@ -214,9 +221,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("DecalTexture"), TEXT("../Bin/Resources/Textures/Decal/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("DecalLinear"), TEXT("../Bin/Resources/Textures/DecalLinear/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("DecalUrd"), TEXT("../Bin/Resources/Textures/DecalUrd/Crack%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -228,8 +233,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Set_MaskingTexture("UVMask");
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Sound..."));
-	GAMEINSTANCE->Load_SoundFileFromFolderPath("../bin/Sound");
+	
 
 	lstrcpy(m_szLoadingText, TEXT("Wait for thread job done."));
 	GET_SINGLE(CGameManager)->Get_ClientThread()->Wait_JobDone();
