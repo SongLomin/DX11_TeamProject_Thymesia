@@ -205,6 +205,8 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 
 		if (!pParticleDesc->bEnable)
 		{
+			//m_iNumInstance = i;
+			//break;
 			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = _float4(0.f, 0.f, 0.f, 0.f);
 			continue;
 		}

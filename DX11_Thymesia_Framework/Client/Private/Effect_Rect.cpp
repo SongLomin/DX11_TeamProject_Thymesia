@@ -156,6 +156,10 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 
 void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
 {
+	/*sort(m_tParticleDescs.begin(), m_tParticleDescs.end(), [](PARTICLE_DESC& Left, PARTICLE_DESC& Right) {
+		return Left.bEnable < Right.bEnable;
+		});*/
+
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
