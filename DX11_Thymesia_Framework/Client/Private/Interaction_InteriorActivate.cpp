@@ -349,7 +349,6 @@ void CInteraction_InteriorActivate::Call_ActivateInterior()
 
 void CInteraction_InteriorActivate::OnDestroy()
 {
-    m_pDeco.lock()->Set_Dead();
 }
 
 void CInteraction_InteriorActivate::Free()

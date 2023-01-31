@@ -419,7 +419,11 @@ void CInteraction_Door::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
     m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
 
     //_float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
-    m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
+    m_pTransformCom.lock()->Rotation
+    (
+        XMVectorSet(0.f, 1.f, 0.f, 1.f),
+        m_fFirstRadian + m_fAddRadian
+    );
 
     if (m_fRotationtRadian <= fabs(m_fAddRadian))
     {
@@ -438,7 +442,11 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
     m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
 
     _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
-    m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fRotationtRadian * fDir)) - (m_fAddRadian)));
+    m_pTransformCom.lock()->Rotation
+    (
+        XMVectorSet(0.f, 1.f, 0.f, 1.f),
+        m_fFirstRadian + (m_fRotationtRadian * fDir) - m_fAddRadian
+    );
 
     if (m_fRotationtRadian <= fabs(m_fAddRadian))
     {
