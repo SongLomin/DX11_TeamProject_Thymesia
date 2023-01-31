@@ -185,10 +185,16 @@ void CMainApp::Tick(float fTimeDelta)
 
 		ShowCursor(m_bEnableConsole);
 		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+		weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
 		if (pTargetCamera.lock())
 		{
 			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
+		}
+
+		if (pPlayer.lock())
+		{
+			pPlayer.lock()->Set_Edit(m_bEnableConsole);
 		}
 	}
 //#endif // _DEBUG

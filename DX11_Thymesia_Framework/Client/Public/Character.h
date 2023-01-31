@@ -41,6 +41,8 @@ public:
         m_pStatus = pStatusCom;
 	}
 
+    void Set_Edit(const _bool In_IsEdit) { m_isEdit = In_IsEdit; }
+
     virtual void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
     _uint Get_AttackCollisionLayer() const {
         return (_uint)m_eAttackCollisionLayer;
