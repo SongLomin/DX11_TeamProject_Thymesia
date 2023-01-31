@@ -80,6 +80,7 @@ private:
     FDelegate<>                 CallBack_Activate;
 
 private:
+    virtual void OnDestroy() override;
     void Free();
 };
 

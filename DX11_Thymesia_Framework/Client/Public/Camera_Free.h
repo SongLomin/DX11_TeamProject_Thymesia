@@ -37,7 +37,8 @@ private:
 	const void ChangeCameraSpeed();
 
 private:
-	_int m_iCameraSpeed = 0;
+	_int		m_iCameraSpeed		= 0;
+	_float		m_fCameraTurnRatio	= 0.1f;
 #ifdef _DEBUG
 	TEXTINFO m_tCameraSpeedText;
 #endif // _DEBUG

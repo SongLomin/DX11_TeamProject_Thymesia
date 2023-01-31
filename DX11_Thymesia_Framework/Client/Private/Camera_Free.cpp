@@ -72,6 +72,7 @@ void  CCamera_Free::OnEventMessage(_uint iArg)
 		case EVENT_TYPE::ON_EDITDRAW :
 		{
 			ImGui::InputInt("Speed", &m_iCameraSpeed);
+			ImGui::InputFloat("Turn Ratio", &m_fCameraTurnRatio);
 		}
 		break;
 	}
@@ -108,9 +109,13 @@ const void CCamera_Free::ControlCamera
 	const _float& fTimeDelta
 )
 {
-	this->ChangeCameraSpeed();
-	this->MoveCamera_KeyInput(fTimeDelta);
-	this->MoveCamera_MouseInput(fTimeDelta);
+	ChangeCameraSpeed();
+
+	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
+	{
+		MoveCamera_KeyInput(fTimeDelta);
+		MoveCamera_MouseInput(fTimeDelta);
+	}
 }
 
 const void CCamera_Free::MoveCamera_KeyInput
@@ -140,14 +145,12 @@ const void CCamera_Free::MoveCamera_MouseInput
 
 	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
 	{
-		if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * 0.1f);
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * MouseMove * m_fCameraTurnRatio);
 	}
 
 	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 	{
-		if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * 0.1f);
+		m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * MouseMove * m_fCameraTurnRatio);
 	}
 
 }

@@ -989,9 +989,15 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_BigHand>();
 
 }
+void CCorvus::OnDestroy()
+{
+	__super::OnDestroy();
+
+	GAMEINSTANCE->Remove_Light(m_LightDesc.Get_LightIndex());
+	GAMEINSTANCE->Remove_Light(m_SpotLightDesc.Get_LightIndex());
+}
 void CCorvus::Free()
 {
-	int a = 0;
 }
 
 void CCorvus::Save_ClientComponentData()

@@ -348,6 +348,8 @@ void CMonster::OnDestroy()
 {
     __super::OnDestroy();
 
+    GAMEINSTANCE->Remove_Light(m_LightDesc.Get_LightIndex());
+
     for (auto& elem : m_pWeapons)
     {
         if (elem.lock())

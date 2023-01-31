@@ -72,7 +72,7 @@ private:
 
 private:
 
-	FDelegate< _float, _bool&> CallBack_LightEvent;
+	FDelegate<_float, _bool&> CallBack_LightEvent;
 
 private:
 	void TurnOn_Light(_float fTimeDelta, _bool& Out_End);
@@ -88,6 +88,7 @@ private:
 	virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
+	virtual void OnDestroy() override;
 	void Free();
 };
 

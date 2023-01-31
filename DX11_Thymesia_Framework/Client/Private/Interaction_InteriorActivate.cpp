@@ -153,13 +153,25 @@ void CInteraction_InteriorActivate::OnEventMessage(_uint iArg)
         }
         break;
 
-        static _int   iAnimIndex = 0;
-        static _float fAnimSpeed = 1.f;
+        case EVENT_TYPE::ON_EDITDRAW:
+        {       
+            static _int   iAnimIndex = 0;
+            static _float fAnimSpeed = 1.f;
 
-        if (ImGui::InputInt("AnimIndex", &iAnimIndex))
-            m_pModelCom.lock()->Set_CurrentAnimation(iAnimIndex);
-        if (ImGui::InputFloat("AnimSpeed", &fAnimSpeed))
-            m_pModelCom.lock()->Set_AnimationSpeed(fAnimSpeed);
+            if (ImGui::InputInt("AnimIndex", &iAnimIndex))
+                m_pModelCom.lock()->Set_CurrentAnimation(iAnimIndex);
+            if (ImGui::InputFloat("AnimSpeed", &fAnimSpeed))
+                m_pModelCom.lock()->Set_AnimationSpeed(fAnimSpeed);
+        }
+        break;
+
+        case EVENT_TYPE::ON_EDIT_DELETE:
+        {
+            if (m_pDeco.lock())
+                m_pDeco.lock()->Set_Dead();
+        }
+        break;
+
     }
 }
 
@@ -333,6 +345,11 @@ void CInteraction_InteriorActivate::Call_ActivateInterior()
 {
     GET_SINGLE(CGameManager)->Activate_Section(3000, EVENT_TYPE::ON_ENTER_SECTION);
     m_pColliderCom.lock()->Set_Enable(true);
+}
+
+void CInteraction_InteriorActivate::OnDestroy()
+{
+    m_pDeco.lock()->Set_Dead();
 }
 
 void CInteraction_InteriorActivate::Free()

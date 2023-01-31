@@ -238,7 +238,8 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EDIT_UDATE:
         {
-            /*m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());*/
+            XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 1.5f, 0.f, 0.f));
+            GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
             _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
             OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * m_fAisemyOffset;
@@ -305,6 +306,13 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 
             ImGui::Separator();
             ImGui::Text("");
+        }
+        break;
+
+        case EVENT_TYPE::ON_EDIT_DELETE:
+        {
+            if (m_pDeco.lock())
+                m_pDeco.lock()->Set_Dead();
         }
         break;
     }
@@ -745,6 +753,8 @@ void CInteraction_CheckPoint::OnDestroy()
 
     if (-1 != m_iUnUseEffectIndex)
         GET_SINGLE(CGameManager)->UnUse_EffectGroup("ChairEffect_Deactivate", m_iUnUseEffectIndex);
+
+    GAMEINSTANCE->Remove_Light(m_tLightDesc.Get_LightIndex());
 }
 
 void CInteraction_CheckPoint::Free()
