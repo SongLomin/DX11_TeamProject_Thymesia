@@ -184,36 +184,45 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
 	}
 
 	_uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
+	_flag BindTextureFlag;
+
+	static _bool Check[3] = { false, };
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		_bool bCheck = FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE));
+		BindTextureFlag = 0;
 
-		if (m_bDissolve)
+		if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
-			m_iPassIndex = 9;
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+
+			Check[0] = true;
+		}
+
+		if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+
+			Check[1] = true;
+		}
+
+		if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+
+			Check[2] = true;
 		}
 		else
 		{
-			if (m_bNonCulling)
-			{
-				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-					m_iPassIndex = 4;
-				else
-					m_iPassIndex = 5;
-			}
-			else
-			{
-				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-					m_iPassIndex = 0;
-				else
-					m_iPassIndex = 1;
-			}
+			BEGIN_PERFROMANCE_CHECK(m_pInstanceModelCom.lock()->Get_ModelKey());
+			END_PERFROMANCE_CHECK(m_pInstanceModelCom.lock()->Get_ModelKey());
 		}
 
-		if (m_bViewPhysXInfo && m_iColliderType != 0)
+		m_iPassIndex = Preset::ShaderPass::ModelInstancingShaderPass(BindTextureFlag, false, m_bNonCulling, false);
+
+		if (0 > m_iPassIndex)
 		{
-			m_iPassIndex = 3;
+			continue;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);

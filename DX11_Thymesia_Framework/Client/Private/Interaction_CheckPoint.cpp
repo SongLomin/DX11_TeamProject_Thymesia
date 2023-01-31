@@ -238,11 +238,11 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EDIT_UDATE:
         {
-            /*m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+            /*m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());*/
 
             _matrix OffsetWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
             OffsetWorldMatrix.r[3] += XMVector3Normalize(OffsetWorldMatrix.r[0]) * m_fAisemyOffset;
-            m_pAnimTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);*/
+            m_pChairTransfromCom.lock()->Set_WorldMatrix(OffsetWorldMatrix);
         }
         break;
 

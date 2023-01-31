@@ -161,7 +161,7 @@ void CInteraction_CastleGate::OnEventMessage(_uint iArg)
         {
             SetUp_Invisibility();
 
-            ImGui::DragFloat3("Gear Offset", &m_vOffset.x);
+            ImGui::DragFloat3("Offset", &m_vOffset.x);
 
             static const char* szKeyTag[] =
             {

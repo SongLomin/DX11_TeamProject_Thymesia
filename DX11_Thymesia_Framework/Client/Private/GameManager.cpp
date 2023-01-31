@@ -17,7 +17,7 @@ void CGameManager::Initialize()
 {
 	m_pClientThread = CSubThread_Pool::Create(8);
 
-	_bool Init_State = false;
+	_bool Init_State = true;
 
 	GAMEINSTANCE->Set_SSAA_Enable(Init_State);
 	GAMEINSTANCE->Set_HBAO_Enable(Init_State);

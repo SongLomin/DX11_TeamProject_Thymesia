@@ -436,7 +436,6 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
         Out.vORM     = AddTex_ORM  * vFilter + Out.vORM * (1.f - vFilter);
         vPixelNorm   = AddTex_Norm.xyz;
     }
-    //물쉐이더 테스트 용 
           
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
     vPixelNorm = vPixelNorm * 2.f - 1.f;
@@ -448,7 +447,8 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     Out.vShaderFlag = g_vShaderFlag;
     
     Out.vExtractBloom = 0.f;
-    Out.vRimLight = 0.f;
+    Out.vRimLight     = 0.f;
+
     return Out;
 }
 
