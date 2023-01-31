@@ -21,12 +21,12 @@ HRESULT CCorvus_DefaultSaber::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("CorvusDefaultSaber", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
-	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
-	PHYSXCOLLIDERDESC PhysXDesc;
-	Preset::PhysXColliderDesc::PlayerWeaponSetting(PhysXDesc, m_pTransformCom.lock());
+	//m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+	//PHYSXCOLLIDERDESC PhysXDesc;
+	//Preset::PhysXColliderDesc::PlayerWeaponSetting(PhysXDesc, m_pTransformCom.lock());
 
-	m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
-	m_pPhysXColliderCom.lock()->CreatePhysXActor(PhysXDesc);
+	//m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+	//m_pPhysXColliderCom.lock()->CreatePhysXActor(PhysXDesc);
 	
 
 	return S_OK;
@@ -36,7 +36,7 @@ HRESULT CCorvus_DefaultSaber::Start()
 {
 	__super::Start();
 
-	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+	//m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 
 	return S_OK;
 }
@@ -54,7 +54,7 @@ void CCorvus_DefaultSaber::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+	//m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CCorvus_DefaultSaber::Render(ID3D11DeviceContext* pDeviceContext)

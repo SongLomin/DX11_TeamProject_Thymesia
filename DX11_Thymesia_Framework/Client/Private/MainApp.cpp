@@ -140,10 +140,10 @@ HRESULT CMainApp::Initialize()
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	m_pDeveloperConsole = CDeveloperConsole_Manager::Create_Instance();
 	m_pDeveloperConsole->Initialize();
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
@@ -177,7 +177,7 @@ void CMainApp::Tick(float fTimeDelta)
 	}
 #endif // _EFFECT_TOOL_
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
 	{
 		m_bEnableConsole = !m_bEnableConsole;
@@ -191,7 +191,7 @@ void CMainApp::Tick(float fTimeDelta)
 			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
 		}
 	}
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	if (nullptr == GAMEINSTANCE)
 		return;
@@ -204,7 +204,7 @@ void CMainApp::Tick(float fTimeDelta)
 	GET_SINGLE(CUIManager)->Tick(fTimeDelta);
 
 	
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
 	{
 		m_pDeveloperConsole->Tick(fTimeDelta);
@@ -214,7 +214,7 @@ void CMainApp::Tick(float fTimeDelta)
 	{
 		m_pDeveloperConsole->Background_Tick(fTimeDelta);
 	}
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
 	GET_SINGLE(CUIManager)->LateTick(fTimeDelta);
@@ -249,12 +249,12 @@ HRESULT CMainApp::Render()
 	GAMEINSTANCE->Draw_RenderGroup();
 	GAMEINSTANCE->Render_Engine();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
 	{
 		m_pDeveloperConsole->Render(DEVICECONTEXT);
 	}
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	GAMEINSTANCE->Present();
 	return S_OK;

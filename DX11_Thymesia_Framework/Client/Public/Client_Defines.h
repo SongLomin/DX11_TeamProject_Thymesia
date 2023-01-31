@@ -8,7 +8,7 @@
 //#define _BAKE_MIPMAPS_define
 #define _USE_THREAD_
 #define _144HZ_
-#define _RENDER_FPS_
+//#define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
 #define _OVERDRIVE_LOAD_EFFECTGROUP_
@@ -29,7 +29,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   
