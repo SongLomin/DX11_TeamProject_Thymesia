@@ -886,7 +886,7 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
     vector vRayDir = normalize(reflect(vViewDir, vNormal));
     vRayDir.w = 0.f;
     
-    float fStep = 0.01f;
+    float fStep = 0.005f;
     
     matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
     
@@ -894,7 +894,7 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
     int iStepDistance = 0;
     float2 vRayPixelPos = (float2) 0;
   
-    for (iStepDistance = 1; iStepDistance < 50; ++iStepDistance)
+    for (iStepDistance = 1; iStepDistance < 70; ++iStepDistance)
     {
         vector vDirStep = vRayDir * fStep * iStepDistance;
         vDirStep.w = 0.f;
