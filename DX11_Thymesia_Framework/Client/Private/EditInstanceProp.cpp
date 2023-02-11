@@ -105,7 +105,7 @@ void CEditInstanceProp::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _DEBUG
 	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), GET_SINGLE(CWindow_Optimization_Dev)->Get_InstancingCullingRatio());
 #else
-	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 1.f);
+	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 0.6f);
 #endif // _DEBUG
 
 	m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);

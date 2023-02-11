@@ -4,6 +4,7 @@
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include <imgui_impl_win32.h>
+#include "MainApp.h"
 
 
 IMPLEMENT_SINGLETON(CWindow_TextureEditerView)
@@ -40,7 +41,18 @@ HRESULT CWindow_TextureEditerView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;
+    
+    if (ImGui::Button("Bake All MipMaps Recursive"))
+    {
+        CMainApp::Bake_MipMaps();
+    }
 
+    if (ImGui::Button("Bake MipMap"))
+    {
+        GAMEINSTANCE->Generate_MipMap(szTextureFilePath.c_str());
+    }
+
+    
     if (ImGui::Button("Open Texture"))
     {
         Open_Texture();

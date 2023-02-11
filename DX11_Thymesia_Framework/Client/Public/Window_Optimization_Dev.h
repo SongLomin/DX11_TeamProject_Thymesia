@@ -22,7 +22,7 @@ private:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
-	_float m_fInstancingCullingRatio = 1.f;
+	_float m_fInstancingCullingRatio = 0.5f;
 
 private:
 	void Free();

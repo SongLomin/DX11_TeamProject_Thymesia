@@ -135,6 +135,13 @@ HRESULT CWindow_ModelContantView::Render(ID3D11DeviceContext* pDeviceContext)
         m_bPlay = !m_bPlay;
     }
 
+    if (!m_pModelData)
+    {
+        __super::End();
+		return S_OK;
+    }
+        
+
 
     if (ImGui::CollapsingHeader("Mesh Containers"))
     {

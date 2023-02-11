@@ -123,7 +123,7 @@ _int CSound_Manager::Pause(CHANNELID eID)
 
 _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition)
 {
-	map<_hashcode, SOUND_DESC>::iterator iter;
+	unordered_map<_hashcode, SOUND_DESC>::iterator iter;
 
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
 
@@ -155,7 +155,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _f
 
 _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition, const _float In_fMinDistance, const _float In_fMaxDistance)
 {
-	map<_hashcode, SOUND_DESC>::iterator iter;
+	unordered_map<_hashcode, SOUND_DESC>::iterator iter;
 
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
 
@@ -216,7 +216,7 @@ _uint CSound_Manager::PlaySound3D(const string& In_szSoundKey, _float _vol, _fve
 
 _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol)
 {
-	map<_hashcode, SOUND_DESC>::iterator iter;
+	unordered_map<_hashcode, SOUND_DESC>::iterator iter;
 
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
 
@@ -242,7 +242,7 @@ _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _f
 
 _uint CSound_Manager::PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop)
 {
-	map<_hashcode, SOUND_DESC>::iterator iter;
+	unordered_map<_hashcode, SOUND_DESC>::iterator iter;
 
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
 
@@ -303,7 +303,7 @@ void CSound_Manager::PlayBGM(const string& In_szSoundKey, _float _vol, const _fl
 {
 	return;
 
-	map<_hashcode, SOUND_DESC>::iterator iter;
+	unordered_map<_hashcode, SOUND_DESC>::iterator iter;
 
 	_hashcode HashFromKey = hash<string>()(In_szSoundKey);
 
@@ -375,7 +375,7 @@ void CSound_Manager::Update_BGMVolume(_float fTimeDelta)
 
 		case 1:
 		{
-			map<_hashcode, SOUND_DESC>::iterator iter;
+			unordered_map<_hashcode, SOUND_DESC>::iterator iter;
 			_hashcode HashFromKey = hash<string>()(m_szNextBGM);
 
 			iter = m_mapSound.find(HashFromKey);

@@ -68,7 +68,7 @@ IMPLEMENT_SINGLETON(CComponent_Manager);
 
 void CComponent_Manager::Receive_EngineEventMessage(weak_ptr<CGameObject> pGameObject, const ENGINE_EVENT_TYPE In_eEngineEvent)
 {
-	map<_hashcode, list<shared_ptr<CComponent>>> pComponents = pGameObject.lock()->Get_AllComponents();
+	unordered_map<_hashcode, list<shared_ptr<CComponent>>> pComponents = pGameObject.lock()->Get_AllComponents();
 
 	for (auto& Com_List : pComponents)
 	{

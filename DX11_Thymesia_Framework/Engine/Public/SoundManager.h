@@ -92,7 +92,7 @@ private: /* BGM Fader */
 
 private:
 	// 사운드 리소스 정보를 갖는 객체 
-	map<_hashcode, SOUND_DESC> m_mapSound;
+	unordered_map<_hashcode, SOUND_DESC> m_mapSound;
 	// FMOD_CHANNEL : 재생하고 있는 사운드를 관리할 객체 
 	CHANNEL_DESC m_pChannelArr[MAX_CHANNEL];
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 

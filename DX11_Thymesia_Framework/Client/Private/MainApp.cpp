@@ -182,6 +182,7 @@ void CMainApp::Tick(float fTimeDelta)
 	{
 		m_bEnableConsole = !m_bEnableConsole;
 		m_pDeveloperConsole->OnEnableConsole(m_bEnableConsole);
+		
 
 		ShowCursor(m_bEnableConsole);
 		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();

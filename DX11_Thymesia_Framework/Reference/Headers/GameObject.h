@@ -51,7 +51,7 @@ public:
 	virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) { return false; }
 
 public:
-	const map<_hashcode, list<shared_ptr<CComponent>>>& Get_AllComponents() const;
+	const unordered_map<_hashcode, list<shared_ptr<CComponent>>>& Get_AllComponents() const;
 
 public:
 	virtual void Write_Json(json& Out_Json) override;
@@ -88,7 +88,7 @@ protected:
 
 
 protected:
-	map<_hashcode, list<shared_ptr<CComponent>>>	m_pComponents;
+	unordered_map<_hashcode, list<shared_ptr<CComponent>>>	m_pComponents;
 	weak_ptr<CTransform>							m_pTransformCom;
 
 public:

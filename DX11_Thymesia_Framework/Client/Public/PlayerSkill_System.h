@@ -81,12 +81,12 @@ private:
 	weak_ptr<CSkill_Base>		m_SkillList[(_uint)SOCKET_TYPE::SOCKET_END];
 	weak_ptr<CStolenSkill>		m_pStealSkill;
 
-	typedef map<MONSTERTYPE, weak_ptr<CSkill_Base>> MONSTERSKILLMAP;
-	map<MONSTERTYPE, weak_ptr<CSkill_Base>>	m_MonsterSkillMap;
+	typedef unordered_map<MONSTERTYPE, weak_ptr<CSkill_Base>> MONSTERSKILLMAP;
+	unordered_map<MONSTERTYPE, weak_ptr<CSkill_Base>>	m_MonsterSkillMap;
 
 
-	typedef map<SKILL_NAME, weak_ptr<CSkill_Base>> SKILLNAMEMAP;
-	map<SKILL_NAME, weak_ptr<CSkill_Base>>	m_SkillNameMap;
+	typedef unordered_map<SKILL_NAME, weak_ptr<CSkill_Base>> SKILLNAMEMAP;
+	unordered_map<SKILL_NAME, weak_ptr<CSkill_Base>>	m_SkillNameMap;
 
 public:
 	void Free();

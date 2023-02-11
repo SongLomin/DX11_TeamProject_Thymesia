@@ -44,7 +44,7 @@ private:
 private:
     _int   m_iContainerIndex = 0;
 
-    map<_hashcode, list<weak_ptr<CWeapon>>> m_pDebugWeapons;
+    unordered_map<_hashcode, list<weak_ptr<CWeapon>>> m_pDebugWeapons;
     list<weak_ptr<CWeapon>>                 m_pModelWeapons;
 
 private: /* For. NvCloth */
