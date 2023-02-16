@@ -106,34 +106,34 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 
 	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Pre_Tick");
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_TICK));
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_TICK));
+	m_pThread_Manager->Wait_JobDone();
 	END_UPDATE_PERFROMANCE_CHECK("Thread_Pre_Tick");
 
-	GET_SINGLE(CLevel_Manager)->Tick(fTimeDelta);
+	m_pLevel_Manager->Tick(fTimeDelta);
 	
 
 	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Tick");
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
+	m_pThread_Manager->Wait_JobDone();
 	END_UPDATE_PERFROMANCE_CHECK("Thread_Tick");
 
 	BEGIN_UPDATE_PERFROMANCE_CHECK("Tick");
-	GET_SINGLE(CObject_Manager)->Tick(fTimeDelta);
+	m_pObject_Manager->Tick(fTimeDelta);
 	END_UPDATE_PERFROMANCE_CHECK("Tick");
 
 	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_PreLateTick");
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_LATETICK));
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_LATETICK));
+	m_pThread_Manager->Wait_JobDone();
 	END_UPDATE_PERFROMANCE_CHECK("Thread_PreLateTick");
 
 	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_LateTick");
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::LATETICK));
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::LATETICK));
+	m_pThread_Manager->Wait_JobDone();
 	END_UPDATE_PERFROMANCE_CHECK("Thread_LateTick");
 
 	BEGIN_UPDATE_PERFROMANCE_CHECK("LateTick");
-	GET_SINGLE(CObject_Manager)->LateTick(fTimeDelta);
+	m_pObject_Manager->LateTick(fTimeDelta);
 	END_UPDATE_PERFROMANCE_CHECK("LateTick");
 
 
