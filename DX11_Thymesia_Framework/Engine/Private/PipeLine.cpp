@@ -9,7 +9,6 @@ void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix TransformState)
 	if (D3DTS_VIEW == eState)
 	{
 		m_PreViewMatrix = m_TransformState[D3DTS_VIEW];
-		_vector PreCamQuaternion = XMQuaternionRotationMatrix(XMLoadFloat4x4(&m_TransformState[eState]));
 	}
 	XMStoreFloat4x4(&m_TransformState[eState], TransformState);
 }

@@ -421,30 +421,18 @@ void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
 	if (FAILED(CJson_Utility::Load_Json(In_szFilePath, In_Json)))
 	{
 		DEBUG_ASSERT;
+		return;
 	}
 
 	shared_ptr<CSubThread_Pool> pSubThreads = CSubThread_Pool::Create(GET_SINGLE(CThread_Manager)->Get_NumThread());
 
-	//list<future<void>>	Threads;
-
-	for (_int i = 0; i < 2; ++i)
+	for (_int i = 0; i < (_int)MEMORY_TYPE::MEMORY_END; ++i)
 	{
 		pSubThreads->Enqueue_Job(bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Model"], (MEMORY_TYPE)i);
 
 		pSubThreads->Enqueue_Job(bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Textures"], (MEMORY_TYPE)i);
-
-		/*Load_ModelResourcesFromJson(In_Json[i]["Model"], (MEMORY_TYPE)i);
-		Load_TextureResourcesFromJson(In_Json[i]["Textures"], (MEMORY_TYPE)i);*/
-
-		/*Threads.push_back(async(launch::async,
-			bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
-			In_Json[i]["Model"], (MEMORY_TYPE)i));
-
-		Threads.push_back(async(launch::async,
-			bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
-			In_Json[i]["Textures"], (MEMORY_TYPE)i));*/
 	}
 
 

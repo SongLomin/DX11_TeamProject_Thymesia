@@ -105,51 +105,31 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 #endif // _WRITE_TO_UPDATE_PERFROMANCE_LOG_
 
 
-	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Pre_Tick");
 	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_TICK));
 	m_pThread_Manager->Wait_JobDone();
-	END_UPDATE_PERFROMANCE_CHECK("Thread_Pre_Tick");
 
 	m_pLevel_Manager->Tick(fTimeDelta);
 	
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_Tick");
+	
 	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
 	m_pThread_Manager->Wait_JobDone();
-	END_UPDATE_PERFROMANCE_CHECK("Thread_Tick");
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("Tick");
+	
 	m_pObject_Manager->Tick(fTimeDelta);
-	END_UPDATE_PERFROMANCE_CHECK("Tick");
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_PreLateTick");
+	
 	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_LATETICK));
 	m_pThread_Manager->Wait_JobDone();
-	END_UPDATE_PERFROMANCE_CHECK("Thread_PreLateTick");
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("Thread_LateTick");
+	
 	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::LATETICK));
 	m_pThread_Manager->Wait_JobDone();
-	END_UPDATE_PERFROMANCE_CHECK("Thread_LateTick");
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("LateTick");
+	
 	m_pObject_Manager->LateTick(fTimeDelta);
-	END_UPDATE_PERFROMANCE_CHECK("LateTick");
 
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("Collision_Tick");
+	
 	m_pCollision_Manager->Tick();
-	END_UPDATE_PERFROMANCE_CHECK("Collision_Tick");
-	//GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
-	//m_pTimer_Manager->Tick();
-
-	BEGIN_UPDATE_PERFROMANCE_CHECK("NvCloth_Tick");
-
+	
 #ifdef _SIMULATION_NVCLOTH_
 	m_pNvCloth_Manager->Tick(fTimeDelta);
 #endif // _SIMULATION_NVCLOTH_
-
-	END_UPDATE_PERFROMANCE_CHECK("NvCloth_Tick");
 
 	m_pPipeLine->Tick();
 

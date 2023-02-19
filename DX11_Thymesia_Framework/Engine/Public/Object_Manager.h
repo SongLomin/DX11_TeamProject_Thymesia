@@ -105,10 +105,8 @@ public: /* For Template Function */
 
 		if (m_iNumLevels <= iLevelIndex)
 		{
-			//잘못된 레벨 인덱스
-#ifdef _DEBUG
 			assert(false);
-#endif
+			
 			return weak_ptr<T>();
 		}
 
@@ -123,12 +121,12 @@ public: /* For Template Function */
 			pPrototype = (*iter).second;
 		}
 
-		if (0 == pPrototype.lock())
+		if (!pPrototype.lock())
 		{
 			pPrototype = Add_Prototype<T>();
 		}
 
-		if (0 == pPrototype.use_count())
+		if (!pPrototype.lock())
 			return weak_ptr<T>();
 
 		shared_ptr<CGameObject> pCloneObject = pPrototype.lock()->Clone(iLevelIndex, pArg);

@@ -663,51 +663,14 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
 {
     PS_OUT Out = (PS_OUT)0;
 	
-    //float fPower = 2.2f;
-    //
-    //Out.vColor = float4(1.f, 1.f, 1.f, 1.f);
-	
-    //float4 vHDRColor    = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
-    //float4 vBloomColor  = g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
-    //float4 vBloomOriTex = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV.xy);
-     //vBloomOriTex.a = 1.f;
-
-    //float4 vBloom = pow(pow(abs(vBloomColor), fPower) + pow(abs(vBloomOriTex), fPower), 1.f / fPower);
-   
-
-    //Out.vColor = pow(abs(vHDRColor), fPower);
-    //vBloom = pow(abs(vBloom), fPower);
-
-    //Out.vColor += vBloom;
-
-    // Out.vColor = pow(abs(Out.vColor), 1 / fPower);
-
-
-    // ---------------------------------------------------------------------------------
-	//const float gamma = 2.2;
-    //   float4 BlurTexture = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
-    //   float3 hdrColor = BlurTexture.rgb;
-    //   float fStrength = 0.2f;
-
-    //// exposure tone mapping
-    //float3 mapped = float3(1.f, 1.f, 1.f) - exp(-hdrColor * fStrength);
-    //// gamma correction 
-    //mapped = pow(mapped, (1.0 / gamma));
-
-    //   Out.vColor = float4(mapped, BlurTexture.a);
-
-    // ------------------------------------------------------------------------------------
     vector vShaderFlag = g_ShaderFlagTexture.Sample(DefaultSampler, In.vTexUV.xy);
     vector vBloomColor = 0;
    
-    if(0.5f < vShaderFlag.b)
-        vBloomColor= g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    clip(vShaderFlag.b - 0.5f);
     
+   
+    vBloomColor = g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
     Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy) + vBloomColor;
-
-    // Out.vColor *= g_vIntensity;
-
-    //Out.vColor.a = vBloomOriTex.a;
 
     return Out;
 }

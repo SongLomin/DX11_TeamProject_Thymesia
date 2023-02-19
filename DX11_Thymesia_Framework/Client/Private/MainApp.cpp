@@ -235,6 +235,7 @@ void CMainApp::Tick(float fTimeDelta)
 		m_TextInfo_FPS.szText = m_szFPS;
 		m_fTimeAcc = 0.f;
 		m_iNumRender = 0;
+		m_TextInfo_FPS.vScale = _float2(8.f, 8.f);
 	}
 
 	++m_iNumRender;

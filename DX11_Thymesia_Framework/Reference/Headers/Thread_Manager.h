@@ -76,6 +76,7 @@ public:
 		using return_type = typename std::invoke_result_t<F, Args...>;
 		auto job = std::make_shared<std::packaged_task<return_type()>>(
 			std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+		
 		std::future<return_type> job_result_future = job->get_future();
 		{
 			std::lock_guard<std::mutex> lock(m_job_q_);
