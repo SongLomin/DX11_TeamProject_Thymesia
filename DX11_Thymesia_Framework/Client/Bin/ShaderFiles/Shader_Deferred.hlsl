@@ -668,7 +668,6 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
    
     clip(vShaderFlag.b - 0.5f);
     
-   
     vBloomColor = g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
     Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy) + vBloomColor;
 

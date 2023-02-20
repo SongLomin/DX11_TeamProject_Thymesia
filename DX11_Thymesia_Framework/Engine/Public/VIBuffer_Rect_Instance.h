@@ -32,7 +32,7 @@ private:
     _uint						m_iInstanceStride = 0;
     _uint						m_iNumInstance = 0;
 
-    std::mutex m_job_q_;
+    std::mutex m_JobMutex;
 
 private:
     void Free();

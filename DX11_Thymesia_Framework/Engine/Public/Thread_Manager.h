@@ -19,7 +19,7 @@ private:
 	};
 
 public:
-	_uint Get_NumThread() const { return num_threads_; }
+	_uint Get_NumThread() const { return m_iNumThreads; }
 
 public:
 	void Initialize(const _uint In_iNumLayer);
@@ -44,15 +44,15 @@ public:
 
 private:
 	// 총 Worker 쓰레드의 개수.
-	size_t num_threads_;
+	size_t m_iNumThreads;
 	// Worker 쓰레드를 보관하는 벡터.
-	vector<thread> worker_threads_;
+	vector<thread> m_Worker_Threads;
 	// 할일들을 보관하는 job 큐.
-	queue<function<void()>> jobs_;
+	queue<function<void()>> m_Jobs;
 	// 위의 job 큐를 위한 cv 와 m.
-	condition_variable cv_job_q_;
-	mutex m_job_q_;
-	vector<_bool> worker_jopdones;
+	condition_variable m_CV;
+	mutex m_JobMutex;
+	vector<_bool> m_WorkerJopdones;
 
 
 	// 모든 쓰레드 종료
@@ -79,10 +79,10 @@ public:
 		
 		std::future<return_type> job_result_future = job->get_future();
 		{
-			std::lock_guard<std::mutex> lock(m_job_q_);
-			jobs_.push([job]() { (*job)(); });
+			std::lock_guard<std::mutex> lock(m_JobMutex);
+			m_Jobs.push([job]() { (*job)(); });
 		}
-		cv_job_q_.notify_one();
+		m_CV.notify_one();
 
 		return job_result_future;
 	}

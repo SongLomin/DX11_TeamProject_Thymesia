@@ -12,7 +12,7 @@ IMPLEMENT_SINGLETON(CRender_Manager)
 
 ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	if (m_pBeforeRenderSleepContexts.empty())
 	{
@@ -29,7 +29,7 @@ ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 
 void CRender_Manager::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext)
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	m_pBeforeRenderContexts.emplace_back(pDeviceContext);
 
@@ -38,7 +38,7 @@ void CRender_Manager::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceCo
 
 void CRender_Manager::Execute_BeforeRenderCommandList()
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	ID3D11CommandList* pCommandList = nullptr;
 
@@ -2523,7 +2523,7 @@ void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
 
 void CRender_Manager::OnDestroy()
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	m_pShader->OnDestroy();
 	m_pVIBuffer->OnDestroy();

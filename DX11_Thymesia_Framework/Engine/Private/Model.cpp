@@ -79,7 +79,7 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 
 _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset, _fmatrix In_OffsetMatrix)
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	if (m_isBlend)
 	{
@@ -533,7 +533,7 @@ void CModel::Reset_Model()
 
 void CModel::Reset_DeltaBonePositions()
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	m_DeltaBonePositions.clear();
 

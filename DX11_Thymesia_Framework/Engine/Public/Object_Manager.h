@@ -64,7 +64,7 @@ private:
 private:
 	list<RESERVED_OBEJECT_DESC>								m_ReservedObjects;
 
-	mutex m_job_q_;
+	mutex m_JobMutex;
 
 public:
 	FDelegate<> CallBack_Start;
@@ -98,7 +98,7 @@ public: /* For Template Function */
 	template <typename T>
 	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
 	{
-		// std::lock_guard<std::mutex> lock(m_job_q_);
+		// std::lock_guard<std::mutex> lock(m_JobMutex);
 		std::unique_lock<std::recursive_mutex> lock(ObjectManager_Mutex);
 
 		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
