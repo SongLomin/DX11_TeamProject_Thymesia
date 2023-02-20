@@ -23,7 +23,7 @@ void CCollision_Manager::Initialize(const _uint& In_iNumLayer)
 
 void CCollision_Manager::Tick()
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	Update_ReservedColliderList();
 	Remove_DeadCollision();
@@ -48,7 +48,7 @@ void CCollision_Manager::Tick()
 
 void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollider> In_pCollider)
 {
-	//std::unique_lock<std::mutex> lock(m_job_q_);
+	//std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	list<weak_ptr<CCollider>>::iterator iter = find_if(m_pColliderList[In_iLayer].begin(),
 		m_pColliderList[In_iLayer].end(),

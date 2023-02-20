@@ -190,12 +190,12 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		{
 			if (!m_bFirstFoot)
 			{
-				if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+				/*if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
 				{
 					Rotation_InputToLookDir();
 					Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
 					return true;
-				}
+				}*/
 			}
 			else
 				m_bFirstFoot = false;

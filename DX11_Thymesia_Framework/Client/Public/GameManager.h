@@ -43,7 +43,7 @@ class CGameManager :
     DECLARE_SINGLETON(CGameManager)
 
 public:
-    void Initialize();
+    void Initialize(_uint iNumThread);
 
 public:
     void LateTick(_float fTimeDelta);
@@ -247,7 +247,7 @@ private: /* For. SubThread Pool  */
 
 private:
     list<weak_ptr<CGameObject>> m_pLayers[(_uint)OBJECT_LAYER::LAYER_END];
-    map<_hashcode, list<weak_ptr<CEffectGroup>>> m_pEffectGroups;
+    unordered_map<_hashcode, list<weak_ptr<CEffectGroup>>> m_pEffectGroups;
     weak_ptr<CCamera_Target>    m_pTargetCamera;
     weak_ptr<CCamera>           m_pCurrentCamera;
     weak_ptr<CPlayer>           m_pCurrentPlayer;
@@ -255,9 +255,9 @@ private:
     GAME_STATE                  m_eCurrentState = GAME_STATE::STATE_END;
 
 private:
-    map<_hashcode, map<_int, map<_int, KEYFRAME_EVENT>>>         m_KeyEvents;
-    typedef map<_int, KEYFRAME_EVENT>                            KEYEVENT;
-    typedef map<_int, KEYEVENT>                                  ANIM_MAP;
+    typedef unordered_map<_int, KEYFRAME_EVENT>                             KEYEVENT;
+    typedef unordered_map<_int, KEYEVENT>                                   ANIM_MAP;
+    unordered_map<_hashcode, ANIM_MAP>                                      m_KeyEvents;
 
 private:
     typedef map<_int, list<weak_ptr<CGameObject>>>         SECTION_OBJ;

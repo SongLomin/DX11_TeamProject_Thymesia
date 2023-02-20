@@ -161,7 +161,7 @@ public:
 	FDelegate<_uint>						CallBack_AnimationEnd;
 
 private:
-	mutex m_job_q_;
+	mutex m_JobMutex;
 
 private:
 	virtual void Write_Json(json& Out_Json) override;

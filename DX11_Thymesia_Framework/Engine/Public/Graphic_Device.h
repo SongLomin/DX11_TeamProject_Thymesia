@@ -39,7 +39,7 @@ public:
 
 
 private:	
-	std::mutex m_job_q_;
+	std::mutex m_JobMutex;
 	/* 메모리 할당. (정점버퍼, 인덱스버퍼, 텍스쳐로드) */
 	ID3D11Device*			m_pDevice;
 

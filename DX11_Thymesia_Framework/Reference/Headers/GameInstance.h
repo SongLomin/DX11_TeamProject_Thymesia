@@ -36,7 +36,7 @@ class ENGINE_DLL CGameInstance final : public CBase
 	DECLARE_SINGLETON(CGameInstance)
 
 public: /* 엔진 라이브럴를 사용할때 필요한 초기화 과정으르 거칠거야. */
-	HRESULT Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uint iNumTimeScales,  _uint iNumCollsionLayer, const GRAPHICDESC& GraphicDesc);
+	HRESULT Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uint iNumTimeScales,  _uint iNumCollsionLayer, const GRAPHICDESC& GraphicDesc, _uint iNumThread);
 	HRESULT Tick_Engine(_float fTimeDelta);
 	HRESULT Render_Engine();
 	HRESULT Clear(_uint iLevelID);

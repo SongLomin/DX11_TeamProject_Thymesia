@@ -52,12 +52,12 @@ protected:
 	void Free();
 
 private:
-	map<_hashcode, class shared_ptr<CGameObject>>			m_Prototypes;
-	typedef map<_hashcode, class shared_ptr<CGameObject>>	PROTOTYPES;
+	unordered_map<_hashcode, class shared_ptr<CGameObject>>			m_Prototypes;
+	typedef unordered_map<_hashcode, class shared_ptr<CGameObject>>	PROTOTYPES;
 
 private:
-	vector<map<_hashcode, list<shared_ptr<CGameObject>>>>				m_pLayers;
-	typedef map<_hashcode, list<shared_ptr<CGameObject>>>	LAYERS;
+	vector<unordered_map<_hashcode, list<shared_ptr<CGameObject>>>>				m_pLayers;
+	typedef unordered_map<_hashcode, list<shared_ptr<CGameObject>>>	LAYERS;
 
 	_uint					m_iNumLevels = 0;
 

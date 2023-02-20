@@ -23,6 +23,7 @@ CMainApp::~CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
+	
 	ShowCursor(false);
 
 	GRAPHICDESC		GraphicDesc;
@@ -50,10 +51,15 @@ HRESULT CMainApp::Initialize()
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_CHOOSE_SELECT, 1.f);
 	GET_SINGLE(CUIManager)->Add_SoundType(UI_SOUND_TYPE::SOUND_EFFECT, 1.f);
 
-	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
+	SYSTEM_INFO sysinfo;
+	GetSystemInfo(&sysinfo);
+	DWORD dwNumberOfProcessors = sysinfo.dwNumberOfProcessors;
+	//DWORD dwNumberOfProcessors = 1;
+
+	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc, (_uint)dwNumberOfProcessors)))
 		return E_FAIL;	
 
-	CGameManager::Create_Instance()->Initialize();
+	CGameManager::Create_Instance()->Initialize((_uint)dwNumberOfProcessors);
 
 	GAMEINSTANCE->Reserve_Event((_uint)EVENT_TYPE::EVENT_END);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK , (_uint)COLLISION_LAYER::MONSTER);
@@ -134,10 +140,10 @@ HRESULT CMainApp::Initialize()
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	m_pDeveloperConsole = CDeveloperConsole_Manager::Create_Instance();
 	m_pDeveloperConsole->Initialize();
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
@@ -171,21 +177,28 @@ void CMainApp::Tick(float fTimeDelta)
 	}
 #endif // _EFFECT_TOOL_
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
 	{
 		m_bEnableConsole = !m_bEnableConsole;
 		m_pDeveloperConsole->OnEnableConsole(m_bEnableConsole);
+		
 
 		ShowCursor(m_bEnableConsole);
 		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+		weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
 		if (pTargetCamera.lock())
 		{
 			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
 		}
+
+		if (pPlayer.lock())
+		{
+			pPlayer.lock()->Set_Edit(m_bEnableConsole);
+		}
 	}
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	if (nullptr == GAMEINSTANCE)
 		return;
@@ -198,7 +211,7 @@ void CMainApp::Tick(float fTimeDelta)
 	GET_SINGLE(CUIManager)->Tick(fTimeDelta);
 
 	
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
 	{
 		m_pDeveloperConsole->Tick(fTimeDelta);
@@ -208,7 +221,7 @@ void CMainApp::Tick(float fTimeDelta)
 	{
 		m_pDeveloperConsole->Background_Tick(fTimeDelta);
 	}
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
 	GET_SINGLE(CUIManager)->LateTick(fTimeDelta);
@@ -222,6 +235,7 @@ void CMainApp::Tick(float fTimeDelta)
 		m_TextInfo_FPS.szText = m_szFPS;
 		m_fTimeAcc = 0.f;
 		m_iNumRender = 0;
+		m_TextInfo_FPS.vScale = _float2(8.f, 8.f);
 	}
 
 	++m_iNumRender;
@@ -243,12 +257,12 @@ HRESULT CMainApp::Render()
 	GAMEINSTANCE->Draw_RenderGroup();
 	GAMEINSTANCE->Render_Engine();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
 	{
 		m_pDeveloperConsole->Render(DEVICECONTEXT);
 	}
-#endif // _DEBUG
+//#endif // _DEBUG
 
 	GAMEINSTANCE->Present();
 	return S_OK;

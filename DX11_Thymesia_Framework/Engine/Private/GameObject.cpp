@@ -84,7 +84,7 @@ HRESULT CGameObject::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In
 	return S_OK;
 }
 
-const map<_hashcode, list<shared_ptr<CComponent>>>& CGameObject::Get_AllComponents() const
+const unordered_map<_hashcode, list<shared_ptr<CComponent>>>& CGameObject::Get_AllComponents() const
 {
 	return m_pComponents;
 }

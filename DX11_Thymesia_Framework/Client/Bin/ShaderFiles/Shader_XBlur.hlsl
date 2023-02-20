@@ -46,7 +46,7 @@ static const float BlurWeights[13] =
     0.002216f,
 };
 
-float WidePixelKernel[55] =
+static const float WidePixelKernel[55] =
 {
 -27,
 -26,
@@ -402,11 +402,8 @@ PS_OUT PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
 	color.rgb /= Index;
 
 	Out.vBlurTexture = color;
-
-	if (Out.vBlurTexture.a < 0.01f)
-	{
-		discard;
-	}
+	
+    clip(Out.vBlurTexture.a - 0.01f);
 
 	return Out;
 }
@@ -438,10 +435,7 @@ PS_OUT PS_MAIN_BLURY_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
 
 	Out.vBlurTexture = color;
 
-	if (Out.vBlurTexture.a < 0.01f)
-	{
-		discard;
-	}
+    clip(Out.vBlurTexture.a - 0.01f);
 
 	return Out;
 }

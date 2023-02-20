@@ -19,6 +19,9 @@ private:
 	};
 
 public:
+	_uint Get_NumThread() const { return num_threads_; }
+
+public:
 	void Initialize(const _uint In_iNumLayer);
 	void Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject);
 	void Bind_GameObjectWorks(const _flag In_ThreadTypeFlag);
@@ -73,6 +76,7 @@ public:
 		using return_type = typename std::invoke_result_t<F, Args...>;
 		auto job = std::make_shared<std::packaged_task<return_type()>>(
 			std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+		
 		std::future<return_type> job_result_future = job->get_future();
 		{
 			std::lock_guard<std::mutex> lock(m_job_q_);

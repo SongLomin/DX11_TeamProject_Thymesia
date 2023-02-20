@@ -40,7 +40,7 @@ private:
 	CollisionCallBack* m_pCollisionCallBack = nullptr;
 	CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack = nullptr;
 
-	std::mutex m_job_q_;
+	std::mutex m_JobMutex;
 
 public:
 	void Free();

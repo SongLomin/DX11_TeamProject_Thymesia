@@ -163,6 +163,8 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_CAMERA, CCamera_Free);
 
     ADD_PROTOTYPE(PROTOTYPE_NEVIMESH, CEditNaviMesh);
+
+#undef ADD_PROTOTYPE(Layer, ClassType)
 }
 
 

@@ -10,13 +10,12 @@
 #pragma warning (disable : 33010)
 
 #define HZ_144 0.006944f
-#define NUM_ENGINE_THREAD 20
 
 #define _SIMULATION_NVCLOTH_
 #define _USE_PERFROMANCE_LOG_
 
 #ifdef _USE_PERFROMANCE_LOG_
-//#define _WRITE_TO_UPDATE_PERFROMANCE_LOG_
+#define _WRITE_TO_UPDATE_PERFROMANCE_LOG_
 #endif // _USE_PERFROMANCE_LOG_
 
 

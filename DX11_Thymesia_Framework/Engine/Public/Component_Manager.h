@@ -30,8 +30,8 @@ public:
 
 private:
 
-	map<_hashcode, shared_ptr<CComponent>>				m_pPrototypes;
-	typedef map<_hashcode, shared_ptr<CComponent>>		PROTOTYPES;
+	unordered_map<_hashcode, shared_ptr<CComponent>>				m_pPrototypes;
+	typedef unordered_map<_hashcode, shared_ptr<CComponent>>		PROTOTYPES;
 
 private:
 	//class CComponent* Find_Components(const _tchar* pPrototypeTag);

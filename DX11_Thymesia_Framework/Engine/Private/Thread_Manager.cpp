@@ -6,15 +6,15 @@ IMPLEMENT_SINGLETON(CThread_Manager)
 
 void CThread_Manager::Initialize(const _uint In_iNumLayer)
 {
-	num_threads_ = In_iNumLayer;
+	m_iNumThreads = In_iNumLayer;
 	stop_all = false;
 
-	worker_jopdones = vector<_bool>(In_iNumLayer, false);
+	m_WorkerJopdones = vector<_bool>(In_iNumLayer, false);
 
-	worker_threads_.reserve(num_threads_);
-	for (size_t i = 0; i < num_threads_; ++i) {
+	m_Worker_Threads.reserve(m_iNumThreads);
+	for (size_t i = 0; i < m_iNumThreads; ++i) {
 		//_bool* bCheck_JobDone = DBG_NEW _bool(true);
-		worker_threads_.emplace_back([this, i]() { this->WorkerThread(i); });
+		m_Worker_Threads.emplace_back([this, i]() { this->WorkerThread(i); });
 	}
 }
 
@@ -64,23 +64,23 @@ void CThread_Manager::WorkerThread(_int iIndex)
 	_bool bWait = false;
 
 	while (true) {
-		std::unique_lock<std::mutex> lock(m_job_q_);
-		cv_job_q_.wait(lock, [this, iIndex, &bWait]() {
-			bWait = !this->jobs_.empty() || stop_all;
-			worker_jopdones[iIndex] = !bWait;
+		std::unique_lock<std::mutex> lock(m_JobMutex);
+		m_CV.wait(lock, [this, iIndex, &bWait]() {
+			bWait = !this->m_Jobs.empty() || stop_all;
+			m_WorkerJopdones[iIndex] = !bWait;
 			return bWait;
 			});
-		if (stop_all && this->jobs_.empty()) {
-			worker_jopdones[iIndex] = true;
+		if (stop_all && this->m_Jobs.empty()) {
+			m_WorkerJopdones[iIndex] = true;
 			return;
 		}
 
-		worker_jopdones[iIndex] = false;
+		m_WorkerJopdones[iIndex] = false;
 		// 맨 앞의 job 을 뺀다.
-		std::function<void()> job = std::move(jobs_.front());
-		jobs_.pop();
+		std::function<void()> job = std::move(m_Jobs.front());
+		m_Jobs.pop();
 		lock.unlock();
-		worker_jopdones[iIndex] = false;
+		m_WorkerJopdones[iIndex] = false;
 		// 해당 job 을 수행한다 :)
 		job();
 	}
@@ -88,9 +88,9 @@ void CThread_Manager::WorkerThread(_int iIndex)
 
 _bool CThread_Manager::Check_JobDone()
 {
-	cv_job_q_.notify_all();
+	m_CV.notify_all();
 
-	for (auto& elem : worker_jopdones)
+	for (auto& elem : m_WorkerJopdones)
 	{
 		if (!(elem))
 			return false;
@@ -134,14 +134,14 @@ void CThread_Manager::OnDestroy()
 	
 
 	stop_all = true;
-	cv_job_q_.notify_all();
+	m_CV.notify_all();
 
 
 
 	Wait_JobDone("Wait For Release Thread. ");
 
 
-	for (auto& t : worker_threads_) {
+	for (auto& t : m_Worker_Threads) {
 		t.join();
 	}
 
@@ -153,12 +153,12 @@ void CThread_Manager::OnDestroy()
 		Clear_EngineThreads((THREAD_TYPE)i);
 	}
 
-	/*for (auto& elem : worker_jopdones)
+	/*for (auto& elem : m_WorkerJopdones)
 	{
 		Safe_Delete(elem);
 	}*/
 
-	worker_jopdones.clear();
+	m_WorkerJopdones.clear();
 
 }
 

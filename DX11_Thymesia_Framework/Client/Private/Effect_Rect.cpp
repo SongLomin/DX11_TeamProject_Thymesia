@@ -156,6 +156,10 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 
 void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
 {
+	/*sort(m_tParticleDescs.begin(), m_tParticleDescs.end(), [](PARTICLE_DESC& Left, PARTICLE_DESC& Right) {
+		return Left.bEnable < Right.bEnable;
+		});*/
+
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
@@ -1042,14 +1046,21 @@ __host__ void CEffect_Rect::Play(_float fTimeDelta)
 	}
 	else
 	{
-		_int iThread_Size = m_tEffectParticleDesc.iMaxInstance / g_iThread_Scale;
-		_int iextra = m_tEffectParticleDesc.iMaxInstance % g_iThread_Scale;
+		_int iJob_Size = m_tEffectParticleDesc.iMaxInstance / g_iThread_Scale;
+		_int iExtra = m_tEffectParticleDesc.iMaxInstance % g_iThread_Scale;
 
-		for (_int i = 0; i < iThread_Size; ++i)
+
+		_int iStartIndex;
+		_int iEndIndex;
+		for (_int i = 0; i < iJob_Size; ++i)
 		{
+			iStartIndex = i * g_iThread_Scale;
+			iEndIndex = (i + 1) * g_iThread_Scale + ((i + 1) == iJob_Size ? iExtra : 0);
+
 			// 마지막 쓰레드면 여분까지 전부 플레이한다.
-			GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CEffect_Rect::Play_WithIndex, this, 
-				i * g_iThread_Scale, (i + 1) * g_iThread_Scale + ((i + 1) == iThread_Size ? iextra : 0), BoneMatrix, fTimeDelta, iTickCount));
+			GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CEffect_Rect::Play_WithIndex, 
+				this, iStartIndex, iEndIndex,
+				BoneMatrix, fTimeDelta, iTickCount));
 		}
 	}
 

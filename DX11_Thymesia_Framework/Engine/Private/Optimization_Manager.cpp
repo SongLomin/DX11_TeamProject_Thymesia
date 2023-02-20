@@ -155,8 +155,5 @@ void COptimization_Manager::Clear_Logs()
 
 void COptimization_Manager::Free()
 {
-#ifdef _DEBUG
 	Write_Log();
-#endif // _DEBUG
-
 }

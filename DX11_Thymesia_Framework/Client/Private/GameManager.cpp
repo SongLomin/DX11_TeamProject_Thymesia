@@ -13,9 +13,9 @@ static std::mutex On_LayerMessage_Mutex;
 
 IMPLEMENT_SINGLETON(CGameManager)
 
-void CGameManager::Initialize()
+void CGameManager::Initialize(_uint iNumThread)
 {
-	m_pClientThread = CSubThread_Pool::Create(8);
+	m_pClientThread = CSubThread_Pool::Create(iNumThread);
 
 	_bool Init_State = true;
 

@@ -103,7 +103,7 @@ void CVIBuffer_Rect_Instance::Start()
 
 void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	if (0 == In_Size)
 		return;
@@ -177,7 +177,7 @@ HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs, ID3D11DeviceContext* pDeviceContext, const _bool In_UseParentMatrix)
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
@@ -205,6 +205,8 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 
 		if (!pParticleDesc->bEnable)
 		{
+			//m_iNumInstance = i;
+			//break;
 			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = _float4(0.f, 0.f, 0.f, 0.f);
 			continue;
 		}

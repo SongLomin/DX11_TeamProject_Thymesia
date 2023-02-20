@@ -315,7 +315,7 @@ private:
 	vector<ID3D11DeviceContext*> m_pBeforeRenderContexts;
 	vector<ID3D11DeviceContext*> m_pBeforeRenderSleepContexts;
 
-	std::mutex m_job_q_;
+	std::mutex m_JobMutex;
 
 public:
 	virtual void OnDestroy() override;

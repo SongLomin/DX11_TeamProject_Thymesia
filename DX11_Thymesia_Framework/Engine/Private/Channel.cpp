@@ -182,7 +182,7 @@ void CChannel::Blend_PreTransformationMatrices(_float fBlendTime, _float In_fRat
 	XMStoreFloat4(&Key.vRotation, vRotation);
 	XMStoreFloat3(&Key.vPosition, vPosition);
 
-	if (m_pBoneNode.lock().get())
+	if (m_pBoneNode.lock())
 		m_pBoneNode.lock()->Blend_Animation(Key, In_fRatio);
 }
 

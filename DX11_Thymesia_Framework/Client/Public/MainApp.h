@@ -44,8 +44,10 @@ private:
 	//HRESULT SetUp_RenderState();
 	//HRESULT SetUp_SamplerState();
 	HRESULT Open_Level(LEVEL eLevelID);
-	void	Bake_MipMaps();
-	void	Bake_MipMaps_Recursive(const filesystem::path& In_Path);
+
+public:
+	static void	Bake_MipMaps();
+	static void	Bake_MipMaps_Recursive(const filesystem::path& In_Path);
 
 
 public:

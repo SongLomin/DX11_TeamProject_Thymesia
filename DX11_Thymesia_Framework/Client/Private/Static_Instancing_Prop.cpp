@@ -88,7 +88,7 @@ void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), GET_SINGLE(CWindow_Optimization_Dev)->Get_InstancingCullingRatio());
 #else
 	if (m_pDynamicColliderComs.empty())
-		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 1.f);
+		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 0.5f);
 #endif // _DEBUG
 	
 
@@ -271,9 +271,9 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		_vector vMin, vMax, vCenter;
 		vMin    = XMLoadFloat3(&tInfo.vMin);
 		vMax    = XMLoadFloat3(&tInfo.vMax);
-		vCenter = (vMin + vMax) / 2.f;
-
-		vOffsetRange   = XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin));
+		vOffsetRange = (vMax - vMin) / 2.f;
+		vCenter = vOffsetRange + vMin;
+		
 		vOffsetRange  *= XMLoadFloat3(&Desc.vScale);
 		Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
 		XMStoreFloat3(&Desc.vCenter, vCenter);

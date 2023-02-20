@@ -75,7 +75,7 @@ public:
 private:
 	json m_KeyEventJson;
 	weak_ptr<CModel>		m_pCurrentModelCom;
-	map<_int, list<string>>	m_KeyEventEffectGroupNames;
+	unordered_map<_int, list<string>>	m_KeyEventEffectGroupNames;
 
 public:
 	void Free();

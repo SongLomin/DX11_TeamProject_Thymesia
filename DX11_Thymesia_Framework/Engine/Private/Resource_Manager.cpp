@@ -3,6 +3,7 @@
 #include "ModelData.h"
 #include "Shader.h"
 #include "SubThread_Pool.h"
+#include "SoundManager.h"
 
 IMPLEMENT_SINGLETON(CResource_Manager)
 
@@ -297,151 +298,7 @@ HRESULT CResource_Manager::Generate_MipMap(const _tchar* pTextureFilePath, const
 			{
 				DEBUG_ASSERT;
 			}
-
-			//hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath, pResource.GetAddressOf(), pSRV.GetAddressOf());
-			//
-			//ComPtr<ID3D11Texture2D> pTexture2D;
-			//HRESULT Casting_hr = pResource->QueryInterface(IID_ID3D11Texture2D, &pTexture2D);
-			//if (FAILED(Casting_hr)) {
-			//	DEBUG_ASSERT;
-			//}
-
-			//ComPtr<ID3D11Texture2D> tex;
-			//D3D11_TEXTURE2D_DESC texDesc;
-			//pTexture2D->GetDesc(&texDesc);
-			//texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-			//texDesc.CPUAccessFlags = 0;
-			//texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			//texDesc.MipLevels = 7;
-			//texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-			//texDesc.Usage = D3D11_USAGE_DEFAULT;
-			//
-			//if (SUCCEEDED(DEVICE->CreateTexture2D(&texDesc, nullptr, &tex)))
-			//{
-			//	ComPtr<ID3D11Texture2D> stagTex; // create Staging texture_____________
-			//	D3D11_TEXTURE2D_DESC stagDesc;
-			//	pTexture2D->GetDesc(&stagDesc);
-			//	stagDesc.ArraySize = 1;
-			//	stagDesc.BindFlags = 0;
-			//	stagDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-			//	stagDesc.MipLevels = 1;
-			//	stagDesc.MiscFlags = 0;
-			//	stagDesc.Usage = D3D11_USAGE_STAGING;
-
-			//	if (SUCCEEDED(DEVICE->CreateTexture2D(&stagDesc, nullptr, &stagTex)))
-			//	{
-			//		DEVICECONTEXT->CopyResource(stagTex.Get(), pTexture2D.Get());
-			//		D3D11_MAPPED_SUBRESOURCE mapped;
-			//		DEVICECONTEXT->Map(stagTex.Get(), 0, D3D11_MAP_READ, 0, &mapped);
-			//		UINT* arr = DBG_NEW UINT[(mapped.RowPitch / (float)sizeof(UINT)) * stagDesc.Height];
-			//		ZeroMemory(arr, mapped.RowPitch * stagDesc.Height);
-			//		CopyMemory(arr, mapped.pData, mapped.RowPitch * stagDesc.Height);
-			//		DEVICECONTEXT->Unmap(stagTex.Get(), 0);
-
-
-			//		DEVICECONTEXT->UpdateSubresource(tex.Get(), 0, &CD3D11_BOX(0, 0, 0, stagDesc.Width, stagDesc.Height, 1), arr, mapped.RowPitch, mapped.DepthPitch);
-
-			//		// create SRV of mipmap texture______________________________________________________________
-			//		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-			//		srvDesc.Format = texDesc.Format;
-			//		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-			//		srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
-			//		srvDesc.Texture2D.MostDetailedMip = 0;
-
-			//		ComPtr<ID3D11ShaderResourceView> pMipMapSRV;
-
-			//		hr = DEVICE->CreateShaderResourceView(tex.Get(), &srvDesc, pMipMapSRV.GetAddressOf());
-
-			//		if (FAILED(hr))
-			//		{
-			//			DEBUG_ASSERT;
-			//		}
-
-			//		DEVICECONTEXT->GenerateMips(pMipMapSRV.Get());
-
-			//		ComPtr<ID3D11Resource> pNewMipMapResource;
-
-			//		pMipMapSRV->GetResource(pNewMipMapResource.GetAddressOf());
-
-			//		ComPtr<ID3D11Texture2D> pNewMipMapTexture;
-			//		Casting_hr = pNewMipMapResource->QueryInterface(IID_ID3D11Texture2D, &pNewMipMapTexture);
-			//		if (FAILED(Casting_hr)) {
-			//			DEBUG_ASSERT;
-			//		}
-
-			//		//pMipMapSRV->GetResource();
-
-			//		szNewDDSPath = szTextureFilePath;
-			//		szNewDDSPath = szNewDDSPath.substr(0, szNewDDSPath.size() - 4);
-			//		szNewDDSPath += TEXT(".dds");
-
-			//		hr = SaveDDSTextureToFile(DEVICECONTEXT, pNewMipMapTexture.Get(), szNewDDSPath.c_str());
-
-			//		if (FAILED(hr))
-			//		{
-			//			DEBUG_ASSERT;
-			//		}
-
-			//		pNewMipMapTexture.Reset();
-			//		pNewMipMapResource.Reset();
-			//		pMipMapSRV.Reset();
-			//		stagTex.Reset();
-			//		tex.Reset();
-			//		pSRV.Reset();
-			//		pResource.Reset();
-			//		pTexture2D.Reset();
-
-			//		Safe_Delete_Array(arr);
-			//	}
-			//}
-
-			// copy image data into mipmap texture_______________________________________________________________
-
-
-			////ID3D11Texture2D* image = TextureMgr::Instance()->GetTexture("grass.jpg"); // it is just my custom function that read texture from file and return resource of it.
-			//pResource;
-			//ID3D11Texture2D* tex = nullptr; // FIRST generate mipmap texture________________________________
-			//D3D11_TEXTURE2D_DESC texDesc;
-			//image->GetDesc(&texDesc);
-			//texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-			//texDesc.CPUAccessFlags = 0;
-			//texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			//texDesc.MipLevels = 7;
-			//texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
-			//texDesc.Usage = D3D11_USAGE_DEFAULT;
-			//r_assert(device->CreateTexture2D(&texDesc, nullptr, &tex));
-
-			//ID3D11Texture2D* stagTex; // create Staging texture_____________________________________
-			//D3D11_TEXTURE2D_DESC stagDesc;
-			//image->GetDesc(&stagDesc);
-			//stagDesc.ArraySize = 1;
-			//stagDesc.BindFlags = 0;
-			//stagDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-			//stagDesc.MipLevels = 1;
-			//stagDesc.MiscFlags = 0;
-			//stagDesc.Usage = D3D11_USAGE_STAGING;
-			//r_assert(device->CreateTexture2D(&stagDesc, nullptr, &stagTex));
-
-			//// read from image_________________________________________________________________________
-			//graphic->DContext()->CopyResource(stagTex, image);
-			//D3D11_MAPPED_SUBRESOURCE mapped;
-			//r_assert(graphic->DContext()->Map(stagTex, 0, D3D11_MAP_READ, 0, &mapped));
-			//UINT* arr = new UINT[(mapped.RowPitch / (float)sizeof(UINT)) * stagDesc.Height];
-			//ZeroMemory(arr, mapped.RowPitch * stagDesc.Height);
-			//CopyMemory(arr, mapped.pData, mapped.RowPitch * stagDesc.Height);
-			//graphic->DContext()->Unmap(stagTex, 0);
-
-			//// copy image data into mipmap texture_______________________________________________________________
-			//graphic->DContext()->UpdateSubresource(tex, 0, &CD3D11_BOX(0, 0, 0, stagDesc.Width, stagDesc.Height, 1), arr, mapped.RowPitch, mapped.DepthPitch);
-
-			//// create SRV of mipmap texture______________________________________________________________
-			//D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
-			//srvDesc.Format = texDesc.Format;
-			//srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-			//srvDesc.Texture2D.MipLevels = texDesc.MipLevels;
-			//srvDesc.Texture2D.MostDetailedMip = 0;
-			//r_assert(device->CreateShaderResourceView(tex, &srvDesc, &srv));
-			//graphic->DContext()->GenerateMips(srv);
+			
 		}
 
 		if (FAILED(hr))
@@ -544,6 +401,13 @@ HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 
 void CResource_Manager::Write_JsonUsingResource(const char* In_szFilePath)
 {
+	if (m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC].find("Sounds") != m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC].end())
+	{
+		m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC]["Sounds"].clear();
+	}
+	
+	GET_SINGLE(CSound_Manager)->Write_JsonUsingResource(m_UsingResourceJson[(_uint)MEMORY_TYPE::MEMORY_STATIC]);
+
 	if (FAILED(CJson_Utility::Save_Json(In_szFilePath, m_UsingResourceJson)))
 	{
 		DEBUG_ASSERT;
@@ -557,31 +421,26 @@ void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
 	if (FAILED(CJson_Utility::Load_Json(In_szFilePath, In_Json)))
 	{
 		DEBUG_ASSERT;
+		return;
 	}
 
-	shared_ptr<CSubThread_Pool> pSubThreads = CSubThread_Pool::Create(NUM_ENGINE_THREAD);
+	shared_ptr<CSubThread_Pool> pSubThreads = CSubThread_Pool::Create(GET_SINGLE(CThread_Manager)->Get_NumThread());
 
-	//list<future<void>>	Threads;
-
-	for (_int i = 0; i < 2; ++i)
+	for (_int i = 0; i < (_int)MEMORY_TYPE::MEMORY_END; ++i)
 	{
 		pSubThreads->Enqueue_Job(bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Model"], (MEMORY_TYPE)i);
 
 		pSubThreads->Enqueue_Job(bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Textures"], (MEMORY_TYPE)i);
-
-		/*Load_ModelResourcesFromJson(In_Json[i]["Model"], (MEMORY_TYPE)i);
-		Load_TextureResourcesFromJson(In_Json[i]["Textures"], (MEMORY_TYPE)i);*/
-
-		/*Threads.push_back(async(launch::async,
-			bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
-			In_Json[i]["Model"], (MEMORY_TYPE)i));
-
-		Threads.push_back(async(launch::async,
-			bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
-			In_Json[i]["Textures"], (MEMORY_TYPE)i));*/
 	}
+
+
+	for (auto& elem : In_Json[(_uint)MEMORY_TYPE::MEMORY_STATIC]["Sounds"])
+	{
+		GET_SINGLE(CSound_Manager)->LoadSoundFile(elem);
+	}
+	
 
 	//list<future<void>>	Threads;
 

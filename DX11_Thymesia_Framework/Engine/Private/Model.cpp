@@ -61,8 +61,6 @@ void CModel::Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex, _float
 	{
 		m_pBoneNodes[i].lock()->Bake_PreKeyFrame();
 	}
-
-
 }
 
 void CModel::Set_AnimationSpeed(_float fAnimationSpeed)
@@ -81,9 +79,7 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 
 _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset, _fmatrix In_OffsetMatrix)
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
-
-
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	if (m_isBlend)
 	{
@@ -95,7 +91,7 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 
 	weak_ptr<CBoneNode> CurrentBoneNode = Find_BoneNode(In_szBoneName);
 
-	if (!CurrentBoneNode.lock().get())
+	if (!CurrentBoneNode.lock())
 		assert(false);
 
 	string szBoneNameToString = In_szBoneName;
@@ -107,8 +103,6 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 
 		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
 		m_DeltaBonePositions.emplace(HashKey, CurrentPosition);
-
-		lock.unlock();
 
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
 	}
@@ -124,27 +118,15 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
 		m_DeltaBonePositions.emplace(HashKey, CurrentPosition);
 
-		lock.unlock();
-
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
 	}
 
 	vPreBonePosition = XMLoadFloat4(&(*iter).second);
 	vCurrentBonePosition = CurrentBoneNode.lock()->Get_TransformationMatrix().r[3];
 
-	/*if (strcmp(In_szBoneName, "root") == 0)
-	{
-		_vector DebugPos = vCurrentBonePosition;
-		DebugPos = XMVector3TransformCoord(DebugPos, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
-		cout << "Delta Pos: ";
-		Print_Vector(DebugPos);
-	}*/
-
 	vCurrentBonePosition -= vPreBonePosition;
 
 	XMStoreFloat4(&(*iter).second, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
-
-	//vCurrentBonePosition.m128_f32[0] = 0.f;
 
 	if (In_bUseOffset)
 	{
@@ -154,8 +136,6 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 	{
 		vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
 	}
-
-
 
 	_byte RootNodeFlags = CurrentBoneNode.lock()->Get_RootNodeFlags();
 
@@ -173,10 +153,6 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 	{
 		vCurrentBonePosition.m128_f32[2] = 0.f;
 	}
-
-	//Print_Vector(vCurrentBonePosition);
-
-	lock.unlock();
 
 	return vCurrentBonePosition;
 }
@@ -557,7 +533,7 @@ void CModel::Reset_Model()
 
 void CModel::Reset_DeltaBonePositions()
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	m_DeltaBonePositions.clear();
 
