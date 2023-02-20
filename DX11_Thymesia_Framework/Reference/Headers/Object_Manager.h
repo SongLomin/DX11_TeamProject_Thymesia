@@ -64,7 +64,7 @@ private:
 private:
 	list<RESERVED_OBEJECT_DESC>								m_ReservedObjects;
 
-	mutex m_job_q_;
+	mutex m_JobMutex;
 
 public:
 	FDelegate<> CallBack_Start;
@@ -98,17 +98,15 @@ public: /* For Template Function */
 	template <typename T>
 	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
 	{
-		// std::lock_guard<std::mutex> lock(m_job_q_);
+		// std::lock_guard<std::mutex> lock(m_JobMutex);
 		std::unique_lock<std::recursive_mutex> lock(ObjectManager_Mutex);
 
 		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
 
 		if (m_iNumLevels <= iLevelIndex)
 		{
-			//잘못된 레벨 인덱스
-#ifdef _DEBUG
 			assert(false);
-#endif
+			
 			return weak_ptr<T>();
 		}
 
@@ -123,12 +121,12 @@ public: /* For Template Function */
 			pPrototype = (*iter).second;
 		}
 
-		if (0 == pPrototype.lock())
+		if (!pPrototype.lock())
 		{
 			pPrototype = Add_Prototype<T>();
 		}
 
-		if (0 == pPrototype.use_count())
+		if (!pPrototype.lock())
 			return weak_ptr<T>();
 
 		shared_ptr<CGameObject> pCloneObject = pPrototype.lock()->Clone(iLevelIndex, pArg);

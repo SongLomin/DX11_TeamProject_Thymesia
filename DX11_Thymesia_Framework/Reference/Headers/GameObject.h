@@ -63,9 +63,9 @@ public:
 	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
 
 public:
-	virtual void PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider) {};
-	virtual void PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider) {};
-	virtual void PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void OnPhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void OnPhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void OnPhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider) {};
 
 protected:
 	virtual void OnDestroy() override;

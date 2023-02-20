@@ -967,7 +967,7 @@ void CPhysXCollider::End_CollisionCheck()
 void CPhysXCollider::PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider)
 {
 	CallBack_CollisionEnter(pOtherCollider);
-	m_pOwner.lock()->PhysXCollisionEnter(pOtherCollider);
+	m_pOwner.lock()->OnPhysXCollisionEnter(pOtherCollider);
 
 	cout << "Shape is entering trigger volume\n";
 }
@@ -975,13 +975,13 @@ void CPhysXCollider::PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider
 void CPhysXCollider::PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider)
 {
 	CallBack_CollisionStay(pOtherCollider);
-	m_pOwner.lock()->PhysXCollisionStay(pOtherCollider);
+	m_pOwner.lock()->OnPhysXCollisionStay(pOtherCollider);
 }
 
 void CPhysXCollider::PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider)
 {
 	CallBack_CollisionExit(pOtherCollider);
-	m_pOwner.lock()->PhysXCollisionExit(pOtherCollider);
+	m_pOwner.lock()->OnPhysXCollisionExit(pOtherCollider);
 
 	cout << "Shape is Exit trigger volume\n";
 
