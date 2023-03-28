@@ -123,8 +123,8 @@ public: /* For.Timer_Manager */
 	HRESULT Add_TimerEvent(_uint _iEventNum, weak_ptr<CBase> _Instance, _float _fTime, _bool _bLoop = false, _bool _bUseTimeScale = false, _bool _bAlwaysCall = false);
 	_float Compute_Timer(_uint eTimer);
 
-	_float Get_TimeScale(_uint In_iIndex);
-	void Set_TimeScale(_uint In_iIndex, _float In_fTimeScale);
+	_float Get_TimeScale(_uint In_In_iIndex);
+	void Set_TimeScale(_uint In_In_iIndex, _float In_fTimeScale);
 
 public: /* For.Render_Manager */
 	HRESULT Add_RenderGroup(RENDERGROUP	eGroup, weak_ptr<CGameObject> pGameObject);
@@ -230,16 +230,16 @@ public: /* For.Font_Manager */
 	
 public: /* For.Event_Manager */
 	void					Reserve_Event(_uint iMaxIndex);
-	FDelegate<void*>&		Get_Event(_uint iIndex);
+	FDelegate<void*>&		Get_Event(_uint In_iIndex);
 
 public: /* For.Collision_Manager */
 	void Check_Group(const _uint& In_iLeftLayer, const _uint& In_iRightLayer);
 
 public: /* For.Light_Manager */
-	const LIGHTDESC& Get_LightDesc(_uint iIndex) const;
+	const LIGHTDESC& Get_LightDesc(_uint In_iIndex) const;
 	void Set_LightDesc(const LIGHTDESC& LightDesc);
 	const LIGHTDESC& Add_Light(const LIGHTDESC& LightDesc);
-	_bool Remove_Light(const _uint& iIndex);
+	_bool Remove_Light(const _uint& In_iIndex);
 	void Clear_Lights();
 
 public: /* For.Frustum */
@@ -253,9 +253,9 @@ public: /* For.Sound_Manager */
 	void Update_VolumeScale(const _float In_VolumeScale);
 	void Update_BGMVolumeScale(const _float In_VolumeScale);
 	_int  Pause(CHANNELID eID);
-	_uint PlaySound3D(const string& In_szSoundKey, _uint _iIndex, _float _vol, _fvector In_WorldPosition);
+	_uint PlaySound3D(const string& In_szSoundKey, _uint _In_iIndex, _float _vol, _fvector In_WorldPosition);
 	_uint PlaySound3D(const string& In_szSoundKey, _float _vol, _fvector In_WorldPosition, const _float In_fMinDistance = Sound_Min_Distance, const _float In_fMaxDistance = Sound_Max_Distance);
-	_uint PlaySound2D(const string& In_szSoundKey, _uint _iIndex, _float _vol);
+	_uint PlaySound2D(const string& In_szSoundKey, _uint _In_iIndex, _float _vol);
 	_uint PlaySound2D(const string& In_szSoundKey, _float _vol, const _bool isLoop = false);
 	void PlayBGM(const string& In_szSoundKey, _float _vol, const _float In_fFadeSound = 0.f);
 	void StopBGM();
@@ -277,7 +277,7 @@ public: /* For.PhysX_Manager */
 
 	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
 	weak_ptr<CPhysXController>			Find_PhysXController(const _uint In_iPhysXControllerIndex);
-	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
+	_uint			Get_PhysXFilterGroup(const _uint In_In_iIndex);
 
 public: /* For. Thread_Manager */
 	/*template <class F, class... Args>

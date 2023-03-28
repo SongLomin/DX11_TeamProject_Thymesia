@@ -77,14 +77,13 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 	m_Animations[m_iCurrentAnimationIndex].lock()->Set_StartAnimationKey(iKeyIndex);
 }
 
-_vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset, _fmatrix In_OffsetMatrix)
+_vector CModel::Get_DeltaBonePosition(
+	const char* In_szBoneName, const _bool In_bUseOffset, _fmatrix In_OffsetMatrix)
 {
 	std::unique_lock<std::mutex> lock(m_JobMutex);
 
 	if (m_isBlend)
-	{
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	}
 
 	_vector vCurrentBonePosition;
 	_vector vPreBonePosition;
@@ -101,7 +100,8 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 	{
 		_float4 CurrentPosition;
 
-		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
+		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->
+			Get_TransformationMatrix().r[3]);
 		m_DeltaBonePositions.emplace(HashKey, CurrentPosition);
 
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);

@@ -131,7 +131,7 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 
 void CChannel::Blend_PreTransformationMatrices(_float fBlendTime, _float In_fRatio)
 {
-	if (!m_pBoneNode.lock().get())
+	if (!m_pBoneNode.lock())
 		return;
 
 	KEYFRAME Key;

@@ -8,3 +8,4 @@ namespace Preset
 		void* VergSetting(_uint& Out_Count);
 	}
 }
+

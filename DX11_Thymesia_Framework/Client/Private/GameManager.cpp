@@ -575,9 +575,6 @@ void CGameManager::Unbind_KeyEvent(const string& In_szModelName, weak_ptr<CModel
 void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom,
 	const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer)
 {
-	// string szModelName = In_ModelCom.lock()->Get_ModelKey();
-
-
 	_hashcode szModelNameToHash = hash<string>()(In_szKeyEventName);
 
 	auto KeyEvent_Iter = m_KeyEvents.find(szModelNameToHash);
@@ -630,7 +627,8 @@ void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_p
 	{
 		_int iRandom = rand() % Key_iter->second.RandomSounds.size();
 
-		GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, Key_iter->second.RandomSounds[iRandom].fVolume * fSoundScale, In_TransformCom.lock()->Get_Position());
+		GAMEINSTANCE->PlaySound3D(Key_iter->second.RandomSounds[iRandom].szSoundFileName, 
+			Key_iter->second.RandomSounds[iRandom].fVolume * fSoundScale, In_TransformCom.lock()->Get_Position());
 
 	}
 }

@@ -6763,5 +6763,6 @@
     <None Include="..\Public\Update_Particle.cuh">
       <Filter>02. GameObject\08. Effect\00. Effect_Rect\00. Update_Particle</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

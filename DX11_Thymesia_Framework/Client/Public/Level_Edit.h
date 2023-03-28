@@ -6,6 +6,7 @@
 BEGIN(Client)
 
 class CImGui_Manager;
+class CCorvus;
 
 class CLevel_Edit final : public CClientLevel
 {
@@ -22,6 +23,7 @@ public:
 
 private:
 	shared_ptr<CImGui_Manager> m_pImGui_Manager;
+
 #ifdef _RENDER_FPS_
 	_float	m_fTimeAcc = 0.f;
 	_uint	m_iNumRender = 0;

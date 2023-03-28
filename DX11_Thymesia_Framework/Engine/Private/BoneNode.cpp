@@ -11,19 +11,16 @@ _matrix CBoneNode::Get_CombinedMatrix() const
 
 	if ((_byte)ROOTNODE_FLAG::X & m_RootNodeFlags)
 	{
-		// ÀÌµ¿ °ª »©³ÂÀ¸´Ï 0Ã³¸®.
 		TempCombinedTransformationMatrix.r[3].m128_f32[0] = 0.f;	
 	}
 
 	if ((_byte)ROOTNODE_FLAG::Y & m_RootNodeFlags)
 	{
-		// ÀÌµ¿ °ª »©³ÂÀ¸´Ï 0Ã³¸®.
 		TempCombinedTransformationMatrix.r[3].m128_f32[1] = 0.f;
 	}
 
 	if ((_byte)ROOTNODE_FLAG::Z & m_RootNodeFlags)
 	{
-		// ÀÌµ¿ °ª »©³ÂÀ¸´Ï 0Ã³¸®.
 		TempCombinedTransformationMatrix.r[3].m128_f32[2] = 0.f;
 	}
 
@@ -95,17 +92,19 @@ void CBoneNode::Bake_PreKeyFrame()
 
 void CBoneNode::Blend_Animation(const KEYFRAME& tCurKey, _float fRatio)
 {
-
 	_vector			vScale, vRotation, vPosition;
 	
-	vPosition = XMVectorLerp(XMLoadFloat3(&m_tPreKeyFrame.vPosition), XMLoadFloat3(&tCurKey.vPosition), fRatio);
-	vRotation = XMQuaternionSlerp(XMLoadFloat4(&m_tPreKeyFrame.vRotation), XMLoadFloat4(&tCurKey.vRotation), fRatio);
-	vScale = XMVectorLerp(XMLoadFloat3(&m_tPreKeyFrame.vScale), XMLoadFloat3(&tCurKey.vScale), fRatio);
+	vPosition = XMVectorLerp(XMLoadFloat3(&m_tPreKeyFrame.vPosition), 
+		XMLoadFloat3(&tCurKey.vPosition), fRatio);
+	vRotation = XMQuaternionSlerp(XMLoadFloat4(&m_tPreKeyFrame.vRotation), 
+		XMLoadFloat4(&tCurKey.vRotation), fRatio);
+	vScale = XMVectorLerp(XMLoadFloat3(&m_tPreKeyFrame.vScale), 
+		XMLoadFloat3(&tCurKey.vScale), fRatio);
 
-	_matrix		TransformationMatrix = XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);
+	_matrix		TransformationMatrix = XMMatrixAffineTransformation(vScale, 
+		XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vPosition);
 
 	Set_TransformationMatrix(TransformationMatrix);
-
 }
 
 void CBoneNode::Free()

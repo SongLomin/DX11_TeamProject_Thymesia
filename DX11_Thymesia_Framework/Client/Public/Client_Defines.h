@@ -24,12 +24,12 @@
 
 #pragma region Map
 //#define _BRIGHT_LIGHT_
-#define _GENERATE_PROP_COLLIDER_ true
+//#define _GENERATE_PROP_COLLIDER_ true
 //#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
-//#define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
   
@@ -89,7 +89,7 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-#define _RENDER_FPS_
+//#define _RENDER_FPS_
 #undef _INSTANCE_CULLING_
 #undef _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System

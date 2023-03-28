@@ -156,13 +156,10 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 
 void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
 {
-	/*sort(m_tParticleDescs.begin(), m_tParticleDescs.end(), [](PARTICLE_DESC& Left, PARTICLE_DESC& Right) {
-		return Left.bEnable < Right.bEnable;
-		});*/
-
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
-	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
+	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext, 
+		((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
@@ -1057,13 +1054,12 @@ __host__ void CEffect_Rect::Play(_float fTimeDelta)
 			iStartIndex = i * g_iThread_Scale;
 			iEndIndex = (i + 1) * g_iThread_Scale + ((i + 1) == iJob_Size ? iExtra : 0);
 
-			// 마지막 쓰레드면 여분까지 전부 플레이한다.
 			GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CEffect_Rect::Play_WithIndex, 
 				this, iStartIndex, iEndIndex,
 				BoneMatrix, fTimeDelta, iTickCount));
 		}
 	}
-
+	
 	
 
 	
@@ -2081,32 +2077,32 @@ fTarget = FunctionName(fStartPoint, fTargetPoint, fElapsedTime, fTotalTime);
 
 const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option1 eOption) const
 {
-	return (m_tEffectParticleDesc.byOption1 & (_ubyte)eOption) ? true : false;
+	return (m_tEffectParticleDesc.byOption1 & (_ubyte)eOption);
 }
 
 const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option2 eOption) const
 {
-	return (m_tEffectParticleDesc.byOption2 & (_ubyte)eOption) ? true : false;
+	return (m_tEffectParticleDesc.byOption2 & (_ubyte)eOption);
 }
 
 const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option3 eOption) const
 {
-	return (m_tEffectParticleDesc.byOption3 & (_ubyte)eOption) ? true : false;
+	return (m_tEffectParticleDesc.byOption3 & (_ubyte)eOption);
 }
 
 const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option4 eOption) const
 {
-	return (m_tEffectParticleDesc.byOption4 & (_ubyte)eOption) ? true : false;
+	return (m_tEffectParticleDesc.byOption4 & (_ubyte)eOption);
 }
 
 const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option5 eOption) const
 {
-	return (m_tEffectParticleDesc.byOption5 & (_ubyte)eOption) ? true : false;
+	return (m_tEffectParticleDesc.byOption5 & (_ubyte)eOption);
 }
 
 const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option6 eOption) const
 {
-	return (m_tEffectParticleDesc.byOption6 & (_ubyte)eOption) ? true : false;
+	return (m_tEffectParticleDesc.byOption6 & (_ubyte)eOption);
 }
 
 #ifdef _EFFECT_TOOL_

@@ -54,10 +54,15 @@ HRESULT CMainApp::Initialize()
 	SYSTEM_INFO sysinfo;
 	GetSystemInfo(&sysinfo);
 	DWORD dwNumberOfProcessors = sysinfo.dwNumberOfProcessors;
-	//DWORD dwNumberOfProcessors = 1;
 
-	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc, (_uint)dwNumberOfProcessors)))
-		return E_FAIL;	
+	if (FAILED(GAMEINSTANCE->Initialize_Engine(
+		g_hInst, 
+		LEVEL_END, 
+		(_uint)TIMESCALE_LAYER::LAYER_END, 
+		(_uint)COLLISION_LAYER::LAYER_END, 
+		GraphicDesc, 
+		(_uint)dwNumberOfProcessors)))
+			DEBUG_ASSERT;	
 
 	CGameManager::Create_Instance()->Initialize((_uint)dwNumberOfProcessors);
 

@@ -56,7 +56,7 @@ private:
 	typedef unordered_map<_hashcode, class shared_ptr<CGameObject>>	PROTOTYPES;
 
 private:
-	vector<unordered_map<_hashcode, list<shared_ptr<CGameObject>>>>				m_pLayers;
+	vector<unordered_map<_hashcode, list<shared_ptr<CGameObject>>>>	m_pLayers;
 	typedef unordered_map<_hashcode, list<shared_ptr<CGameObject>>>	LAYERS;
 
 	_uint					m_iNumLevels = 0;
@@ -96,13 +96,12 @@ public: /* For Template Function */
 	}
 
 	template <typename T>
-	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
+	weak_ptr<T> Add_GameObject(_uint iLevelIndex, void* pArg = nullptr)
 	{
-		// std::lock_guard<std::mutex> lock(m_JobMutex);
-		std::unique_lock<std::recursive_mutex> lock(ObjectManager_Mutex);
+		unique_lock<recursive_mutex> lock(ObjectManager_Mutex);
 
 		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
-
+		
 		if (m_iNumLevels <= iLevelIndex)
 		{
 			assert(false);

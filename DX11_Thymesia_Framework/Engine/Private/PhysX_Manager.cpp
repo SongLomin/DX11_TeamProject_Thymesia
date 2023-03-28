@@ -193,10 +193,11 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 
 
 
-void CPhysX_Manager::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)
+void CPhysX_Manager::Check_PhysXFilterGroup(
+	const _uint In_iLeftLayer, const _uint In_iRightLayer)
 {
-	_uint iRow = (_uint)In_iLeftLayer; // 행
-	_uint iCol = (_uint)In_iRightLayer; // 열
+	_uint iRow = (_uint)In_iLeftLayer;
+	_uint iCol = (_uint)In_iRightLayer;
 
 	_uint iMax = iCol;
 	if (iRow > iCol)
@@ -210,10 +211,10 @@ void CPhysX_Manager::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _ui
 		m_arrCheck.emplace_back(0);
 	}
 
-	if (m_arrCheck[iRow] & (1 << iCol)) // 이미 그 자리가 1이면
+	if (m_arrCheck[iRow] & (1 << iCol))
 	{
-		m_arrCheck[iRow] &= ~(1 << iCol); // 빼주고
-		m_arrCheck[iCol] &= ~(1 << iRow); // 빼주고
+		m_arrCheck[iRow] &= ~(1 << iCol);
+		m_arrCheck[iCol] &= ~(1 << iRow);
 	}
 	else
 	{

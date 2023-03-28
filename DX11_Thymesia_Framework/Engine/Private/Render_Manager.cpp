@@ -10,6 +10,20 @@
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
+void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
+{
+	ID3D11DeviceContext* pContext = nullptr;
+
+	for (_int i = 0; i < In_iIndex; ++i)
+	{
+		if (SUCCEEDED(DEVICE->CreateDeferredContext(0, &pContext)))
+		{
+			GET_SINGLE(CGraphic_Device)->Sync_DeferredContext(pContext);
+			m_pBeforeRenderSleepContexts.push(pContext);
+		}
+	}
+}
+
 ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 {
 	std::unique_lock<std::mutex> lock(m_JobMutex);
@@ -19,19 +33,20 @@ ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 		Emplace_SleepContext(1);
 	}
 
-	ID3D11DeviceContext* pContext = m_pBeforeRenderSleepContexts.back();
-	m_pBeforeRenderSleepContexts.pop_back();
+	ID3D11DeviceContext* pContext = m_pBeforeRenderSleepContexts.top();
+	m_pBeforeRenderSleepContexts.pop();
 
 	lock.unlock();
 
 	return pContext;
 }
 
-void CRender_Manager::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext)
+void CRender_Manager::Release_BeforeRenderContext(
+	ID3D11DeviceContext* pDeviceContext)
 {
 	std::unique_lock<std::mutex> lock(m_JobMutex);
 
-	m_pBeforeRenderContexts.emplace_back(pDeviceContext);
+	m_pBeforeRenderContexts.push_back(pDeviceContext);
 
 	lock.unlock();
 }
@@ -52,18 +67,15 @@ void CRender_Manager::Execute_BeforeRenderCommandList()
 			pCommandList->Release();
 			pCommandList = nullptr;
 		}
+		m_pBeforeRenderSleepContexts.push(elem);
 	}
-
-	m_pBeforeRenderSleepContexts.insert(m_pBeforeRenderSleepContexts.begin(), m_pBeforeRenderContexts.begin(), m_pBeforeRenderContexts.end());
+	
 	m_pBeforeRenderContexts.clear();
 	lock.unlock();
 }
 
 HRESULT CRender_Manager::Initialize()
 {
-
-	/* ����Ÿ�ٵ��� �߰��Ѵ�. */
-
 	D3D11_VIEWPORT			ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
 
@@ -74,7 +86,7 @@ HRESULT CRender_Manager::Initialize()
 	for (_int i = 0; i < (_int)DEFERRED_END; ++i)
 	{
 		DEVICE->CreateDeferredContext(0, m_pDeferredContext[i].GetAddressOf());
-		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[i].Get());
+		GET_SINGLE(CGraphic_Device)->Sync_DeferredContext(m_pDeferredContext[i].Get());
 	}
 
 	GET_SINGLE(CFont_Manager)->Init_DeviceContext(m_pDeferredContext[DEFERRED_UI]);
@@ -500,21 +512,12 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	}
 
 	Execute_BeforeRenderCommandList();
-
-	//std::list<std::future<HRESULT>> futures;
-
-	//futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
-	// futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
-
-	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
-	//future<HRESULT> DrawEffectThread = async(launch::async, bind(&CRender_Manager::Render_Effect, this));
-
-	// HRESULT hr;
+	
 	ID3D11CommandList* pCommandList = nullptr;
 
 	/*if (FAILED(Render_UI()))
 		DEBUG_ASSERT;*/
-
+		
 	if (FAILED(Render_Priority()))
 		DEBUG_ASSERT;
 	if (FAILED(Render_ShadowDepth()))
@@ -2373,20 +2376,6 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 	return S_OK;
 }
 
-void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
-{
-	ID3D11DeviceContext* pContext = nullptr;
-
-	for (_int i = 0; i < In_iIndex; ++i)
-	{
-		if (SUCCEEDED(DEVICE->CreateDeferredContext(0, &pContext)))
-		{
-			GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext);
-			m_pBeforeRenderSleepContexts.emplace_back(pContext);
-		}
-	}
-}
-
 HRESULT CRender_Manager::Render_Debug()
 {
 
@@ -2535,11 +2524,11 @@ void CRender_Manager::OnDestroy()
 	}
 	m_pBeforeRenderContexts.clear();
 
-	for (auto& elem : m_pBeforeRenderSleepContexts)
+	while (!m_pBeforeRenderSleepContexts.empty())
 	{
-		elem->Release();
+		m_pBeforeRenderSleepContexts.top()->Release();
+		m_pBeforeRenderSleepContexts.pop();
 	}
-	m_pBeforeRenderSleepContexts.clear();
 
 	lock.unlock();
 }

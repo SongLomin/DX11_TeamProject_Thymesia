@@ -24,11 +24,6 @@ public:
 				iter++;
 			}
 		}
-
-		/*for (auto& func : functions)
-		{
-			func(args...);
-		}*/
 	}
 
 	FDelegate& operator = (std::function<void(ARGS...)> const& func)

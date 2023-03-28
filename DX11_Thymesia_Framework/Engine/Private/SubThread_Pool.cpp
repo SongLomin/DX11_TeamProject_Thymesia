@@ -7,17 +7,17 @@ void CSubThread_Pool::Initialize(const _uint In_iSize)
 	m_iNumThreads = In_iSize;
 	stop_all = false;
 
-	m_WorkerJopdones = vector<_bool>(In_iSize, false);
+	m_WorkerJobdones = vector<_bool>(In_iSize, false);
 
 	m_Worker_Threads.reserve(m_iNumThreads);
 	for (size_t i = 0; i < m_iNumThreads; ++i) {
 		//_bool* bCheck_JobDone = DBG_NEW _bool(true);
-		m_Worker_Threads.emplace_back([this, i]() { this->WorkerThread(i); });
+		m_Worker_Threads.emplace_back([this, i]() { this->Work_Thread(i); });
 	}
 
 }
 
-void CSubThread_Pool::WorkerThread(_int iIndex)
+void CSubThread_Pool::Work_Thread(_int iIndex)
 {
 	_bool bWait = false;
 
@@ -25,20 +25,20 @@ void CSubThread_Pool::WorkerThread(_int iIndex)
 		std::unique_lock<std::mutex> lock(m_JobMutex);
 		m_CV.wait(lock, [this, iIndex, &bWait]() {
 			bWait = !this->m_Jobs.empty() || stop_all;
-		m_WorkerJopdones[iIndex] = !bWait;
+		m_WorkerJobdones[iIndex] = !bWait;
 		return bWait;
 			});
 		if (stop_all && this->m_Jobs.empty()) {
-			m_WorkerJopdones[iIndex] = true;
+			m_WorkerJobdones[iIndex] = true;
 			return;
 		}
 
-		m_WorkerJopdones[iIndex] = false;
+		m_WorkerJobdones[iIndex] = false;
 		// 맨 앞의 job 을 뺀다.
 		std::function<void()> job = std::move(m_Jobs.front());
 		m_Jobs.pop();
 		lock.unlock();
-		m_WorkerJopdones[iIndex] = false;
+		m_WorkerJobdones[iIndex] = false;
 		// 해당 job 을 수행한다 :)
 		job();
 	}
@@ -48,7 +48,7 @@ _bool CSubThread_Pool::Check_JobDone()
 {
 	m_CV.notify_all();
 
-	for (auto& elem : m_WorkerJopdones)
+	for (auto& elem : m_WorkerJobdones)
 	{
 		if (!(elem))
 			return false;

@@ -10,6 +10,9 @@ class CCuda_Device :
 
 public:
     CUcontext* Get_CudaContext();
+    _bool Is_Valid() const {
+        return m_pCudaContext != nullptr;
+    }
 
 public:
     HRESULT Ready_Cuda_Device();

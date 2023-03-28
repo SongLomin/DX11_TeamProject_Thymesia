@@ -874,7 +874,7 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 //{
 //}
 
-void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType)
+void CLoader::Load_AllTexture_Recursive(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType)
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
@@ -901,7 +901,7 @@ void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE
 		//szFileName = szFileName.substr(0, szFileName.find("."));
 
 		//std::cout << "Load_AllTexture() : " << szFileName << std::endl;
-		Load_AllTexture(entry.path(), In_eMemoryType);
+		Load_AllTexture_Recursive(entry.path(), In_eMemoryType);
 
 		itr++;
 	}
@@ -1707,9 +1707,9 @@ void CLoader::Load_BossMobModel()
 void CLoader::Load_AllMapModel()
 {
 	lstrcpy(m_szLoadingText, TEXT("Loading all Ground Info..."));
-	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
-	Load_AllTexture("../Bin/GroundInfo/Texture/"     , MEMORY_TYPE::MEMORY_DYNAMIC);
-	Load_AllTexture("../Bin/GroundInfo/Filter/"      , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture_Recursive("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture_Recursive("../Bin/GroundInfo/Texture/"     , MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllTexture_Recursive("../Bin/GroundInfo/Filter/"      , MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading all Prop Mesh Info..."));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);

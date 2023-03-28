@@ -13,7 +13,7 @@ public:
 
 private:
     void Initialize(const _uint In_iSize);
-	void WorkerThread(_int iIndex);
+	void Work_Thread(_int iIndex);
 public:
 	_bool Check_JobDone();
 	void Wait_JobDone(const _char* In_szConsoleText = nullptr);
@@ -29,7 +29,7 @@ private:
 	// 위의 job 큐를 위한 cv 와 m.
 	condition_variable m_CV;
 	mutex m_JobMutex;
-	vector<_bool> m_WorkerJopdones;
+	vector<_bool> m_WorkerJobdones;
 	// 모든 쓰레드 종료
 	bool stop_all;
 

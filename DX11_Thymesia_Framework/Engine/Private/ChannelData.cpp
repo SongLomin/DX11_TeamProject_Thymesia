@@ -159,40 +159,4 @@ void CHANNEL_DATA::Bake_ReverseChannel(shared_ptr<CHANNEL_DATA>& Out_ChannelData
 
 		Out_ChannelData->tKeyFrames.emplace_back(KeyFrame);
 	}
-
-
-	/*KEY_DATA Key;
-	ROTATIONKEY_DATA RotationKey;
-
-	Out_ChannelData->tScalingKeys.reserve(iNumScalingKeys);
-	for (_int i = (_int)iNumScalingKeys - 1; i >= 0; --i)
-	{
-		memcpy(&Key.vValue, &tScalingKeys[i].vValue, sizeof(_float3));
-		Key.fTime = In_fDuration - tScalingKeys[i].fTime;
-
-		Out_ChannelData->tScalingKeys.push_back(Key);
-	}
-
-
-	Out_ChannelData->tRotationKeys.reserve(iNumRotationKeys);
-	for (_int i = (_int)iNumRotationKeys - 1; i >= 0; --i)
-	{
-		memcpy(&RotationKey.vValue, &tRotationKeys[i].vValue, sizeof(_float4));
-		RotationKey.fTime = In_fDuration - tRotationKeys[i].fTime;
-
-		Out_ChannelData->tRotationKeys.push_back(RotationKey);
-	}
-
-
-	Out_ChannelData->tPositionKeys.reserve(iNumPositionKeys);
-	for (_int i = (_int)iNumPositionKeys - 1; i >= 0; --i)
-	{
-		memcpy(&Key.vValue, &tPositionKeys[i].vValue, sizeof(_float3));
-		Key.fTime = In_fDuration - tPositionKeys[i].fTime;
-
-		Out_ChannelData->tPositionKeys.push_back(Key);
-	}*/
-
-
-
 }

@@ -18,8 +18,7 @@
 #define BEGIN(NAMESPACE) namespace NAMESPACE { 
 #define END }
 
-#define CHECK_CUDA \
-	(*GET_SINGLE(CCuda_Device)->Get_CudaContext())
+#define CHECK_CUDA (GET_SINGLE(CCuda_Device)->Is_Valid())
 
 
 #define BEGIN_PERFROMANCE_CHECK(TAG)\

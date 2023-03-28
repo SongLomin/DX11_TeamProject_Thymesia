@@ -185,7 +185,8 @@ HRESULT CGraphic_Device::Clear_DepthStencil_View()
 	return S_OK;
 }
 
-void CGraphic_Device::SyncronizeDeferredContext(ID3D11DeviceContext* pDeferredDeviceContext)
+void CGraphic_Device::Sync_DeferredContext(
+	ID3D11DeviceContext* pDeferredDeviceContext)
 {
 	pDeferredDeviceContext->ClearState();
 

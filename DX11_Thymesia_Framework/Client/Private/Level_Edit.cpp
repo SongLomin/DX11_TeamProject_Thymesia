@@ -5,6 +5,8 @@
 #include "FadeMask.h"
 #include "ImGui_Manager.h"
 #include "SkyBox.h"
+#include "Corvus.h"
+#include "Collider.h"
 
 GAMECLASS_C(CLevel_Edit);
 
@@ -21,8 +23,6 @@ HRESULT CLevel_Edit::Initialize()
 #ifdef _SKYBOX_
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 #endif // _SKYBOX_
-
-	
 
 #ifdef _RENDER_FPS_
 	m_TextInfo_FPS.bCenterAlign = false;

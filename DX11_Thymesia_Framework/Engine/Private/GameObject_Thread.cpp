@@ -20,9 +20,7 @@ void CGameObject_Thread::Bind_Works()
 			continue;
 		}
 		else if ((*iter).lock()->Get_Enable())
-		{
 			pThreadManager->Enqueue_Job(bind(&CGameObject_Thread::Do, this, (*iter)));
-		}
 		++iter;
 	}
 
@@ -171,7 +169,6 @@ void CGameObject_Thread::Do(weak_ptr<CGameObject> pGameObject)
 	default:
 		break;
 	}
-
 }
 
 shared_ptr<CGameObject_Thread> CGameObject_Thread::Create(const THREAD_TYPE In_eThread_Type)

@@ -48,7 +48,7 @@ public: /* For Template Function*/
 		_hashcode Template_Class_HashCode = typeid(T).hash_code();
 
 		weak_ptr<CComponent> pPrototype;
-		/*Find_Components*/
+		
 		auto	iter = m_pPrototypes.find(Template_Class_HashCode);
 
 		if (iter != m_pPrototypes.end())
@@ -56,18 +56,12 @@ public: /* For Template Function*/
 			pPrototype = iter->second;
 		}
 
-		if (0 == pPrototype.use_count())
+		if (!pPrototype.lock())
 		{
-			/*Add_Prototype*/
 			shared_ptr<CComponent> T_Instance = T::Create();
-
 			m_pPrototypes.emplace(Template_Class_HashCode, T_Instance);
-
-
-			T_Instance->Set_Owner(pOwner);
-			T_Instance->m_CreatedLevel = pOwner.lock()->Get_CreatedLevel();
-
-			return static_pointer_cast<T>(T_Instance->Clone(0, pArg));
+			
+			pPrototype = T_Instance;
 		}
 
 		pPrototype.lock()->Set_Owner(pOwner);

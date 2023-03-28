@@ -315,10 +315,12 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex, ID3D11D
 	};
 
 	DEVICECONTEXT->IASetVertexBuffers(0,m_iNumVertexBuffers , pVertexBuffers, iStrides, iOffsets);
-	DEVICECONTEXT->IASetIndexBuffer(m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexBuffer().Get(), m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexFormat(), 0);
+	DEVICECONTEXT->IASetIndexBuffer(m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexBuffer().Get(), 
+		m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexFormat(), 0);
 	DEVICECONTEXT->IASetPrimitiveTopology(m_MeshContainers[iMeshContainerIndex].lock()->Get_Topology());
 
-	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_iVisibleCount, 0, 0, 0);
+	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), 
+		m_iVisibleCount, 0, 0, 0);
 
 	return S_OK;
 }
@@ -327,8 +329,6 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 {
 	if (In_ParticleDescs.empty() || m_bCulling)
 		return;
-
-	//_int iUpdateIndex = 1 - m_iCurrentVisibleIndex;
 
 	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
 
@@ -344,40 +344,6 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	m_iVisibleCount        = m_pVisibleInstanceDescs.size();
 	m_bCulling             = true;
-
-	//Update_VisibleInstance();
-
-	/*shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
-
-	_int iCount = 0;
-
-	sort(m_pModelInstance,
-		m_pModelInstance + m_iNumInstance,
-		[&pGameInstance, &In_fRange, &iCount](VTXMODELINSTANCE& Left, VTXMODELINSTANCE& Right) {
-
-			XMVECTOR LeftFromVector, RightFromVector;
-			LeftFromVector = XMLoadFloat4(&Left.vTranslation);
-			RightFromVector = XMLoadFloat4(&Right.vTranslation);
-			_bool IsInLeft = pGameInstance->isIn_Frustum_InWorldSpace(LeftFromVector, In_fRange);
-			_bool IsInRight = pGameInstance->isIn_Frustum_InWorldSpace(RightFromVector, In_fRange);
-			if (IsInLeft == IsInRight)
-			{
-				return false;
-			}
-			else if (IsInLeft && !IsInRight)
-			{
-				iCount++;
-				return true;
-			}
-		}
-		);
-
-	m_iVisiableCount = iCount;
-
-	if (m_iVisiableCount > m_iNumInstance)
-	{
-		DEBUG_ASSERT;
-	}*/
 }
 
 void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_bUseCulling)
@@ -416,24 +382,20 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance(ID3D11DeviceContext* pDevi
 	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
 	_matrix							WorldMatrix;
+	_int iIndex = 0;
 
 	pDeviceContext->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	for (_int i = 0; i < m_iNumInstance; ++i)
+	for (auto& elem : m_pVisibleInstanceDescs)
 	{
-		if (i < m_iVisibleCount)
-		{
-			WorldMatrix = m_pVisibleInstanceDescs[i].Get_Matrix();
-		}
-		else
-		{
-			WorldMatrix = XMMatrixIdentity();
-		}
+		WorldMatrix = elem.Get_Matrix();
 
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vRight, WorldMatrix.r[0]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vUp, WorldMatrix.r[1]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vLook, WorldMatrix.r[2]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vTranslation, WorldMatrix.r[3]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vUp, WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vLook, WorldMatrix.r[2]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vTranslation, WorldMatrix.r[3]);
+		
+		++iIndex;
 	}
 
 	pDeviceContext->Unmap(m_pVBInstance.Get(), 0);

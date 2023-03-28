@@ -40,7 +40,7 @@ void CPhysXCollider::Start()
 
 }
 
-void CPhysXCollider::Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData, const vector<INSTANCE_MESH_DESC>* In_ParticleDescs)
+void CPhysXCollider::Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData, const vector<INSTANCE_MESH_DESC>* In_InstanceDescs)
 {
 	PxU32 iNumVertices;
 	PxU32 iNumFaces;
@@ -48,16 +48,16 @@ void CPhysXCollider::Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData, const vect
 	FACEINDICES32* pIndices;
 	PxTriangleMeshDesc meshDesc;
 
-	if (In_ParticleDescs)
+	if (In_InstanceDescs)
 	{
-		for (_size_t i = 0; i < In_ParticleDescs->size(); ++i)
+		for (_size_t i = 0; i < In_InstanceDescs->size(); ++i)
 		{
 			iNumVertices = pMeshData.lock()->iNumVertices;
 			iNumFaces = pMeshData.lock()->iNumFaces;
 			pVertices = DBG_NEW PxVec3[iNumVertices];
 			pIndices = DBG_NEW FACEINDICES32[iNumFaces];
 
-			SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, pMeshData, (*In_ParticleDescs)[i].Get_Matrix());
+			SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, pMeshData, (*In_InstanceDescs)[i].Get_Matrix());
 
 			meshDesc.points.count = iNumVertices;
 			meshDesc.points.stride = sizeof(PxVec3);
@@ -120,25 +120,10 @@ void CPhysXCollider::Init_ConvexMeshCollider(weak_ptr<MESH_DATA> pMeshData, cons
 
 	if (In_ParticleDescs)
 	{
-		/*_matrix TransformationMatrix;
-		_matrix RotationMatrix, ScaleMatrix;
-
-		_vector vPitchYawRoll;
-		_vector vPosition;*/
-
 		for (_size_t i = 0; i < In_ParticleDescs->size(); ++i)
 		{
 			iNumVertices = pMeshData.lock()->iNumVertices;
 			pVertices = DBG_NEW PxVec3[iNumVertices];
-
-			/*vPitchYawRoll = XMLoadFloat3(&(*In_ParticleDescs)[i].vRotation);
-			vPosition = XMLoadFloat3(&(*In_ParticleDescs)[i].vTarnslation);
-			vPosition.m128_f32[3] = 1.f;
-
-			RotationMatrix = XMMatrixRotationRollPitchYawFromVector(vPitchYawRoll);
-			ScaleMatrix = XMMatrixScaling((*In_ParticleDescs)[i].vScale.x, (*In_ParticleDescs)[i].vScale.y, (*In_ParticleDescs)[i].vScale.z);
-			TransformationMatrix = ScaleMatrix * RotationMatrix;
-			TransformationMatrix.r[3] = vPosition;*/
 
 			SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, pMeshData, (*In_ParticleDescs)[i].Get_Matrix());
 

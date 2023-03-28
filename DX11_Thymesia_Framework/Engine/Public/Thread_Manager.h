@@ -33,7 +33,7 @@ private:
 
 	void Clear_EngineThreads(const THREAD_TYPE In_eThread_Type);
 
-	void WorkerThread(_int iIndex);
+	void Work_Thread(_int iIndex);
 	
 	
 
@@ -43,19 +43,13 @@ public:
 	GAMEOBJECT_THREAD			m_GameObject_Threads[(_uint)THREAD_TYPE::TYPE_END];
 
 private:
-	// 총 Worker 쓰레드의 개수.
 	size_t m_iNumThreads;
-	// Worker 쓰레드를 보관하는 벡터.
 	vector<thread> m_Worker_Threads;
-	// 할일들을 보관하는 job 큐.
 	queue<function<void()>> m_Jobs;
-	// 위의 job 큐를 위한 cv 와 m.
 	condition_variable m_CV;
 	mutex m_JobMutex;
-	vector<_bool> m_WorkerJopdones;
+	vector<_bool> m_WorkerJobdones;
 
-
-	// 모든 쓰레드 종료
 	bool stop_all;
 
 
@@ -65,26 +59,17 @@ public:
 	
 
 public:
-	template <class F, class... Args>
-	std::future<typename std::result_of<F(Args...)>::type> Enqueue_Job(
-		F&& f, Args&&... args)
+	template <class Func, class... Args>
+	void Enqueue_Job(
+		Func&& function, Args&&... args)
 	{
-		if (stop_all) {
-			throw std::runtime_error("ThreadPool 사용 중지됨");
-		}
-
-		using return_type = typename std::invoke_result_t<F, Args...>;
-		auto job = std::make_shared<std::packaged_task<return_type()>>(
-			std::bind(std::forward<F>(f), std::forward<Args>(args)...));
-		
-		std::future<return_type> job_result_future = job->get_future();
 		{
-			std::lock_guard<std::mutex> lock(m_JobMutex);
-			m_Jobs.push([job]() { (*job)(); });
+			lock_guard<mutex> lock(m_JobMutex);
+			m_Jobs.push(bind(forward<Func>(function), forward<Args>(args)...));
 		}
 		m_CV.notify_one();
 
-		return job_result_future;
+		return;
 	}
 };
 

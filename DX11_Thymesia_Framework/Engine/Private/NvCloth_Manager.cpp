@@ -16,16 +16,6 @@ Factory* CNvCloth_Manager::Get_Factory()
 
 HRESULT CNvCloth_Manager::Initialize()
 {
-	//CUcontext cudaContext;
-	///*int deviceCount = 0;
-	//CUresult result = cuDeviceGetCount(&deviceCount);
-	//assert(CUDA_SUCCESS == result);
-	//assert(deviceCount >= 1);*/
-	//
-
-	//CUresult result = cuCtxCreate(&cudaContext, 0, 0); //Pick first device
-
-
 	m_pGraphicsContextManager = DBG_NEW CCustomContextManagerCallback(DEVICE);
 
 	m_pGraphicsContextManager->mContext = DEVICECONTEXT;
@@ -37,18 +27,9 @@ HRESULT CNvCloth_Manager::Initialize()
 	InitializeNvCloth(m_pAllocatorCallback, m_pErrorCallback, m_pAssertHander, nullptr);
 
 	if (CHECK_CUDA)
-	{
 		m_pFactory = NvClothCreateFactoryCUDA(*GET_SINGLE(CCuda_Device)->Get_CudaContext());
-	}
 	else
-	{
 		m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
-	}
-
-	//m_pFactory = NvClothCreateFactoryCPU();
-	
-	//
-	//We need to release all DX objects after destroying the factory.
 	
 	m_pSolver = m_pFactory->createSolver();
 

@@ -122,11 +122,11 @@ void CActor::Unbind_KeyEvent(const char* szKeyEventName)
 
 void CActor::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 {
-    // Unbind_KeyEvent가 제대로 작동 하지 않을 시
     if (m_strKeyEventName.empty())
         DEBUG_ASSERT;
 
-    GET_SINGLE(CGameManager)->Active_KeyEvent(m_strKeyEventName, m_pModelCom, m_pTransformCom, In_iKeyIndex);
+    GET_SINGLE(CGameManager)->Active_KeyEvent(
+        m_strKeyEventName, m_pModelCom, m_pTransformCom, In_iKeyIndex);
 }
 
 weak_ptr<CRequirementChecker> CActor::Get_Requirement(const string& In_szCheckerKey)

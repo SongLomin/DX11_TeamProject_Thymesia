@@ -12,7 +12,7 @@ public:
 	HRESULT Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE WinMode, _uint iWinCX, _uint iWinCY);
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
-	void SyncronizeDeferredContext(ID3D11DeviceContext* pDeferredDeviceContext);
+	void Sync_DeferredContext(ID3D11DeviceContext* pDeferredDeviceContext);
 	HRESULT Present();
 
 public:

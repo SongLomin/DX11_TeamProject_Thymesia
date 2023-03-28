@@ -8,7 +8,7 @@ class CMobWeapon;
 class CJavelinWeapon;
 class CStatus_Monster;
 class CMonsterHPBar_Base;
-#define INIT_STATE(STATE) Weak_StaticCast<STATE>(m_pComponents.find(typeid(STATE).hash_code())->second.front()).lock()->Init_Desc(&m_tLinkStateDesc);
+#define INIT_STATE(STATE) Get_Component<STATE>().lock()->Init_Desc(&m_tLinkStateDesc);
 
 class CMonster :
     public CCharacter

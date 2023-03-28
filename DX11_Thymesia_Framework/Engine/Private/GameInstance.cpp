@@ -110,7 +110,6 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pLevel_Manager->Tick(fTimeDelta);
 	
-	
 	m_pThread_Manager->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
 	m_pThread_Manager->Wait_JobDone();
 	

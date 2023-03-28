@@ -1668,6 +1668,7 @@
   <ItemGroup>
     <None Include="..\Private\Update_Particle.cu" />
     <None Include="..\Public\Update_Particle.cuh" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

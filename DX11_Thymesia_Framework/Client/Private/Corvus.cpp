@@ -144,7 +144,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_SpotLightDesc = GAMEINSTANCE->Add_Light(m_SpotLightDesc);
 
 	_uint iNvClothColliderCount;
-	CNvClothCollider::NVCLOTH_COLLIDER_DESC* NvClothColliderDesc = (CNvClothCollider::NVCLOTH_COLLIDER_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
+
+	using NVCOL_DESC = CNvClothCollider::NVCLOTH_COLLIDER_DESC;
+
+	NVCOL_DESC* NvClothColliderDesc =
+		(NVCOL_DESC*)Preset::NvClothCollider::CorvusSetting(iNvClothColliderCount);
 
 	m_pNvClothColliderCom = Add_Component<CNvClothCollider>();
 	m_pNvClothColliderCom.lock()->Init_NvClothColliders(m_pModelCom, NvClothColliderDesc, iNvClothColliderCount);
@@ -215,6 +219,16 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
+		static bool Tapping = false;
+
+		Tapping = !Tapping;
+		
+		if(Tapping)
+			SetPriorityClass(GetCurrentProcess(), REALTIME_PRIORITY_CLASS);
+		
+		else
+			SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
+
 		//_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
 		////GET_SINGLE(CGameManager)->Add_WaterWave(vPlayerPos, 0.05f, 9.f, 3.f);
 		//DECAL_DESC DecalDesc;
@@ -301,48 +315,16 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 {
 	__super::Thread_PreBeforeRender(fTimeDelta);
 
+	const _uint iClothIndex = 2;
+
 	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 
 	m_pNvClothColliderCom.lock()->Update_Colliders(m_pTransformCom.lock()->Get_WorldMatrix());
-	m_pNvClothColliderCom.lock()->Set_Spheres(m_pModelCom.lock()->Get_MeshContainer(2));
-
+	m_pNvClothColliderCom.lock()->Set_Spheres(m_pModelCom.lock()->Get_MeshContainer(iClothIndex));
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
-	_matrix		BoneMatrix;
-	// _matrix		InverseMatrix;
-	// _vector		vGravity;
-
-	//BoneMatrix = //m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_OffsetMatrix() * 
-	//	m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
-	//	XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
-
-	//_vector vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	//vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
-	//PxVec4 spheres[2]{
-	//	PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f),
-	//	PxVec4(999.f, 999.f, 999.f, 1.0f),
-	//};
-	//nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 2);
-
-	//m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
-
-	//Bip001-Ponytail1
-
-	/*BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_OffsetMatrix() *
-		m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_CombinedMatrix() *
-		XMLoadFloat4x4(&m_TransformationMatrix);
-
-	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);*/
-
-	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
-
-	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
-	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
-
-	m_pModelCom.lock()->Get_MeshContainer(2).lock()->Update_NvClothVertices(pDeferredContext,
+	m_pModelCom.lock()->Get_MeshContainer(iClothIndex).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pTransformCom.lock()->Get_WorldMatrix(),
 		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 

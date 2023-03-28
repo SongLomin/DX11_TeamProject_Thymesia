@@ -80,9 +80,12 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 
 void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 {
+	if (m_pDynamicColliderComs.empty())
+		return;
+
 #ifdef _INSTANCE_CULLING_
 	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
-
+	
 #ifdef _DEBUG
 	if (m_pDynamicColliderComs.empty())
 		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), GET_SINGLE(CWindow_Optimization_Dev)->Get_InstancingCullingRatio());
@@ -91,7 +94,7 @@ void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 0.5f);
 #endif // _DEBUG
 	
-
+	
 	if (m_pDynamicColliderComs.empty())
 		m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);
 

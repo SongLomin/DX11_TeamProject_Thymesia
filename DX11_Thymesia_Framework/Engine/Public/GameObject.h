@@ -58,14 +58,20 @@ public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 public:
-	virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
-	virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
-	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+	virtual void OnCollisionEnter(
+		weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+	virtual void OnCollisionStay(
+		weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+	virtual void OnCollisionExit(
+		weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
 
 public:
-	virtual void OnPhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider) {};
-	virtual void OnPhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider) {};
-	virtual void OnPhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void OnPhysXCollisionEnter(
+		weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void OnPhysXCollisionStay(
+		weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void OnPhysXCollisionExit(
+		weak_ptr<CPhysXCollider> pOtherCollider) {};
 
 protected:
 	virtual void OnDestroy() override;
@@ -85,7 +91,6 @@ protected:
 	_uint						m_CreatedLevel;
 	_uint						m_ThreadFlag = 0;
 	_uint						m_UpatedFromThreadFlag = 0;
-
 
 protected:
 	unordered_map<_hashcode, list<shared_ptr<CComponent>>>	m_pComponents;
@@ -135,8 +140,7 @@ public: /* For Template Function */
 		
 		m_pComponents[typeid(T).hash_code()].push_back(temp);
 		temp->Set_Owner(Cast<CGameObject>(m_this));
-
-		//temp->OnEnable(pArg);
+		
 		return temp;
 	}
 

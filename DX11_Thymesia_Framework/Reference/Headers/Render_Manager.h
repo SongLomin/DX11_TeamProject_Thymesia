@@ -312,8 +312,8 @@ private:
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
-	vector<ID3D11DeviceContext*> m_pBeforeRenderContexts;
-	vector<ID3D11DeviceContext*> m_pBeforeRenderSleepContexts;
+	list<ID3D11DeviceContext*> m_pBeforeRenderContexts;
+	stack<ID3D11DeviceContext*> m_pBeforeRenderSleepContexts;
 
 	std::mutex m_JobMutex;
 

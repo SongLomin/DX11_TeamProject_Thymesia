@@ -53,7 +53,7 @@ private:
 
 private: 
     ComPtr<ID3D11Buffer>        m_pVBInstance;
-    vector<INSTANCE_MESH_DESC>    m_pVisibleInstanceDescs;
+    list<INSTANCE_MESH_DESC>    m_pVisibleInstanceDescs;
     //_int                        m_iCurrentVisibleIndex = 0;
     _bool                       m_bCulling = false;
     _float                      m_fMaxOffsetRange = 0.f;

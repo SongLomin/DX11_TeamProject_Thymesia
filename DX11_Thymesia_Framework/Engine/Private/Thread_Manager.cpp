@@ -1,6 +1,7 @@
 #include "Thread_Manager.h"
 #include "GameObject.h"
 #include "Timer.h"
+#include <shared_mutex>
 
 IMPLEMENT_SINGLETON(CThread_Manager)
 
@@ -9,12 +10,12 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 	m_iNumThreads = In_iNumLayer;
 	stop_all = false;
 
-	m_WorkerJopdones = vector<_bool>(In_iNumLayer, false);
+	m_WorkerJobdones = vector<_bool>(In_iNumLayer, false);
 
 	m_Worker_Threads.reserve(m_iNumThreads);
 	for (size_t i = 0; i < m_iNumThreads; ++i) {
-		//_bool* bCheck_JobDone = DBG_NEW _bool(true);
-		m_Worker_Threads.emplace_back([this, i]() { this->WorkerThread(i); });
+		m_Worker_Threads.emplace_back([this, i]() 
+			{ this->Work_Thread(i); });
 	}
 }
 
@@ -25,8 +26,6 @@ void CThread_Manager::Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_
 	{
 		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance = CGameObject_Thread::Create(In_eThread_Type);
 		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Add_ThreadObject(pGameObject);
-		//m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Add_ReserveThreadObject(pGameObject);
-		//m_GameObject_Threads[(_uint)In_eThread_Type].Future = m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Async(In_eThread_Type);
 	}
 	else
 	{
@@ -59,29 +58,36 @@ void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)
 
 }
 
-void CThread_Manager::WorkerThread(_int iIndex)
+void CThread_Manager::Work_Thread(_int In_iIndex)
 {
 	_bool bWait = false;
 
 	while (true) {
 		std::unique_lock<std::mutex> lock(m_JobMutex);
-		m_CV.wait(lock, [this, iIndex, &bWait]() {
-			bWait = !this->m_Jobs.empty() || stop_all;
-			m_WorkerJopdones[iIndex] = !bWait;
-			return bWait;
-			});
+		
 		if (stop_all && this->m_Jobs.empty()) {
-			m_WorkerJopdones[iIndex] = true;
+			m_WorkerJobdones[In_iIndex] = true;
 			return;
 		}
 
-		m_WorkerJopdones[iIndex] = false;
-		// 맨 앞의 job 을 뺀다.
+		m_CV.wait(lock, [this, In_iIndex, &bWait]() {
+			bWait = !this->m_Jobs.empty() || stop_all;
+			m_WorkerJobdones[In_iIndex] = !bWait;
+			return bWait;
+			});
+
+		if (stop_all && this->m_Jobs.empty()) {
+			m_WorkerJobdones[In_iIndex] = true;
+			return;
+		}
+
+		m_WorkerJobdones[In_iIndex] = false;
+
 		std::function<void()> job = std::move(m_Jobs.front());
 		m_Jobs.pop();
+		
 		lock.unlock();
-		m_WorkerJopdones[iIndex] = false;
-		// 해당 job 을 수행한다 :)
+		
 		job();
 	}
 }
@@ -90,7 +96,7 @@ _bool CThread_Manager::Check_JobDone()
 {
 	m_CV.notify_all();
 
-	for (auto& elem : m_WorkerJopdones)
+	for (auto& elem : m_WorkerJobdones)
 	{
 		if (!(elem))
 			return false;
@@ -153,13 +159,7 @@ void CThread_Manager::OnDestroy()
 		Clear_EngineThreads((THREAD_TYPE)i);
 	}
 
-	/*for (auto& elem : m_WorkerJopdones)
-	{
-		Safe_Delete(elem);
-	}*/
-
-	m_WorkerJopdones.clear();
-
+	m_WorkerJobdones.clear();
 }
 
 void CThread_Manager::Free()
